@@ -1,0 +1,56 @@
+// Colors
+@import '../v';
+$dot-color: #5c5959;
+
+// Dimensions
+$dot-size: 1px;
+$dot-space: 22px;
+
+.main {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(
+        90deg,
+        $bg-color ($dot-space - $dot-size),
+        transparent 1%
+      )
+      center,
+    linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+    $dot-color;
+  background-size: $dot-space $dot-space;
+
+  h1 {
+    text-align: center;
+  }
+}
+
+@keyframes servingServersAnimation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(green, 0.3);
+  }
+
+  70% {
+    box-shadow: 0 0 0 15px rgba(green, 0);
+  }
+}
+
+.servers {
+  margin-top: 20px;
+  position: relative;
+
+  &::before {
+    content: '';
+    background-color: green;
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    animation: 1s servingServersAnimation infinite linear;
+    left: -20px;
+    translate: 0 -50%;
+    top: 50%;
+  }
+}

@@ -1,0 +1,18 @@
+.selector {
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  color: white;
+  align-items: center;
+  background-color: #1f1f1f;
+}
+
+.left {
+  gap: 10px;
+  align-items: center;
+
+  img {
+    border-radius: 10px;
+  }
+}

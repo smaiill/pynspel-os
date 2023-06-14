@@ -1,0 +1,23 @@
+.aside {
+  background-color: #191919;
+  width: 325px;
+  overflow-y: auto;
+  max-height: 100vh;
+  padding: 20px;
+  border-right: 1px solid #333131;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  nav {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}

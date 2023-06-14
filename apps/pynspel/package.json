@@ -1,0 +1,26 @@
+{
+  "name": "@pynspel/client",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev": "tsup --config scripts/tsup.dev.js",
+    "build": "tsup --config scripts/tsup.build.js",
+    "clean:all": "rimraf dist && rimraf node_modules"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@pynspel/px": "workspace:*",
+    "discord.js": "^14.11.0",
+    "dotenv": "^10.0.0",
+    "pg": "^8.11.0",
+    "tsup": "^6.7.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.10.1"
+  }
+}

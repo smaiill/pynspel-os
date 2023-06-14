@@ -1,0 +1,24 @@
+$bg-color: #1f1f1f;
+
+$--clr-danger: hsl(354, 70%, 54%);
+$--clr-success: hsl(125, 78%, 28%);
+$--clr-warn: hsl(32, 95%, 50%);
+$--clr-primary: hsl(226, 65%, 51%);
+$--clr-special: hsl(252, 44%, 59%);
+$--clr-inactive: hsl(225, 5%, 29%);
+$--clr-border-secondary: #554f4f;
+
+$--clr-font: white;
+$--clr-font-secondary: #8b8787;
+$--clr-font-special: rgb(179, 84, 84);
+$--clr-font-special-hover: rgb(189, 56, 56);
+
+// Bgs
+$--bg-clr: #232323;
+$--bg-clr-secondary: #0f0e0f;
+$--bg-clr-danger: $--clr-danger;
+$--bg-clr-success: $--clr-success;
+$--bg-clr-warn: $--clr-warn;
+$--bg-clr-special: $--clr-special;
+$--bg-clr-primary: $--clr-primary;
+$--bg-clr-inactive: $--clr-inactive;
