@@ -1,10 +1,21 @@
 import { BiUser } from 'react-icons/bi'
 import { Flex, FlexColumn } from '~/layouts/Flex'
-import style from './stat.card.module.scss'
+import { css } from '../../../../styled-system/css'
+
+const styles = css({
+  height: '200px',
+  flex: 1,
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 50px',
+  justifyContent: 'space-between',
+  color: 'white',
+})
 
 const StatCard = () => {
   return (
-    <Flex className={style.card}>
+    <Flex className={styles}>
       <FlexColumn>
         <p>Users</p>
         <span>10</span>

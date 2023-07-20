@@ -6,9 +6,13 @@ export const useGuildService = () => {
     return await fetchApi<DiscordGuild[]>('/api/dashboard/guilds')
   }
 
-  const getGuild = async ({ guildId }: { guildId: bigint }) => {
+  const getGuild = async ({ guildId }: { guildId: string }) => {
     return await fetchApi<SavedGuild>(`/api/dashboard/guilds/${guildId}`)
   }
 
-  return { getGuild, getMutualGuilds }
+  const getServingGuilds = async () => {
+    return await fetchApi<{ count: number }>('/api/client/serving-guilds')
+  }
+
+  return { getGuild, getMutualGuilds, getServingGuilds }
 }

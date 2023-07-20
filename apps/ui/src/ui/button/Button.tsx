@@ -1,89 +1,82 @@
-'use client'
-
-import { clsx } from 'clsx'
 import {
   ButtonHTMLAttributes,
   ForwardedRef,
   forwardRef,
   PropsWithChildren,
 } from 'react'
-import style from './button.module.scss'
+import { buttonRecipe, ButtonVariants } from '~/theme/button.recipe'
 
-export type IButtonTypes = 'primary' | 'danger' | 'success' | 'warn' | 'special'
-
-export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
-  _type: IButtonTypes
-  prefixElement?: JSX.Element
-  suffixElement?: JSX.Element
-  loading?: boolean
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variants: ButtonVariants
   href?: string
 }
 
-export type ForwardButton = Omit<IButton, '_type'>
-
 const Button = forwardRef(
-  (props: PropsWithChildren<IButton>, ref: ForwardedRef<HTMLButtonElement>) => {
-    const {
-      children,
-      prefixElement,
-      suffixElement,
-      className,
-      _type,
-      loading,
-      href,
-      ...rest
-    } = props
+  (
+    props: PropsWithChildren<ButtonProps>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    const { children, variants, href, onClick, ...rest } = props
 
-    const handleClick = () => {
-      href && window.open(href, '_self')
+    const handleClick = (e: any) => {
+      href && window.open(href)
+      onClick && onClick(e)
     }
 
     return (
       <button
-        className={clsx(
-          style.btn,
-          style[_type],
-          loading ? style.loading : '',
-          className
-        )}
-        ref={ref}
-        onClick={handleClick}
         {...rest}
+        ref={ref}
+        className={buttonRecipe({ visual: variants?.visual })}
+        onClick={handleClick}
       >
-        {prefixElement}
         {children}
-        {suffixElement}
       </button>
     )
   }
 )
 
 export const ButtonPrimary = forwardRef(
-  (props: ForwardButton, ref: ForwardedRef<HTMLButtonElement>) => {
-    return <Button {...props} ref={ref} _type="primary" />
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return <Button {...props} ref={ref} variants={{ visual: 'primary' }} />
   }
 )
 
 export const ButtonDanger = forwardRef(
-  (props: ForwardButton, ref: ForwardedRef<HTMLButtonElement>) => {
-    return <Button {...props} ref={ref} _type="danger" />
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return <Button {...props} ref={ref} variants={{ visual: 'danger' }} />
   }
 )
 
 export const ButtonSuccess = forwardRef(
-  (props: ForwardButton, ref: ForwardedRef<HTMLButtonElement>) => {
-    return <Button {...props} ref={ref} _type="success" />
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return <Button {...props} ref={ref} variants={{ visual: 'success' }} />
   }
 )
 
 export const ButtonWarn = forwardRef(
-  (props: ForwardButton, ref: ForwardedRef<HTMLButtonElement>) => {
-    return <Button {...props} ref={ref} _type="warn" />
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return <Button {...props} ref={ref} variants={{ visual: 'warn' }} />
   }
 )
 
 export const ButtonSpecial = forwardRef(
-  (props: ForwardButton, ref: ForwardedRef<HTMLButtonElement>) => {
-    return <Button {...props} ref={ref} _type="special" />
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return <Button {...props} ref={ref} variants={{ visual: 'special' }} />
   }
 )

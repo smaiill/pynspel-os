@@ -1,7 +1,54 @@
 import { ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react'
-import style from './input.module.scss'
+import { css } from '../../../styled-system/css'
 
-export interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+const wrapper = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '7.5px',
+  width: '100%',
+
+  '& label': {
+    color: 'grey',
+    fontSize: '13px',
+    marginLeft: '5px',
+  },
+})
+
+const body = css({
+  display: 'flex',
+  alignItems: 'center',
+  padding: '10px',
+  gap: '10px',
+  borderRadius: '10px',
+  justifyContent: 'space-between',
+  transition: '0.3s',
+  backgroundColor: '#2b2929',
+
+  '&:has(input:focus)': {
+    transition: '0',
+    outline: '1px solid rgb(77, 76, 76)',
+  },
+
+  '& p': {
+    fontSize: '10px',
+    cursor: 'pointer',
+    fontWeight: '900',
+    color: 'grey',
+  },
+
+  '& input': {
+    color: 'white',
+    height: '30px',
+    background: 'none',
+    border: 'none',
+    flex: '1',
+
+    '&:focus': {
+      outline: 'none',
+    },
+  },
+})
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: JSX.Element
   label?: string
   onIconClick?: () => void
@@ -11,13 +58,13 @@ export interface IInput extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef(
-  (props: IInput, ref: ForwardedRef<HTMLInputElement>) => {
+  (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
     const { icon, className, label, onIconClick, ...rest } = props
 
     return (
-      <div className={style.wrapper}>
+      <div className={wrapper}>
         {label && <label htmlFor="input">{label}</label>}
-        <div className={style.body}>
+        <div className={body}>
           <input
             className={className}
             spellCheck="false"

@@ -1,0 +1,10 @@
+@layer tokens {
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 #4DFF0030
+        }
+        100% {
+            box-shadow: 0 0 0 15px #4DFF0000
+        }
+    }
+}

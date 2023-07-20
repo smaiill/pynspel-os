@@ -1,6 +1,6 @@
-import { HTTPCode } from '@pynspel/types'
+import { HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response, Router } from 'express'
-import { HTTPError } from 'utils/error.handler'
+import { HttpException } from 'utils/error.handler'
 import { lg } from 'utils/logger'
 
 export class ProtectedRouter {
@@ -11,7 +11,10 @@ export class ProtectedRouter {
     this._router.use((req: Request, _, next) => {
       if (!req.user) {
         lg.warn('Not connected with protected router !')
-        throw new HTTPError(HTTPCode.UNAUTHORIZED, 'You are not unauthorized !')
+        throw new HttpException(
+          HttpStatus.UNAUTHORIZED,
+          'You are not unauthorized !'
+        )
       }
       next()
     })

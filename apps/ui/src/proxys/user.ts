@@ -1,4 +1,4 @@
-import { SavedUser } from '@pynspel/types'
+import { DiscordGuild, SavedUser } from '@pynspel/types'
 import { proxy, useSnapshot } from 'valtio'
 
 export const userProxy = proxy<{
@@ -9,4 +9,9 @@ export const userProxy = proxy<{
   user: null,
 })
 
+export const userGuildsProxy = proxy<{ guilds: DiscordGuild[] }>({
+  guilds: [],
+})
+
 export const useUserSnapshot = () => useSnapshot(userProxy)
+export const useUserGuildsSnapshot = () => useSnapshot(userGuildsProxy)

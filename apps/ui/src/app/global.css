@@ -1,0 +1,26 @@
+@layer reset, base, tokens, recipes, utilities;
+
+/* $dot-color: #5c5959;
+
+$dot-size: 1px;
+$dot-space: 22px; */
+
+* {
+  font-family: 'Inter';
+}
+
+body {
+  background-color: #1f1f1f;
+  overflow: hidden;
+}
+
+.__days {
+  font-family: 'Days one';
+}
+
+.__decoration {
+  background-color: #1f1f1f;
+  background-image: linear-gradient(#2e2f30 1px, transparent 0.5px),
+    linear-gradient(to right, #2e2f30 1px, #1f1f1f 0.5px);
+  background-size: 100px 100px;
+}

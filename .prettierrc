@@ -4,6 +4,5 @@
   "semi": false,
   "singleQuote": true,
   "bracketSpacing": true,
-  "useTabs": false,
-  "plugins": ["prettier-plugin-organize-imports"]
+  "useTabs": false
 }

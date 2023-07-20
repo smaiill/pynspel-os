@@ -1,6 +1,7 @@
-import { SavedUser } from '@pynspel/types'
+import { HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { _decrypt } from 'utils/crypto'
+import { HttpException } from 'utils/error.handler'
 import { DashboardService } from './dashboard.service'
 
 class _DashboardController {
@@ -23,7 +24,11 @@ class _DashboardController {
   public async fetchGuild(req: Request, res: Response) {
     const { id } = req.params
 
-    const guild = await DashboardService.getGuildConfiguration(id)
+    if (!id) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid ID')
+    }
+
+    const guild = await this._dashboardService.getGuildConfiguration(id)
 
     res.json(guild)
   }

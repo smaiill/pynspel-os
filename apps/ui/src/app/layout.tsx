@@ -2,9 +2,11 @@
 import { SavedUser } from '@pynspel/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { userProxy } from '~/proxys/user'
-import '~/scss/index.scss'
+import { useGuildService } from '~/hooks/useGuildService'
+import { userGuildsProxy, userProxy } from '~/proxys/user'
 import { fetchApi } from '~/utils/fetchApi'
+import './fonts.css'
+import './global.css'
 
 export const metadata = {
   title: 'Create Next App',
@@ -25,12 +27,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { getMutualGuilds } = useGuildService()
+
   useEffect(() => {
     const handleFetchUser = async () => {
-      const res = await fetchApi<SavedUser>(`/api/auth/status`)
+      const res = await fetchApi<SavedUser>(`/api/users/@me`)
 
       userProxy.isAuthenticated = true
       userProxy.user = res
+
+      const mutualGuilds = await getMutualGuilds()
+
+      userGuildsProxy.guilds = mutualGuilds
     }
 
     handleFetchUser()

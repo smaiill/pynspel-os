@@ -1,9 +1,10 @@
-import { HTTPCode } from '@pynspel/types'
+import { HttpStatus } from '@pynspel/types'
+import cookieParser from 'cookie-parser'
 import { Request, Response } from 'express'
 import { AuthService } from 'modules/auth/auth.service'
+import { _decrypt } from 'utils/crypto'
 import { env } from 'utils/env'
-import { ErrorType, HTTPError } from 'utils/error.handler'
-import { lg } from 'utils/logger'
+import { HttpException } from 'utils/error.handler'
 
 class _AuthController {
   private authService = AuthService
@@ -11,35 +12,37 @@ class _AuthController {
   public async redirect(req: Request, res: Response) {
     const { code } = req.query
 
-    try {
-      await this.authService.authenticate({ code: code as string, req })
+    await this.authService.authenticate({ code: code as string, req })
 
-      res.status(HTTPCode.OK).redirect(env.CORS_ORIGIN)
-    } catch (error) {
-      lg.error(error)
-
-      throw new HTTPError(HTTPCode.SERVER_ERROR, error as ErrorType)
-    }
+    res.status(HttpStatus.OK).redirect(env.CORS_ORIGIN)
   }
 
   public async revoke(req: Request, res: Response) {
-    if (!req.user) {
-      throw new HTTPError(HTTPCode.UNAUTHORIZED, 'Unauthorized')
+    const authCookie = req.cookies[env.AUTH_COOKIE_NAME]
+
+    if (!req.user || !authCookie) {
+      throw new HttpException(HttpStatus.UNAUTHORIZED, 'Unauthorized')
     }
 
-    try {
-      await this.authService.revokeAccess(req.user.accessToken)
+    const sessionId = cookieParser
+      .signedCookie(authCookie, env.CRYPTION_KEY_SESSION)
+      .toString()
 
-      res.status(HTTPCode.OK)
-    } catch (err) {
-      lg.error(err)
-      throw new HTTPError(HTTPCode.BAD_REQUEST, err as ErrorType)
-    }
+    await this.authService.revokeAccess({
+      accessToken: _decrypt(req.user.accessToken),
+      sessionId,
+    })
+
+    req.session.destroy(() => {
+      res
+        .clearCookie(env.AUTH_COOKIE_NAME)
+        .json({ message: 'logout success !' })
+    })
   }
 
   public getAuthenticatedUserController(req: Request, res: Response) {
     if (!req.user) {
-      throw new HTTPError(HTTPCode.UNAUTHORIZED, 'Unauthorized')
+      throw new HttpException(HttpStatus.UNAUTHORIZED, 'Unauthorized')
     }
 
     const { accessToken, refreshToken, ...rest } = req.user // eslint-disable-line

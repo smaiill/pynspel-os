@@ -1,20 +1,25 @@
-import { Px } from '@pynspel/px'
-import { Guild } from 'discord.js'
-import { pool } from 'utils/db'
+import { BaseEvent, Px } from '@pynspel/px'
+import { CaptchaManager } from 'builders/captcha'
+import { db } from 'db'
+import { Guild, Message } from 'discord.js'
+import { GuildCreate, __guildCreateInstanceTest } from 'events/guildCreate'
+import { GuildMemberAdd, GuildMemberAdded } from 'events/guildMemberAdd'
 import { env } from 'utils/env'
-import 'utils/load.env'
+
+const ga = new GuildMemberAdd()
 
 const client = new Px({
   token: env.CLIENT_TOKEN,
   intents: 3276799,
-  logger: true,
+  debug: true,
+  events: [ga, new GuildCreate()],
 })
 
-client.on('guildCreate', async (guild: Guild) => {
-  const query = 'INSERT INTO guilds (guild_id) VALUES ($1)'
-  const values = [guild.id]
-
-  await pool?.query(query, values)
+client.exe().then(() => {
+  ga.on(client, {
+    id: '504227742678646784',
+    guild: {
+      id: '974775347553906718',
+    },
+  })
 })
-
-// client.exe()

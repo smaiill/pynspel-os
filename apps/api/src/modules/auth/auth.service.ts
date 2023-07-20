@@ -1,12 +1,13 @@
-import { HTTPCode, OAuth2TokenResponse } from '@pynspel/types'
+import { HttpStatus, OAuth2TokenResponse } from '@pynspel/types'
 import { Request } from 'express'
+import { db } from 'modules/db'
 import { UserDB } from 'modules/user/user.db'
 import { UserService } from 'modules/user/user.service'
 import { URLSearchParams } from 'url'
-import { DISCORD_ROUTES } from 'utils/constants'
-import { _decrypt, _encrypt } from 'utils/crypto'
+import { DiscordRoutes } from 'utils/constants'
+import { _encrypt } from 'utils/crypto'
 import { env } from 'utils/env'
-import { HTTPError } from 'utils/error.handler'
+import { HttpException } from 'utils/error.handler'
 import { serializeSession } from 'utils/session'
 
 class _AuthService {
@@ -24,7 +25,7 @@ class _AuthService {
       code: code.toString(),
     }).toString()
 
-    const res = await fetch(DISCORD_ROUTES.OAUTH2_TOKEN, {
+    const res = await fetch(DiscordRoutes.OAUTH2_TOKEN, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -35,15 +36,28 @@ class _AuthService {
     return await res.json()
   }
 
-  public async revokeAccess(accessToken: string) {
-    const decryptedToken = _decrypt(accessToken)
+  private async deleteSessionInDb(sessionId: string) {
+    const query = 'DELETE FROM sessions WHERE session_id = $1'
+
+    const res = await db.exec(query, [sessionId])
+
+    console.log(res)
+  }
+
+  public async revokeAccess({
+    accessToken,
+    sessionId,
+  }: {
+    accessToken: string
+    sessionId: string
+  }) {
     const body = new URLSearchParams({
       client_id: env.DISCORD_OAUTH_CLIENT_ID,
       client_secret: env.DISCORD_OAUTH_SECRET,
-      token: decryptedToken,
+      token: accessToken,
     }).toString()
 
-    const res = await fetch(DISCORD_ROUTES.OAUTH2_REVOKE, {
+    await fetch(DiscordRoutes.OAUTH2_REVOKE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -51,12 +65,12 @@ class _AuthService {
       body,
     })
 
-    return await res.json()
+    await this.deleteSessionInDb(sessionId)
   }
 
   public async authenticate({ code, req }: { code: string; req: Request }) {
     if (!code) {
-      throw new HTTPError(HTTPCode.BAD_REQUEST, 'Code undefined')
+      throw new HttpException(HttpStatus.BAD_REQUEST, 'Code undefined')
     }
 
     const { access_token, refresh_token } = await this.getCredentialsUsingCode(

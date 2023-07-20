@@ -1,21 +1,23 @@
-import { BotModuleConfig } from '@pynspel/types'
+import { InferModuleConfigType, Modules } from '@pynspel/common'
 import { fetchApi } from '~/utils/fetchApi'
 
 export const useBotModuleService = () => {
-  const getGuildConfig = async (guildId: bigint) => {
-    return await fetchApi<{ bot_module: BotModuleConfig }>(
-      `/api/dashboard/bot/${guildId}`
-    )
+  const getGuildConfig = async (guildId: string) => {
+    return await fetchApi<{
+      bot_module: InferModuleConfigType<(typeof Modules)['bot']>
+    }>(`/api/dashboard/bot/${guildId}`)
   }
 
   const updateConfiguration = async ({
     newConfig,
     guildId,
   }: {
-    newConfig: BotModuleConfig
-    guildId: bigint
+    newConfig: InferModuleConfigType<(typeof Modules)['bot']>
+    guildId: string
   }) => {
-    return await fetchApi(`/api/dashboard/bot/${guildId}`, {
+    return await fetchApi<{
+      bot_module: InferModuleConfigType<(typeof Modules)['bot']>
+    }>(`/api/dashboard/bot/${guildId}`, {
       method: 'PUT',
       body: JSON.stringify({ config: newConfig }),
     })

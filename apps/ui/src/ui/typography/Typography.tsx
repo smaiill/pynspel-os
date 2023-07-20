@@ -1,130 +1,78 @@
-import clsx from 'clsx'
 import { ForwardedRef, forwardRef, PropsWithChildren } from 'react'
+import { cva, cx, RecipeVariantProps } from '../../../styled-system/css'
 
-export type ITypographyValidHSNumbers = 1 | 2 | 3 | 4 | 5 | 6
+const typo = cva({
+  base: {
+    color: 'white',
+    fontSize: '1rem',
+  },
 
-export type ITypographyValidHS = `h${ITypographyValidHSNumbers}`
+  variants: {
+    typography: {
+      h1: {
+        fontSize: '2rem',
+      },
+      h2: {
+        fontSize: '1.8rem',
+      },
+      h3: {
+        fontSize: '1.6rem',
+      },
+      h4: {
+        fontSize: '1.4rem',
+      },
+      h5: {
+        fontSize: '1.2rem',
+      },
+      h6: {
+        fontSize: '1rem',
+      },
+      p: {
+        fontSize: '1rem',
+      },
+      span: {
+        fontSize: '1rem',
+      },
+    },
+    color: {
+      secondary: {
+        color: 'fonts.secondary',
+      },
+      primary: {
+        color: 'fonts.primary',
+      },
+    },
+  },
+})
 
-export type ITypographyVariants = ITypographyValidHS | 'p' | 'span'
+export type TypographyVariants = RecipeVariantProps<typeof typo>
 
-export interface ITypography {
-  variant: ITypographyVariants
+interface TypographyProps {
+  typography: any
+  color?: any
+  style?: any
   className?: string
-  type?: 'secondary' | 'primary'
-  style?: Record<string, string | number | object>
 }
 
 const Typography = forwardRef(
-  (
-    props: PropsWithChildren<ITypography>,
-    ref: ForwardedRef<
-      HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement
-    >
-  ) => {
-    const { variant, children, className, type = 'primary', style } = props
-
-    const _className = clsx(
-      'typo',
-      `typo__${variant}`,
+  (props: PropsWithChildren<TypographyProps>, ref: ForwardedRef<any>) => {
+    const {
+      children,
+      typography,
+      color = 'primary',
       className,
-      `type__${type}`
+      ...rest
+    } = props
+
+    const Element = typography
+
+    const csx = cx(typo({ typography, color }), className)
+
+    return (
+      <Element ref={ref} className={csx} {...rest}>
+        {children}
+      </Element>
     )
-
-    if (variant === 'h1') {
-      return (
-        <h1
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h1>
-      )
-    }
-
-    if (variant === 'h2') {
-      return (
-        <h2
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h2>
-      )
-    }
-
-    if (variant === 'h3') {
-      return (
-        <h3
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h3>
-      )
-    }
-
-    if (variant === 'h4') {
-      return (
-        <h4
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h4>
-      )
-    }
-
-    if (variant === 'h5') {
-      return (
-        <h5
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h5>
-      )
-    }
-    if (variant === 'h6') {
-      return (
-        <h6
-          ref={ref as ForwardedRef<HTMLHeadingElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </h6>
-      )
-    }
-    if (variant === 'p') {
-      return (
-        <p
-          ref={ref as ForwardedRef<HTMLParagraphElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </p>
-      )
-    }
-
-    if (variant === 'span') {
-      return (
-        <span
-          ref={ref as ForwardedRef<HTMLSpanElement>}
-          style={style}
-          className={_className}
-        >
-          {children}
-        </span>
-      )
-    }
-
-    return null
   }
 )
 

@@ -1,0 +1,24 @@
+{
+  "name": "@pynspel/common",
+  "version": "1.0.0",
+  "description": "",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsup --config scripts/tsup.dev.js",
+    "build": "tsup --config scripts/tsup.build.js",
+    "clean": "rimraf dist",
+    "clean:all": "rimraf dist && rimraf node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsup": "^7.1.0",
+    "zod": "^3.21.4"
+  }
+}

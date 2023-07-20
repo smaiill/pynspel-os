@@ -1,4 +1,4 @@
-export enum HTTPCode {
+export enum HttpStatus {
   OK = 200,
   CREATED = 201,
   ACCEPTED = 202,
@@ -19,7 +19,7 @@ export enum HTTPCode {
   GATEWAY_TIMEOUT = 504,
 }
 
-export type HTTPCodes = `${HTTPCode}` extends `${infer T extends number}`
+export type HTTPCodes = `${HttpStatus}` extends `${infer T extends number}`
   ? T
   : never
 
@@ -68,8 +68,7 @@ export type DiscordGuild = {
 }
 
 export type Guild = {
-  guild_id: bigint
-  welcome_channel: number | null
+  guild_id: string
   name: string
   avatar: string
 }
@@ -83,6 +82,11 @@ export type Tokens = {
   refreshToken: string
 }
 
-export type BotModuleConfig = {
-  name: string
+type CamelCase<S extends string> =
+  S extends `${infer P1}_${infer P2}${infer P3}`
+    ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
+    : Lowercase<S>
+
+export type KeysToCamelCase<T> = {
+  [K in keyof T as CamelCase<string & K>]: T[K]
 }

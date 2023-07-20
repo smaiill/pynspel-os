@@ -1,9 +1,41 @@
 import { OAuth2User } from '@pynspel/types'
-import { DISCORD_ROUTES } from 'utils/constants'
+import { Caches, usersCache } from 'utils/cache'
+import { DiscordRoutes } from 'utils/constants'
+import { env } from 'utils/env'
 
 class _UserService {
-  public async getDiscordUser(accessToken: string): Promise<OAuth2User> {
-    const response = await fetch(DISCORD_ROUTES.USERS_ME, {
+  public async getDiscordUser(
+    accessToken: string,
+    userId?: string
+  ): Promise<OAuth2User> {
+    if (env.NODE_ENV === 'developement') {
+      return {
+        id: '504227742678646784',
+        username: 'smail.',
+        avatar: 'dd5bf03cf11d79ecbe51088cfde42940',
+        discriminator: '0',
+        public_flags: 256,
+        flags: 256,
+        banner: null,
+        accent_color: 723466,
+        locale: 'fr',
+        mfa_enabled: true,
+        premium_type: 0,
+        email: 'smailaberkaoui@gmail.com',
+        verified: true,
+      }
+    }
+
+    if (userId) {
+      if (usersCache.has(`${Caches.Users}-${userId}`)) {
+        console.log('Sending cache data')
+        return usersCache.get(`${Caches.Users}-${userId}`)
+      }
+    }
+
+    console.log(accessToken)
+
+    const response = await fetch(DiscordRoutes.USERS_ME, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -13,9 +45,13 @@ class _UserService {
       throw new Error('Failed to fetch Discord user')
     }
 
-    const data = await response.json()
+    const jsonRes = await response.json()
 
-    return data
+    if (userId) {
+      usersCache.set(`${Caches.Users}-${userId}`, jsonRes, 120)
+    }
+
+    return jsonRes
   }
 }
 

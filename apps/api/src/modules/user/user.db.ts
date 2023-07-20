@@ -1,8 +1,8 @@
 import { SavedUser, User } from '@pynspel/types'
-import { pool } from 'modules/db/pool'
+import { db } from 'modules/db'
 
 class _UserDB {
-  public async createOrUpdate(params: User): Promise<SavedUser> {
+  public async createOrUpdate(params: User) {
     const query = `
       INSERT INTO users (discord_id, avatar, username, discriminator, access_token, refresh_token)
       VALUES ($1, $2, $3, $4, $5, $6)
@@ -29,8 +29,7 @@ class _UserDB {
       params.accessToken,
       params.refreshToken,
     ]
-    const result = await pool?.query(query, values)
-    const userDB = result?.rows[0]
+    const [userDB] = await db.exec<SavedUser>(query, values)
 
     return userDB
   }

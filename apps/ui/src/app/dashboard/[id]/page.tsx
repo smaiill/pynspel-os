@@ -9,7 +9,7 @@ import { SelectedServerInformation } from '../components/SelectedServerInformati
 
 export interface Props {
   params: {
-    id: bigint
+    id: string
   }
 }
 
@@ -31,7 +31,7 @@ const page = ({ params }: Props) => {
     <DashboardPage>
       <Aside />
       <DashboardView>
-        <Typography variant="h1">Welcome, smail. 👋</Typography>
+        <Typography typography="h1">Welcome, smail. 👋</Typography>
 
         <SelectedServerInformation />
       </DashboardView>

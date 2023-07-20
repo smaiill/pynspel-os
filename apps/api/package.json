@@ -7,9 +7,13 @@
     "dev": "tsup --config scripts/tsup.dev.js",
     "build": "tsup --config scripts/tsup.build.js",
     "clean": "rimraf dist",
-    "clean:all": "rimraf dist && rimraf node_modules"
+    "clean:all": "rimraf dist && rimraf node_modules",
+    "tsc": "tsc"
   },
   "dependencies": {
+    "@pynspel/common": "workspace:*",
+    "@pynspel/db": "workspace:*",
+    "@pynspel/locale": "workspace:*",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -17,14 +21,19 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.2",
+    "lru-cache": "^10.0.0",
     "morgan": "^1.10.0",
+    "mysql2": "^3.4.2",
+    "node-cache": "^5.1.2",
     "pg": "^8.11.0",
+    "redis": "^4.6.7",
     "tsup": "^6.7.0",
     "winston": "^3.9.0",
-    "zod": "^3.21.4",
-    "@pynspel/locale": "workspace:*"
+    "ws": "^8.13.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@pynspel/types": "workspace:*",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.13",
     "@types/crypto-js": "^4.0.2",
@@ -32,8 +41,8 @@
     "@types/express-session": "^1.17.4",
     "@types/morgan": "^1.9.4",
     "@types/pg": "^8.10.1",
+    "@types/ws": "^8.5.5",
     "typescript": "^4.4.3",
-    "vitest": "^0.31.4",
-    "@pynspel/types": "workspace:*"
+    "vitest": "^0.31.4"
   }
 }

@@ -1,4 +1,7 @@
+import dotenv from 'dotenv'
 import z from 'zod'
+
+dotenv.config()
 
 const envSchema = z.object({
   DB_USERNAME: z.string(),
@@ -7,6 +10,7 @@ const envSchema = z.object({
   DB_HOSTNAME: z.string(),
   DB_PORT: z.string().transform(Number),
   CLIENT_TOKEN: z.string(),
+  DB_URI: z.string(),
 })
 
 export const env = envSchema.parse(process.env)

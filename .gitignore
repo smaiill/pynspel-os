@@ -4,3 +4,6 @@
 **/.env
 **/*.log
 **/.turbo
+**/*.sql
+**/*.txt
+.VSCodeCounter

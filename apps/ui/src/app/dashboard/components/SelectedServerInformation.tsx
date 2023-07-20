@@ -31,12 +31,12 @@ const SelectedServerInformation = () => {
           style={{
             borderRadius: 15,
           }}
-          src={''}
+          src={'/pubg.png'}
           // src={`https://cdn.discordapp.com/icons/${guildSnapshot.guild.guild_id}/${guildSnapshot.guild.avatar}.png`}
         />
         <FlexColumn>
-          <Typography variant="h3">{guildSnapshot?.guild?.name}</Typography>
-          <Typography type="secondary" variant="span">
+          <Typography typography="h3">{guildSnapshot?.guild?.name}</Typography>
+          <Typography color="secondary" typography="span">
             NX est le meilleur serveur au monde !
           </Typography>
         </FlexColumn>
