@@ -1,15 +1,17 @@
+import { HttpStatus } from '@pynspel/types'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import 'express-async-errors'
 import session from 'express-session'
 import { db } from 'modules/db'
 import morgan from 'morgan'
+import path from 'path'
 import routes from 'routes'
 import { API_ENDPOINT } from 'utils/constants'
 import { customHeaders } from 'utils/custom.headers'
 import { env } from 'utils/env'
-import { errorHandler } from 'utils/error.handler'
+import { HttpException, errorHandler } from 'utils/error'
 import { lg } from 'utils/logger'
 import { redis } from 'utils/redis'
 import { deserializeSession } from 'utils/session'
@@ -17,9 +19,22 @@ import { z } from 'zod'
 
 const app = express()
 
+if (env.NODE_ENV === 'production') {
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error(reason)
+    console.error(promise)
+  })
+
+  process.on('uncaughtException', (error, origin) => {
+    console.error(error)
+    console.error(origin)
+  })
+}
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+// TODO: Add helmet package for security
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -41,31 +56,32 @@ app.use(
     },
   })
 )
+
+app.use('/static', express.static(path.join(process.cwd(), 'src/public')))
+app.get('/', (req: Request, res: Response) => {
+  res.json({ uptime: process.uptime() })
+})
+
 app.use(deserializeSession)
 app.use(API_ENDPOINT, routes)
 app.use(errorHandler)
 
 app.listen(env.PORT, async () => {
-  lg.info(`[API] Started at port: ${env.PORT}`)
-  await redis.connect()
+  lg.info(`[API] Started at port: ${env.PORT}.`)
+  await redis
+    .ping()
+    .then(() => lg.info('[REDIS] Started.'))
+    .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-  console.log(await redis.ping())
+  await redis._client.flushAll()
 
-  // console.log(await db.exec('INSERT INTO tests (name) VALUES ($1)', ['caca']))
-
-  // await db.exec('DELETE FROM users; DELETE FROM sessions;')
-  await db.exec('DELETE FROM guild_modules;')
-  console.log(await db.exec('SELECT * FROM guild_modules'))
-  // console.log(
-  //   await db.exec('UPDATE modules SET name = $1 WHERE module_id = $2', [
-  //     'captcha',
-  //     '882145010350129153',
-  //   ])
+  // await db.exec(
+  //   'INSERT INTO panel_interactions (name, panel_id, style) VALUES ($1, $2, $3)',
+  //   ['test', '886318969048956929', 3]
   // )
-
-  // console.log(securityModuleConfigSchema.safeParse({ length: 4 }))
-
-  // console.log(await DbWrapper.exec('SELECT * FROM modules'))
+  // console.log(await db.exec('DELETE FROM panel_interactions'))
+  // console.log(await db.exec('DELETE FROM panels'))
+  // console.log(await db.exec('DELETE FROM guild_modules'))
 })
 
 export default app

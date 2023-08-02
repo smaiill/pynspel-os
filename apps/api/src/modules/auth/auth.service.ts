@@ -7,7 +7,7 @@ import { URLSearchParams } from 'url'
 import { DiscordRoutes } from 'utils/constants'
 import { _encrypt } from 'utils/crypto'
 import { env } from 'utils/env'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 import { serializeSession } from 'utils/session'
 
 class _AuthService {

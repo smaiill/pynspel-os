@@ -1,36 +1,89 @@
-import { z } from 'zod'
+import { ZodIssue, z } from 'zod'
 
 export const Modules = {
   bot: 'bot',
   captcha: 'captcha',
   logging: 'logging',
+  ticket: 'ticket',
+  command: 'command',
+  counterRaid: 'counterRaid',
+  scanner: 'scanner',
 } as const
 
 export type ModulesTypes = keyof typeof Modules
+
+const MAX_MUTE_MS = 432000000 // 5 days
+
+const daysToMs = (days: number) => days * (1000 * 60 * 60 * 24)
+
+const minutesToMs = (minutes: number) => minutes * (1000 * 60)
+
+const checkMuteCtx = (unit: 'day' | 'minute', value: number) => {
+  const ms = unit === 'day' ? daysToMs(value) : minutesToMs(value)
+
+  const res = ms > MAX_MUTE_MS
+
+  return !res
+}
+
+const words = z.object({
+  scan: z.boolean().default(false),
+  banned: z.array(z.string().trim().toLowerCase()).default(['fdp', 'salope']),
+  banned_exact: z.array(z.string().trim().toLowerCase()).default(['merde']),
+  action: z
+    .union([
+      z.literal('kick'),
+      z.literal('ban'),
+      z.literal('none'),
+      z.literal('mute'),
+    ])
+    .default('none'),
+  ignored_channels: z.array(z.string().trim()).default([]),
+  mute_unit: z.union([z.literal('day'), z.literal('minute')]).default('minute'),
+  mute_timeout: z.number().min(1).default(1),
+})
+
+const links = z.object({
+  scan: z.boolean().default(true),
+  // TODO: Regex to check if its a domain.
+  allowed_domains: z
+    .array(z.string().trim().toLowerCase())
+    .default(['pynspel.com']),
+  action: z
+    .union([
+      z.literal('kick'),
+      z.literal('ban'),
+      z.literal('none'),
+      z.literal('mute'),
+    ])
+    .default('none'),
+  ignored_channels: z.array(z.string().trim()).default([]),
+  mute_unit: z.union([z.literal('day'), z.literal('minute')]).default('minute'),
+  mute_timeout: z.number().min(1).default(1),
+})
+
+// ? https://github.com/colinhacks/zod/discussions/1953#discussioncomment-4811588
+function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
+  return Object.fromEntries(
+    Object.entries(schema.shape).map(([key, value]) => {
+      if (value instanceof z.ZodDefault) return [key, value._def.defaultValue()]
+      return [key, undefined]
+    })
+  )
+}
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const modulesSchemas = {
   bot: z.object({
     name: z.string().min(3).max(20).trim().default('pynspel'),
     status: z
-      .string()
-      .regex(/^(idle|online|dnd)$/)
+      .union([z.literal('dnd'), z.literal('online'), z.literal('idle')])
       .default('online'),
     language: z.union([z.literal('en'), z.literal('fr')]).default('en'),
   }),
 
   captcha: z.object({
-    length: z
-      .union([
-        z.literal(4),
-        z.literal(6),
-        z.literal(8),
-        z.literal('4'),
-        z.literal('6'),
-        z.literal('8'),
-      ])
-      .transform((val) => +val)
-      .default(4),
+    length: z.union([z.literal(4), z.literal(6), z.literal(8)]).default(4),
     verification_channel: z.string().nullable().default(null),
     case_sensitive: z.boolean().default(false),
     has_numbers: z.boolean().default(false),
@@ -42,18 +95,73 @@ const modulesSchemas = {
       ])
       .default(60),
     role_id: z.string().nullable().default(null),
+    max_retries: z.number().min(1).max(10).default(3),
   }),
   logging: z.object({
     channel: z.string().nullable().default(null),
-    user_kick: z.boolean().default(false),
-    user_ban: z.boolean().default(false),
+    user_left: z.boolean().default(false),
+    user_join: z.boolean().default(false),
+  }),
+  ticket: z.object({
+    max_each_user: z.number().min(1).max(5).default(3),
+  }),
+  command: z.object({
+    kick: z.boolean().default(false),
+    ban: z.boolean().default(false),
+  }),
+  counterRaid: z
+    .object({
+      member_threshold: z.number().min(1).default(5),
+      interval: z.number().min(1).max(600).default(10),
+      action: z
+        .union([
+          z.literal('kick'),
+          z.literal('ban'),
+          z.literal('none'),
+          z.literal('mute'),
+        ])
+        .default('none'),
+      action_reason: z
+        .string()
+        .max(2000)
+        .default('Raid attempt detected.')
+        .nullable(),
+      raid_channel_lockdown: z.boolean().default(true),
+      mute_unit: z
+        .union([z.literal('day'), z.literal('minute')])
+        .default('minute'),
+      mute_timeout: z.number().min(1).default(1),
+    })
+    .refine((ctx) => checkMuteCtx(ctx.mute_unit, ctx.mute_timeout), {
+      message: 'This needs to be less then 5 days.',
+      path: ['mute_timeout'],
+    }),
+  scanner: z.object({
+    words: words
+      .optional()
+      .default(() => getDefaults(words))
+      .refine((ctx) => checkMuteCtx(ctx.mute_unit, ctx.mute_timeout), {
+        message: 'This needs to be less then 5 days.',
+        path: ['mute_timeout'],
+      }),
+    links: links
+      .optional()
+      .default(() => getDefaults(links))
+      .refine((ctx) => checkMuteCtx(ctx.mute_unit, ctx.mute_timeout), {
+        message: 'This needs to be less then 5 days.',
+        path: ['mute_timeout'],
+      }),
   }),
 } as const
+
+export type Commands<O = z.infer<(typeof modulesSchemas)['command']>> = {
+  [K in keyof O]: K
+}
 
 export type InferModuleConfigType<T extends keyof typeof modulesSchemas> =
   z.infer<(typeof modulesSchemas)[T]>
 
-export const getModuleDefaultConfig = (module: ModulesTypes) => {
+export const getModuleDefaultConfig = <M extends ModulesTypes>(module: M) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   return modulesSchemas[module].safeParse({}).data
@@ -62,7 +170,9 @@ export const getModuleDefaultConfig = (module: ModulesTypes) => {
 export const validateModuleConfig = <M extends ModulesTypes>(
   module: M,
   config: InferModuleConfigType<M>
-) => {
+):
+  | { success: true; data: InferModuleConfigType<M> }
+  | { success: false; error: ZodIssue[] } => {
   const moduleConfig = modulesSchemas[module]
   const res = moduleConfig.safeParse(config)
 

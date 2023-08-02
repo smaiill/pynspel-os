@@ -1,6 +1,7 @@
 'use client'
 import { SavedUser } from '@pynspel/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useEffect } from 'react'
 import { useGuildService } from '~/hooks/useGuildService'
 import { userGuildsProxy, userProxy } from '~/proxys/user'
@@ -18,6 +19,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: false,
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   },
 })
@@ -49,6 +51,7 @@ export default function RootLayout({
       <body>
         <QueryClientProvider client={queryClient}>
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
     </html>

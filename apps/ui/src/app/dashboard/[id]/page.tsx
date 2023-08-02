@@ -6,6 +6,7 @@ import { selectedGuild } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
+import { useFetchGuild } from '../hooks/useFetchGuild'
 
 export interface Props {
   params: {
@@ -15,23 +16,19 @@ export interface Props {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  const { getGuild } = useGuildService()
+  const { data: guildData, isLoading } = useFetchGuild(id)
 
-  useEffect(() => {
-    const fetchGuild = async () => {
-      const res = await getGuild({ guildId: id })
-
-      selectedGuild.guild = res
-    }
-
-    fetchGuild()
-  }, [])
+  if (isLoading) {
+    return 'Loading....'
+  }
 
   return (
     <DashboardPage>
       <Aside />
       <DashboardView>
-        <Typography typography="h1">Welcome, smail. 👋</Typography>
+        <Typography typography="h1">
+          Welcome, smail. 👋 on {guildData?.name}
+        </Typography>
 
         <SelectedServerInformation />
       </DashboardView>

@@ -1,11 +1,15 @@
 import { DiscordGuild, SavedGuild } from '@pynspel/types'
+import { ChannelType } from 'discord-api-types/v10'
 import { clientService } from 'modules/client/client.service'
 import { db } from 'modules/db'
+import { guildService } from 'modules/services/guild.service'
 import { DiscordRoutes } from 'utils/constants'
 import { env } from 'utils/env'
+import { redis } from 'utils/redis'
 
 class _DashboardService {
   _clientService = clientService
+  _guildService = guildService
 
   public async fetchUserGuilds(accessToken: string): Promise<DiscordGuild[]> {
     if (env.NODE_ENV === 'developement') {
@@ -40,20 +44,78 @@ class _DashboardService {
     return mutualAdminGuilds
   }
 
+  public async getCachedChannelsOrFresh(guildId: string) {
+    const cache = await redis.hGetObject('guild', guildId, 'channels')
+
+    if (cache) {
+      console.log('Cache data')
+      return cache
+    }
+
+    const channels = await this._guildService.fetchChannels(guildId)
+    const formatedChannels = channels
+      .filter((channel) =>
+        [
+          ChannelType.GuildText,
+          ChannelType.GuildVoice,
+          ChannelType.GuildCategory,
+        ].includes(channel.type)
+      )
+      .map((_channel) => {
+        return {
+          id: _channel.id,
+          type: _channel.type,
+          guild_id: _channel.guild_id,
+          name: _channel.name,
+          parent: {
+            id: _channel?.parent?.id ?? null,
+            name: _channel?.parent?.name ?? null,
+          },
+        }
+      })
+
+    await redis.hSetObject('guild', guildId, 'channels', formatedChannels)
+
+    return formatedChannels
+  }
+
+  public async getCachedRolesOrFresh(guildId: string) {
+    const cache = await redis.hGetObject('guild', guildId, 'roles')
+
+    if (cache) {
+      console.log('Cache data')
+      return cache
+    }
+
+    const roles = await this._guildService.fetchRoles(guildId)
+    const formatedRoles = roles.map((role) => {
+      return {
+        id: role.id,
+        name: role.name,
+        permissions: role.permissions,
+        color: role.color,
+      }
+    })
+
+    await redis.hSetObject('guild', guildId, 'roles', formatedRoles)
+
+    return formatedRoles
+  }
+
   public async getGuildConfiguration(
     guildId: string
   ): Promise<SavedGuild & { channels: { name: string; id: string }[] }> {
     const query = 'SELECT * FROM guilds WHERE guild_id = $1'
     const values = [guildId]
 
+    const channels = await this.getCachedChannelsOrFresh(guildId)
+    const roles = await this.getCachedRolesOrFresh(guildId)
     const [res] = await db.exec<SavedGuild>(query, values)
 
     return {
       ...res,
-      channels: [
-        { name: 'general', id: '974775347553906721' },
-        { name: 'qzd', id: '974776745670606898' },
-      ],
+      channels,
+      roles,
     }
   }
 }

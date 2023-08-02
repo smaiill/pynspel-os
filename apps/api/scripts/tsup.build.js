@@ -6,4 +6,5 @@ export default defineConfig({
   clean: true,
   minify: true,
   minifyWhitespace: true,
+  publicDir: 'src/public',
 })

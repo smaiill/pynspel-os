@@ -1,22 +1,26 @@
-import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react'
-import { BsChevronDown } from 'react-icons/bs'
-import { FlexColumn } from '~/layouts/Flex'
+import {
+  Dispatch,
+  MouseEvent,
+  PropsWithChildren,
+  SetStateAction,
+  useState,
+} from 'react'
+import { BsChevronDown, BsPlus } from 'react-icons/bs'
+import { Flex, FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../styled-system/css'
 
-type ItemValue = string | string[] | null
+type Option = PropertyKey | null
 
-interface Props extends PropsWithChildren {
+interface Props<Value> extends PropsWithChildren {
   options: Item[]
-  value: ItemValue
-  setValue: Dispatch<SetStateAction<ItemValue>>
-  onChange?: (item: Item) => void
+  value: Value
+  setValue: Dispatch<SetStateAction<Value>>
   multi?: boolean
-  label: string
 }
 
 type Item = {
-  value: string
-  label: string
+  value: PropertyKey
+  label: PropertyKey
 }
 
 const styles = css({
@@ -29,14 +33,14 @@ const styles = css({
 
   '& .wrapper': {
     pos: 'relative',
-
-    '& svg': {
-      pos: 'absolute',
-      right: '20px',
-      translate: '0 -50%',
-      top: '50%',
-    },
   },
+})
+
+const svgDropDownStyle = css({
+  pos: 'absolute',
+  right: '20px',
+  translate: '0 -50%',
+  top: '50%',
 })
 
 const pickerStyles = css({
@@ -44,10 +48,12 @@ const pickerStyles = css({
   backgroundColor: '#2b2929',
   padding: '10px',
   borderRadius: '10px',
-  height: '50px',
+  minHeight: '50px',
   // bg: 'red',
   display: 'flex',
   alignItems: 'center',
+  gap: '5px',
+  flexWrap: 'wrap',
 })
 
 const ulStyles = css({
@@ -73,15 +79,33 @@ const ulStyles = css({
   },
 })
 
-const InputSelect = (props: Props) => {
+const multiWordStyle = css({
+  bg: '#B4459530',
+  padding: '2px 4px',
+  rounded: '5px',
+  color: '#B44595',
+
+  '& button': {
+    color: '#B44595',
+    transition: '0.4s',
+    cursor: 'pointer',
+    _hover: {
+      color: 'white',
+    },
+  },
+
+  '& svg': {
+    rotate: '45deg',
+  },
+})
+
+const InputSelect = <Value extends Option>(props: Props<Value>) => {
   const { children, options, value, setValue, multi = false } = props
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
     setIsOpen((prevV) => !prevV)
   }
-
-  console.log({ value })
 
   const handleElementClicked = (item: Item) => {
     if (item.value === value) return
@@ -110,6 +134,19 @@ const InputSelect = (props: Props) => {
     return item ? item.label : ''
   }
 
+  const handleRemoveItem = (
+    e: MouseEvent<HTMLButtonElement>,
+    value: string
+  ) => {
+    if (!multi) return
+
+    e.stopPropagation()
+
+    setValue((prevValues) => {
+      return prevValues.filter((prevV) => prevV !== value)
+    })
+  }
+
   return (
     <FlexColumn className={styles}>
       <label>{children}</label>
@@ -123,12 +160,20 @@ const InputSelect = (props: Props) => {
             : !multi
             ? getItemLabelByValue(value as string)
             : Array.isArray(value)
-            ? value.map((value) => (
-                <span key={value}>{getItemLabelByValue(value)}</span>
-              ))
+            ? value.length > 0
+              ? value.map((value) => (
+                  <Flex className={multiWordStyle} style={{ gap: 5 }}>
+                    <span key={value}>{getItemLabelByValue(value)}</span>
+                    <button onClick={(e) => handleRemoveItem(e, value)}>
+                      <BsPlus />
+                    </button>
+                  </Flex>
+                ))
+              : 'Vide...'
             : null}
         </div>
         <BsChevronDown
+          className={svgDropDownStyle}
           style={
             isOpen
               ? { transform: 'rotate(180deg)', color: 'white' }
@@ -140,8 +185,11 @@ const InputSelect = (props: Props) => {
       {isOpen ? (
         <ul className={ulStyles}>
           {options.map((item) => (
-            <li onClick={() => handleElementClicked(item)} key={item.value}>
-              {item.label}
+            <li
+              onClick={() => handleElementClicked(item)}
+              key={String(item.value)}
+            >
+              {String(item.label)}
             </li>
           ))}
         </ul>

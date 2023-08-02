@@ -1,6 +1,6 @@
 import { HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response, Router } from 'express'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 import { lg } from 'utils/logger'
 
 export class ProtectedRouter {

@@ -12,6 +12,10 @@ const styles = css({
   maxHeight: '100vh',
   padding: '20px',
   borderRight: '1px solid #333131',
+  display: 'none',
+  lg: {
+    display: 'block',
+  },
 
   '&::-webkit-scrollbar': {
     display: 'none',
@@ -43,6 +47,12 @@ const Aside = () => {
         <AsideItem href={`/dashboard/${guild?.guild_id}`} icon={<BiHome />}>
           Tableau de bord
         </AsideItem>
+        <AsideItem
+          href={`/dashboard/${guild?.guild_id}/counter-raid`}
+          icon={<BiHome />}
+        >
+          Anti raid
+        </AsideItem>
         <AsideItem href={`/dashboard/${guild?.guild_id}/bot`} icon={<BiHome />}>
           Bot
         </AsideItem>
@@ -51,6 +61,30 @@ const Aside = () => {
           icon={<BiHome />}
         >
           Securité
+        </AsideItem>
+        <AsideItem
+          href={`/dashboard/${guild?.guild_id}/logging`}
+          icon={<BiHome />}
+        >
+          Logging
+        </AsideItem>
+        <AsideItem
+          href={`/dashboard/${guild?.guild_id}/command`}
+          icon={<BiHome />}
+        >
+          Commands
+        </AsideItem>
+        <AsideItem
+          href={`/dashboard/${guild?.guild_id}/ticket`}
+          icon={<BiHome />}
+        >
+          Ticket
+        </AsideItem>
+        <AsideItem
+          href={`/dashboard/${guild?.guild_id}/scanner`}
+          icon={<BiHome />}
+        >
+          Scanner
         </AsideItem>
       </nav>
     </aside>

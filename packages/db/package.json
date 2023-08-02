@@ -20,7 +20,8 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "pg": "^8.11.0",
-    "tsup": "^7.1.0"
+    "tsup": "^7.1.0",
+    "@pynspel/common": "workspace:*"
   },
   "devDependencies": {
     "@types/pg": "^8.10.1",

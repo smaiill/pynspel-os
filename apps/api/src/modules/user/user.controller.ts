@@ -2,7 +2,7 @@ import { HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { UserService } from 'modules/user/user.service'
 import { _decrypt } from 'utils/crypto'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 
 class _UserController {
   private _userService: typeof UserService
@@ -17,8 +17,6 @@ class _UserController {
       _decrypt(accessToken),
       discordId
     )
-
-    if (!user) throw new HttpException(HttpStatus.NOT_FOUND, 'User not found !')
 
     res.json({ user })
   }

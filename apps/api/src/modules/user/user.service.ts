@@ -8,7 +8,9 @@ class _UserService {
     accessToken: string,
     userId?: string
   ): Promise<OAuth2User> {
+    console.log('1')
     if (env.NODE_ENV === 'developement') {
+      console.log('2')
       return {
         id: '504227742678646784',
         username: 'smail.',
@@ -26,14 +28,14 @@ class _UserService {
       }
     }
 
+    console.log('3')
+
     if (userId) {
       if (usersCache.has(`${Caches.Users}-${userId}`)) {
         console.log('Sending cache data')
         return usersCache.get(`${Caches.Users}-${userId}`)
       }
     }
-
-    console.log(accessToken)
 
     const response = await fetch(DiscordRoutes.USERS_ME, {
       headers: {

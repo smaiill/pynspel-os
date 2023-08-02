@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { AuthService } from 'modules/auth/auth.service'
 import { _decrypt } from 'utils/crypto'
 import { env } from 'utils/env'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 
 class _AuthController {
   private authService = AuthService

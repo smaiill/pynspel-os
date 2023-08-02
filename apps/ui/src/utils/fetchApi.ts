@@ -6,7 +6,6 @@ export const fetchApi = async <T = unknown>(
 ) => {
   // throw new Error('Stop here !')
 
-  console.log('Not passed !')
   const res = await fetch(`${API_URL}${uri}`, {
     ...options,
     credentials: 'include',

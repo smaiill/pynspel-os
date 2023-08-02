@@ -6,4 +6,5 @@
 **/.turbo
 **/*.sql
 **/*.txt
+**/feat.txt
 .VSCodeCounter

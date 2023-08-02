@@ -155,9 +155,18 @@ export class CaptchaManager {
 
         await captchaMessage.delete()
         await channel.send(`All good ${member.user}`)
+        if (this._options.role_id) {
+          const role = await member.guild.roles.fetch(this._options.role_id)
+          if (!role) {
+            return
+          }
+
+          await member.roles.add(role)
+        }
         console.log('Finished')
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         console.log('Kick the player timeout !', this._options.timeout * 1000)
       })
   }

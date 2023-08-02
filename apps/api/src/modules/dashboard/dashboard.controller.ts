@@ -1,7 +1,7 @@
 import { HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { _decrypt } from 'utils/crypto'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 import { DashboardService } from './dashboard.service'
 
 class _DashboardController {

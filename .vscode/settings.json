@@ -1,3 +1,4 @@
 {
-  "discord.enabled": false
+  "discord.enabled": false,
+  "liveServer.settings.port": 5501
 }

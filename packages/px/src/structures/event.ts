@@ -2,12 +2,12 @@ import { Client, ClientEvents } from 'discord.js'
 
 type Events = keyof ClientEvents
 
-export type EventClass<E extends Events = Events> = {
+export interface EventClass<E extends Events = Events> {
   _eventName: E
   on(client: Client, ...args: [...ClientEvents[E]]): Promise<void> | void
 }
 
-type EventAbstractClass<E extends Events, A extends unknown[]> = {
+export interface EventAbstractClass<E extends Events, A extends unknown[]> {
   _eventName: E
   on(client: Client, ...args: A): Promise<void> | void
 }

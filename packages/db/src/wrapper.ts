@@ -1,6 +1,11 @@
 import { Pool } from 'pg'
 
 import { Guild, KeysToCamelCase } from '@pynspel/types'
+import {
+  InferModuleConfigType,
+  ModulesTypes,
+  getModuleDefaultConfig,
+} from '@pynspel/common'
 
 export type DbWrapperOptions = {
   debug?: boolean
@@ -19,7 +24,7 @@ type ColorKey = keyof typeof COLORS
 type ColorValue = (typeof COLORS)[ColorKey]
 
 const _customLog = (color: ColorValue, content: unknown) =>
-  console.log(color, content, COLORS.ESCAPE)
+  console.log(`${color}${content}`, COLORS.ESCAPE)
 
 export class _DbWrapper {
   private _pool: undefined | Pool
@@ -43,13 +48,7 @@ export class _DbWrapper {
   }
 
   private debug(query: string, values: unknown[]) {
-    this._debug &&
-      _customLog(
-        COLORS.GREEN,
-        `executing query ${COLORS.YELLOW}[${query}]${COLORS.GREEN} with args ${
-          COLORS.YELLOW
-        }${JSON.stringify(values)}`
-      )
+    this._debug && _customLog(COLORS.GREEN, `${COLORS.CYAN}${query}`)
   }
 
   public async exec<T = unknown>(query: string, values: unknown[] = []) {
@@ -81,6 +80,54 @@ export class _DbWrapper {
     await this.exec(query, values)
 
     return { guildId, avatar, name }
+  }
+
+  public async getModuleConfigForGuild<
+    M extends ModulesTypes,
+    Return extends InferModuleConfigType<M>
+  >(guildId: string, moduleName: M): Promise<Return> {
+    const query = `
+      SELECT config FROM guild_modules JOIN modules ON guild_modules.module_id = modules.module_id WHERE guild_id = $1 AND modules.name = $2;
+    `
+    const [res] = await this.exec<{ config: Return }>(query, [
+      guildId,
+      moduleName,
+    ])
+
+    return res?.config
+  }
+
+  public async createModuleConfigForGuild<
+    M extends ModulesTypes,
+    Return extends InferModuleConfigType<M>
+  >(guildId: string, moduleName: M): Promise<Return> {
+    const query = `
+      INSERT INTO guild_modules (guild_id, module_id, is_active, config)
+      SELECT $1, module_id, $3, $4
+      FROM modules
+      WHERE name = $2
+    `
+
+    const defaultConfig = getModuleDefaultConfig(moduleName)
+
+    const values = [guildId, moduleName, true, JSON.stringify(defaultConfig)]
+
+    await this.exec(query, values)
+
+    return defaultConfig
+  }
+
+  public async getOrCreateModuleConfigForGuild<M extends ModulesTypes>(
+    guildId: string,
+    moduleName: M
+  ) {
+    const res = await this.getModuleConfigForGuild(guildId, moduleName)
+
+    if (!res) {
+      return await this.createModuleConfigForGuild(guildId, moduleName)
+    }
+
+    return res
   }
 }
 

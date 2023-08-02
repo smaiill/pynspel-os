@@ -5,4 +5,5 @@ export default defineConfig({
   watch: true,
   dts: true,
   format: ['cjs', 'esm'],
+  onSuccess: 'node dist/index.js',
 })

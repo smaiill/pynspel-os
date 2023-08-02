@@ -1,7 +1,16 @@
 import { BaseEvent } from '@pynspel/px'
 import { KeysToCamelCase, Guild as PynspelGuild } from '@pynspel/types'
 import { db } from 'db'
-import { Client, Guild } from 'discord.js'
+import {
+  Client,
+  Guild,
+  PermissionFlagsBits,
+  RouteBases,
+  Routes,
+  SlashCommandBuilder,
+  Snowflake,
+} from 'discord.js'
+import { env } from 'utils/env'
 
 export class GuildCreate extends BaseEvent<'guildCreate'> {
   _db = db
@@ -26,9 +35,15 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
 
       return res
     } catch (error) {
+      if (env.NODE_ENV === 'developement') {
+        return console.log(
+          `Should leave the guild in production ${guild.guildId}`,
+          error
+        )
+      }
+
       const _guild = await client.guilds.fetch(guild.guildId)
-      console.log(`Leaving guild: ${_guild.id}`)
-      // _guild.leave()
+      await _guild.leave()
     }
   }
 }

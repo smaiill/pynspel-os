@@ -2,3 +2,5 @@
 **/dist
 **/.next
 **/.env
+**/*.min.css
+**/*.min.js

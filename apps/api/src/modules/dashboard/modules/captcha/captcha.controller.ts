@@ -1,6 +1,6 @@
 import { HttpStatus } from '@pynspel/types'
 import { Request, Response } from 'express'
-import { HttpException } from 'utils/error.handler'
+import { HttpException } from 'utils/error'
 import { CaptchaModuleService } from './captcha.service'
 
 class _CaptchaModuleController {
@@ -14,14 +14,13 @@ class _CaptchaModuleController {
 
     const _res = await this._moduleService.get(guildId)
 
-    res.json({ captcha_module: _res })
+    res.json(_res)
   }
 
   public async updateConfig(req: Request, res: Response) {
     const { guildId } = req.params
-    const { config } = req.body
 
-    if (!guildId || !config) {
+    if (!guildId || !req.body) {
       throw new HttpException(
         HttpStatus.BAD_REQUEST,
         'Invalid guild id or config'
@@ -30,10 +29,10 @@ class _CaptchaModuleController {
 
     const updatedConfig = await this._moduleService.update({
       guildId: guildId,
-      newConfig: config,
+      newConfig: req.body,
     })
 
-    res.json({ captcha_module: updatedConfig })
+    res.json(updatedConfig)
   }
 }
 

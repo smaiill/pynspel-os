@@ -1,10 +1,12 @@
-import { Client, ClientOptions } from 'discord.js'
+import { Client, ClientOptions, Events, Interaction } from 'discord.js'
 import { EventClass } from './event'
+import { CommandClass, OnCommand } from './command'
 
 export interface PxOptions extends ClientOptions {
   token: string
-  debug?: boolean
-  events: EventClass[]
+  events?: EventClass[]
+  commands?: CommandClass[]
+  syncCommands?: boolean
 }
 
 const COLORS = {
@@ -23,23 +25,54 @@ const _customLog = (color: ColorValue, content: unknown) =>
 
 export class Px extends Client {
   private _token: string
-  private _debug: boolean
   private _events: EventClass[]
-  constructor({ token, debug = false, events, ...rest }: PxOptions) {
+  private _commands = new Map<string, OnCommand>()
+  private _syncCommands: boolean
+  private _commandsArray: any[] = []
+  private readonly discordBaseUrl = 'https://discord.com/api/v10'
+  constructor({
+    token,
+    events = [],
+    commands = [],
+    syncCommands = false,
+    ...rest
+  }: PxOptions) {
     super({
       ...rest,
     })
-    this._debug = debug
     this._token = token
     this._events = events
+    this._syncCommands = syncCommands
     this.__validateOptions()
     this.__setupEvents()
+    this.__setupCommands(commands)
   }
 
   private __validateOptions() {
     if (!this._token) {
       throw new Error('Invalid Token')
     }
+  }
+
+  private __setupCommands(commands: CommandClass[]) {
+    for (const command of commands) {
+      this._commandsArray.push(command as unknown as never)
+      this._commands.set(command.name, command.on)
+    }
+
+    this.on(Events.InteractionCreate, (interaction: Interaction) => {
+      if (!interaction.isCommand()) {
+        return
+      }
+
+      const handledCommand = this._commands.get(interaction.commandName)
+
+      if (!handledCommand) {
+        return
+      }
+
+      return handledCommand(interaction)
+    })
   }
 
   private __setupEvents() {
@@ -52,15 +85,22 @@ export class Px extends Client {
     try {
       await this.login(this._token)
       _customLog(COLORS.GREEN, `> Client connected !`)
+      if (this._syncCommands) {
+        for (const command of this._commandsArray) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { on, ...rest } = command
+          this.application?.commands
+            .create(rest)
+            .then(() =>
+              _customLog(COLORS.CYAN, `> Created command ${rest.name}`)
+            )
+        }
+      }
     } catch (error) {
-      this.debug(
+      _customLog(
         COLORS.RED,
         `> An error occured while starting client: ${error}}`
       )
     }
-  }
-
-  private debug(color: ColorValue, content: unknown) {
-    this._debug && _customLog(color, content)
   }
 }

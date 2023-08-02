@@ -52,6 +52,8 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
       style={{
         padding: 10,
         borderRadius: 10,
+        backgroundColor: '#191919',
+        color: 'white',
       }}
     >
       {children}
