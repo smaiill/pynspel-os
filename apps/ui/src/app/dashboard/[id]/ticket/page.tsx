@@ -23,6 +23,7 @@ import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import TicketForm from './components/TicketForm'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
+import { TicketPanels } from './components/TicketPanels'
 
 type Props = {
   params: {
@@ -47,6 +48,7 @@ const page = ({ params }: Props) => {
     <ModuleLayout>
       <FlexColumn style={{ gap: 10 }}>
         {!guildData ? 'Loading...' : <TicketForm data={moduleData} />}
+        <TicketPanels />
       </FlexColumn>
     </ModuleLayout>
   )

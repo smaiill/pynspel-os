@@ -61,13 +61,42 @@ class _TicketModuleController {
   public async handleGetPanel(req: Request, res: Response) {
     const { panelId } = req.params
 
-    const [panelDb] = await db.exec('SELECT * FROM panels WHERE id = $1', [
-      panelId,
-    ])
+    const [panelWithInteractionsDb] = await db.exec(
+      `
+      SELECT
+        p.*,
+        ARRAY_AGG(
+          JSON_BUILD_OBJECT(
+            'id', pi.id,
+            'name', pi.name,
+            'parent_id', pi.parent_id,
+            'panel_id', pi.panel_id,
+            'emoji', pi.emoji,
+            'style', pi.style
+          )
+        ) AS interactions
+      FROM panels p
+      JOIN panel_interactions pi ON p.id = pi.panel_id
+      WHERE p.id = $1
+      GROUP BY p.id
+    `,
+      [panelId]
+    )
+
     // TODO: Check if the user has access to the panel.
     // ? We dont need to check if the panel exists cause when the bot lefts the guild it automaticly delete it
 
-    res.json(panelDb)
+    res.json(panelWithInteractionsDb)
+  }
+
+  public async handleGetPanels(req: Request, res: Response) {
+    const { guildId } = req.params
+
+    const panelsDb = await db.exec('SELECT * FROM panels WHERE guild_id = $1', [
+      guildId,
+    ])
+
+    res.json(panelsDb)
   }
 
   public async handleUpdatePanel(req: Request, res: Response) {
@@ -113,6 +142,7 @@ class _TicketModuleController {
   public async handleCreatePanelInteraction(req: Request, res: Response) {
     const { name, panel_id, parent_id, style, emoji } = req.body
 
+    console.log({ emoji })
     const query =
       'INSERT INTO panel_interactions (name, panel_id, parent_id, style, emoji) VALUES ($1, $2, $3, $4, $5) RETURNING *'
     const values = [name, panel_id, parent_id, style, emoji]

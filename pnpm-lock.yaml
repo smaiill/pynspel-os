@@ -206,6 +206,12 @@ importers:
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
+      emoji-picker-react:
+        specifier: ^4.4.10
+        version: 4.4.10(react@18.2.0)
+      lucide-react:
+        specifier: ^0.263.1
+        version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.4.2
         version: 13.4.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
@@ -3851,6 +3857,16 @@ packages:
       '@emmetio/css-abbreviation': 2.1.8
     dev: true
 
+  /emoji-picker-react@4.4.10(react@18.2.0):
+    resolution: {integrity: sha512-/5o57w8BKiCHklyqfYCeUlm00R9tdm2ZmJd0p6Q3/Ul7E7eMh+/FduuRFn3UVQCl5F6i4kOdREMz7EJ7YI1vMg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      clsx: 1.2.1
+      react: 18.2.0
+    dev: false
+
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
@@ -5358,6 +5374,14 @@ packages:
   /lru-cache@9.1.2:
     resolution: {integrity: sha512-ERJq3FOzJTxBbFjZ7iDs+NiK4VI9Wz+RdrrAB8dio1oV+YvdPzUEE4QNiT2VD51DkIbCYRUUzCRkssXCHqSnKQ==}
     engines: {node: 14 || >=16.14}
+    dev: false
+
+  /lucide-react@0.263.1(react@18.2.0):
+    resolution: {integrity: sha512-keqxAx97PlaEN89PXZ6ki1N8nRjGWtDa4021GFYLNj0RgruM5odbpl8GHTExj0hhPq3sF6Up0gnxt6TSHu+ovw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /magic-string@0.27.0:

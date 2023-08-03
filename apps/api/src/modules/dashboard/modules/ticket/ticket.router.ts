@@ -16,7 +16,7 @@ const { router } = new ModuleRouter({
   put: ticketModuleController.updateConfig.bind(ticketModuleController),
 })
 
-const BUTTON_STYLE_SCHEMA = z.number().min(1).max(5).default(1)
+const BUTTON_STYLE_SCHEMA = z.number().min(1).max(4).default(1)
 
 const panelSchema = z.object({
   name: z.string().trim().nullable().default(null),
@@ -33,7 +33,7 @@ const interactionSchema = z.object({
   panel_id: z.string().trim(),
   parent_id: z.string().trim().nullable().default(null),
   style: BUTTON_STYLE_SCHEMA,
-  emoji: z.string().nullable().default(null),
+  emoji: z.string().emoji().nullable().default(null),
 })
 
 const updateInteractionSchema = z.object({
@@ -45,6 +45,7 @@ const updateInteractionSchema = z.object({
 
 const validate = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log({ body: req.body })
     const schemaRes = schema.safeParse(req.body)
 
     if (!schemaRes.success) {
@@ -54,6 +55,7 @@ const validate = (schema: z.ZodSchema) => {
       )
     }
 
+    console.log({ parsed: schemaRes.data })
     req.body = schemaRes.data
     next()
   }
@@ -88,6 +90,11 @@ router.put(
 )
 
 // panels
+router.get(
+  '/panels/guilds/:guildId',
+  ticketModuleController.handleGetPanels.bind(ticketModuleController)
+)
+
 router.get(
   '/panels/:panelId',
   ticketModuleController.handleGetPanel.bind(ticketModuleController)

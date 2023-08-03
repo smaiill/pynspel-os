@@ -22,6 +22,7 @@ import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import ScannerForm from './components/ScannerForm'
+import { TicketPanels } from '../ticket/components/TicketPanels'
 
 type Props = {
   params: {

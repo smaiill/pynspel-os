@@ -75,6 +75,7 @@ app.listen(env.PORT, async () => {
 
   await redis._client.flushAll()
 
+  // await db.exec('DELETE FROM panel_interactions')
   // await db.exec(
   //   'INSERT INTO panel_interactions (name, panel_id, style) VALUES ($1, $2, $3)',
   //   ['test', '886318969048956929', 3]
