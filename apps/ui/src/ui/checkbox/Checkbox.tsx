@@ -1,10 +1,8 @@
-import React, {
-  Dispatch,
+import {
   ForwardedRef,
+  forwardRef,
   InputHTMLAttributes,
   PropsWithChildren,
-  SetStateAction,
-  forwardRef,
 } from 'react'
 import { FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../styled-system/css'
@@ -13,17 +11,68 @@ type Props = InputHTMLAttributes<HTMLInputElement>
 
 const checkboxWrapper = css({
   alignItems: 'flex-start',
+  gap: 5,
   '& label': {
     color: 'grey',
     fontSize: '13px',
     marginLeft: '5px',
   },
+})
+
+const wrapperStyle = css({
+  display: 'flex',
+  width: '60px',
+  height: '25px',
+  position: 'relative',
+  rounded: '5px',
+  overflow: 'hidden',
+  border: '1px solid rgb(77, 76, 76)',
+  cursor: 'pointer !important',
+
+  '&:has(input:checked)': {
+    '& span': {
+      bgColor: 'special !important',
+
+      _before: {
+        left: '64% !important',
+      },
+    },
+  },
 
   '& input': {
-    marginLeft: '5px',
-    marginTop: '5px',
-    width: '20px',
-    height: '20px',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    zIndex: 100,
+    opacity: 0,
+    cursor: 'pointer !important',
+  },
+
+  '& span': {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    bgColor: '#2B2929',
+    padding: '3px',
+    transition: '.3s',
+    cursor: 'pointer !important',
+
+    _before: {
+      content: '""',
+      position: 'absolute',
+      width: '18px',
+      height: '70%',
+      bgColor: 'white',
+      rounded: '5px',
+      translate: '0 -50%',
+      top: '50%',
+      transition: '.3s',
+      left: '4px',
+    },
   },
 })
 
@@ -33,7 +82,10 @@ const Checkbox = forwardRef(
     return (
       <FlexColumn className={checkboxWrapper}>
         <label htmlFor="checkbox">{children}</label>
-        <input type="checkbox" ref={ref} {...rest} checked={value} />
+        <div className={wrapperStyle}>
+          <input type="checkbox" ref={ref} {...rest} checked={value} />
+          <span />
+        </div>
       </FlexColumn>
     )
   }

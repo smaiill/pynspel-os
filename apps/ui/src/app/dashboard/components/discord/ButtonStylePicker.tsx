@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { BsCheck2 } from 'react-icons/bs'
+import { useState } from 'react'
 import { Flex } from '~/layouts/Flex'
 
 const COLORS = [

@@ -1,13 +1,6 @@
 import { InferModuleConfigType, Modules } from '@pynspel/common'
-import {
-  Guild,
-  GuildMember,
-  PermissionFlagsBits,
-  PermissionOverwrites,
-  PermissionsBitField,
-} from 'discord.js'
+import { Guild, GuildMember } from 'discord.js'
 import { ModuleServiceBase } from 'modules/module.service.base'
-import { redis } from 'utils/redis'
 
 type Action = Pick<InferModuleConfigType<'counterRaid'>, 'action'>['action']
 type MuteUnit = Pick<

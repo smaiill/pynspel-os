@@ -1,4 +1,4 @@
-import React, { FormHTMLAttributes, PropsWithChildren } from 'react'
+import { FormHTMLAttributes, PropsWithChildren } from 'react'
 
 const Form = (
   props: PropsWithChildren<FormHTMLAttributes<HTMLFormElement>>

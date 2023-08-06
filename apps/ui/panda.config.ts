@@ -27,8 +27,13 @@ export default defineConfig({
         danger: { value: '#dd3d59' },
         success: { value: '#3d8b2e' },
         warn: { value: '#e5871a' },
-        special: { value: '#b44595' },
+        special: { value: '#00A86B' },
         inactive: { value: '#1f1f1f' },
+        hover: {
+          special: {
+            value: '#007E50',
+          },
+        },
         fonts: {
           primary: { value: '#ffffff' },
           secondary: { value: '#8b8787' },
@@ -52,6 +57,11 @@ export default defineConfig({
         '100%': {
           boxShadow: '0 0 0 15px #4DFF0000',
         },
+      },
+
+      enter: {
+        '0%': { transform: 'translateY(-100px)', opacity: '0' },
+        '100%': { transform: 'translateY(0px)', opacity: '1' },
       },
     },
   },

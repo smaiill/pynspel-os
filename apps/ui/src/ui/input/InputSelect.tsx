@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   Dispatch,
   MouseEvent,
   PropsWithChildren,
@@ -8,14 +9,19 @@ import {
 import { BsChevronDown, BsPlus } from 'react-icons/bs'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../styled-system/css'
+import { Check } from 'lucide-react'
 
 type Option = PropertyKey | null
 
-interface Props<Value> extends PropsWithChildren {
+interface Props<Value, Multi> extends PropsWithChildren {
   options: Item[]
   value: Value
-  setValue: Dispatch<SetStateAction<Value>>
-  multi?: boolean
+  multi?: Multi
+  setValue: Multi extends never | false
+    ? Dispatch<SetStateAction<Value>>
+    : Dispatch<SetStateAction<string[]>>
+
+  onChange?: (value: Value) => void
 }
 
 type Item = {
@@ -25,6 +31,10 @@ type Item = {
 
 const styles = css({
   gap: '5px',
+  width: '100%',
+  position: 'relative',
+  userSelect: 'none',
+
   '& label': {
     color: 'grey',
     fontSize: '13px',
@@ -41,6 +51,8 @@ const svgDropDownStyle = css({
   right: '20px',
   translate: '0 -50%',
   top: '50%',
+  cursor: 'pointer',
+  transition: '.3s',
 })
 
 const pickerStyles = css({
@@ -54,6 +66,7 @@ const pickerStyles = css({
   alignItems: 'center',
   gap: '5px',
   flexWrap: 'wrap',
+  cursor: 'pointer',
 })
 
 const ulStyles = css({
@@ -62,13 +75,24 @@ const ulStyles = css({
   borderRadius: '10px',
   color: 'white',
   transition: '0.3s',
+  position: 'absolute',
+  top: '80px',
+  zIndex: 9999999999,
+  width: '100%',
+  border: '1px solid rgb(77, 76, 76)',
 
   '& li': {
     borderRadius: '5px',
     cursor: 'pointer',
     transition: '0.3s',
     padding: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
 
+    '& svg': {
+      color: 'special',
+    },
     _hover: {
       bg: '#323030',
     },
@@ -99,8 +123,10 @@ const multiWordStyle = css({
   },
 })
 
-const InputSelect = <Value extends Option>(props: Props<Value>) => {
-  const { children, options, value, setValue, multi = false } = props
+const InputSelect = <Value extends Option, Multi extends boolean>(
+  props: Props<Value, Multi>
+) => {
+  const { children, options, value, setValue, multi } = props
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
@@ -147,6 +173,9 @@ const InputSelect = <Value extends Option>(props: Props<Value>) => {
     })
   }
 
+  const isSelected = (itemValue: string) =>
+    Boolean(multi ? value?.includes(itemValue) : itemValue === value)
+
   return (
     <FlexColumn className={styles}>
       <label>{children}</label>
@@ -184,14 +213,19 @@ const InputSelect = <Value extends Option>(props: Props<Value>) => {
 
       {isOpen ? (
         <ul className={ulStyles}>
-          {options.map((item) => (
-            <li
-              onClick={() => handleElementClicked(item)}
-              key={String(item.value)}
-            >
-              {String(item.label)}
-            </li>
-          ))}
+          {options.map((item) => {
+            const _selected = isSelected(item.value)
+            return (
+              <li
+                style={_selected ? { backgroundColor: '#1F1F1F' } : {}}
+                onClick={() => handleElementClicked(item)}
+                key={String(item.value)}
+              >
+                {String(item.label)}
+                {_selected ? <Check size={12} /> : null}
+              </li>
+            )
+          })}
         </ul>
       ) : null}
     </FlexColumn>

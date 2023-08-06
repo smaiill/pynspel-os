@@ -7,4 +7,14 @@
             box-shadow: 0 0 0 15px #4DFF0000
         }
     }
+    @keyframes enter {
+        0% {
+            transform: translateY(-100px);
+            opacity: 0
+        }
+        100% {
+            transform: translateY(0px);
+            opacity: 1
+        }
+    }
 }

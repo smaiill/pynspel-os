@@ -1,4 +1,3 @@
-import { InferModuleConfigType } from '@pynspel/common'
 import { Message } from 'discord.js'
 import { ModuleServiceBase } from 'modules/module.service.base'
 

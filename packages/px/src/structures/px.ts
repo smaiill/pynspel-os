@@ -1,6 +1,6 @@
 import { Client, ClientOptions, Events, Interaction } from 'discord.js'
-import { EventClass } from './event'
 import { CommandClass, OnCommand } from './command'
+import { EventClass } from './event'
 
 export interface PxOptions extends ClientOptions {
   token: string

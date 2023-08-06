@@ -1,9 +1,9 @@
 import { SavedUser } from '@pynspel/types'
 import cookieParser from 'cookie-parser'
 import { NextFunction, Request, Response } from 'express'
+import { db } from 'modules/db'
 import { env } from './env'
 import { lg } from './logger'
-import { db } from 'modules/db'
 
 interface SessionData {
   session_id: string

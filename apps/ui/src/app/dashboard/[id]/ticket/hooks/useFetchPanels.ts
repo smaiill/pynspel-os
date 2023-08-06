@@ -1,4 +1,6 @@
+import { PanelApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
+import { useSetCurrentPanel } from '~/proxys/ticket'
 import { fetchApi } from '~/utils/fetchApi'
 
 type TicketPanel = {
@@ -11,16 +13,20 @@ export const useFetchPanels = (guildId: string) => {
   return useQuery<TicketPanel[]>({
     queryKey: ['panels', guildId],
     queryFn: async () => {
-      return await fetchApi(`/api/dashboard/ticket/panels/guilds/${guildId}`)
+      return await fetchApi(`/api/dashboard/panels/guild/${guildId}`)
     },
   })
 }
 
 export const useFetchPanel = (panelId: string) => {
-  return useQuery({
+  return useQuery<PanelApi>({
     queryKey: ['panel', panelId],
     queryFn: async () => {
-      return await fetchApi(`/api/dashboard/ticket/panels/${panelId}`)
+      return await fetchApi(`/api/dashboard/panels/${panelId}`)
+    },
+
+    onSuccess() {
+      console.log('Zizi')
     },
   })
 }

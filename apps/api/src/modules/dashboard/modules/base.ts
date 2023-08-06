@@ -1,12 +1,12 @@
-import { HttpStatus } from '@pynspel/types'
-import { HttpException, HttpZodValidationError } from 'utils/error'
-import { db } from 'modules/db'
 import {
+  getModuleDefaultConfig,
   InferModuleConfigType,
   ModulesTypes,
-  getModuleDefaultConfig,
   validateModuleConfig,
 } from '@pynspel/common'
+import { HttpStatus } from '@pynspel/types'
+import { db } from 'modules/db'
+import { HttpException, HttpZodValidationError } from 'utils/error'
 import { redis } from 'utils/redis'
 
 export abstract class ModuleBase<M extends ModulesTypes> {

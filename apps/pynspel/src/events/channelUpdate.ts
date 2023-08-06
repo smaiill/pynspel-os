@@ -1,13 +1,6 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
-import {
-  ChannelType,
-  Client,
-  DMChannel,
-  Guild,
-  NonThreadGuildBasedChannel,
-} from 'discord.js'
-import { captureRejectionSymbol } from 'events'
+import { ChannelType, Client, NonThreadGuildBasedChannel } from 'discord.js'
 import { redis } from 'utils/redis'
 
 type Channel = NonThreadGuildBasedChannel

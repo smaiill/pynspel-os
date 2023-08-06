@@ -11,7 +11,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
 }
 
-const Button = forwardRef(
+export const Button = forwardRef(
   (
     props: PropsWithChildren<ButtonProps>,
     ref: ForwardedRef<HTMLButtonElement>

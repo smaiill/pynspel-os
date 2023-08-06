@@ -1,7 +1,7 @@
 import { HTTPCodes, HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response } from 'express'
-import { lg } from './logger'
 import { ZodIssue } from 'zod'
+import { lg } from './logger'
 
 export type ErrorMessageType = string | { message: string }
 export type ErrorType = ErrorMessageType

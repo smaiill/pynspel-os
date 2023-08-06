@@ -1,8 +1,7 @@
-import { HttpStatus, SavedUser } from '@pynspel/types'
+import { SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { UserService } from 'modules/user/user.service'
 import { _decrypt } from 'utils/crypto'
-import { HttpException } from 'utils/error'
 
 class _UserController {
   private _userService: typeof UserService

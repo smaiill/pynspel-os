@@ -1,4 +1,4 @@
-import { ZodIssue, z } from 'zod'
+import { z, ZodIssue } from 'zod'
 
 export const Modules = {
   bot: 'bot',

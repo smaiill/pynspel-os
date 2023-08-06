@@ -1,21 +1,21 @@
-import { HttpStatus } from '@pynspel/types'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express, { NextFunction, Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import 'express-async-errors'
 import session from 'express-session'
-import { db } from 'modules/db'
+import { writeFile } from 'fs'
 import morgan from 'morgan'
 import path from 'path'
 import routes from 'routes'
 import { API_ENDPOINT } from 'utils/constants'
 import { customHeaders } from 'utils/custom.headers'
 import { env } from 'utils/env'
-import { HttpException, errorHandler } from 'utils/error'
+import { errorHandler } from 'utils/error'
 import { lg } from 'utils/logger'
 import { redis } from 'utils/redis'
 import { deserializeSession } from 'utils/session'
-import { z } from 'zod'
+import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
+import { db } from 'modules/db'
 
 const app = express()
 
@@ -34,7 +34,8 @@ if (env.NODE_ENV === 'production') {
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-// TODO: Add helmet package for security
+// TODO: Add helmet package for security.
+// TODO: Add rate limiting.
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -75,6 +76,22 @@ app.listen(env.PORT, async () => {
 
   await redis._client.flushAll()
 
+  if (env.NODE_ENV === 'developement') {
+    lg.info('Generating endpoints.')
+    app._router.stack.forEach(handleGenerateRoutes.bind(null, []))
+    writeFile(
+      path.join(process.cwd(), './src/app/utils/routes.json'),
+      JSON.stringify(generatedRoutes, null, 2),
+      (err) => {
+        err ? console.log(err) : null
+      }
+    )
+  }
+
+  // console.log(await db.exec('DELETE FROM panels'))
+  console.log(await db.exec('SELECT * FROM panels'))
+
+  // console.log(await db.exec('SELECT * FROM panels'))
   // await db.exec('DELETE FROM panel_interactions')
   // await db.exec(
   //   'INSERT INTO panel_interactions (name, panel_id, style) VALUES ($1, $2, $3)',

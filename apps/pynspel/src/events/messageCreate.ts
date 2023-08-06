@@ -1,13 +1,6 @@
 import { BaseEvent } from '@pynspel/px'
-import {
-  Attachment,
-  AttachmentBuilder,
-  Client,
-  Message,
-  TextChannel,
-} from 'discord.js'
+import { Client, Message } from 'discord.js'
 import { scannerService } from 'modules/scanner/scanner.service'
-import { TicketService } from 'modules/ticket/ticket.service'
 
 export class MessageCreate extends BaseEvent<'messageCreate'> {
   _scannerService = scannerService

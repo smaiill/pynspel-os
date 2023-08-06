@@ -15,38 +15,42 @@ export const buttonRecipe = cva({
     _active: {
       scale: '0.95',
     },
+
+    _disabled: {
+      filter: 'grayscale(1)',
+    },
   },
 
   variants: {
     visual: {
       primary: {
-        bg: 'linear-gradient(39deg, rgba(108,190,245,1) 0%, rgba(52,152,219,1) 100%)',
+        bg: '#007bff',
         _hover: {
-          bg: 'linear-gradient(39deg, rgba(108,190,245,1) 0%, rgba(108,190,245,1) 100%)',
+          bg: '#0046FF',
         },
       },
       danger: {
-        bg: 'linear-gradient(39deg, rgba(241,98,123,1) 0%, rgba(221,61,89,1) 100%)',
+        bg: '#dc3545',
         _hover: {
-          bg: 'linear-gradient(39deg, rgba(241,98,123,1) 0%, rgba(241,98,123,1) 100%)',
+          bg: '#741C24',
         },
       },
       success: {
-        bg: 'linear-gradient(39deg, rgba(93,179,77,1) 0%, rgba(61,139,46,1) 100%)',
+        bg: '#279C42',
         _hover: {
-          bg: 'linear-gradient(39deg, rgba(93,179,77,1) 0%, rgba(93,179,77,1) 100%)',
+          bg: '#1E7B33',
         },
       },
       warn: {
-        bg: 'linear-gradient(39deg, rgba(242,157,59,1) 0%, rgba(229,135,26,1) 100%)',
+        bg: '#B98D0A',
         _hover: {
-          bg: 'linear-gradient(39deg, rgba(242,157,59,1) 0%, rgba(242,157,59,1) 100%)',
+          bg: '#86670A',
         },
       },
       special: {
-        bg: 'linear-gradient(39deg, rgba(210,99,179,1) 0%, rgba(180,69,149,1) 100%)',
+        bg: 'special',
         _hover: {
-          bg: 'linear-gradient(39deg, rgba(210,99,179,1) 0%, rgba(210,99,179,1) 100%)',
+          bg: 'hover.special',
         },
       },
     },

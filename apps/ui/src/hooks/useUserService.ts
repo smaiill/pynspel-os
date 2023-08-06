@@ -3,7 +3,7 @@ import { fetchApi } from '~/utils/fetchApi'
 
 export const useUserService = () => {
   const getDiscordUser = async () => {
-    return await fetchApi<unknown>('/api/users/@me')
+    return await fetchApi<unknown>('/api/users/me')
   }
 
   const handleLogout = async () => {

@@ -1,12 +1,4 @@
-import { DiscordRoutes } from 'utils/constants'
 import { env } from 'utils/env'
-import {
-  APIChannel,
-  APIGuildChannel,
-  APIUser,
-  ChannelType,
-  GuildChannelType,
-} from 'discord-api-types/v10'
 
 class _GuildService {
   public async fetchChannels(guildId: string) {

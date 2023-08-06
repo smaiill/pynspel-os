@@ -1,26 +1,42 @@
 'use client'
-import React from 'react'
 import Aside from '~/app/dashboard/components/Aside'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
-import { useFetchPanel } from '../../hooks/useFetchPanels'
+import { PanelInteractions } from '../../components/interactions/PanelInteractions'
 import { PanelForm } from '../../components/PanelForm'
-import { usePanelMutation } from '../hooks/usePanelMutation'
-import { PanelInteractions } from '../../components/PanelInteractions'
+import { useFetchPanel } from '../../hooks/useFetchPanels'
+import {
+  useCurrentPanel,
+  useCurrentPanelValue,
+  useSetCurrentPanel,
+} from '~/proxys/ticket'
+import { useEffect } from 'react'
+import { useFetchGuild } from '~/app/dashboard/hooks/useFetchGuild'
 
 type Props = {
   params: {
     panelId: string
+    id: string
   }
 }
+
 const page = (props: Props) => {
   const {
-    params: { panelId },
+    params: { panelId, id },
   } = props
+  const { data: guildData } = useFetchGuild(id)
   const { isLoading, data } = useFetchPanel(panelId)
+  const setCurrentPanel = useSetCurrentPanel()
+  useEffect(() => {
+    setCurrentPanel(data ?? null)
+  }, [data])
 
   if (isLoading) {
     return <h1>Loading panel...;</h1>
+  }
+
+  if (!data || !guildData) {
+    return <h1>No data found...</h1>
   }
 
   return (
@@ -29,7 +45,7 @@ const page = (props: Props) => {
       <DashboardView>
         <FlexColumn style={{ gap: 10 }}>
           <PanelForm data={data} />
-          <PanelInteractions interactions={data?.interactions} />
+          <PanelInteractions interactions={data.interactions} />
         </FlexColumn>
       </DashboardView>
     </DashboardPage>

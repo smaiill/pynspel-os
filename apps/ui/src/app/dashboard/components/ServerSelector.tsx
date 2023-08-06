@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { BiChevronDown } from 'react-icons/bi'
 import { Flex, FlexColumn } from '~/layouts/Flex'
-import { useSelectedGuildSnapshot } from '~/proxys/dashboard'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { useUserGuildsSnapshot } from '~/proxys/user'
 import { css } from '../../../../styled-system/css'
 
@@ -29,7 +29,7 @@ const styles = css({
 const ServerSelector = () => {
   const [open, setOpen] = useState(false)
   const guildsSnapshot = useUserGuildsSnapshot()
-  const selectedGuild = useSelectedGuildSnapshot()
+  const selectedGuild = useCurrentGuildValue()
 
   const handleToggle = () => {
     setOpen((prevV) => !prevV)

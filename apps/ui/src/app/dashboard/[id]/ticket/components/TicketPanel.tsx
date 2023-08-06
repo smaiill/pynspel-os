@@ -1,10 +1,11 @@
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import { MouseEvent } from 'react'
+import { AiOutlineDelete } from 'react-icons/ai'
 import { Flex } from '~/layouts/Flex'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
-import { AiOutlineDelete } from 'react-icons/ai'
-import { useRouter } from 'next/navigation'
-import { selectedGuild } from '~/proxys/dashboard'
+import { usePanelMutations } from '../panels/hooks/usePanelMutations'
 
 type TicketPanel = {
   name: string
@@ -16,17 +17,21 @@ type TicketPanelProps = {
   panel: TicketPanel
 }
 
-const style = css({})
-
 const TicketPanel = ({ panel }: TicketPanelProps) => {
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
   const router = useRouter()
+  const { deletePanel } = usePanelMutations()
 
   const handleOpenPanel = () => {
-    console.log(router)
     router.push(
       `/dashboard/${currentGuild?.guild_id}/ticket/panels/${panel.id}`
     )
+  }
+
+  const handleDeletePanel = (e: MouseEvent<SVGElement>) => {
+    e.stopPropagation()
+
+    deletePanel.mutate(panel.id)
   }
 
   return (
@@ -42,7 +47,7 @@ const TicketPanel = ({ panel }: TicketPanelProps) => {
       }}
     >
       <Typography typography="span">{panel.name}</Typography>
-      <AiOutlineDelete color="red" size={20} />
+      <AiOutlineDelete onClick={handleDeletePanel} color="red" size={20} />
     </Flex>
   )
 }

@@ -1,14 +1,6 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
-import {
-  ChannelType,
-  Client,
-  DMChannel,
-  Guild,
-  NonThreadGuildBasedChannel,
-  Role,
-} from 'discord.js'
-import { captureRejectionSymbol } from 'events'
+import { Client, Role } from 'discord.js'
 import { redis } from 'utils/redis'
 
 export class RoleDelete extends BaseEvent<'roleDelete'> {

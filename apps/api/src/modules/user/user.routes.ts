@@ -3,6 +3,6 @@ import { ProtectedRouter } from 'routes/protected.router'
 
 const userRoutes = new ProtectedRouter()
 
-userRoutes.get('/@me', UserController.getDiscordUser.bind(UserController))
+userRoutes.get('/me', UserController.getDiscordUser.bind(UserController))
 
 export { userRoutes }

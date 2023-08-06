@@ -52,16 +52,8 @@ const page = () => {
     },
   })
 
-  const [p, setP] = useState<string | null | string[]>(null)
-
   return (
     <>
-      {/* <ButtonPrimary>Hello world</ButtonPrimary>
-      <ButtonSpecial>Hello world</ButtonSpecial>
-      <ButtonSuccess>Hello world</ButtonSuccess>
-      <ButtonDanger>Hello world</ButtonDanger>
-      <ButtonWarn>Hello world</ButtonWarn> */}
-
       <MainHeader />
 
       <main className={cx(main, '__decoration')}>

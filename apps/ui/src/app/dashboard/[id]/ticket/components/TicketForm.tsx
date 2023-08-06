@@ -1,15 +1,10 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { PropsWithChildren, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
-import { selectedGuild } from '~/proxys/dashboard'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
-import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
-import { InputSelect } from '~/ui/input/InputSelect'
-import { fetchApi } from '~/utils/fetchApi'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'ticket'>
@@ -25,7 +20,7 @@ const TicketForm = (props: LogginFormProps) => {
       max_each_user: data.max_each_user,
     },
   })
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule('ticket')
 

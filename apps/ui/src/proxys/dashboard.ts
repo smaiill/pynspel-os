@@ -1,10 +1,13 @@
 import { SavedGuild } from '@pynspel/types'
-import { proxy, useSnapshot } from 'valtio'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-export const selectedGuild = proxy<{
-  guild: (SavedGuild & { roles: any[]; channels: any[] }) | null
-}>({
-  guild: null,
+const currentGuildAtom = atom<
+  (SavedGuild & { roles: any[]; channels: any[] }) | null
+>({
+  key: 'CURRENT_GUILD',
+  default: null,
 })
 
-export const useSelectedGuildSnapshot = () => useSnapshot(selectedGuild)
+export const useCurrentGuildValue = () => useRecoilValue(currentGuildAtom)
+export const useSetCurrentGuild = () => useSetRecoilState(currentGuildAtom)
+export const useCurrentGuildState = () => useRecoilState(currentGuildAtom)

@@ -1,9 +1,8 @@
 import { BiHome } from 'react-icons/bi'
 import { Logo } from '~/components/branding/Logo'
-import { useSelectedGuildSnapshot } from '~/proxys/dashboard'
 import { css } from '../../../../styled-system/css'
 import AsideItem from './AsideItem'
-import ServerSelector from './ServerSelector'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 
 const styles = css({
   backgroundColor: '#191919',
@@ -35,7 +34,7 @@ const styles = css({
 })
 
 const Aside = () => {
-  const { guild } = useSelectedGuildSnapshot()
+  const guild = useCurrentGuildValue()
 
   return (
     <aside className={styles}>

@@ -1,7 +1,6 @@
 import { InferModuleConfigType, Modules } from '@pynspel/common'
 import { createCanvas } from 'canvas'
 import { GuildMember, Message, TextChannel } from 'discord.js'
-import { env } from 'utils/env'
 
 export type CaptchaConstructor = {
   width?: number

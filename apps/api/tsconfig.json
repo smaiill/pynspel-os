@@ -12,7 +12,8 @@
     "lib": ["ESNext", "DOM"],
     "types": ["@types/node"],
     "outDir": "dist",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules"]
 }

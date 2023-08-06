@@ -1,16 +1,13 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
-import { selectedGuild } from '~/proxys/dashboard'
+import { useMutateModule } from '~/app/dashboard/hooks/modules'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { css } from '../../../../../../styled-system/css'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchApi } from '~/utils/fetchApi'
-import { useMutateModule } from '~/app/dashboard/hooks/modules'
 
 type Props = {
   data: InferModuleConfigType<'captcha'>
@@ -18,7 +15,7 @@ type Props = {
 
 const CaptchaForm = (props: Props) => {
   const { data } = props
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
   const {
     register,
     handleSubmit,

@@ -1,7 +1,8 @@
 import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { selectedGuild } from '~/proxys/dashboard'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { fetchApi } from '~/utils/fetchApi'
+import { pxToast } from '../components/toast/toast-handler'
 
 export const useFetchModule = <M extends ModulesTypes>(
   module: M,
@@ -25,12 +26,13 @@ export const useMutateModule = <M extends ModulesTypes>(
   moduleApiResource?: string
 ) => {
   const queryClient = useQueryClient()
+  const currentGuild = useCurrentGuildValue()
 
   return useMutation({
     mutationFn: (moduleData: InferModuleConfigType<M>) =>
       fetchApi<InferModuleConfigType<M>>(
         `/api/dashboard/${moduleApiResource ?? module}/${
-          selectedGuild.guild?.guild_id
+          currentGuild.guild_id
         }`,
         {
           method: 'PUT',
@@ -38,10 +40,14 @@ export const useMutateModule = <M extends ModulesTypes>(
         }
       ),
     onSuccess(data) {
+      pxToast('success', 'Module updated !')
       queryClient.setQueryData(
-        [`module_${module}`, selectedGuild.guild?.guild_id],
+        [`module_${module}`, currentGuild.guild_id],
         data
       )
+    },
+    onError() {
+      pxToast('error', 'Error, retry again.')
     },
   })
 }

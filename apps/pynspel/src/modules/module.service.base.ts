@@ -1,9 +1,7 @@
 import {
-  Commands,
-  InferModuleConfigType,
-  Modules,
-  ModulesTypes,
   getModuleDefaultConfig,
+  InferModuleConfigType,
+  ModulesTypes,
 } from '@pynspel/common'
 import { db } from '../db'
 import { redis } from '../utils/redis'

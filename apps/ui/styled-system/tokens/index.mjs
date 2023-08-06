@@ -16,12 +16,16 @@ const tokens = {
     "variable": "var(--colors-warn)"
   },
   "colors.special": {
-    "value": "#b44595",
+    "value": "#00A86B",
     "variable": "var(--colors-special)"
   },
   "colors.inactive": {
     "value": "#1f1f1f",
     "variable": "var(--colors-inactive)"
+  },
+  "colors.hover.special": {
+    "value": "#007E50",
+    "variable": "var(--colors-hover-special)"
   },
   "colors.fonts.primary": {
     "value": "#ffffff",
@@ -83,6 +87,10 @@ const tokens = {
     "value": "1536px",
     "variable": "var(--sizes-breakpoint-2xl)"
   },
+  "colors.colorPalette.special": {
+    "value": "var(--colors-color-palette-special)",
+    "variable": "var(--colors-color-palette-special)"
+  },
   "colors.colorPalette.primary": {
     "value": "var(--colors-color-palette-primary)",
     "variable": "var(--colors-color-palette-primary)"
@@ -90,10 +98,6 @@ const tokens = {
   "colors.colorPalette.secondary": {
     "value": "var(--colors-color-palette-secondary)",
     "variable": "var(--colors-color-palette-secondary)"
-  },
-  "colors.colorPalette.special": {
-    "value": "var(--colors-color-palette-special)",
-    "variable": "var(--colors-color-palette-special)"
   },
   "colors.colorPalette.specialHover": {
     "value": "var(--colors-color-palette-special-hover)",

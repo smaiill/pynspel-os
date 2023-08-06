@@ -1,43 +1,76 @@
-import React from 'react'
+import { PanelApi } from '@pynspel/types'
 import { useForm } from 'react-hook-form'
-import { Form } from '~/app/dashboard/components/form/Form'
 import { FlexColumn } from '~/layouts/Flex'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
-import { usePanelMutation } from '../panels/hooks/usePanelMutation'
-import { z } from 'zod'
+import { InputSelect } from '~/ui/input/InputSelect'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { useState } from 'react'
+import { usePanelMutations } from '../panels/hooks/usePanelMutations'
 
 type Props = {
-  data: any
+  data: Omit<PanelApi, 'interactions'>
 }
 
 export const PanelForm = (props: Props) => {
   const { data } = props
 
-  console.log({ data })
-  const mutation = usePanelMutation(data.id)
+  if (!data) {
+    return 'No data...'
+  }
 
-  const { register, handleSubmit } = useForm({
+  const currentGuild = useCurrentGuildValue()
+
+  const { register, handleSubmit, getValues } = useForm({
     defaultValues: {
       name: data.name,
       message: data.message,
+      channel_id: data.channel_id,
     },
   })
 
-  const handleUpdatePanel = (data: any) => {
+  const [selectedChannel, setSelectedChannel] = useState(
+    getValues('channel_id')
+  )
+
+  console.log({ currentGuild })
+
+  if (!currentGuild) {
+    return <h1>Loading guild....</h1>
+  }
+
+  const formatedChannels = currentGuild.channels.map((channel) => {
+    return { label: channel.name, value: channel.id }
+  })
+
+  const { updatePanel } = usePanelMutations()
+  console.log({ formatedChannels })
+
+  const handleUpdatePanel = (parsedData: any) => {
     // TODO: Validate the data
 
-    mutation.mutate(data)
+    updatePanel.mutate({
+      data: {
+        ...parsedData,
+        channel_id: selectedChannel,
+      },
+      panelId: data.id,
+    })
   }
 
   return (
     <FlexColumn style={{ gap: 5 }}>
       <Input {...register('name')} label="Nom du panel" />
       <Input {...register('message')} label="Message" />
+      <InputSelect
+        options={formatedChannels}
+        value={selectedChannel}
+        setValue={setSelectedChannel}
+      />
 
       <ButtonPrimary
         onClick={handleSubmit(handleUpdatePanel)}
-        disabled={mutation.isLoading}
+        disabled={updatePanel.isLoading}
         type="submit"
       >
         Enregistrer

@@ -1,18 +1,15 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { PropsWithChildren, useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { DashboardCard } from '~/layouts/Dashboard'
-import { selectedGuild } from '~/proxys/dashboard'
+import { FlexColumn } from '~/layouts/Flex'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { fetchApi } from '~/utils/fetchApi'
 import { InputSelectType } from '~/ui/input/InputSelectType'
-import { FlexColumn } from '~/layouts/Flex'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'scanner'>
@@ -48,7 +45,7 @@ const ScannerForm = (props: LogginFormProps) => {
     getValues('links.mute_unit')
   )
 
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule('scanner')
 
@@ -62,6 +59,13 @@ const ScannerForm = (props: LogginFormProps) => {
         ignored_channels: ignoredChannels,
         mute_unit: muteUnit,
         action,
+      },
+      links: {
+        ...data.links,
+        action: actionLinks,
+        allowed_domains: allowedDomains,
+        ignored_channels: ignoredChannelsLinks,
+        mute_unit: muteUnitLinks,
       },
     }
     const parsedSchema = validateModuleConfig('scanner', completeData)

@@ -1,4 +1,4 @@
-import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
+import { Modules, ModulesTypes } from '@pynspel/common'
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import {

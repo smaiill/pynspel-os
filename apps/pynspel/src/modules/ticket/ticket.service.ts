@@ -1,11 +1,9 @@
-import { CaptchaManager } from 'managers/captcha'
 import {
   ActionRow,
   Embed,
   MessageActionRowComponent,
   TextChannel,
 } from 'discord.js'
-import { writeFile } from 'fs/promises'
 import { env } from 'utils/env'
 
 const MAX_MESSAGES_TO_TRANSPILE = 99

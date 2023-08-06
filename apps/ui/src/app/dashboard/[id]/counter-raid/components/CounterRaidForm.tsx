@@ -1,17 +1,24 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { PropsWithChildren, useState } from 'react'
+import { AlertCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Form } from '~/app/dashboard/components/form/Form'
+import { toast } from 'react-hot-toast'
+import { Alert } from '~/app/dashboard/components/Alert'
+import { PxToastError } from '~/app/dashboard/components/toast/PxToast'
+import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
-import { selectedGuild } from '~/proxys/dashboard'
-import { ButtonPrimary } from '~/ui/button/Button'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
+import {
+  ButtonDanger,
+  ButtonPrimary,
+  ButtonSpecial,
+  ButtonSuccess,
+  ButtonWarn,
+} from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { InputSelectType } from '~/ui/input/InputSelectType'
-import { fetchApi } from '~/utils/fetchApi'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'counterRaid'>
@@ -20,9 +27,15 @@ type LogginFormProps = {
 const CounterRaidForum = (props: LogginFormProps) => {
   const { data } = props
 
-  const { handleSubmit, setError, register, getValues, control } = useForm<
-    InferModuleConfigType<'counterRaid'>
-  >({
+  const {
+    handleSubmit,
+    setError,
+    register,
+    getValues,
+    control,
+    formState: { isDirty },
+    setValue,
+  } = useForm<InferModuleConfigType<'counterRaid'>>({
     defaultValues: {
       action: data.action,
       action_reason: data.action_reason,
@@ -35,7 +48,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
   })
   const [action, setAction] = useState(getValues('action'))
   const [muteUnit, setMuteUnit] = useState(getValues('mute_unit'))
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule('counterRaid', 'counter-raid')
 
@@ -59,12 +72,19 @@ const CounterRaidForum = (props: LogginFormProps) => {
     mutation.mutate(parsedSchema.data)
   }
 
+  // TODO: Refactor this shit, add on change on InputSelect.
+  useEffect(() => {
+    setValue('action', action, {
+      shouldDirty: true,
+    })
+  }, [action])
+
   if (!currentGuild) {
     return 'Invalid guild.'
   }
 
   return (
-    <FlexColumn style={{ gap: 10 }} onSubmit={handleSubmit(handleSubmitForm)}>
+    <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
       <Input
         {...register('member_threshold', {
           setValueAs: (value) => parseInt(value),
@@ -86,15 +106,27 @@ const CounterRaidForum = (props: LogginFormProps) => {
         ]}
         value={action}
         setValue={setAction}
-      />
+      >
+        L'action a prendre
+      </InputSelect>
       <Input {...register('action_reason')} label='Raison de l"action' />
+      {/* TODO: Add warning to prevent to check all the permissions */}
+
       <Controller
         name="raid_channel_lockdown"
         control={control}
         render={({ field }) => {
-          return <Checkbox {...field}>Fermer tout les channels</Checkbox>
+          return (
+            <Checkbox {...field}>
+              Fermer tout les channels{' '}
+              <span style={{ color: '#D86767' }}>
+                Attention, il faudra remettre les permissions manuellement
+              </span>
+            </Checkbox>
+          )
         }}
       />
+
       {action === 'mute' ? (
         <>
           <InputSelect
@@ -104,7 +136,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
             ]}
             value={muteUnit}
             setValue={setMuteUnit}
-          />
+          >
+            Le temps du mute
+          </InputSelect>
           <Input
             {...register('mute_timeout', {
               setValueAs: (value) => parseInt(value),
@@ -113,9 +147,16 @@ const CounterRaidForum = (props: LogginFormProps) => {
           />
         </>
       ) : null}
-      <ButtonPrimary disabled={mutation.isLoading} type="submit">
-        Enregistrer
-      </ButtonPrimary>
+
+      {isDirty ? (
+        <ButtonPrimary
+          onClick={handleSubmit(handleSubmitForm)}
+          disabled={mutation.isLoading}
+          type="submit"
+        >
+          Enregistrer
+        </ButtonPrimary>
+      ) : null}
     </FlexColumn>
   )
 }

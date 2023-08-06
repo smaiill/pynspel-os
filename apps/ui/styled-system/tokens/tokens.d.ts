@@ -1,9 +1,9 @@
 /* eslint-disable */
-export type Token = "colors.primary" | "colors.danger" | "colors.success" | "colors.warn" | "colors.special" | "colors.inactive" | "colors.fonts.primary" | "colors.fonts.secondary" | "colors.fonts.special" | "colors.fonts.specialHover" | "gradients.decoration" | "breakpoints.sm" | "breakpoints.md" | "breakpoints.lg" | "breakpoints.xl" | "breakpoints.2xl" | "sizes.breakpoint-sm" | "sizes.breakpoint-md" | "sizes.breakpoint-lg" | "sizes.breakpoint-xl" | "sizes.breakpoint-2xl" | "colors.colorPalette.primary" | "colors.colorPalette.secondary" | "colors.colorPalette.special" | "colors.colorPalette.specialHover"
+export type Token = "colors.primary" | "colors.danger" | "colors.success" | "colors.warn" | "colors.special" | "colors.inactive" | "colors.hover.special" | "colors.fonts.primary" | "colors.fonts.secondary" | "colors.fonts.special" | "colors.fonts.specialHover" | "gradients.decoration" | "breakpoints.sm" | "breakpoints.md" | "breakpoints.lg" | "breakpoints.xl" | "breakpoints.2xl" | "sizes.breakpoint-sm" | "sizes.breakpoint-md" | "sizes.breakpoint-lg" | "sizes.breakpoint-xl" | "sizes.breakpoint-2xl" | "colors.colorPalette.special" | "colors.colorPalette.primary" | "colors.colorPalette.secondary" | "colors.colorPalette.specialHover"
 
-export type ColorPalette = "fonts"
+export type ColorPalette = "hover" | "fonts"
 
-export type ColorToken = "primary" | "danger" | "success" | "warn" | "special" | "inactive" | "fonts.primary" | "fonts.secondary" | "fonts.special" | "fonts.specialHover" | "colorPalette.primary" | "colorPalette.secondary" | "colorPalette.special" | "colorPalette.specialHover"
+export type ColorToken = "primary" | "danger" | "success" | "warn" | "special" | "inactive" | "hover.special" | "fonts.primary" | "fonts.secondary" | "fonts.special" | "fonts.specialHover" | "colorPalette.special" | "colorPalette.primary" | "colorPalette.secondary" | "colorPalette.specialHover"
 
 export type GradientToken = "decoration"
 

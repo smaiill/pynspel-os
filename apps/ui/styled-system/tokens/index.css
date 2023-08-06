@@ -4,8 +4,9 @@
   --colors-danger: #dd3d59;
   --colors-success: #3d8b2e;
   --colors-warn: #e5871a;
-  --colors-special: #b44595;
+  --colors-special: #00A86B;
   --colors-inactive: #1f1f1f;
+  --colors-hover-special: #007E50;
   --colors-fonts-primary: #ffffff;
   --colors-fonts-secondary: #8b8787;
   --colors-fonts-special: #b35454;
@@ -21,9 +22,9 @@
   --sizes-breakpoint-lg: 1024px;
   --sizes-breakpoint-xl: 1280px;
   --sizes-breakpoint-2xl: 1536px;
+  --colors-color-palette-special: var(--colors-color-palette-special);
   --colors-color-palette-primary: var(--colors-color-palette-primary);
   --colors-color-palette-secondary: var(--colors-color-palette-secondary);
-  --colors-color-palette-special: var(--colors-color-palette-special);
   --colors-color-palette-special-hover: var(--colors-color-palette-special-hover)
 }
   }

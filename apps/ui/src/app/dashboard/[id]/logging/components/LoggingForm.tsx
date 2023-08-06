@@ -1,14 +1,12 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { PropsWithChildren, useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
-import { selectedGuild } from '~/proxys/dashboard'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { fetchApi } from '~/utils/fetchApi'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'logging'>
@@ -28,7 +26,7 @@ const LoggingForm = (props: LogginFormProps) => {
   const [verificationChannel, setVerificationChannel] = useState(
     getValues('channel')
   )
-  const currentGuild = selectedGuild.guild
+  const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule('logging')
 

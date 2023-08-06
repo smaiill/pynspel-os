@@ -1,12 +1,17 @@
 'use client'
-import { useEffect } from 'react'
-import { useGuildService } from '~/hooks/useGuildService'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
-import { selectedGuild } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
 import { useFetchGuild } from '../hooks/useFetchGuild'
+import { useEffect } from 'react'
+import { useCurrentGuildState, useSetCurrentGuild } from '~/proxys/dashboard'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import {
+  SkeletonBox,
+  SkeletonEdge,
+  SkeletonTitle,
+} from '../components/Skeletons'
 
 export interface Props {
   params: {
@@ -17,6 +22,11 @@ export interface Props {
 const page = ({ params }: Props) => {
   const { id } = params
   const { data: guildData, isLoading } = useFetchGuild(id)
+  const [currentGuild, setCurrentGuild] = useCurrentGuildState()
+
+  useEffect(() => {
+    setCurrentGuild(guildData)
+  }, [guildData])
 
   if (isLoading) {
     return 'Loading....'
@@ -27,7 +37,7 @@ const page = ({ params }: Props) => {
       <Aside />
       <DashboardView>
         <Typography typography="h1">
-          Welcome, smail. 👋 on {guildData?.name}
+          Welcome, smail. 👋 on {currentGuild?.name}
         </Typography>
 
         <SelectedServerInformation />

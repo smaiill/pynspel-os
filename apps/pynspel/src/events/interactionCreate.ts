@@ -1,25 +1,17 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import {
-  ActionRow,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
   ChannelType,
   Client,
-  ComponentType,
-  DMChannel,
-  EmbedBuilder,
   Guild,
   Interaction,
-  NonThreadGuildBasedChannel,
   PermissionFlagsBits,
-  Role,
 } from 'discord.js'
-import { captureRejectionSymbol } from 'events'
 import { TicketService } from 'modules/ticket/ticket.service'
-import { redis } from 'utils/redis'
 
 enum ButtonAction {
   CreateTicket = 1,

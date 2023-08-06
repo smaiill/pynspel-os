@@ -1,13 +1,7 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  KeyboardEvent,
-  KeyboardEventHandler,
-} from 'react'
-import { Input } from '~/ui/input/Input'
-import { Flex, FlexColumn } from '~/layouts/Flex'
-import { TiDelete } from 'react-icons/ti'
+import { KeyboardEvent } from 'react'
 import { BsPlus } from 'react-icons/bs'
+import { Flex, FlexColumn } from '~/layouts/Flex'
+import { Input } from '~/ui/input/Input'
 import { css } from '../../../styled-system/css'
 
 type InputSelectTypeProps = {

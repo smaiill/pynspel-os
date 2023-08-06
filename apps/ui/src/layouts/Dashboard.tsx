@@ -46,7 +46,7 @@ const DashboardPage = (props: PropsWithChildren<DashboardPageProps>) => {
 type DashboardCardProps = HTMLAttributes<HTMLDivElement>
 
 const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
-  const { children } = props
+  const { children, style, ...rest } = props
   return (
     <div
       style={{
@@ -54,7 +54,9 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
         borderRadius: 10,
         backgroundColor: '#191919',
         color: 'white',
+        ...style,
       }}
+      {...rest}
     >
       {children}
     </div>

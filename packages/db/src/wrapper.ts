@@ -1,11 +1,11 @@
 import { Pool } from 'pg'
 
-import { Guild, KeysToCamelCase } from '@pynspel/types'
 import {
+  getModuleDefaultConfig,
   InferModuleConfigType,
   ModulesTypes,
-  getModuleDefaultConfig,
 } from '@pynspel/common'
+import { Guild, KeysToCamelCase } from '@pynspel/types'
 
 export type DbWrapperOptions = {
   debug?: boolean

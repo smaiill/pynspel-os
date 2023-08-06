@@ -1,15 +1,7 @@
 import { BaseEvent } from '@pynspel/px'
-import { KeysToCamelCase, Guild as PynspelGuild } from '@pynspel/types'
+import { Guild as PynspelGuild, KeysToCamelCase } from '@pynspel/types'
 import { db } from 'db'
-import {
-  Client,
-  Guild,
-  PermissionFlagsBits,
-  RouteBases,
-  Routes,
-  SlashCommandBuilder,
-  Snowflake,
-} from 'discord.js'
+import { Client, Guild } from 'discord.js'
 import { env } from 'utils/env'
 
 export class GuildCreate extends BaseEvent<'guildCreate'> {

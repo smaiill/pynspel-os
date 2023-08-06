@@ -1,0 +1,275 @@
+[
+  {
+    "routeName": "get",
+    "_args": [],
+    "method": "GET",
+    "path": ""
+  },
+  {
+    "routeName": "getAuthCallback",
+    "_args": [],
+    "method": "GET",
+    "path": "api/auth/callback"
+  },
+  {
+    "routeName": "getAuthStatus",
+    "_args": [],
+    "method": "GET",
+    "path": "api/auth/status"
+  },
+  {
+    "routeName": "getAuthRevoke",
+    "_args": [],
+    "method": "GET",
+    "path": "api/auth/revoke"
+  },
+  {
+    "routeName": "getUsersMe",
+    "_args": [],
+    "method": "GET",
+    "path": "api/users/me"
+  },
+  {
+    "routeName": "getGuilds",
+    "_args": [],
+    "method": "GET",
+    "path": "api/dashboard/guilds"
+  },
+  {
+    "routeName": "getGuildsId",
+    "_args": [
+      "id"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/guilds/:id"
+  },
+  {
+    "routeName": "getBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
+    "routeName": "putBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
+    "routeName": "getCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "putCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "getLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
+    "routeName": "putLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
+    "routeName": "getTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "putTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "getCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "putCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "getCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/counter-raid/:guildId"
+  },
+  {
+    "routeName": "putCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/counter-raid/:guildId"
+  },
+  {
+    "routeName": "getScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "putScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "postPanels",
+    "_args": [],
+    "method": "POST",
+    "path": "api/dashboard/panels"
+  },
+  {
+    "routeName": "postPanels",
+    "_args": [],
+    "method": "POST",
+    "path": "api/dashboard/panels"
+  },
+  {
+    "routeName": "getPanelsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/panels/:panelId"
+  },
+  {
+    "routeName": "postPanelsPanelIdSend",
+    "_args": [
+      "panelId"
+    ],
+    "method": "POST",
+    "path": "api/dashboard/panels/:panelId/send"
+  },
+  {
+    "routeName": "putPanelsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/panels/:panelId"
+  },
+  {
+    "routeName": "putPanelsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/panels/:panelId"
+  },
+  {
+    "routeName": "deletePanelsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "DELETE",
+    "path": "api/dashboard/panels/:panelId"
+  },
+  {
+    "routeName": "getPanelsGuildGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/panels/guild/:guildId"
+  },
+  {
+    "routeName": "getPanelsPanelIdInteractions",
+    "_args": [
+      "panelId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/panels/:panelId/interactions"
+  },
+  {
+    "routeName": "postPanelsPanelIdInteractions",
+    "_args": [
+      "panelId"
+    ],
+    "method": "POST",
+    "path": "api/dashboard/panels/:panelId/interactions"
+  },
+  {
+    "routeName": "postPanelsPanelIdInteractions",
+    "_args": [
+      "panelId"
+    ],
+    "method": "POST",
+    "path": "api/dashboard/panels/:panelId/interactions"
+  },
+  {
+    "routeName": "putPanelsPanelIdInteractionsInteractionId",
+    "_args": [
+      "panelId",
+      "interactionId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+  },
+  {
+    "routeName": "putPanelsPanelIdInteractionsInteractionId",
+    "_args": [
+      "panelId",
+      "interactionId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+  },
+  {
+    "routeName": "deletePanelsPanelIdInteractionsInteractionId",
+    "_args": [
+      "panelId",
+      "interactionId"
+    ],
+    "method": "DELETE",
+    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+  },
+  {
+    "routeName": "getClientServingGuilds",
+    "_args": [],
+    "method": "GET",
+    "path": "api/client/serving-guilds"
+  }
+]

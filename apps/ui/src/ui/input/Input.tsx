@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react'
-import { css, type SystemStyleObject } from '../../../styled-system/css'
+import { css } from '../../../styled-system/css'
 
 const wrapper = css({
   display: 'flex',

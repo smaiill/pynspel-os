@@ -1,5 +1,5 @@
-import { RedisClientType, createClient } from 'redis'
 import { InferModuleConfigType, ModulesTypes } from '@pynspel/common'
+import { createClient, RedisClientType } from 'redis'
 
 const Keys = {
   guild: 'guild',
