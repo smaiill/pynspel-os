@@ -1,7 +1,14 @@
-import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  InferModuleConfigType,
+  getModuleSchema,
+  validateModuleConfig,
+} from '@pynspel/common'
 import { Controller, useForm } from 'react-hook-form'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
+import { FlexColumn } from '~/layouts/Flex'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 
@@ -11,35 +18,25 @@ type LogginFormProps = {
 const CommandForm = (props: LogginFormProps) => {
   const { data } = props
 
-  const { handleSubmit, control, setError } = useForm<
-    InferModuleConfigType<'command'>
-  >({
+  const {
+    handleSubmit,
+    control,
+    formState: { isDirty, errors: formErrors },
+  } = useForm<InferModuleConfigType<'command'>>({
     defaultValues: {
       ban: data.ban,
       kick: data.kick,
     },
+    resolver: zodResolver(getModuleSchema('command')),
   })
-  const mutation = useMutateModule('command')
+  const { mutate, errors } = useMutateModule('command')
 
   const handleSubmitForm = (data: InferModuleConfigType<'command'>) => {
-    const parsedSchema = validateModuleConfig('command', data)
-
-    if (!parsedSchema.success) {
-      const errors = parsedSchema.error
-      for (const err of errors) {
-        setError(err.path[0] as keyof InferModuleConfigType<'command'>, {
-          message: err.message,
-        })
-      }
-
-      return
-    }
-
-    mutation.mutate(parsedSchema.data)
+    mutate(data)
   }
 
   return (
-    <Form onSubmit={handleSubmit(handleSubmitForm)}>
+    <FlexColumn style={{ gap: 10 }}>
       <Controller
         name="ban"
         control={control}
@@ -47,6 +44,9 @@ const CommandForm = (props: LogginFormProps) => {
           return <Checkbox {...field}>Bannir une personne</Checkbox>
         }}
       />
+      {formErrors?.ban || errors?.ban ? (
+        <FieldError message={errors?.ban?.message ?? errors?.ban?.message} />
+      ) : null}
 
       <Controller
         name="kick"
@@ -55,11 +55,20 @@ const CommandForm = (props: LogginFormProps) => {
           <Checkbox {...field}>Exclure une personne</Checkbox>
         )}
       />
+      {formErrors?.kick || errors?.kick ? (
+        <FieldError message={errors?.kick?.message ?? errors?.kick?.message} />
+      ) : null}
 
-      <ButtonPrimary disabled={mutation.isLoading} type="submit">
-        Enregistrer
-      </ButtonPrimary>
-    </Form>
+      {isDirty ? (
+        <ButtonPrimary
+          onClick={handleSubmit(handleSubmitForm)}
+          disabled={mutation.isLoading}
+          type="submit"
+        >
+          Enregistrer
+        </ButtonPrimary>
+      ) : null}
+    </FlexColumn>
   )
 }
 

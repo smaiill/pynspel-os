@@ -13,6 +13,8 @@
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
     "@pynspel/common": "workspace:*",
+    "@pynspel/utils": "workspace:^",
+    "@smaiill/trin": "^0.0.4",
     "@tanstack/react-query": "^4.29.12",
     "@tanstack/react-query-devtools": "^4.32.0",
     "clsx": "^1.2.1",

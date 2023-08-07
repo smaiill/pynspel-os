@@ -19,6 +19,10 @@ const tokens = {
     "value": "#00A86B",
     "variable": "var(--colors-special)"
   },
+  "colors.specialBg": {
+    "value": "#00A86B30",
+    "variable": "var(--colors-special-bg)"
+  },
   "colors.inactive": {
     "value": "#1f1f1f",
     "variable": "var(--colors-inactive)"
@@ -35,13 +39,17 @@ const tokens = {
     "value": "#8b8787",
     "variable": "var(--colors-fonts-secondary)"
   },
-  "colors.fonts.special": {
+  "colors.fonts.danger": {
     "value": "#b35454",
-    "variable": "var(--colors-fonts-special)"
+    "variable": "var(--colors-fonts-danger)"
   },
-  "colors.fonts.specialHover": {
+  "colors.fonts.dangerHover": {
     "value": "#bd3838",
-    "variable": "var(--colors-fonts-special-hover)"
+    "variable": "var(--colors-fonts-danger-hover)"
+  },
+  "colors.fonts.special": {
+    "value": "#00A86B",
+    "variable": "var(--colors-fonts-special)"
   },
   "gradients.decoration": {
     "value": "linear-gradient(39deg, rgba(0,0,0,1) 0%, rgba(62,62,61,1) 100%)",
@@ -99,9 +107,13 @@ const tokens = {
     "value": "var(--colors-color-palette-secondary)",
     "variable": "var(--colors-color-palette-secondary)"
   },
-  "colors.colorPalette.specialHover": {
-    "value": "var(--colors-color-palette-special-hover)",
-    "variable": "var(--colors-color-palette-special-hover)"
+  "colors.colorPalette.danger": {
+    "value": "var(--colors-color-palette-danger)",
+    "variable": "var(--colors-color-palette-danger)"
+  },
+  "colors.colorPalette.dangerHover": {
+    "value": "var(--colors-color-palette-danger-hover)",
+    "variable": "var(--colors-color-palette-danger-hover)"
   }
 }
 

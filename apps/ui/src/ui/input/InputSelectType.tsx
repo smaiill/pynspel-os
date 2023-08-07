@@ -1,4 +1,4 @@
-import { KeyboardEvent } from 'react'
+import { KeyboardEvent, PropsWithChildren } from 'react'
 import { BsPlus } from 'react-icons/bs'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { Input } from '~/ui/input/Input'
@@ -7,22 +7,24 @@ import { css } from '../../../styled-system/css'
 type InputSelectTypeProps = {
   words: string[]
   onChange(words: string[]): void
+  empty?: string
+  placeholder?: string
 }
 
 const wordStyle = css({
-  bg: '#B4459530',
+  bg: 'specialBg',
   padding: '1px 4px',
   rounded: '5px',
   alignItems: 'center',
   gap: '5px',
 
   '& span ': {
-    color: '#B44595',
+    color: 'special',
   },
 
   '& button': {
     stroke: 'red',
-    color: '#B44595',
+    color: 'special',
     transition: '0.4s',
     cursor: 'pointer',
 
@@ -33,12 +35,13 @@ const wordStyle = css({
     '& svg': {
       rotate: '45deg',
       fontSize: '20px',
+      marginTop: '1px',
     },
   },
 })
 
-const InputSelectType = (props: InputSelectTypeProps) => {
-  const { words, onChange } = props
+const InputSelectType = (props: PropsWithChildren<InputSelectTypeProps>) => {
+  const { words, onChange, children, empty, placeholder } = props
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') {
@@ -70,16 +73,39 @@ const InputSelectType = (props: InputSelectTypeProps) => {
 
   return (
     <FlexColumn style={{ gap: 5 }}>
-      <Input onKeyDown={handleKeyDown} placeholder="e.x: Sal*pe" />
+      {children && (
+        <label
+          style={{
+            color: 'grey',
+            fontSize: '13px',
+            marginLeft: '5px',
+          }}
+        >
+          {children}
+        </label>
+      )}
+      <Input onKeyDown={handleKeyDown} placeholder={placeholder} />
       <Flex style={{ gap: 5, flexWrap: 'wrap' }}>
-        {words.map((word) => (
-          <Flex key={word} className={wordStyle}>
-            <span>{word}</span>
-            <button onClick={() => handleRemoveWord(word)}>
-              <BsPlus />
-            </button>
-          </Flex>
-        ))}
+        {words.length > 0 ? (
+          words.map((word) => (
+            <Flex key={word} className={wordStyle}>
+              <button onClick={() => handleRemoveWord(word)}>
+                <BsPlus />
+              </button>
+              <span>{word}</span>
+            </Flex>
+          ))
+        ) : (
+          <span
+            className={css({
+              fontSize: '13px',
+              marginLeft: '5px',
+              color: 'fonts.special',
+            })}
+          >
+            {empty ? empty : 'Empty, add new one.'}
+          </span>
+        )}
       </Flex>
     </FlexColumn>
   )

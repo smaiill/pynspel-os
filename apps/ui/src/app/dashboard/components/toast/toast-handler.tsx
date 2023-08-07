@@ -17,6 +17,8 @@ type ToastOptions = Partial<
   >
 >
 
+const TOAST_DURATION = 3000
+
 export const pxToast = (
   type: ToastVisual,
   content: string,
@@ -25,13 +27,13 @@ export const pxToast = (
   switch (type) {
     case 'error':
       toast.custom(<PxToastError content={content} />, {
-        duration: 5000,
+        duration: TOAST_DURATION,
         ...options,
       })
       break
     case 'success':
       toast.custom(<PxToastSuccess content={content} />, {
-        duration: 5000,
+        duration: TOAST_DURATION,
         ...options,
       })
       break

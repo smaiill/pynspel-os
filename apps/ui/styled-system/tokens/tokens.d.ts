@@ -1,9 +1,9 @@
 /* eslint-disable */
-export type Token = "colors.primary" | "colors.danger" | "colors.success" | "colors.warn" | "colors.special" | "colors.inactive" | "colors.hover.special" | "colors.fonts.primary" | "colors.fonts.secondary" | "colors.fonts.special" | "colors.fonts.specialHover" | "gradients.decoration" | "breakpoints.sm" | "breakpoints.md" | "breakpoints.lg" | "breakpoints.xl" | "breakpoints.2xl" | "sizes.breakpoint-sm" | "sizes.breakpoint-md" | "sizes.breakpoint-lg" | "sizes.breakpoint-xl" | "sizes.breakpoint-2xl" | "colors.colorPalette.special" | "colors.colorPalette.primary" | "colors.colorPalette.secondary" | "colors.colorPalette.specialHover"
+export type Token = "colors.primary" | "colors.danger" | "colors.success" | "colors.warn" | "colors.special" | "colors.specialBg" | "colors.inactive" | "colors.hover.special" | "colors.fonts.primary" | "colors.fonts.secondary" | "colors.fonts.danger" | "colors.fonts.dangerHover" | "colors.fonts.special" | "gradients.decoration" | "breakpoints.sm" | "breakpoints.md" | "breakpoints.lg" | "breakpoints.xl" | "breakpoints.2xl" | "sizes.breakpoint-sm" | "sizes.breakpoint-md" | "sizes.breakpoint-lg" | "sizes.breakpoint-xl" | "sizes.breakpoint-2xl" | "colors.colorPalette.special" | "colors.colorPalette.primary" | "colors.colorPalette.secondary" | "colors.colorPalette.danger" | "colors.colorPalette.dangerHover"
 
 export type ColorPalette = "hover" | "fonts"
 
-export type ColorToken = "primary" | "danger" | "success" | "warn" | "special" | "inactive" | "hover.special" | "fonts.primary" | "fonts.secondary" | "fonts.special" | "fonts.specialHover" | "colorPalette.special" | "colorPalette.primary" | "colorPalette.secondary" | "colorPalette.specialHover"
+export type ColorToken = "primary" | "danger" | "success" | "warn" | "special" | "specialBg" | "inactive" | "hover.special" | "fonts.primary" | "fonts.secondary" | "fonts.danger" | "fonts.dangerHover" | "fonts.special" | "colorPalette.special" | "colorPalette.primary" | "colorPalette.secondary" | "colorPalette.danger" | "colorPalette.dangerHover"
 
 export type GradientToken = "decoration"
 

@@ -27,7 +27,12 @@ export default defineConfig({
         danger: { value: '#dd3d59' },
         success: { value: '#3d8b2e' },
         warn: { value: '#e5871a' },
-        special: { value: '#00A86B' },
+        special: {
+          value: '#00A86B',
+        },
+        specialBg: {
+          value: '#00A86B30',
+        },
         inactive: { value: '#1f1f1f' },
         hover: {
           special: {
@@ -37,8 +42,9 @@ export default defineConfig({
         fonts: {
           primary: { value: '#ffffff' },
           secondary: { value: '#8b8787' },
-          special: { value: '#b35454' },
-          specialHover: { value: '#bd3838' },
+          danger: { value: '#b35454' },
+          dangerHover: { value: '#bd3838' },
+          special: { value: '{colors.special}' },
         },
       },
 
@@ -62,6 +68,16 @@ export default defineConfig({
       enter: {
         '0%': { transform: 'translateY(-100px)', opacity: '0' },
         '100%': { transform: 'translateY(0px)', opacity: '1' },
+      },
+
+      fadeIn: {
+        '0%': { opacity: '0' },
+        '100%': { opacity: '1' },
+      },
+
+      fadeOut: {
+        '0%': { opacity: '1' },
+        '100%': { opacity: '0' },
       },
     },
   },

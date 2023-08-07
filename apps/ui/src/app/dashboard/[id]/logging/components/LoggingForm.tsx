@@ -1,8 +1,15 @@
-import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
-import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  InferModuleConfigType,
+  getModuleSchema,
+  validateModuleConfig,
+} from '@pynspel/common'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
+import { FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
@@ -14,40 +21,44 @@ type LogginFormProps = {
 const LoggingForm = (props: LogginFormProps) => {
   const { data } = props
 
-  const { handleSubmit, control, setError, getValues } = useForm<
-    InferModuleConfigType<'logging'>
-  >({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { isDirty, errors },
+    getValues,
+  } = useForm<InferModuleConfigType<'logging'>>({
     defaultValues: {
       user_join: data.user_join,
       user_left: data.user_left,
       channel: data.channel,
     },
+    resolver: zodResolver(getModuleSchema('logging')),
   })
   const [verificationChannel, setVerificationChannel] = useState(
     getValues('channel')
   )
+
   const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule('logging')
 
   const handleSubmitForm = (data: InferModuleConfigType<'logging'>) => {
-    const parsedSchema = validateModuleConfig('logging', {
-      ...data,
-      channel: verificationChannel,
-    })
-
-    if (!parsedSchema.success) {
-      const errors = parsedSchema.error
-      for (const err of errors) {
-        setError(err.path[0] as keyof InferModuleConfigType<'logging'>, {
-          message: err.message,
-        })
-      }
-
-      return
-    }
-    mutation.mutate(parsedSchema.data)
+    mutation.mutate(data)
   }
+
+  useEffect(() => {
+    setValue('channel', verificationChannel, {
+      shouldDirty: true,
+    })
+  }, [verificationChannel])
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      reset(getValues())
+    }
+  }, [mutation.isSuccess])
 
   if (!currentGuild) {
     return 'Invalid guild.'
@@ -58,14 +69,16 @@ const LoggingForm = (props: LogginFormProps) => {
   })
 
   return (
-    <Form onSubmit={handleSubmit(handleSubmitForm)}>
+    <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
       <InputSelect
         value={verificationChannel}
         setValue={setVerificationChannel}
         options={formatedChannels}
+        type="channel"
       >
         Le channel sur lequel envoyer les logs.
       </InputSelect>
+      {errors.channel ? <FieldError message={errors.channel.message} /> : null}
       <Controller
         name="user_join"
         control={control}
@@ -77,6 +90,9 @@ const LoggingForm = (props: LogginFormProps) => {
           )
         }}
       />
+      {errors.user_join ? (
+        <FieldError message={errors.user_join.message} />
+      ) : null}
 
       <Controller
         name="user_left"
@@ -85,11 +101,20 @@ const LoggingForm = (props: LogginFormProps) => {
           <Checkbox {...field}>Quand une personne quitte le serveur</Checkbox>
         )}
       />
+      {errors.user_left ? (
+        <FieldError message={errors.user_left.message} />
+      ) : null}
 
-      <ButtonPrimary disabled={mutation.isLoading} type="submit">
-        Enregistrer
-      </ButtonPrimary>
-    </Form>
+      {isDirty ? (
+        <ButtonPrimary
+          onClick={handleSubmit(handleSubmitForm)}
+          disabled={mutation.isLoading}
+          type="submit"
+        >
+          Enregistrer
+        </ButtonPrimary>
+      ) : null}
+    </FlexColumn>
   )
 }
 

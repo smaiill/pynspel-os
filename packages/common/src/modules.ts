@@ -182,3 +182,7 @@ export const validateModuleConfig = <M extends ModulesTypes>(
 
   return { success: true, data: res.data }
 }
+
+export const getModuleSchema = <M extends ModulesTypes>(schema: M) => {
+  return modulesSchemas[schema]
+}

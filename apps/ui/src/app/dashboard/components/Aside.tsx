@@ -3,6 +3,7 @@ import { Logo } from '~/components/branding/Logo'
 import { css } from '../../../../styled-system/css'
 import AsideItem from './AsideItem'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { asideItemsData } from '~/data/aside.items'
 
 const styles = css({
   backgroundColor: '#191919',
@@ -40,51 +41,17 @@ const Aside = () => {
     <aside className={styles}>
       <header>
         <Logo />
-        {/* <ServerSelector /> */}
       </header>
       <nav>
-        <AsideItem href={`/dashboard/${guild?.guild_id}`} icon={<BiHome />}>
-          Tableau de bord
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/counter-raid`}
-          icon={<BiHome />}
-        >
-          Anti raid
-        </AsideItem>
-        <AsideItem href={`/dashboard/${guild?.guild_id}/bot`} icon={<BiHome />}>
-          Bot
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/captcha`}
-          icon={<BiHome />}
-        >
-          Securité
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/logging`}
-          icon={<BiHome />}
-        >
-          Logging
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/command`}
-          icon={<BiHome />}
-        >
-          Commands
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/ticket`}
-          icon={<BiHome />}
-        >
-          Ticket
-        </AsideItem>
-        <AsideItem
-          href={`/dashboard/${guild?.guild_id}/scanner`}
-          icon={<BiHome />}
-        >
-          Scanner
-        </AsideItem>
+        {asideItemsData.map((item) => (
+          <AsideItem
+            key={item.link}
+            href={`/${item.link}/${guild?.guild_id}`}
+            icon={item.icon}
+          >
+            {item.label}
+          </AsideItem>
+        ))}
       </nav>
     </aside>
   )

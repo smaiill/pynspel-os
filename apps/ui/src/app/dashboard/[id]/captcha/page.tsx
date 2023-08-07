@@ -6,6 +6,8 @@ import Aside from '../../components/Aside'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { CaptchaForm } from './components/CaptchaForm'
+import { ModuleLayout } from '../../layouts/ModuleLayout'
+import { SkeletonBox, SkeletonTitle } from '../../components/Skeletons'
 
 type Props = {
   params: {
@@ -15,8 +17,24 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  const { data: guildData } = useFetchGuild(id)
-  const { data: moduleData } = useFetchModule(Modules.captcha, id)
+  const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
+  const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
+    Modules.captcha,
+    id
+  )
+
+  if (isGuildLoading || isModuleLoading) {
+    return (
+      <ModuleLayout>
+        <FlexColumn style={{ gap: 10 }}>
+          <SkeletonBox />
+          <SkeletonTitle />
+          <SkeletonBox />
+          <SkeletonTitle />
+        </FlexColumn>
+      </ModuleLayout>
+    )
+  }
 
   if (!guildData) {
     return <h1>Loading guild...</h1>
@@ -31,7 +49,7 @@ const page = ({ params }: Props) => {
       <Aside />
       <DashboardView>
         <FlexColumn style={{ gap: 10 }}>
-          {!guildData ? 'Loading...' : <CaptchaForm data={moduleData} />}
+          <CaptchaForm data={moduleData} />
         </FlexColumn>
       </DashboardView>
     </DashboardPage>

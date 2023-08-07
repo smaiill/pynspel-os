@@ -6,6 +6,12 @@ import Aside from '../../components/Aside'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import CommandForm from './components/CommandForm'
+import { ModuleLayout } from '../../layouts/ModuleLayout'
+import {
+  SkeletonBox,
+  SkeletonCustom,
+  SkeletonTitle,
+} from '../../components/Skeletons'
 
 type Props = {
   params: {
@@ -15,8 +21,21 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  const { data: guildData } = useFetchGuild(id)
-  const { data: moduleData } = useFetchModule(Modules.command, id)
+  const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
+  const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
+    Modules.command,
+    id
+  )
+
+  if (isGuildLoading || isModuleLoading) {
+    return (
+      <ModuleLayout>
+        <FlexColumn style={{ gap: 10 }}>
+          <SkeletonCustom hSize={10} />
+        </FlexColumn>
+      </ModuleLayout>
+    )
+  }
 
   if (!guildData) {
     return <h1>Loading guild...</h1>
@@ -27,14 +46,11 @@ const page = ({ params }: Props) => {
   }
 
   return (
-    <DashboardPage>
-      <Aside />
-      <DashboardView>
-        <FlexColumn style={{ gap: 10 }}>
-          {!guildData ? 'Loading...' : <CommandForm data={moduleData} />}
-        </FlexColumn>
-      </DashboardView>
-    </DashboardPage>
+    <ModuleLayout>
+      <FlexColumn style={{ gap: 10 }}>
+        <CommandForm data={moduleData} />
+      </FlexColumn>
+    </ModuleLayout>
   )
 }
 

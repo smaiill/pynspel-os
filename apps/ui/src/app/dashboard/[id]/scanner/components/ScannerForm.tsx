@@ -3,13 +3,14 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { DashboardCard } from '~/layouts/Dashboard'
-import { FlexColumn } from '~/layouts/Flex'
+import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
 import { InputSelectType } from '~/ui/input/InputSelectType'
+import { Typography } from '~/ui/typography/Typography'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'scanner'>
@@ -93,23 +94,43 @@ const ScannerForm = (props: LogginFormProps) => {
   })
 
   return (
-    <FlexColumn style={{ gap: 10 }}>
-      <DashboardCard>
-        <Controller
-          name="words.scan"
-          control={control}
-          render={({ field }) => {
-            return <Checkbox {...field}>Scanner les messages</Checkbox>
-          }}
-        />
+    <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
+      <DashboardCard
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          width: '100%',
+        }}
+      >
+        <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography color="secondary" typography="span">
+            Activer le scan des mots
+          </Typography>
+          <Controller
+            name="words.scan"
+            control={control}
+            render={({ field }) => {
+              return <Checkbox {...field} />
+            }}
+          />
+        </Flex>
         <InputSelectType
           words={bannedWords}
           onChange={(words) => setBannedWords(words)}
-        />
+          placeholder="Chien..."
+        >
+          Vos mots a bannir (non exacte)
+        </InputSelectType>
+
+        {/* TODO: Add example of what is exact word */}
         <InputSelectType
           words={bannedExactWords}
           onChange={(words) => setBannedExactWords(words)}
-        />
+          placeholder="Mots a bannir..."
+        >
+          Vos mots a bannir (exacte)
+        </InputSelectType>
         <InputSelect
           options={[
             { label: 'Aucune', value: 'none' },
@@ -119,13 +140,21 @@ const ScannerForm = (props: LogginFormProps) => {
           ]}
           value={action}
           setValue={setAction}
-        />
+        >
+          La sanction{' '}
+          <span style={{ color: '#D86767' }}>
+            Préviligiez un mute plustot que les autres sanctions.
+          </span>
+        </InputSelect>
         <InputSelect
           multi
           options={formatedChannels}
           value={ignoredChannels}
           setValue={setIgnoredChannels}
-        />
+          type="channel"
+        >
+          Channels a ignoré
+        </InputSelect>
         {action === 'mute' ? (
           <>
             <InputSelect
@@ -145,18 +174,33 @@ const ScannerForm = (props: LogginFormProps) => {
           </>
         ) : null}
       </DashboardCard>
-      <DashboardCard>
-        <Controller
-          name="links.scan"
-          control={control}
-          render={({ field }) => {
-            return <Checkbox {...field}>Scanner les liens</Checkbox>
-          }}
-        />
+      <DashboardCard
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          width: '100%',
+        }}
+      >
+        <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography color="secondary" typography="span">
+            Activer le scan des liens
+          </Typography>
+          <Controller
+            name="links.scan"
+            control={control}
+            render={({ field }) => {
+              return <Checkbox {...field} />
+            }}
+          />
+        </Flex>
         <InputSelectType
           words={allowedDomains}
           onChange={(domains) => setAllowedDomains(domains)}
-        />
+          placeholder="pynspel.com"
+        >
+          Les domaines autoriser
+        </InputSelectType>
         <InputSelect
           options={[
             { label: 'Aucune', value: 'none' },
@@ -166,13 +210,21 @@ const ScannerForm = (props: LogginFormProps) => {
           ]}
           value={actionLinks}
           setValue={setActionLinks}
-        />
+        >
+          La sanction{' '}
+          <span style={{ color: '#D86767' }}>
+            Préviligiez un mute plustot que les autres sanctions.
+          </span>
+        </InputSelect>
+        {/* TODO: Show only the text channels */}
         <InputSelect
           multi
           options={formatedChannels}
           value={ignoredChannelsLinks}
           setValue={setIgnoredChannelsLinks}
-        />
+        >
+          Les channels a ignoré
+        </InputSelect>
         {actionLinks === 'mute' ? (
           <>
             <InputSelect

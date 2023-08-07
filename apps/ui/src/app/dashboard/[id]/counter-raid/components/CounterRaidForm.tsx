@@ -1,4 +1,8 @@
-import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
+import {
+  InferModuleConfigType,
+  getModuleSchema,
+  validateModuleConfig,
+} from '@pynspel/common'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -19,6 +23,8 @@ import {
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'counterRaid'>
@@ -29,12 +35,12 @@ const CounterRaidForum = (props: LogginFormProps) => {
 
   const {
     handleSubmit,
-    setError,
     register,
     getValues,
     control,
-    formState: { isDirty },
+    formState: { isDirty, errors },
     setValue,
+    reset,
   } = useForm<InferModuleConfigType<'counterRaid'>>({
     defaultValues: {
       action: data.action,
@@ -45,6 +51,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
       mute_unit: data.mute_unit,
       raid_channel_lockdown: data.raid_channel_lockdown,
     },
+    resolver: zodResolver(getModuleSchema('counterRaid')),
   })
   const [action, setAction] = useState(getValues('action'))
   const [muteUnit, setMuteUnit] = useState(getValues('mute_unit'))
@@ -55,21 +62,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
   const handleSubmitForm = <M extends InferModuleConfigType<'counterRaid'>>(
     data: M
   ) => {
-    const groupedData = { ...data, action } as M
-    const parsedSchema = validateModuleConfig('counterRaid', groupedData)
-
-    if (!parsedSchema.success) {
-      const errors = parsedSchema.error
-      for (const err of errors) {
-        setError(err.path[0] as any, {
-          message: err.message,
-        })
-      }
-
-      return
-    }
-
-    mutation.mutate(parsedSchema.data)
+    mutation.mutateAsync(data).then(() => {
+      reset(getValues())
+    })
   }
 
   // TODO: Refactor this shit, add on change on InputSelect.
@@ -78,6 +73,12 @@ const CounterRaidForum = (props: LogginFormProps) => {
       shouldDirty: true,
     })
   }, [action])
+
+  useEffect(() => {
+    setValue('mute_unit', muteUnit, {
+      shouldDirty: true,
+    })
+  }, [muteUnit])
 
   if (!currentGuild) {
     return 'Invalid guild.'
@@ -90,13 +91,21 @@ const CounterRaidForum = (props: LogginFormProps) => {
           setValueAs: (value) => parseInt(value),
         })}
         label="Nombres de personnes qui rejoignent"
+        error={Boolean(errors.member_threshold)}
       />
+      {errors.member_threshold?.message ? (
+        <FieldError message={errors.member_threshold.message} />
+      ) : null}
       <Input
         {...register('interval', {
           setValueAs: (value) => parseInt(value),
         })}
         label="L'interval dans lequel ils doivent rejoindre pour activer l'anti raid"
+        error={Boolean(errors.member_threshold)}
       />
+      {errors.interval?.message ? (
+        <FieldError message={errors.interval.message} />
+      ) : null}
       <InputSelect
         options={[
           { label: 'Aucune', value: 'none' },
@@ -109,7 +118,17 @@ const CounterRaidForum = (props: LogginFormProps) => {
       >
         L'action a prendre
       </InputSelect>
-      <Input {...register('action_reason')} label='Raison de l"action' />
+      {errors.action?.message ? (
+        <FieldError message={errors.action.message} />
+      ) : null}
+      <Input
+        error={Boolean(errors.action_reason)}
+        {...register('action_reason')}
+        label='Raison de l"action'
+      />
+      {errors.action_reason?.message ? (
+        <FieldError message={errors.action_reason.message} />
+      ) : null}
       {/* TODO: Add warning to prevent to check all the permissions */}
 
       <Controller
@@ -143,8 +162,14 @@ const CounterRaidForum = (props: LogginFormProps) => {
             {...register('mute_timeout', {
               setValueAs: (value) => parseInt(value),
             })}
-            label="Temps du mute"
+            label={`Temps du mute, ${
+              muteUnit === 'day' ? '(1 to 5)' : '1 to 7200'
+            }`}
+            error={Boolean(errors.mute_timeout)}
           />
+          {errors.mute_timeout?.message ? (
+            <FieldError message={errors.mute_timeout.message} />
+          ) : null}
         </>
       ) : null}
 

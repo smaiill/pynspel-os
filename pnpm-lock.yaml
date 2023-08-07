@@ -51,9 +51,6 @@ importers:
       '@pynspel/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@pynspel/locale':
-        specifier: workspace:*
-        version: link:../../packages/locale
       cookie-parser:
         specifier: ^1.4.5
         version: 1.4.6
@@ -197,6 +194,12 @@ importers:
       '@pynspel/common':
         specifier: workspace:*
         version: link:../../packages/common
+      '@pynspel/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
+      '@smaiill/trin':
+        specifier: ^0.0.4
+        version: 0.0.4
       '@tanstack/react-query':
         specifier: ^4.29.12
         version: 4.29.12(react-dom@18.2.0)(react@18.2.0)
@@ -332,6 +335,12 @@ importers:
         version: 6.7.0(typescript@4.9.5)
 
   packages/types: {}
+
+  packages/utils:
+    devDependencies:
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(typescript@4.9.5)
 
 packages:
 
@@ -1802,6 +1811,10 @@ packages:
   /@sapphire/snowflake@3.5.1:
     resolution: {integrity: sha512-BxcYGzgEsdlG0dKAyOm0ehLGm2CafIrfQTZGWgkfKYbj+pNNsorZ7EotuZukc2MT70E0UbppVbtpBrqpzVzjNA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dev: false
+
+  /@smaiill/trin@0.0.4:
+    resolution: {integrity: sha512-i1tdux5vH3UodxGb4DyajnRF542su5vJBds+hiPr6Cv9jVv1tyWW3yuJytr8cDjWVCm7/x8M9+ZOmOAfjJD4mQ==}
     dev: false
 
   /@swc/helpers@0.4.14:
@@ -7860,6 +7873,42 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - ts-node
+
+  /tsup@7.2.0(typescript@4.9.5):
+    resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 4.0.1(esbuild@0.18.12)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.18.12
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 4.0.1(postcss@8.4.24)
+      resolve-from: 5.0.0
+      rollup: 3.23.1
+      source-map: 0.8.0-beta.0
+      sucrase: 3.32.0
+      tree-kill: 1.2.2
+      typescript: 4.9.5
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
 
   /tsutils@3.21.0(typescript@4.9.5):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

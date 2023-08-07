@@ -44,3 +44,15 @@ export const SkeletonTitle = () => {
     </SkeletonTheme>
   )
 }
+
+export const SkeletonCustom = ({ hSize = 2 }: { hSize?: number }) => {
+  return (
+    <SkeletonTheme
+      height={100 * (hSize / 1.5)}
+      baseColor={BASE_COLOR}
+      highlightColor={HIGHLIGHT_COLOR}
+    >
+      <Skeleton />
+    </SkeletonTheme>
+  )
+}

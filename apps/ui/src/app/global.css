@@ -24,3 +24,14 @@ body {
     linear-gradient(to right, #2e2f30 1px, #1f1f1f 0.5px);
   background-size: 100px 100px;
 }
+
+::-webkit-scrollbar {
+  border-radius: 10px;
+  background-color: rgb(58, 56, 56);
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(117, 114, 114);
+  border-radius: 5px;
+}
