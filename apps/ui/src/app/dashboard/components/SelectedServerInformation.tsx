@@ -28,13 +28,13 @@ const SelectedServerInformation = () => {
         <Flex className={topStyle}>
           <Image src="/pubg.png" width={100} height={100} alt="server-logo" />
           <FlexColumn>
-            <Typography color="secondary" typography="h3">
+            <Typography color="secondary" as="h3">
               {currentGuild.name}
             </Typography>
           </FlexColumn>
         </Flex>
         <Flex style={{ gap: 50, flexWrap: 'wrap' }}>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Text Chanels:{' '}
             {
               currentGuild.channels.filter(
@@ -42,7 +42,7 @@ const SelectedServerInformation = () => {
               ).length
             }
           </Typography>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Voice Chanels:{' '}
             {
               currentGuild.channels.filter(
@@ -50,7 +50,7 @@ const SelectedServerInformation = () => {
               ).length
             }
           </Typography>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Categories:{' '}
             {
               currentGuild.channels.filter(
@@ -58,7 +58,7 @@ const SelectedServerInformation = () => {
               ).length
             }
           </Typography>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Roles: {currentGuild.roles.length}
           </Typography>
         </Flex>

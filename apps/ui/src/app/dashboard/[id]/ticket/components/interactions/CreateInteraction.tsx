@@ -41,7 +41,7 @@ export const CreateInteraction = () => {
         alignItems: 'flex-start',
       }}
     >
-      <Typography color="secondary" typography="span">
+      <Typography color="secondary" as="span">
         Create interaction
       </Typography>
       <Input {...register('name')} label="Le label du bouton" />

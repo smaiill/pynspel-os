@@ -1,10 +1,13 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
 import { useForm } from 'react-hook-form'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
+import { FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
+import { TICKET_MAX_PER_USER } from '@pynspel/common'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'ticket'>
@@ -13,9 +16,11 @@ type LogginFormProps = {
 const TicketForm = (props: LogginFormProps) => {
   const { data } = props
 
-  const { handleSubmit, setError, register } = useForm<
-    InferModuleConfigType<'ticket'>
-  >({
+  const {
+    handleSubmit,
+    formState: { isDirty, errors },
+    register,
+  } = useForm<InferModuleConfigType<'ticket'>>({
     defaultValues: {
       max_each_user: data.max_each_user,
     },
@@ -25,21 +30,7 @@ const TicketForm = (props: LogginFormProps) => {
   const mutation = useMutateModule('ticket')
 
   const handleSubmitForm = (data: InferModuleConfigType<'ticket'>) => {
-    const parsedSchema = validateModuleConfig('ticket', data)
-
-    console.log(parsedSchema)
-    if (!parsedSchema.success) {
-      const errors = parsedSchema.error
-      for (const err of errors) {
-        setError(err.path[0] as keyof InferModuleConfigType<'ticket'>, {
-          message: err.message,
-        })
-      }
-
-      return
-    }
-
-    mutation.mutate(parsedSchema.data)
+    mutation.mutate(data)
   }
 
   if (!currentGuild) {
@@ -47,18 +38,28 @@ const TicketForm = (props: LogginFormProps) => {
   }
 
   return (
-    <Form onSubmit={handleSubmit(handleSubmitForm)}>
+    <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
       <Input
         {...register('max_each_user', {
           setValueAs: (value) => parseInt(value),
         })}
-        label="Le nombres de tickets max par personne"
+        label={`Le nombres de tickets max par personne, (maximum ${TICKET_MAX_PER_USER})`}
+        error={!!errors.max_each_user}
       />
+      {errors.max_each_user ? (
+        <FieldError message={errors.max_each_user.message} />
+      ) : null}
 
-      <ButtonPrimary disabled={mutation.isLoading} type="submit">
-        Enregistrer
-      </ButtonPrimary>
-    </Form>
+      {isDirty ? (
+        <ButtonPrimary
+          onClick={handleSubmit(handleSubmitForm)}
+          disabled={mutation.isLoading}
+          type="submit"
+        >
+          Enregistrer
+        </ButtonPrimary>
+      ) : null}
+    </FlexColumn>
   )
 }
 

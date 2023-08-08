@@ -1,6 +1,15 @@
-import { HTMLAttributes, PropsWithChildren } from 'react'
+import {
+  HTMLAttributes,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import DashboardHeader from '~/app/dashboard/components/DashboardHeader'
 import { Flex, FlexColumn } from './Flex'
+import { Typography } from '~/ui/typography/Typography'
+import { ChevronDown } from 'lucide-react'
+import { css } from '../../styled-system/css'
 
 const DashboardView = (props: PropsWithChildren) => {
   const { children } = props
@@ -43,22 +52,63 @@ const DashboardPage = (props: PropsWithChildren<DashboardPageProps>) => {
   )
 }
 
-type DashboardCardProps = HTMLAttributes<HTMLDivElement>
+type DashboardCardProps = {
+  openable?: boolean
+  title?: string
+} & HTMLAttributes<HTMLDivElement>
 
 const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
-  const { children, style, ...rest } = props
+  const { children, style, openable = false, title, ...rest } = props
+  const [isOpen, setIsOpen] = useState(false)
+  const [openHeight, setOpenHeight] = useState('55px')
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (cardRef.current) {
+      setOpenHeight(`${cardRef.current.scrollHeight}px`)
+    }
+  }, [cardRef])
+
   return (
     <div
       style={{
-        padding: 10,
+        padding: 15,
         borderRadius: 10,
         backgroundColor: '#191919',
         color: 'white',
-        ...style,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        transition: 'max-height 1s',
+        width: '100%',
+        ...(openable ? { maxHeight: isOpen ? openHeight : '55px' } : {}),
       }}
+      ref={cardRef}
+      onClick={() => setIsOpen((prevV) => !prevV)}
       {...rest}
     >
-      {children}
+      <header
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          ...(!title && openable ? { justifyContent: 'flex-end' } : {}),
+        }}
+      >
+        {title ? (
+          <Typography color="secondary" as="h5">
+            {title}
+          </Typography>
+        ) : null}
+        {openable ? <ChevronDown /> : null}
+      </header>
+      <div
+        style={
+          !title && openable && !isOpen ? { marginTop: '5px', ...style } : style
+        }
+      >
+        {children}
+      </div>
     </div>
   )
 }

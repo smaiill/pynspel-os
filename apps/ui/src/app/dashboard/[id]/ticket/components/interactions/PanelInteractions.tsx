@@ -94,7 +94,7 @@ const PanelInteractions = (props: Props) => {
 
   return (
     <FlexColumn style={{ gap: 10 }}>
-      <Typography typography="span">Interactions</Typography>
+      <Typography as="span">Interactions</Typography>
       <CreateInteraction />
       {interactions?.map((interaction) => (
         <Interaction key={interaction.id} interaction={interaction} />

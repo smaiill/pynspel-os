@@ -1,5 +1,11 @@
-import { ForwardedRef, forwardRef, PropsWithChildren } from 'react'
-import { cva, cx, RecipeVariantProps } from '../../../styled-system/css'
+import {
+  CSSProperties,
+  ForwardedRef,
+  forwardRef,
+  PropsWithChildren,
+} from 'react'
+import { css, cva, cx, RecipeVariantProps } from '../../../styled-system/css'
+import { SystemStyleObject } from '../../../styled-system/types'
 
 const typo = cva({
   base: {
@@ -8,7 +14,7 @@ const typo = cva({
   },
 
   variants: {
-    typography: {
+    as: {
       h1: {
         fontSize: '2rem',
       },
@@ -41,32 +47,56 @@ const typo = cva({
       primary: {
         color: 'fonts.primary',
       },
+      danger: {
+        color: 'fonts.danger',
+      },
+      warn: {
+        color: 'fonts.warn',
+      },
     },
   },
 })
 
 export type TypographyVariants = RecipeVariantProps<typeof typo>
 
+type TypographyColors = Exclude<
+  TypographyVariants extends infer AV
+    ? AV extends object
+      ? AV[keyof AV & 'color']
+      : never
+    : never,
+  undefined
+>
+
+type TypographyElement = Exclude<
+  TypographyVariants extends infer AV
+    ? AV extends object
+      ? AV[keyof AV & 'as']
+      : never
+    : never,
+  undefined
+>
+
 interface TypographyProps {
-  typography: any
-  color?: any
-  style?: any
+  as: TypographyElement
+  color?: TypographyColors
   className?: string
+  style?: CSSProperties
 }
 
 const Typography = forwardRef(
   (props: PropsWithChildren<TypographyProps>, ref: ForwardedRef<any>) => {
     const {
       children,
-      typography,
+      as: asElement,
       color = 'primary',
       className,
       ...rest
     } = props
 
-    const Element = typography
+    const Element = asElement
 
-    const csx = cx(typo({ typography, color }), className)
+    const csx = cx(typo({ as: asElement, color }), className)
 
     return (
       <Element ref={ref} className={csx} {...rest}>

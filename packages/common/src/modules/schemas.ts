@@ -1,4 +1,5 @@
 import { z, ZodIssue } from 'zod'
+import { TICKET_MAX_PER_USER } from './consts'
 
 export const Modules = {
   bot: 'bot',
@@ -103,7 +104,7 @@ const modulesSchemas = {
     user_join: z.boolean().default(false),
   }),
   ticket: z.object({
-    max_each_user: z.number().min(1).max(5).default(3),
+    max_each_user: z.number().min(1).max(TICKET_MAX_PER_USER).default(3),
   }),
   command: z.object({
     kick: z.boolean().default(false),

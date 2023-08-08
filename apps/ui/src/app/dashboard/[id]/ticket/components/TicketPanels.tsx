@@ -4,6 +4,7 @@ import { useFetchPanels } from '../hooks/useFetchPanels'
 import CreatePanel from './CreatePanel'
 import { PanelsEmpty } from './PanelsEmpty'
 import { TicketPanel } from './TicketPanel'
+import { Typography } from '~/ui/typography/Typography'
 
 export const TicketPanels = () => {
   const currentGuild = useCurrentGuildValue()
@@ -15,8 +16,7 @@ export const TicketPanels = () => {
   }
 
   return (
-    <DashboardCard>
-      <h1>Panels</h1>
+    <DashboardCard title="Panels" style={{ gap: 5 }}>
       <CreatePanel />
       {data && data.length > 0 ? (
         data.map((panel) => <TicketPanel key={panel.id} panel={panel} />)

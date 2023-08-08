@@ -53,16 +53,6 @@ const CaptchaForm = (props: Props) => {
   const mutation = useMutateModule('captcha')
 
   // TODO: useCurrentGuildRoles
-  const formatedRoles = currentGuild.roles
-    .filter((_role) => _role.id !== currentGuild.guild_id)
-    .map((role) => {
-      return { label: role.name, value: role.id, color: role.color }
-    })
-
-  // TODO: useCurrentGuildChannels;
-  const formatedChannels = currentGuild.channels.map((channel) => {
-    return { label: channel.name, value: channel.id }
-  })
 
   const handleSubmitForm = (data: InferModuleConfigType<'captcha'>) => {
     mutation.mutate(data)
@@ -95,6 +85,17 @@ const CaptchaForm = (props: Props) => {
   if (!currentGuild) {
     return <h1>Invalid guild.</h1>
   }
+
+  const formatedRoles = currentGuild.roles
+    .filter((_role) => _role.id !== currentGuild.guild_id)
+    .map((role) => {
+      return { label: role.name, value: role.id, color: role.color }
+    })
+
+  // TODO: useCurrentGuildChannels;
+  const formatedChannels = currentGuild.channels.map((channel) => {
+    return { label: channel.name, value: channel.id }
+  })
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>

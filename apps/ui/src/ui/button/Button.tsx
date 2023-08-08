@@ -1,3 +1,4 @@
+import { Crown } from 'lucide-react'
 import {
   ButtonHTMLAttributes,
   ForwardedRef,
@@ -78,5 +79,21 @@ export const ButtonSpecial = forwardRef(
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return <Button {...props} ref={ref} variants={{ visual: 'special' }} />
+  }
+)
+
+export const ButtonPremium = forwardRef(
+  (
+    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    const { children, ...rest } = props
+
+    return (
+      <Button {...rest} ref={ref} variants={{ visual: 'premium' }}>
+        <Crown size={17} />
+        {children}
+      </Button>
+    )
   }
 )

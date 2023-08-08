@@ -4,6 +4,9 @@ import { css } from '../../../../styled-system/css'
 import AsideItem from './AsideItem'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { asideItemsData } from '~/data/aside.items'
+import { useGlobalModules, useGuildModulesState } from '../hooks/modules'
+import { SkeletonBox } from './Skeletons'
+import { Home } from 'lucide-react'
 
 const styles = css({
   backgroundColor: '#191919',
@@ -36,6 +39,34 @@ const styles = css({
 
 const Aside = () => {
   const guild = useCurrentGuildValue()
+  const { data: globalModules, isLoading: isGlobalModulesLoading } =
+    useGlobalModules()
+  const { data: guildModulesState, isLoading: isGuildModulesLoading } =
+    useGuildModulesState(guild?.guild_id)
+
+  if (isGlobalModulesLoading || isGuildModulesLoading) {
+    return (
+      <aside className={styles}>
+        <header>
+          <Logo />
+        </header>
+        <nav>
+          <SkeletonBox />
+          <SkeletonBox />
+          <SkeletonBox />
+        </nav>
+      </aside>
+    )
+  }
+
+  const isModuleActiveForGuild = (name: string) => {
+    console.log()
+    return Boolean(
+      guildModulesState?.find(
+        (element) => element.name === name && element.is_active
+      )
+    )
+  }
 
   return (
     <aside className={styles}>
@@ -43,15 +74,38 @@ const Aside = () => {
         <Logo />
       </header>
       <nav>
-        {asideItemsData.map((item) => (
-          <AsideItem
-            key={item.link}
-            href={`/${item.link}/${guild?.guild_id}`}
-            icon={item.icon}
-          >
-            {item.label}
-          </AsideItem>
-        ))}
+        <AsideItem
+          type="normal"
+          href={`/dashboard/${guild?.guild_id}/`}
+          icon={<Home strokeWidth={1.5} size={20} />}
+        >
+          Tableau de bord
+        </AsideItem>
+
+        {globalModules && globalModules.length > 0
+          ? globalModules.map((item) => {
+              const moduleData = asideItemsData.find(
+                (_item) => _item.name === item.name
+              )
+
+              if (!moduleData) {
+                return null
+              }
+
+              return (
+                <AsideItem
+                  key={moduleData.link}
+                  href={moduleData.link}
+                  icon={moduleData.icon}
+                  type="module"
+                  globalActive={item.active}
+                  isActiveForGuild={isModuleActiveForGuild(item.name)}
+                >
+                  {moduleData.label}
+                </AsideItem>
+              )
+            })
+          : null}
       </nav>
     </aside>
   )

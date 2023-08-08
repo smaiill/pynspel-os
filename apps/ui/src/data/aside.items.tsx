@@ -1,44 +1,56 @@
+import {
+  Bot,
+  Check,
+  ChevronRightSquare,
+  Lock,
+  RotateCcw,
+  ScanLine,
+  ScrollText,
+  Ticket,
+} from 'lucide-react'
 import { BiHome } from 'react-icons/bi'
 
 export const asideItemsData = [
   {
-    link: '/',
-    label: 'Tableau de bord',
-    icon: <BiHome />,
-  },
-  {
     link: '/bot',
     label: 'Bot',
-    icon: <BiHome />,
+    icon: <Bot strokeWidth={1.5} size={20} />,
+    name: 'bot',
   },
   {
     link: '/counter-raid',
     label: 'Anti-Raid',
-    icon: <BiHome />,
+    icon: <Lock strokeWidth={1.5} size={20} />,
+    name: 'counterRaid',
   },
   {
     link: '/captcha',
     label: 'Captcha',
-    icon: <BiHome />,
+    icon: <RotateCcw strokeWidth={1.5} size={20} />,
+    name: 'captcha',
   },
   {
     link: '/logging',
     label: 'Logging',
-    icon: <BiHome />,
+    icon: <ScrollText strokeWidth={1.5} size={20} />,
+    name: 'logging',
   },
   {
     link: '/command',
     label: 'Commandes',
-    icon: <BiHome />,
+    icon: <ChevronRightSquare strokeWidth={1.5} size={20} />,
+    name: 'command',
   },
   {
     link: '/ticket',
     label: 'Tickets',
-    icon: <BiHome />,
+    icon: <Ticket strokeWidth={1.5} size={20} />,
+    name: 'ticket',
   },
   {
     link: '/scanner',
     label: 'Scanner',
-    icon: <BiHome />,
+    icon: <ScanLine strokeWidth={1.5} size={20} />,
+    name: 'scanner',
   },
 ]

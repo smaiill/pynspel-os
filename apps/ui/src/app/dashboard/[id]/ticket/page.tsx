@@ -6,6 +6,11 @@ import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
 import TicketForm from './components/TicketForm'
 import { TicketPanels } from './components/TicketPanels'
+import {
+  SkeletonBox,
+  SkeletonCustom,
+  SkeletonTitle,
+} from '../../components/Skeletons'
 
 type Props = {
   params: {
@@ -15,8 +20,21 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  const { data: guildData } = useFetchGuild(id)
-  const { data: moduleData } = useFetchModule(Modules.ticket, id)
+  const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
+  const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
+    Modules.ticket,
+    id
+  )
+
+  if (isGuildLoading || isModuleLoading) {
+    return (
+      <ModuleLayout>
+        <SkeletonBox />
+        <SkeletonCustom hSize={6} />
+        <SkeletonTitle />
+      </ModuleLayout>
+    )
+  }
 
   if (!guildData) {
     return <h1>Loading guild...</h1>
@@ -29,7 +47,7 @@ const page = ({ params }: Props) => {
   return (
     <ModuleLayout>
       <FlexColumn style={{ gap: 10 }}>
-        {!guildData ? 'Loading...' : <TicketForm data={moduleData} />}
+        <TicketForm data={moduleData} />
         <TicketPanels />
       </FlexColumn>
     </ModuleLayout>

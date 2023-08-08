@@ -20,7 +20,7 @@ const page = () => {
           padding: 50,
         }}
       >
-        <Typography typography="h1">Select a server !</Typography>
+        <Typography as="h1">Select a server !</Typography>
 
         <Flex
           style={{

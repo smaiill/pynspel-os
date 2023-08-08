@@ -91,7 +91,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
           setValueAs: (value) => parseInt(value),
         })}
         label="Nombres de personnes qui rejoignent"
-        error={Boolean(errors.member_threshold)}
+        error={!!errors.member_threshold}
       />
       {errors.member_threshold?.message ? (
         <FieldError message={errors.member_threshold.message} />
@@ -101,7 +101,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
           setValueAs: (value) => parseInt(value),
         })}
         label="L'interval dans lequel ils doivent rejoindre pour activer l'anti raid"
-        error={Boolean(errors.member_threshold)}
+        error={!!errors.member_threshold}
       />
       {errors.interval?.message ? (
         <FieldError message={errors.interval.message} />
@@ -122,7 +122,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
         <FieldError message={errors.action.message} />
       ) : null}
       <Input
-        error={Boolean(errors.action_reason)}
+        error={!!errors.action_reason}
         {...register('action_reason')}
         label='Raison de l"action'
       />
@@ -165,7 +165,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
             label={`Temps du mute, ${
               muteUnit === 'day' ? '(1 to 5)' : '1 to 7200'
             }`}
-            error={Boolean(errors.mute_timeout)}
+            error={!!errors.mute_timeout}
           />
           {errors.mute_timeout?.message ? (
             <FieldError message={errors.mute_timeout.message} />

@@ -6,6 +6,7 @@ import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
 import { usePanelMutations } from '../panels/hooks/usePanelMutations'
+import { Trash } from 'lucide-react'
 
 type TicketPanel = {
   name: string
@@ -37,17 +38,27 @@ const TicketPanel = ({ panel }: TicketPanelProps) => {
   return (
     <Flex
       onClick={handleOpenPanel}
-      style={{
+      className={css({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: '#1F1F1F',
         padding: '20px',
         borderRadius: '5px',
         marginTop: '10px',
-      }}
+        cursor: 'pointer',
+        transition: '.3s',
+        _hover: {
+          bg: 'rgb(77, 76, 76)',
+        },
+      })}
     >
-      <Typography typography="span">{panel.name}</Typography>
-      <AiOutlineDelete onClick={handleDeletePanel} color="red" size={20} />
+      <Typography as="span">{panel.name}</Typography>
+      <Trash
+        strokeWidth={1}
+        onClick={handleDeletePanel}
+        color="red"
+        size={20}
+      />
     </Flex>
   )
 }

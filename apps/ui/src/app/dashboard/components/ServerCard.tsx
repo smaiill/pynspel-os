@@ -35,7 +35,7 @@ const ServerCard = (props: any) => {
         src={'/pubg.png'}
         // src={`https://cdn.discordapp.com/icons/${props.id}/${props.icon}.png`}
       />
-      <Typography typography="h4">{props.name}</Typography>
+      <Typography as="h4">{props.name}</Typography>
       <ButtonPrimary onClick={handleManageGuild}>Gérer</ButtonPrimary>
     </FlexColumn>
   )

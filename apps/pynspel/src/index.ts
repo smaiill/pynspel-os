@@ -13,6 +13,7 @@ import { RoleUpdate } from 'events/roleUpdate'
 import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { KickCommand } from './modules/command/handlers/kick'
+import { redis } from 'utils/redis'
 
 if (env.NODE_ENV === 'production') {
   process.on('unhandledRejection', (reason, promise) => {

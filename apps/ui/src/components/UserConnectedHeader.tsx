@@ -58,7 +58,9 @@ const UserConnectedHeader = () => {
     <div ref={containerRef} className={styles}>
       <Image
         onClick={toggleVisibility}
-        src={'/pubg.png'}
+        src={
+          'https://cdn.discordapp.com/avatars/504227742678646784/dd5bf03cf11d79ecbe51088cfde42940.png?size=1024'
+        }
         alt="profile-image"
         height={45}
         width={45}

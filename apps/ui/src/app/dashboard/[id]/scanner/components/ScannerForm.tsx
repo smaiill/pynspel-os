@@ -104,7 +104,7 @@ const ScannerForm = (props: LogginFormProps) => {
         }}
       >
         <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Activer le scan des mots
           </Typography>
           <Controller
@@ -183,7 +183,7 @@ const ScannerForm = (props: LogginFormProps) => {
         }}
       >
         <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography color="secondary" typography="span">
+          <Typography color="secondary" as="span">
             Activer le scan des liens
           </Typography>
           <Controller
@@ -244,13 +244,13 @@ const ScannerForm = (props: LogginFormProps) => {
           </>
         ) : null}
       </DashboardCard>
-      <ButtonPrimary
+      {/* <ButtonPrimary
         onClick={handleSubmit(handleSubmitForm)}
         disabled={mutation.isLoading}
         type="submit"
       >
         Enregistrer
-      </ButtonPrimary>
+      </ButtonPrimary> */}
     </FlexColumn>
   )
 }

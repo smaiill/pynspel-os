@@ -21,10 +21,10 @@ const checkboxWrapper = css({
 
 const wrapperStyle = css({
   display: 'flex',
-  width: '60px',
+  width: '55px',
   height: '25px',
   position: 'relative',
-  rounded: '5px',
+  rounded: '10px',
   overflow: 'hidden',
   border: '1px solid rgb(77, 76, 76)',
   cursor: 'pointer !important',
@@ -34,7 +34,7 @@ const wrapperStyle = css({
       bgColor: 'special !important',
 
       _before: {
-        left: '64% !important',
+        left: '63% !important',
       },
     },
   },
@@ -67,11 +67,11 @@ const wrapperStyle = css({
       width: '18px',
       height: '70%',
       bgColor: 'white',
-      rounded: '5px',
+      rounded: '10px',
       translate: '0 -50%',
       top: '50%',
       transition: '.3s',
-      left: '4px',
+      left: '3px',
     },
   },
 })

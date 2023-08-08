@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { fetchApi } from '~/utils/fetchApi'
 import { pxToast } from '../components/toast/toast-handler'
+import { ModuleStateApi } from '@pynspel/types'
 
 export const useFetchModule = <M extends ModulesTypes>(
   module: M,
@@ -17,6 +18,16 @@ export const useFetchModule = <M extends ModulesTypes>(
       ),
     onSuccess(data) {
       console.log(data)
+    },
+  })
+}
+
+export const useGuildModulesState = (guildId: string) => {
+  const stringGuildId = String(guildId)
+  return useQuery<{ name: string; is_active: boolean }[]>({
+    queryKey: ['modules', stringGuildId],
+    queryFn: async () => {
+      return await fetchApi(`/api/dashboard/guilds/${stringGuildId}/modules`)
     },
   })
 }
@@ -48,6 +59,15 @@ export const useMutateModule = <M extends ModulesTypes>(
     },
     onError() {
       pxToast('error', 'Error, retry again.')
+    },
+  })
+}
+
+export const useGlobalModules = () => {
+  return useQuery<ModuleStateApi[]>({
+    queryKey: ['modules'],
+    queryFn: async () => {
+      return await fetchApi('/api/modules')
     },
   })
 }

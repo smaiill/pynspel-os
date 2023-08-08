@@ -44,6 +44,14 @@
     "path": "api/dashboard/guilds/:id"
   },
   {
+    "routeName": "getGuildsIdModules",
+    "_args": [
+      "id"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/guilds/:id/modules"
+  },
+  {
     "routeName": "getBotGuildId",
     "_args": [
       "guildId"
@@ -271,5 +279,11 @@
     "_args": [],
     "method": "GET",
     "path": "api/client/serving-guilds"
+  },
+  {
+    "routeName": "getModules",
+    "_args": [],
+    "method": "GET",
+    "path": "api/modules"
   }
 ]

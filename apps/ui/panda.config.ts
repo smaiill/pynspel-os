@@ -1,4 +1,5 @@
 import { defineConfig } from '@pandacss/dev'
+import { colors } from '~/theme/colors'
 
 export default defineConfig({
   // Whether to use css reset
@@ -28,10 +29,10 @@ export default defineConfig({
         success: { value: '#3d8b2e' },
         warn: { value: '#e5871a' },
         special: {
-          value: '#00A86B',
+          value: '#5D5FEF',
         },
         specialBg: {
-          value: '#00A86B30',
+          value: '#5D5FEF30',
         },
         inactive: { value: '#1f1f1f' },
         hover: {
@@ -45,7 +46,9 @@ export default defineConfig({
           danger: { value: '#b35454' },
           dangerHover: { value: '#bd3838' },
           special: { value: '{colors.special}' },
+          warn: { value: '{colors.warn}' },
         },
+        ...colors,
       },
 
       gradients: {

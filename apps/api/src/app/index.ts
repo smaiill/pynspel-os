@@ -16,6 +16,7 @@ import { redis } from 'utils/redis'
 import { deserializeSession } from 'utils/session'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 import { db } from 'modules/db'
+import { ChannelFlags } from 'discord-api-types/v10'
 
 const app = express()
 
@@ -89,7 +90,6 @@ app.listen(env.PORT, async () => {
   }
 
   // console.log(await db.exec('DELETE FROM panels'))
-  console.log(await db.exec('SELECT * FROM panels'))
 
   // console.log(await db.exec('SELECT * FROM panels'))
   // await db.exec('DELETE FROM panel_interactions')

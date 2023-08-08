@@ -36,7 +36,7 @@ const page = ({ params }: Props) => {
     <DashboardPage>
       <Aside />
       <DashboardView>
-        <Typography typography="h1">
+        <Typography as="h1">
           Welcome, smail. 👋 on {currentGuild?.name}
         </Typography>
 

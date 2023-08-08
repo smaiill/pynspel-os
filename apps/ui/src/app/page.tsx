@@ -62,7 +62,7 @@ const page = () => {
             fontSize: 'clamp(2rem, 8vw, 4rem)',
           }}
           className="__days"
-          typography="h1"
+          as="h1"
         >
           Pynspel <br /> Discord Bot
         </Typography>
@@ -71,7 +71,7 @@ const page = () => {
             marginTop: 10,
           }}
           color="secondary"
-          typography="p"
+          as="p"
         >
           Pynspel is a versatile Discord bot designed to assist users in
           securing and protecting their servers.
@@ -85,7 +85,7 @@ const page = () => {
           <ButtonPrimary>Ajouter Pynspel</ButtonPrimary>
           <ButtonSpecial>Dashboard</ButtonSpecial>
         </Flex>
-        <Typography color="secondary" typography="p" className={serversStyles}>
+        <Typography color="secondary" as="p" className={serversStyles}>
           Serving {data.count} server.
         </Typography>
       </main>

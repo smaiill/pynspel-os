@@ -18,7 +18,7 @@ const AsideCategory = (props: PropsWithChildren) => {
             fontWeight: 600,
           }}
           color="secondary"
-          typography="p"
+          as="p"
         >
           Gestion du serveur
         </Typography>
