@@ -14,6 +14,7 @@ export type PanelApi = {
   name: string
   guild_id: string
   message: null | string
+  channel_id: string | null
   interactions: Interaction[]
 }
 

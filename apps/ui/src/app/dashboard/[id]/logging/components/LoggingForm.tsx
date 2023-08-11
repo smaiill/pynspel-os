@@ -4,13 +4,17 @@ import {
   getModuleSchema,
   validateModuleConfig,
 } from '@pynspel/common'
+import { ChannelType } from 'discord-api-types/v10'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
+import {
+  useCurrentGuildChannels,
+  useCurrentGuildValue,
+} from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { InputSelect } from '~/ui/input/InputSelect'
@@ -64,9 +68,11 @@ const LoggingForm = (props: LogginFormProps) => {
     return 'Invalid guild.'
   }
 
-  const formatedChannels = currentGuild.channels.map((channel) => {
-    return { label: channel.name, value: channel.id }
-  })
+  const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
+    (channel) => {
+      return { label: channel.name, value: channel.id }
+    }
+  )
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>

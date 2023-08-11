@@ -1,25 +1,41 @@
+import { ButtonBuilder } from '@discordjs/builders'
+import { HttpStatus, Interaction, PanelApi } from '@pynspel/types'
 import { Request, Response } from 'express'
+import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
 import { DISCORD_BASE_API } from 'utils/constants'
 import { env } from 'utils/env'
 import { HttpException } from 'utils/error'
 
 // TODO: All securitys
-const createInteractions = (
-  i: { name: string; id: string; style: number }[]
-) => {
-  const a = []
-  for (const int of i) {
-    const buttonBuilder = new Builders.ButtonBuilder({
-      custom_id: `ticket.create.${int.id}`,
-      style: Number(int.style),
-      label: int.name,
-    })
 
-    a.push(buttonBuilder.toJSON())
+// ({
+//   custom_id: `ticket.create.${int.id}`,
+//   style: Number(int.style),
+//   label: int.name,
+// })
+const createInteractions = (interactions: Interaction[]) => {
+  const returnedInteractions = []
+
+  for (const interaction of interactions) {
+    const buttonBuilder = new ButtonBuilder()
+      .setStyle(interaction.style)
+      .setCustomId(`ticket.create.${interaction.id}`)
+
+    if (interaction.name) {
+      buttonBuilder.setLabel(interaction.name)
+    }
+
+    if (interaction.emoji) {
+      buttonBuilder.setEmoji({
+        name: interaction.emoji,
+      })
+    }
+
+    returnedInteractions.push(buttonBuilder.toJSON())
   }
 
-  return a
+  return returnedInteractions
 }
 
 class _PanelController {
@@ -87,7 +103,7 @@ class _PanelController {
     const { panelId } = req.params
     const { name, message, channel_id } = req.body
 
-    // TODO: Check if the bot and the user are in the guild.
+    // TODO: Check if the bot and the user are in the guild. and that is a valid channel.
 
     await db.exec(
       'UPDATE panels SET name = $1, message = $2, channel_id = $3 WHERE id = $4',
@@ -178,18 +194,48 @@ class _PanelController {
     const { panelId } = req.params
     // todo: add channel to send too in the body.
 
-    const _res = await db.exec(
+    const [panelDb] = await db.exec<PanelApi>(
       `
-      SELECT * FROM panel_interactions WHERE panel_id = $1
+      SELECT
+      p.*,
+      CASE
+          WHEN COUNT(pi.id) = 0 THEN ARRAY[]::JSON[]
+          ELSE ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+              'id', CAST(pi.id AS STRING),
+              'name', pi.name,
+              'parent_id', pi.parent_id,
+              'panel_id', CAST(pi.panel_id AS STRING),
+              'emoji', pi.emoji,
+              'style', pi.style
+            )
+          )
+        END AS interactions
+      FROM panels p
+      LEFT JOIN panel_interactions pi ON p.id = pi.panel_id
+      WHERE p.id = $1
+      GROUP BY p.id;
     `,
       [panelId]
     )
 
-    const interactions = createInteractions(_res)
+    if (!panelDb) {
+      throw new HttpException(HttpStatus.NOT_FOUND, 'Invalid panel')
+    }
+
+    if (panelDb.interactions.length <= 0) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, 'You have no shit.')
+    }
+
+    if (!panelDb.channel_id) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid channel.')
+    }
+
+    const interactions = createInteractions(panelDb.interactions)
 
     try {
       const message = await fetch(
-        `${DISCORD_BASE_API}/channels/1132281945942925412/messages`,
+        `${DISCORD_BASE_API}/channels/${panelDb.channel_id}/messages`,
         {
           method: 'POST',
           headers: {
@@ -197,7 +243,7 @@ class _PanelController {
             Authorization: `Bot ${env.CLIENT_TOKEN}`,
           },
           body: JSON.stringify({
-            content: 'This is a message with components',
+            content: panelDb.message,
             components: [
               {
                 type: 1,

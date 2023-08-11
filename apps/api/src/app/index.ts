@@ -17,6 +17,7 @@ import { deserializeSession } from 'utils/session'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 import { db } from 'modules/db'
 import { ChannelFlags } from 'discord-api-types/v10'
+import { z } from 'zod'
 
 const app = express()
 

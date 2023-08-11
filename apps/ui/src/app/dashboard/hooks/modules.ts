@@ -23,11 +23,47 @@ export const useFetchModule = <M extends ModulesTypes>(
 }
 
 export const useGuildModulesState = (guildId: string) => {
+  // TODO: This makes to many requests when the id is undefined
   const stringGuildId = String(guildId)
   return useQuery<{ name: string; is_active: boolean }[]>({
     queryKey: ['modules', stringGuildId],
     queryFn: async () => {
       return await fetchApi(`/api/dashboard/guilds/${stringGuildId}/modules`)
+    },
+  })
+}
+
+export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
+  const queryClient = useQueryClient()
+  const currentGuild = useCurrentGuildValue()
+
+  return useMutation({
+    mutationFn: async (newValue: boolean) => {
+      return await fetchApi(
+        `/api/dashboard/guilds/${currentGuild?.guild_id}/modules/${module}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({ is_active: newValue }),
+        }
+      )
+    },
+    onSuccess(_, value) {
+      queryClient.setQueryData(
+        ['modules', currentGuild?.guild_id],
+        (previous) => {
+          const updatedData = previous.map((_module) => {
+            if (_module.name === module) {
+              return {
+                ..._module,
+                is_active: value,
+              }
+            }
+
+            return _module
+          })
+          return [...updatedData]
+        }
+      )
     },
   })
 }

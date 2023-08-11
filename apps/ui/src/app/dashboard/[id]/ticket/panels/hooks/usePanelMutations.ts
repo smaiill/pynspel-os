@@ -81,5 +81,13 @@ export const usePanelMutations = () => {
     },
   })
 
-  return { deletePanel, updatePanel, createPanel }
+  const sendPanel = useMutation({
+    mutationFn: async (panelId: string) => {
+      return await fetchApi(`/api/dashboard/panels/${panelId}/send`, {
+        method: 'POST',
+      })
+    },
+  })
+
+  return { deletePanel, updatePanel, createPanel, sendPanel }
 }

@@ -55,7 +55,10 @@ export const CreateInteraction = () => {
       {emojis ? (
         <EmojiPicker onEmojiClick={(e) => setValue('emoji', e.emoji)} />
       ) : null}
-      <ButtonSpecial onClick={handleSubmit(handleCreateInteraction)}>
+      <ButtonSpecial
+        disabled={createInteraction.isLoading}
+        onClick={handleSubmit(handleCreateInteraction)}
+      >
         Crée
       </ButtonSpecial>
     </DashboardCard>

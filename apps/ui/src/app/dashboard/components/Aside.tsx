@@ -76,7 +76,7 @@ const Aside = () => {
       <nav>
         <AsideItem
           type="normal"
-          href={`/dashboard/${guild?.guild_id}/`}
+          href={`/`}
           icon={<Home strokeWidth={1.5} size={20} />}
         >
           Tableau de bord
@@ -100,6 +100,8 @@ const Aside = () => {
                   type="module"
                   globalActive={item.active}
                   isActiveForGuild={isModuleActiveForGuild(item.name)}
+                  name={item.name}
+                  label={moduleData.label}
                 >
                   {moduleData.label}
                 </AsideItem>

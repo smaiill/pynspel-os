@@ -4,12 +4,21 @@ import {
   getModuleSchema,
   validateModuleConfig,
 } from '@pynspel/common'
+import { APIEmbed, ChannelType, EmbedType } from 'discord-api-types/v10'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import {
+  EmbedBuilder,
+  useEmbedBuilder,
+} from '~/app/dashboard/components/discord/embed/EmbedBuilder'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
+import {
+  useCurrentGuildChannels,
+  useCurrentGuildRoles,
+  useCurrentGuildValue,
+} from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
@@ -54,7 +63,9 @@ const CaptchaForm = (props: Props) => {
 
   // TODO: useCurrentGuildRoles
 
-  const handleSubmitForm = (data: InferModuleConfigType<'captcha'>) => {
+  const handleSubmitForm = async (data: InferModuleConfigType<'captcha'>) => {
+    // Ask for the embed builder the data of the embed.
+
     mutation.mutate(data)
   }
 
@@ -86,16 +97,16 @@ const CaptchaForm = (props: Props) => {
     return <h1>Invalid guild.</h1>
   }
 
-  const formatedRoles = currentGuild.roles
-    .filter((_role) => _role.id !== currentGuild.guild_id)
-    .map((role) => {
-      return { label: role.name, value: role.id, color: role.color }
-    })
+  const formatedRoles = useCurrentGuildRoles().map((role) => {
+    return { label: role.name, value: role.id, color: role.color }
+  })
 
   // TODO: useCurrentGuildChannels;
-  const formatedChannels = currentGuild.channels.map((channel) => {
-    return { label: channel.name, value: channel.id }
-  })
+  const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
+    (channel) => {
+      return { label: channel.name, value: channel.id }
+    }
+  )
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>

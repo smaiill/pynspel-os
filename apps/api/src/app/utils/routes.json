@@ -52,6 +52,15 @@
     "path": "api/dashboard/guilds/:id/modules"
   },
   {
+    "routeName": "putGuildsIdModulesModuleName",
+    "_args": [
+      "id",
+      "moduleName"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/guilds/:id/modules/:moduleName"
+  },
+  {
     "routeName": "getBotGuildId",
     "_args": [
       "guildId"

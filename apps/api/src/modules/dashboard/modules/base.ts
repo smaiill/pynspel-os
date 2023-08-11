@@ -26,6 +26,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     }
 
     const cache = await redis.getGuidModule(guildId, this._name)
+
     if (cache) {
       console.log('Returning cached config', cache)
       return cache

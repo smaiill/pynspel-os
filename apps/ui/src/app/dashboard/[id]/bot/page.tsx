@@ -3,9 +3,12 @@ import { Modules } from '@pynspel/common'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
 import Aside from '../../components/Aside'
-import { useFetchModule } from '../../hooks/modules'
+import { useFetchModule, useGlobalModules } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import BotForm from './components/BotForm'
+import { ModuleLayout } from '../../layouts/ModuleLayout'
+import { Typography } from '~/ui/typography/Typography'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   params: {
@@ -15,15 +18,27 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  const { data: guildData } = useFetchGuild(id)
-  const { data: moduleData } = useFetchModule(Modules.bot, id)
+  const { push } = useRouter()
+  const { data: globalModules, isLoading: isModulesLoading } =
+    useGlobalModules()
+  const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
+  const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
+    Modules.bot,
+    id
+  )
 
-  if (!guildData) {
-    return <h1>Loading guild...</h1>
+  if (isModulesLoading || isGuildLoading || isModuleLoading) {
+    return <h1>Loading...</h1>
   }
 
-  if (!moduleData) {
-    return <h1>Loading module data...</h1>
+  if (!guildData || !globalModules || !moduleData) {
+    return push('/dashboard')
+  }
+
+  const isActive = globalModules.find((module) => module.name === 'bot')?.active
+
+  if (!isActive) {
+    return push(`/dashboard/${guildData.guild_id}`)
   }
 
   return (
@@ -31,7 +46,7 @@ const page = ({ params }: Props) => {
       <Aside />
       <DashboardView>
         <FlexColumn style={{ gap: 10 }}>
-          {!guildData ? 'Loading...' : <BotForm data={moduleData} />}
+          <BotForm data={moduleData} />
         </FlexColumn>
       </DashboardView>
     </DashboardPage>

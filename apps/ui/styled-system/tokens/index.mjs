@@ -28,7 +28,7 @@ const tokens = {
     "variable": "var(--colors-inactive)"
   },
   "colors.hover.special": {
-    "value": "#007E50",
+    "value": "#4849B9",
     "variable": "var(--colors-hover-special)"
   },
   "colors.fonts.primary": {
@@ -246,6 +246,10 @@ const tokens = {
   "colors.yellow.950": {
     "value": "#422006",
     "variable": "var(--colors-yellow-950)"
+  },
+  "borders.specialDashed": {
+    "value": "1px dashed #5D5FEF",
+    "variable": "var(--borders-special-dashed)"
   },
   "gradients.decoration": {
     "value": "linear-gradient(39deg, rgba(0,0,0,1) 0%, rgba(62,62,61,1) 100%)",

@@ -56,7 +56,7 @@ const updateInteractionSchema = z.object({
   emoji: z.string().nullable().default(null),
 })
 
-const validate = (schema: z.ZodSchema) => {
+export const validate = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     console.log({ body: req.body })
     const schemaRes = schema.safeParse(req.body)

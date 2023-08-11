@@ -64,7 +64,7 @@ setTimeout(async () => {
 // client.on('error', (e) => console.error(e))
 // client.on('warn', (e) => console.warn(e))
 // client.on('debug', (e) => console.info(e))
-
+client.exe()
 // client.exe().then(async () => {
 // const res = await fetch(
 //   `${RouteBases.api}/${Routes.applicationGuildCommands(

@@ -37,7 +37,7 @@ export default defineConfig({
         inactive: { value: '#1f1f1f' },
         hover: {
           special: {
-            value: '#007E50',
+            value: '#4849B9',
           },
         },
         fonts: {
@@ -49,6 +49,11 @@ export default defineConfig({
           warn: { value: '{colors.warn}' },
         },
         ...colors,
+      },
+      borders: {
+        specialDashed: {
+          value: '1px dashed {colors.special}',
+        },
       },
 
       gradients: {

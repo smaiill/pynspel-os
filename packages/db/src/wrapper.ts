@@ -5,6 +5,7 @@ import {
   InferModuleConfigType,
   ModulesTypes,
 } from '@pynspel/common'
+
 import { Guild, KeysToCamelCase } from '@pynspel/types'
 
 export type DbWrapperOptions = {

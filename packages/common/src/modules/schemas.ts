@@ -85,7 +85,7 @@ const modulesSchemas = {
 
   captcha: z.object({
     length: z.union([z.literal(4), z.literal(6), z.literal(8)]).default(4),
-    verification_channel: z.string().nullable().default(null),
+    verification_channel: z.string().trim().nullable().default(null),
     case_sensitive: z.boolean().default(false),
     has_numbers: z.boolean().default(false),
     timeout: z
@@ -102,6 +102,7 @@ const modulesSchemas = {
     channel: z.string().nullable().default(null),
     user_left: z.boolean().default(false),
     user_join: z.boolean().default(false),
+    user_kick: z.boolean().default(false),
   }),
   ticket: z.object({
     max_each_user: z.number().min(1).max(TICKET_MAX_PER_USER).default(3),
@@ -124,7 +125,7 @@ const modulesSchemas = {
         .default('none'),
       action_reason: z
         .string()
-        .max(2000)
+        .max(100)
         .default('Raid attempt detected.')
         .nullable(),
       raid_channel_lockdown: z.boolean().default(true),

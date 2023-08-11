@@ -2,11 +2,8 @@ import { cva, RecipeVariantProps } from '../../styled-system/css'
 
 export const buttonRecipe = cva({
   base: {
-    rounded: '5px',
-    px: '30px',
-    py: '15px',
+    rounded: '10px',
     color: 'white',
-
     overflow: 'hidden',
     pos: 'relative',
     transition: '0.3s',
@@ -27,6 +24,15 @@ export const buttonRecipe = cva({
 
   variants: {
     visual: {
+      outline: {
+        border: '1px solid rgb(77, 76, 76)',
+        rounded: '10px',
+
+        _hover: {
+          bg: 'rgb(77, 76, 76)',
+        },
+      },
+
       premium: {
         bg: '#F1C40F30',
         border: '1px solid #F1C40F',
@@ -75,6 +81,18 @@ export const buttonRecipe = cva({
             bg: 'hover.special',
           },
         },
+      },
+    },
+
+    format: {
+      square: {
+        px: '7px',
+        py: '7px',
+      },
+
+      normal: {
+        px: '30px',
+        py: '15px',
       },
     },
   },

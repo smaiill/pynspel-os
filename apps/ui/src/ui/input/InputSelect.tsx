@@ -19,6 +19,8 @@ import { Hashtag } from '~/icons/Hashtag'
 type Option = PropertyKey | null
 type InputSelectTypes = 'role' | 'channel' | 'default'
 
+const __INVALID_VALUE = 'Invalid value'
+
 export interface InputSelectProps<Value, Multi, Type>
   extends PropsWithChildren {
   options: Type extends 'role' ? ItemRole[] : Item[]

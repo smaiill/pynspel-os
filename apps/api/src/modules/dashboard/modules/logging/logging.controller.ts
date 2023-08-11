@@ -2,6 +2,7 @@ import { HttpStatus } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { HttpException } from 'utils/error'
 import { LoggingModuleService } from './logging.service'
+import { DashboardService } from 'modules/dashboard/dashboard.service'
 
 class _LoggingModuleController {
   private _moduleService = LoggingModuleService
@@ -24,6 +25,21 @@ class _LoggingModuleController {
       throw new HttpException(
         HttpStatus.BAD_REQUEST,
         'Invalid guild id or config'
+      )
+    }
+
+    const guildChannels = await DashboardService.getCachedChannelsOrFresh(
+      guildId
+    )
+
+    const validChannel = guildChannels.find(
+      (_channel) => _channel.id === req.body.verification_channel
+    )
+
+    if (!validChannel) {
+      throw new HttpException(
+        HttpStatus.BAD_REQUEST,
+        'Not a valid channel or role.'
       )
     }
 

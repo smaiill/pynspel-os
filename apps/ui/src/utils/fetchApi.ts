@@ -15,6 +15,8 @@ export const fetchApi = async <T = unknown>(
     },
   })
 
+  console.log(res)
+
   const _json = await res.json()
 
   if (!res.ok) {

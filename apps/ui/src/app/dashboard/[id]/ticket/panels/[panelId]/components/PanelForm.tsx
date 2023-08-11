@@ -4,9 +4,17 @@ import { FlexColumn } from '~/layouts/Flex'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
+import {
+  useCurrentGuildChannels,
+  useCurrentGuildValue,
+} from '~/proxys/dashboard'
 import { useState } from 'react'
-import { usePanelMutations } from '../panels/hooks/usePanelMutations'
+import { usePanelMutations } from '../../hooks/usePanelMutations'
+import { ChannelType } from 'discord-api-types/v10'
+import {
+  EmbedBuilder,
+  useEmbedBuilder,
+} from '~/app/dashboard/components/discord/embed/EmbedBuilder'
 
 type Props = {
   data: Omit<PanelApi, 'interactions'>
@@ -33,18 +41,13 @@ export const PanelForm = (props: Props) => {
     getValues('channel_id')
   )
 
-  console.log({ currentGuild })
-
-  if (!currentGuild) {
-    return <h1>Loading guild....</h1>
-  }
-
-  const formatedChannels = currentGuild.channels.map((channel) => {
-    return { label: channel.name, value: channel.id }
-  })
+  const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
+    (channel) => {
+      return { label: channel.name, value: channel.id }
+    }
+  )
 
   const { updatePanel } = usePanelMutations()
-  console.log({ formatedChannels })
 
   const handleUpdatePanel = (parsedData: any) => {
     // TODO: Validate the data
@@ -58,8 +61,12 @@ export const PanelForm = (props: Props) => {
     })
   }
 
+  if (!currentGuild) {
+    return <h1>Loading guild....</h1>
+  }
+
   return (
-    <FlexColumn style={{ gap: 5 }}>
+    <FlexColumn style={{ gap: 5, alignItems: 'flex-start' }}>
       <Input {...register('name')} label="Nom du panel" />
       <Input {...register('message')} label="Message" />
       <InputSelect

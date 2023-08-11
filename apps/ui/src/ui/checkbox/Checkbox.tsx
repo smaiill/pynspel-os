@@ -15,7 +15,6 @@ const checkboxWrapper = css({
   '& label': {
     color: 'grey',
     fontSize: '13px',
-    marginLeft: '5px',
   },
 })
 
