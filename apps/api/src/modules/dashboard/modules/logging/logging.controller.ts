@@ -33,7 +33,7 @@ class _LoggingModuleController {
     )
 
     const validChannel = guildChannels.find(
-      (_channel) => _channel.id === req.body.verification_channel
+      (_channel) => _channel.id === req.body.channel
     )
 
     if (!validChannel) {

@@ -244,13 +244,13 @@ const ScannerForm = (props: LogginFormProps) => {
           </>
         ) : null}
       </DashboardCard>
-      {/* <ButtonPrimary
+      <ButtonPrimary
         onClick={handleSubmit(handleSubmitForm)}
         disabled={mutation.isLoading}
         type="submit"
       >
         Enregistrer
-      </ButtonPrimary> */}
+      </ButtonPrimary>
     </FlexColumn>
   )
 }

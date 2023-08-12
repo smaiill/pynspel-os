@@ -62,15 +62,12 @@ class _DashboardService {
         ].includes(channel.type)
       )
       .map((_channel) => {
+        console.log(_channel)
         return {
           id: _channel.id,
           type: _channel.type,
           guild_id: _channel.guild_id,
           name: _channel.name,
-          parent: {
-            id: _channel?.parent?.id ?? null,
-            name: _channel?.parent?.name ?? null,
-          },
         }
       })
 

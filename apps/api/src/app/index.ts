@@ -18,6 +18,7 @@ import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 import { db } from 'modules/db'
 import { ChannelFlags } from 'discord-api-types/v10'
 import { z } from 'zod'
+import { setInterval } from 'timers'
 
 const app = express()
 
@@ -76,7 +77,7 @@ app.listen(env.PORT, async () => {
     .then(() => lg.info('[REDIS] Started.'))
     .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-  await redis._client.flushAll()
+  // await redis._client.flushAll()
 
   if (env.NODE_ENV === 'developement') {
     lg.info('Generating endpoints.')
@@ -90,8 +91,17 @@ app.listen(env.PORT, async () => {
     )
   }
 
+  await redis._client.flushAll()
+
+  // await db.exec('UPDATE guilds SET bot = $1', [true])
+
   // console.log(await db.exec('DELETE FROM panels'))
 
+  // console.log(
+  //   await db.exec('SELECT * FROM users WHERE discord_id = $1', [
+  //     '504227742678646784',
+  //   ])
+  // )
   // console.log(await db.exec('SELECT * FROM panels'))
   // await db.exec('DELETE FROM panel_interactions')
   // await db.exec(

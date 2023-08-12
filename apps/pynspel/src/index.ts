@@ -14,6 +14,10 @@ import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { KickCommand } from './modules/command/handlers/kick'
 import { redis } from 'utils/redis'
+import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
+import { writeFile } from 'fs'
+import { TextChannel } from 'discord.js'
+import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
 
 if (env.NODE_ENV === 'production') {
   process.on('unhandledRejection', (reason, promise) => {
@@ -60,11 +64,31 @@ setTimeout(async () => {
   //   content:
   //     'Salut les amis, comment allez vous merde  ?                                                                                                                       ',
   // })
-}, 100)
+  // const guild = await client.guilds.fetch('974775347553906718')
+  // const channel = (await guild.channels.fetch(
+  //   '1091029379028623393'
+  // )) as TextChannel
+  // const { embed } = captchaEmbeds.embedJoin({
+  //   avatarUrl:
+  //     'https://cdn.discordapp.com/avatars/1139646109157970041/0d7c539b933cd8fccf50379020fa21bb.webp?size=80',
+  //   guildName: 'Dev Serv',
+  //   username: 'Gros zizi',
+  // })
+  // channel.send({
+  //   embeds: [embed],
+  //   files: [
+  //     {
+  //       attachment: image,
+  //       name: 'captcha.png',
+  //     },
+  //   ],
+  // })
+}, 500)
 // client.on('error', (e) => console.error(e))
 // client.on('warn', (e) => console.warn(e))
 // client.on('debug', (e) => console.info(e))
 client.exe()
+
 // client.exe().then(async () => {
 // const res = await fetch(
 //   `${RouteBases.api}/${Routes.applicationGuildCommands(

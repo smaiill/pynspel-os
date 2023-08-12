@@ -22,26 +22,15 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
       return
     }
 
-    const cachedChannels =
-      (await redis.hGetObject('guild', channel.guild.id, 'channels')) ?? []
-    cachedChannels.push({
-      type: channel.type,
+    await redis.createChannel(channel.guild.id, {
+      guild_id: channel.guild.id,
+      id: channel.id,
       name: channel.name,
-      parent: {
-        id: channel?.parent?.id ?? null,
-        name: channel?.parent?.name ?? null,
-      },
+      type: channel.type,
     })
-
-    await redis.hSetObject(
-      'guild',
-      channel.guild.id,
-      'channels',
-      cachedChannels
-    )
   }
 
   public async on(client: Client, channel: Channel) {
-    this.manageCache(channel)
+    await this.manageCache(channel)
   }
 }

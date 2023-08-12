@@ -28,23 +28,15 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
       {
         type: oldChannel.type,
         name: oldChannel.name,
-        parent: {
-          id: oldChannel?.parent?.id ?? null,
-          name: oldChannel?.parent?.name ?? null,
-        },
       },
       {
         type: newChannel.type,
         name: newChannel.name,
-        parent: {
-          id: newChannel?.parent?.id ?? null,
-          name: newChannel?.parent?.name ?? null,
-        },
       }
     )
 
     if (shouldRemoveCache) {
-      await redis.hInvalidate('guild', newChannel.guild.id, 'channels')
+      await redis.updateChannel(newChannel.guild.id)
     }
   }
 
@@ -53,13 +45,6 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
   }
 }
 
-const areChannelsEqual = (obj1: object, obj2: object) => {
-  const keys1 = Object.keys(obj1)
-
-  for (const key of keys1) {
-    if (obj1[key] !== obj2[key]) {
-      return true
-    }
-  }
-  return false
-}
+type ChannelEqual = { type: number; name: string }
+const areChannelsEqual = (obj1: ChannelEqual, obj2: ChannelEqual) =>
+  obj1.name === obj2.name && obj1.type === obj2.type

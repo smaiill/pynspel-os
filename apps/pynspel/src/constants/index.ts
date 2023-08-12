@@ -3,3 +3,4 @@ export const Messages = {
 } as const
 
 export * from './pg'
+export * from './colors'

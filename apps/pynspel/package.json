@@ -13,19 +13,21 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@pynspel/px": "workspace:*",
-    "@pynspel/db": "workspace:*",
-    "@pynspel/common": "workspace:*",
     "@pynspel/cache": "workspace:*",
+    "@pynspel/common": "workspace:*",
+    "@pynspel/db": "workspace:*",
+    "@pynspel/px": "workspace:*",
     "canvas": "^2.11.2",
     "discord.js": "^14.11.0",
     "dotenv": "^10.0.0",
     "pg": "^8.11.0",
     "tsup": "^6.7.0",
+    "winston": "^3.9.0",
+    "ws": "^8.13.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/pg": "^8.10.1",
-    "@pynspel/types": "workspace:*"
+    "@pynspel/types": "workspace:*",
+    "@types/pg": "^8.10.1"
   }
 }

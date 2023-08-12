@@ -1,4 +1,5 @@
 export * from './modules/index'
+export * from './redis'
 
 export enum HttpStatus {
   OK = 200,

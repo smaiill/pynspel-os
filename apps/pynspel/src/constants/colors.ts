@@ -1,0 +1,16 @@
+export const DiscordColors = {
+  Default: 0x000000,
+  White: 0xffffff,
+  Aqua: 0x1abc9c,
+  Green: 0x57f287,
+  Blue: 0x3498db,
+  Yellow: 0xfee75c,
+  Purple: 0x9b59b6,
+  LuminousVividPink: 0xe91e63,
+  Fuchsia: 0xeb459e,
+  Gold: 0xf1c40f,
+  Orange: 0xe67e22,
+  Red: 0xed4245,
+  Grey: 0x95a5a6,
+  Navy: 0x34495e,
+} as const

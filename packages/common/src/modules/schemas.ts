@@ -102,7 +102,7 @@ const modulesSchemas = {
     channel: z.string().nullable().default(null),
     user_left: z.boolean().default(false),
     user_join: z.boolean().default(false),
-    user_kick: z.boolean().default(false),
+    // captcha_fail: z.boolean().default(false),
   }),
   ticket: z.object({
     max_each_user: z.number().min(1).max(TICKET_MAX_PER_USER).default(3),

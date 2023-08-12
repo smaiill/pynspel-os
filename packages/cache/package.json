@@ -18,8 +18,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pynspel/common": "workspace:*",
     "redis": "^4.6.7",
-    "tsup": "^7.1.0",
-    "@pynspel/common": "workspace:*"
+    "tsup": "^7.1.0"
+  },
+  "devDependencies": {
+    "@pynspel/types": "workspace:^"
   }
 }

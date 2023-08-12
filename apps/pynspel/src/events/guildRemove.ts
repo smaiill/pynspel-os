@@ -4,26 +4,26 @@ import { db } from 'db'
 import { Client, Guild } from 'discord.js'
 import { env } from 'utils/env'
 
-export class GuildCreate extends BaseEvent<'guildCreate'> {
+export class GuildRemove extends BaseEvent<'guildDelete'> {
   _db = db
   constructor() {
-    super('guildCreate')
+    super('guildDelete')
   }
 
   public async on(client: Client, guild: Guild) {
-    await this.handleNewGuild(client, {
+    await this.deleteGuild(client, {
       name: guild.name,
       guildId: guild.id,
       avatar: guild.icon as string,
     })
   }
 
-  private async handleNewGuild(
+  private async deleteGuild(
     client: Client,
     guild: KeysToCamelCase<PynspelGuild>
   ) {
     try {
-      const res = await this._db.handleNewGuild(guild)
+      const res = await this._db.deleteGuild(guild)
 
       return res
     } catch (error) {

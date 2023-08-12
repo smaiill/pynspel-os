@@ -78,7 +78,7 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         transition: 'max-height 1s',
         width: '100%',
         ...(openable ? { maxHeight: isOpen ? openHeight : '55px' } : {}),

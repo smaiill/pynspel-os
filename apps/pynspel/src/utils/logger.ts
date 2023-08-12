@@ -1,9 +1,9 @@
 import { createLogger, format, transports } from 'winston'
 
-export const lg = createLogger({
+export const logger = createLogger({
   transports: [
     new transports.File({
-      filename: 'pynspel.log',
+      filename: 'pynspel.client.log',
       level: 'silly',
       format: format.combine(
         format.errors({ stack: true }),
@@ -16,7 +16,7 @@ export const lg = createLogger({
         format.timestamp(),
         format.colorize({ all: true }),
         format.label({
-          label: 'PYNSPEL',
+          label: 'PYNSPEL-CLIENT',
         }),
         format.printf(
           (log): string =>

@@ -65,12 +65,23 @@ export class _DbWrapper {
   }
 
   public async isClientInGuild(guildId: string) {
-    const query = 'SELECT EXISTS(SELECT 1 FROM guilds WHERE guild_id = $1)'
-    const values = [guildId]
+    const query =
+      'SELECT EXISTS(SELECT 1 FROM guilds WHERE guild_id = $1 AND bot = $2)'
+    const values = [guildId, true]
 
     const [res] = await this.exec<{ exists: boolean }>(query, values)
 
     return res.exists
+  }
+
+  public async updateGuild({ guildId, avatar, name }: KeysToCamelCase<Guild>) {
+    const query =
+      'UPDATE guilds SET (avatar, name) VALUES ($1, $2) WHERE guild_id = $3'
+    const values = [avatar, name, guildId]
+
+    await this.exec(query, values)
+
+    return { guildId, avatar, name }
   }
 
   public async createGuild({ guildId, avatar, name }: KeysToCamelCase<Guild>) {
@@ -81,6 +92,31 @@ export class _DbWrapper {
     await this.exec(query, values)
 
     return { guildId, avatar, name }
+  }
+
+  public async deleteGuild({ guildId }: KeysToCamelCase<Guild>) {
+    const query = 'UPDATE guilds SET bot = $1 WHERE guild_id = $2'
+    const values = [false, guildId]
+
+    await this.exec(query, values)
+
+    return { bot: false }
+  }
+
+  public async handleNewGuild({
+    guildId,
+    avatar,
+    name,
+  }: KeysToCamelCase<Guild>) {
+    const exists = await this.isClientInGuild(guildId)
+
+    if (!exists) {
+      await this.createGuild({ guildId, avatar, name })
+      return { guildId, name, avatar }
+    }
+
+    await this.updateGuild({ guildId, avatar, name })
+    return { guildId, name, avatar }
   }
 
   public async getModuleConfigForGuild<

@@ -175,6 +175,12 @@ importers:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(typescript@4.9.5)
+      winston:
+        specifier: ^3.9.0
+        version: 3.9.0
+      ws:
+        specifier: ^8.13.0
+        version: 8.13.0
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -279,6 +285,10 @@ importers:
       tsup:
         specifier: ^7.1.0
         version: 7.1.0(typescript@4.9.5)
+    devDependencies:
+      '@pynspel/types':
+        specifier: workspace:^
+        version: link:../types
 
   packages/common:
     devDependencies:

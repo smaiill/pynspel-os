@@ -105,11 +105,13 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
   public async handleMember(member: GuildMember) {
     const guildId = member.guild.id
     const config = await this.getFreshConfigOrCached(guildId)
+
     const threshold = await this.getGuildMemberThresholdOrCreate(
       guildId,
       config.interval
     )
 
+    console.log({ threshold, config })
     if (threshold >= config.member_threshold) {
       await this.takeAction({
         config: {
@@ -130,7 +132,7 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
     const newValue = threshold + 1
     await this.updateGuildMemberThreshold(guildId, newValue)
 
-    return false
+    return true
   }
 }
 

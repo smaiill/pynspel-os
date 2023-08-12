@@ -5,6 +5,8 @@ import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
 import { raidCounterService } from 'modules/raidCounter/raidCounter.service'
 import { redis } from 'utils/redis'
 import { db } from '../db/index'
+import { loggingService } from 'modules/logging/logging.service'
+import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
 
 const getifferentDaysForDate = (old: Date) => {
   const now = new Date()
@@ -18,6 +20,7 @@ const MIN_DAYS_ACCOUNT_CREATION = 30
 export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
   private _db = db
   private raidCounterService = raidCounterService
+  private loggingService = loggingService
   constructor() {
     super(Events.GuildMemberAdd)
   }
@@ -33,7 +36,7 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
   }
 
   public async on(client: Client, member: GuildMember) {
-    await this.handleUserAddLog(client, member)
+    await this.loggingService.guildMemberAdd(member)
     const passed = await this.handleXVerification(client, member)
 
     if (!passed) {
@@ -42,9 +45,13 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
     }
 
     const passedRaidCounter = await this.raidCounterService.handleMember(member)
+
+    console.log({ passedRaidCounter, passed })
+
     if (!passedRaidCounter) {
       return
     }
+
     await this.handleUserVerification(client, member)
   }
 
@@ -69,29 +76,6 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
     return res
   }
 
-  private async handleUserAddLog(client: Client, member: GuildMember) {
-    const res = await this.getCachedConfigOrFresh(
-      member.guild.id,
-      Modules.logging
-    )
-
-    if (!res.user_join || !res.channel) {
-      return console.log('Null channel or desactivated')
-    }
-
-    const channel = await client.channels.fetch(res.channel)
-
-    if (!channel) {
-      return console.log('Invalid channel')
-    }
-
-    if (channel.type !== ChannelType.GuildText) {
-      return console.log('Channel is not text')
-    }
-
-    channel.send(`User with id ${member.id} has joined !`)
-  }
-
   private async handleUserVerification(client: Client, member: GuildMember) {
     const guildId = member.guild.id
 
@@ -110,15 +94,23 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
     const captcha = new CaptchaManager({ ...res })
     const { image } = captcha.create()
 
-    const captchaMessage = await channel.send({
+    const { embed } = captchaEmbeds.embedJoin({
+      avatarUrl: member.user.displayAvatarURL(),
+      guildName: member.guild.name,
+      username: member.user.username,
+      caseSensitive: res.case_sensitive,
+    })
+
+    const message = await channel.send({
+      embeds: [embed],
       files: [
         {
           attachment: image,
-          name: 'captcha.jpg',
+          name: 'captcha.png',
         },
       ],
     })
 
-    captcha.verify({ member, channel, captchaMessage })
+    captcha.verify({ member, channel, captchaMessage: message })
   }
 }

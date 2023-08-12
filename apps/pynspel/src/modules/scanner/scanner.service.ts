@@ -77,9 +77,10 @@ class _ScannerService extends ModuleServiceBase<'scanner'> {
   public async handleNewMessage(
     message: Message
   ): Promise<{ passed: boolean }> {
-    if (!message.guild) {
+    if (!message.guild || message.author.bot) {
       return { passed: true }
     }
+
     const guildId = message.guild.id
 
     const { words, links } = await this.getFreshConfigOrCached(guildId)
@@ -99,7 +100,7 @@ class _ScannerService extends ModuleServiceBase<'scanner'> {
             await message.channel.send({
               embeds: [
                 {
-                  description: `${message.member}, Your message was delete cause of a link detected: ||${scannedContentLinks.detected}||`,
+                  description: `${message.member}, Your message was delete cause of a link detected.`,
                 },
               ],
             })
