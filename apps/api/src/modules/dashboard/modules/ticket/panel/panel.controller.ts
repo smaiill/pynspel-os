@@ -1,7 +1,6 @@
 import { ButtonBuilder } from '@discordjs/builders'
 import { HttpStatus, Interaction, PanelApi } from '@pynspel/types'
 import { Request, Response } from 'express'
-import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
 import { DISCORD_BASE_API } from 'utils/constants'
 import { env } from 'utils/env'

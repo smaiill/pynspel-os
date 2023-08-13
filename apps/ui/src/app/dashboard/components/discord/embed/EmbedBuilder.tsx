@@ -1,20 +1,17 @@
-import React, { ReactNode, useState } from 'react'
-import { css, cx } from '../../../../../../styled-system/css'
+import { APIEmbed, APIEmbedField } from 'discord-api-types/v10'
 import { GanttChart, Image, Plus, Trash } from 'lucide-react'
-import { Flex, FlexColumn } from '~/layouts/Flex'
-import { Typography } from '~/ui/typography/Typography'
-import { Checkbox } from '~/ui/checkbox/Checkbox'
+import React from 'react'
 import {
   Controller,
+  useForm,
   UseFormGetValues,
-  UseFormRegister,
   UseFormReturn,
   UseFormSetValue,
-  useFieldArray,
-  useForm,
 } from 'react-hook-form'
-import { APIEmbed, APIEmbedField } from 'discord-api-types/v10'
+import { Flex, FlexColumn } from '~/layouts/Flex'
 import { Button } from '~/ui/button/Button'
+import { Checkbox } from '~/ui/checkbox/Checkbox'
+import { css, cx } from '../../../../../../styled-system/css'
 
 const embedStyle = css({
   bg: '#2b2929',

@@ -5,6 +5,7 @@ import {
   validateModuleConfig,
 } from '@pynspel/common'
 import { HttpStatus } from '@pynspel/types'
+import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
 import { db } from 'modules/db'
 import { HttpException, HttpZodValidationError } from 'utils/error'
 import { redis } from 'utils/redis'
@@ -25,7 +26,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
       throw new HttpException(HttpStatus.BAD_GATEWAY, 'Client not in guild.')
     }
 
-    const cache = await redis.getGuidModule(guildId, this._name)
+    const cache = await redis.getModule(guildId, this._name)
 
     if (cache) {
       console.log('Returning cached config', cache)
@@ -36,7 +37,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
 
     if (!res) {
       await this._db.createModuleConfigForGuild(guildId, this._name)
-      await redis.setGuildModule(
+      await redis.setModule(
         guildId,
         this._name,
         this._defaultConfig as unknown as InferModuleConfigType<M>
@@ -47,7 +48,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
 
     const config = { ...this._defaultConfig, ...res }
 
-    await redis.setGuildModule(guildId, this._name, config)
+    await redis.setModule(guildId, this._name, config)
 
     return config
   }
@@ -59,6 +60,12 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     guildId: string
     newConfig: InferModuleConfigType<M>
   }) {
+    if (!IS_CLIENT_AVAILABLE) {
+      throw new HttpException(
+        HttpStatus.SERVICE_UNAVAILABLE,
+        'Client is corrently unavailabl'
+      )
+    }
     const isClientInGuild = await this._db.isClientInGuild(guildId)
 
     if (!isClientInGuild) {
@@ -85,9 +92,9 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     }>(query, values)
 
     try {
-      await redis.setGuildModule(guildId, this._name, validatedData)
+      await redis.setModule(guildId, this._name, validatedData)
     } catch (error) {
-      await redis.invalidateGuildModule(guildId, this._name)
+      await redis.invalidateModule(guildId, this._name)
     }
 
     return validatedData

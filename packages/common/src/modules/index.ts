@@ -1,2 +1,2 @@
-export * from './schemas'
 export * from './consts'
+export * from './schemas'

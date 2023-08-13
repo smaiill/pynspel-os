@@ -1,5 +1,5 @@
 import { InferModuleConfigType, Modules } from '@pynspel/common'
-import { createCanvas, registerFont } from 'canvas'
+import { createCanvas } from 'canvas'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { captchaEmbeds } from '../captcha.embeds'
 

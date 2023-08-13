@@ -1,5 +1,5 @@
+import { EmbedBuilder, GuildMember } from 'discord.js'
 import { DiscordColors } from '../../constants'
-import { AttachmentBuilder, EmbedBuilder, GuildMember, User } from 'discord.js'
 
 type EmbeJoinMember = {
   guildName: string

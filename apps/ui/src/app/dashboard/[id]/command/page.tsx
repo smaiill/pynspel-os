@@ -1,17 +1,11 @@
 'use client'
 import { Modules } from '@pynspel/common'
-import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
-import Aside from '../../components/Aside'
+import { SkeletonCustom } from '../../components/Skeletons'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
-import CommandForm from './components/CommandForm'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
-import {
-  SkeletonBox,
-  SkeletonCustom,
-  SkeletonTitle,
-} from '../../components/Skeletons'
+import CommandForm from './components/CommandForm'
 
 type Props = {
   params: {

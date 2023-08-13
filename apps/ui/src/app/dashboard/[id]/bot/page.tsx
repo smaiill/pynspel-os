@@ -1,14 +1,12 @@
 'use client'
 import { Modules } from '@pynspel/common'
+import { useRouter } from 'next/navigation'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
 import Aside from '../../components/Aside'
 import { useFetchModule, useGlobalModules } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import BotForm from './components/BotForm'
-import { ModuleLayout } from '../../layouts/ModuleLayout'
-import { Typography } from '~/ui/typography/Typography'
-import { useRouter } from 'next/navigation'
 
 type Props = {
   params: {

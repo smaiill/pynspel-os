@@ -1,5 +1,7 @@
+export * from './dashboard'
 export * from './modules/index'
 export * from './redis'
+export * from './websocket'
 
 export enum HttpStatus {
   OK = 200,

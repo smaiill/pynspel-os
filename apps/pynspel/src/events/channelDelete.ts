@@ -1,6 +1,7 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import { ChannelType, Client, NonThreadGuildBasedChannel } from 'discord.js'
+import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 
 type Channel = NonThreadGuildBasedChannel
@@ -22,7 +23,14 @@ export class ChannelDelete extends BaseEvent<'channelDelete'> {
       return
     }
 
-    await redis.deleteChannel(channel.guild.id, channel.id)
+    const guildId = channel.guild.id
+
+    try {
+      await redis.deleteChannel(guildId, channel.id)
+    } catch (error) {
+      logger.error(error)
+      await redis.invalidateChannels(guildId)
+    }
   }
 
   public async on(client: Client, channel: Channel) {

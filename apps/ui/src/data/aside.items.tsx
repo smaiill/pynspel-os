@@ -1,6 +1,5 @@
 import {
   Bot,
-  Check,
   ChevronRightSquare,
   Lock,
   RotateCcw,
@@ -8,7 +7,6 @@ import {
   ScrollText,
   Ticket,
 } from 'lucide-react'
-import { BiHome } from 'react-icons/bi'
 
 export const asideItemsData = [
   {

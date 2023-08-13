@@ -15,7 +15,8 @@ export class ModuleServiceBase<M extends ModulesTypes> {
   }
 
   public async getFreshConfigOrCached(guildId: string) {
-    const cache = await this._cache.getGuidModule(guildId, this.name)
+    const cache = await this._cache.getModule(guildId, this.name)
+
     if (cache) {
       return { ...this._defaultConfig, ...cache }
     }
@@ -24,7 +25,8 @@ export class ModuleServiceBase<M extends ModulesTypes> {
       guildId,
       this.name
     )
-    await this._cache.setGuildModule(guildId, this.name, res)
+
+    await this._cache.setModule(guildId, this.name, res)
 
     return { ...this._defaultConfig, ...res }
   }

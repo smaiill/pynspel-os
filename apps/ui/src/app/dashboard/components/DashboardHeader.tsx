@@ -1,8 +1,7 @@
-import { Flex } from '~/layouts/Flex'
-import { css } from '../../../../styled-system/css'
-import { useUserSnapshot } from '~/proxys/user'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
-import { ButtonPremium, ButtonWarn } from '~/ui/button/Button'
+import { Flex } from '~/layouts/Flex'
+import { ButtonPremium } from '~/ui/button/Button'
+import { css } from '../../../../styled-system/css'
 
 const styles = css({
   alignItems: 'center',

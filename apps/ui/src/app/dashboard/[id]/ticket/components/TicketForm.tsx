@@ -1,13 +1,11 @@
-import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
+import { InferModuleConfigType, TICKET_MAX_PER_USER } from '@pynspel/common'
 import { useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
-import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
-import { TICKET_MAX_PER_USER } from '@pynspel/common'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'ticket'>

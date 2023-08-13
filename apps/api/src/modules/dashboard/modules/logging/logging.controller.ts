@@ -1,8 +1,8 @@
 import { HttpStatus } from '@pynspel/types'
 import { Request, Response } from 'express'
+import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { HttpException } from 'utils/error'
 import { LoggingModuleService } from './logging.service'
-import { DashboardService } from 'modules/dashboard/dashboard.service'
 
 class _LoggingModuleController {
   private _moduleService = LoggingModuleService

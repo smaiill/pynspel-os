@@ -1,7 +1,6 @@
-import React from 'react'
-import { RecipeVariantProps, css, cva } from '../../../../../styled-system/css'
 import { AlertCircle, Check } from 'lucide-react'
 import { Flex } from '~/layouts/Flex'
+import { cva, RecipeVariantProps } from '../../../../../styled-system/css'
 
 const toastRecipe = cva({
   base: {

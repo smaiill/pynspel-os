@@ -9,7 +9,12 @@ class _GuildService {
       },
     })
 
-    return await response.json()
+    return (await response.json()) as {
+      id: string
+      type: number
+      guild_id: string
+      name: string
+    }[]
   }
 
   public async fetchRoles(guildId: string) {
@@ -20,7 +25,12 @@ class _GuildService {
       },
     })
 
-    return await response.json()
+    return (await response.json()) as {
+      name: string
+      color: number
+      permissions: string
+      id: string
+    }[]
   }
 }
 

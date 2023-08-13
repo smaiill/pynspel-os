@@ -1,6 +1,5 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import { MainHeader } from '~/components/header/main/MainHeader'
 import { useGuildService } from '~/hooks/useGuildService'
 import { Flex } from '~/layouts/Flex'

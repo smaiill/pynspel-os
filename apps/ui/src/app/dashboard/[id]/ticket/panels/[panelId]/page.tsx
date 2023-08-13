@@ -1,17 +1,13 @@
 'use client'
+import { useEffect } from 'react'
 import Aside from '~/app/dashboard/components/Aside'
+import { useFetchGuild } from '~/app/dashboard/hooks/useFetchGuild'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
+import { useSetCurrentPanel } from '~/proxys/ticket'
 import { PanelInteractions } from '../../components/interactions/PanelInteractions'
-import { PanelForm } from './components/PanelForm'
 import { useFetchPanel } from '../../hooks/useFetchPanels'
-import {
-  useCurrentPanel,
-  useCurrentPanelValue,
-  useSetCurrentPanel,
-} from '~/proxys/ticket'
-import { useEffect } from 'react'
-import { useFetchGuild } from '~/app/dashboard/hooks/useFetchGuild'
+import { PanelForm } from './components/PanelForm'
 import { PanelHeader } from './components/PanelHeader'
 
 type Props = {

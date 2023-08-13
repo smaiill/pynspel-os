@@ -1,7 +1,5 @@
 import { Toast, toast } from 'react-hot-toast'
-import { cva } from '../../../../../styled-system/css'
-import { AlertCircle } from 'lucide-react'
-import { PxToast, PxToastError, PxToastSuccess, ToastVisual } from './PxToast'
+import { PxToastError, PxToastSuccess, ToastVisual } from './PxToast'
 
 type ToastOptions = Partial<
   Pick<

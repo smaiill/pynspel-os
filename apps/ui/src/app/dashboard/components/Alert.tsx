@@ -1,7 +1,6 @@
-import React, { PropsWithChildren } from 'react'
-import { RecipeVariantProps, css, cva } from '../../../../styled-system/css'
-import { AlertCircle, Info, LucideIcon } from 'lucide-react'
+import { PropsWithChildren } from 'react'
 import { Flex } from '~/layouts/Flex'
+import { cva, RecipeVariantProps } from '../../../../styled-system/css'
 
 const alertRecipe = cva({
   base: {

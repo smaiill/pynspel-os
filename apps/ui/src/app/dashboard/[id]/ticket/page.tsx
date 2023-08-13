@@ -1,16 +1,16 @@
 'use client'
 import { Modules } from '@pynspel/common'
 import { FlexColumn } from '~/layouts/Flex'
-import { useFetchModule } from '../../hooks/modules'
-import { useFetchGuild } from '../../hooks/useFetchGuild'
-import { ModuleLayout } from '../../layouts/ModuleLayout'
-import TicketForm from './components/TicketForm'
-import { TicketPanels } from './components/TicketPanels'
 import {
   SkeletonBox,
   SkeletonCustom,
   SkeletonTitle,
 } from '../../components/Skeletons'
+import { useFetchModule } from '../../hooks/modules'
+import { useFetchGuild } from '../../hooks/useFetchGuild'
+import { ModuleLayout } from '../../layouts/ModuleLayout'
+import TicketForm from './components/TicketForm'
+import { TicketPanels } from './components/TicketPanels'
 
 type Props = {
   params: {

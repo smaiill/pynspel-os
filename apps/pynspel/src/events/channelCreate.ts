@@ -1,6 +1,7 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import { ChannelType, Client, NonThreadGuildBasedChannel } from 'discord.js'
+import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 
 type Channel = NonThreadGuildBasedChannel
@@ -22,12 +23,17 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
       return
     }
 
-    await redis.createChannel(channel.guild.id, {
-      guild_id: channel.guild.id,
-      id: channel.id,
-      name: channel.name,
-      type: channel.type,
-    })
+    try {
+      await redis.createChannel(channel.guild.id, {
+        guild_id: channel.guild.id,
+        id: channel.id,
+        name: channel.name,
+        type: channel.type,
+      })
+    } catch (error) {
+      logger.error(error)
+      await redis.invalidateChannels(channel.guildId)
+    }
   }
 
   public async on(client: Client, channel: Channel) {

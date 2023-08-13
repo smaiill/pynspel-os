@@ -1,6 +1,7 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import { ChannelType, Client, NonThreadGuildBasedChannel } from 'discord.js'
+import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 
 type Channel = NonThreadGuildBasedChannel
@@ -36,7 +37,12 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
     )
 
     if (shouldRemoveCache) {
-      await redis.updateChannel(newChannel.guild.id)
+      try {
+        await redis.updateChannel(newChannel.guild.id)
+      } catch (error) {
+        logger.error(error)
+        await redis.invalidateChannels(newChannel.guildId)
+      }
     }
   }
 
@@ -46,5 +52,6 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
 }
 
 type ChannelEqual = { type: number; name: string }
+
 const areChannelsEqual = (obj1: ChannelEqual, obj2: ChannelEqual) =>
   obj1.name === obj2.name && obj1.type === obj2.type

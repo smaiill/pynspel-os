@@ -1,8 +1,8 @@
 import { HttpStatus } from '@pynspel/types'
 import { Request, Response } from 'express'
+import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { HttpException } from 'utils/error'
 import { CaptchaModuleService } from './captcha.service'
-import { DashboardService } from 'modules/dashboard/dashboard.service'
 
 class _CaptchaModuleController {
   private _moduleService = CaptchaModuleService

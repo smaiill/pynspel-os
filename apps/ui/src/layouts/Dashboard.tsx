@@ -1,3 +1,4 @@
+import { ChevronDown } from 'lucide-react'
 import {
   HTMLAttributes,
   PropsWithChildren,
@@ -6,10 +7,8 @@ import {
   useState,
 } from 'react'
 import DashboardHeader from '~/app/dashboard/components/DashboardHeader'
-import { Flex, FlexColumn } from './Flex'
 import { Typography } from '~/ui/typography/Typography'
-import { ChevronDown } from 'lucide-react'
-import { css } from '../../styled-system/css'
+import { Flex, FlexColumn } from './Flex'
 
 const DashboardView = (props: PropsWithChildren) => {
   const { children } = props

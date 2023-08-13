@@ -1,4 +1,8 @@
+import { HttpStatus } from '@pynspel/types'
+import { Request, Response } from 'express'
+import { db } from 'modules/db'
 import { ProtectedRouter } from 'routes/protected.router'
+import { HttpException } from 'utils/error'
 import { DashboardController } from './dashboard.controller'
 import { botModuleRouter } from './modules/bot/bot.router'
 import { captchaModuleRouter } from './modules/captcha/captcha.router'
@@ -6,13 +10,8 @@ import { commandModuleRouter } from './modules/command/command.router'
 import { counterRaidModuleRouter } from './modules/counterRaid/counterRaid.router'
 import { loggingModuleRouter } from './modules/logging/logging.router'
 import { scannerModuleRouter } from './modules/scanner/scanner.router'
-import { panelRouter, validate } from './modules/ticket/panel/panel.router'
+import { panelRouter } from './modules/ticket/panel/panel.router'
 import { ticketModuleRouter } from './modules/ticket/ticket.router'
-import { Request, Response } from 'express'
-import { HttpException } from 'utils/error'
-import { HttpStatus } from '@pynspel/types'
-import { db } from 'modules/db'
-import { z } from 'zod'
 
 const dashboardRoutes = new ProtectedRouter()
 
@@ -48,10 +47,6 @@ dashboardRoutes.get(
     res.json(modules)
   }
 )
-
-const updateModuleSchema = z.object({
-  is_active: z.boolean().default(false),
-})
 
 // This is cause i didnt setup for multiple middlewares
 dashboardRoutes.put(

@@ -3,11 +3,11 @@ import { Modules } from '@pynspel/common'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
 import Aside from '../../components/Aside'
+import { SkeletonBox, SkeletonTitle } from '../../components/Skeletons'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
-import { CaptchaForm } from './components/CaptchaForm'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
-import { SkeletonBox, SkeletonTitle } from '../../components/Skeletons'
+import { CaptchaForm } from './components/CaptchaForm'
 
 type Props = {
   params: {

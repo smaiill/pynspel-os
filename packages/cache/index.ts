@@ -1,1 +1,1 @@
-export { CacheManager } from 'structs/base'
+export { CacheManager } from 'structs/manager'

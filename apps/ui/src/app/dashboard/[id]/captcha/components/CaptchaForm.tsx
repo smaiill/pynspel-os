@@ -1,16 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  InferModuleConfigType,
-  getModuleSchema,
-  validateModuleConfig,
-} from '@pynspel/common'
-import { APIEmbed, ChannelType, EmbedType } from 'discord-api-types/v10'
+import { getModuleSchema, InferModuleConfigType } from '@pynspel/common'
+import { ChannelType } from 'discord-api-types/v10'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  EmbedBuilder,
-  useEmbedBuilder,
-} from '~/app/dashboard/components/discord/embed/EmbedBuilder'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'

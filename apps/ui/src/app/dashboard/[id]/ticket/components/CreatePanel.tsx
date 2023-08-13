@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { FlexColumn } from '~/layouts/Flex'
-import { ButtonPrimary, ButtonSpecial } from '~/ui/button/Button'
+import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { usePanelMutations } from '../panels/hooks/usePanelMutations'
 

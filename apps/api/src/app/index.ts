@@ -14,11 +14,8 @@ import { errorHandler } from 'utils/error'
 import { lg } from 'utils/logger'
 import { redis } from 'utils/redis'
 import { deserializeSession } from 'utils/session'
+import '../managers/websocket'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
-import { db } from 'modules/db'
-import { ChannelFlags } from 'discord-api-types/v10'
-import { z } from 'zod'
-import { setInterval } from 'timers'
 
 const app = express()
 
@@ -91,7 +88,7 @@ app.listen(env.PORT, async () => {
     )
   }
 
-  await redis._client.flushAll()
+  // await redis._client.flushAll()
 
   // await db.exec('UPDATE guilds SET bot = $1', [true])
 

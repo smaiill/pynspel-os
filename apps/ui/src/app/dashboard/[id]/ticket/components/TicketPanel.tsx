@@ -1,12 +1,11 @@
+import { Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { MouseEvent } from 'react'
-import { AiOutlineDelete } from 'react-icons/ai'
 import { Flex } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
 import { usePanelMutations } from '../panels/hooks/usePanelMutations'
-import { Trash } from 'lucide-react'
 
 type TicketPanel = {
   name: string

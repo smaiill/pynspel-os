@@ -60,7 +60,7 @@ export class Px extends Client {
       this._commands.set(command.name, command.on)
     }
 
-    this.on(Events.InteractionCreate, (interaction: Interaction) => {
+    this.on(Events.InteractionCreate, async (interaction: Interaction) => {
       if (!interaction.isCommand()) {
         return
       }
@@ -71,13 +71,29 @@ export class Px extends Client {
         return
       }
 
-      return handledCommand(interaction)
+      try {
+        await handledCommand(interaction)
+      } catch (error) {
+        console.error(
+          `Error while executing command [${interaction.commandName}]`,
+          error
+        )
+      }
     })
   }
 
   private __setupEvents() {
     for (const event of this._events) {
-      this.on(event._eventName, (...args) => event.on(this, ...args))
+      this.on(event._eventName, async (...args) => {
+        try {
+          await event.on(this, ...args)
+        } catch (error) {
+          console.error(
+            `Error while executing the event [${event._eventName}]`,
+            error
+          )
+        }
+      })
     }
   }
 

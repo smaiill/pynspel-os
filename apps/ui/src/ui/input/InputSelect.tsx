@@ -1,5 +1,6 @@
+import clsx from 'clsx'
+import { Check } from 'lucide-react'
 import {
-  CSSProperties,
   Dispatch,
   MouseEvent,
   PropsWithChildren,
@@ -8,13 +9,9 @@ import {
   useState,
 } from 'react'
 import { BsChevronDown, BsPlus } from 'react-icons/bs'
-import { Flex, FlexColumn } from '~/layouts/Flex'
-import { css, cx } from '../../../styled-system/css'
-import { Check } from 'lucide-react'
-import { SystemStyleObject } from '../../../styled-system/types'
-import clsx from 'clsx'
-import { decimalToHex } from '@pynspel/utils'
 import { Hashtag } from '~/icons/Hashtag'
+import { Flex, FlexColumn } from '~/layouts/Flex'
+import { css } from '../../../styled-system/css'
 
 type Option = PropertyKey | null
 type InputSelectTypes = 'role' | 'channel' | 'default'

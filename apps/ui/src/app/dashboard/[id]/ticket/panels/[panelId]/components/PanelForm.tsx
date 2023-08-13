@@ -1,20 +1,16 @@
 import { PanelApi } from '@pynspel/types'
+import { ChannelType } from 'discord-api-types/v10'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FlexColumn } from '~/layouts/Flex'
-import { ButtonPrimary } from '~/ui/button/Button'
-import { Input } from '~/ui/input/Input'
-import { InputSelect } from '~/ui/input/InputSelect'
 import {
   useCurrentGuildChannels,
   useCurrentGuildValue,
 } from '~/proxys/dashboard'
-import { useState } from 'react'
+import { ButtonPrimary } from '~/ui/button/Button'
+import { Input } from '~/ui/input/Input'
+import { InputSelect } from '~/ui/input/InputSelect'
 import { usePanelMutations } from '../../hooks/usePanelMutations'
-import { ChannelType } from 'discord-api-types/v10'
-import {
-  EmbedBuilder,
-  useEmbedBuilder,
-} from '~/app/dashboard/components/discord/embed/EmbedBuilder'
 
 type Props = {
   data: Omit<PanelApi, 'interactions'>

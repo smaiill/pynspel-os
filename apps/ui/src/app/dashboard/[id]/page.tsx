@@ -1,17 +1,11 @@
 'use client'
+import { useEffect } from 'react'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
+import { useCurrentGuildState } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
 import { useFetchGuild } from '../hooks/useFetchGuild'
-import { useEffect } from 'react'
-import { useCurrentGuildState, useSetCurrentGuild } from '~/proxys/dashboard'
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
-import {
-  SkeletonBox,
-  SkeletonEdge,
-  SkeletonTitle,
-} from '../components/Skeletons'
 
 export interface Props {
   params: {

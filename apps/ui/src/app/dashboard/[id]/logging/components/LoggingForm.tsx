@@ -1,14 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  InferModuleConfigType,
-  getModuleSchema,
-  validateModuleConfig,
-} from '@pynspel/common'
+import { getModuleSchema, InferModuleConfigType } from '@pynspel/common'
 import { ChannelType } from 'discord-api-types/v10'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
-import { Form } from '~/app/dashboard/components/form/Form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import {

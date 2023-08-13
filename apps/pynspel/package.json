@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@pynspel/types": "workspace:*",
-    "@types/pg": "^8.10.1"
+    "@types/pg": "^8.10.1",
+    "@types/ws": "^8.5.5"
   }
 }

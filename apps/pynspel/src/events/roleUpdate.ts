@@ -1,4 +1,5 @@
 import { BaseEvent } from '@pynspel/px'
+import { RedisRole } from '@pynspel/types'
 import { db } from 'db'
 import { Client, Role } from 'discord.js'
 import { redis } from 'utils/redis'
@@ -14,34 +15,28 @@ export class RoleUpdate extends BaseEvent<'roleUpdate'> {
       {
         id: oldRole.id,
         name: oldRole.name,
-        permissions: oldRole.permissions,
+        permissions: String(oldRole.permissions.bitfield),
         color: oldRole.color,
       },
       {
         id: newRole.id,
         name: newRole.name,
-        permissions: newRole.permissions,
+        permissions: String(newRole.permissions.bitfield),
         color: newRole.color,
       }
     )
 
     if (shouldRemoveCache) {
-      await redis.hInvalidate('guild', newRole.guild.id, 'roles')
+      await redis.updateRole(newRole.guild.id)
     }
   }
 
   public async on(client: Client, oldRole: Role, newRole: Role) {
-    this.manageCache(oldRole, newRole)
+    await this.manageCache(oldRole, newRole)
   }
 }
 
-const areRolesEqual = (obj1: object, obj2: object) => {
-  const keys1 = Object.keys(obj1)
-
-  for (const key of keys1) {
-    if (obj1[key] !== obj2[key]) {
-      return true
-    }
-  }
-  return false
-}
+const areRolesEqual = (r1: RedisRole, r2: RedisRole) =>
+  r1.color === r2.color &&
+  r1.name === r2.name &&
+  r1.permissions === r2.permissions

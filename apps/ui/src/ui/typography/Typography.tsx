@@ -4,8 +4,7 @@ import {
   forwardRef,
   PropsWithChildren,
 } from 'react'
-import { css, cva, cx, RecipeVariantProps } from '../../../styled-system/css'
-import { SystemStyleObject } from '../../../styled-system/types'
+import { cva, cx, RecipeVariantProps } from '../../../styled-system/css'
 
 const typo = cva({
   base: {

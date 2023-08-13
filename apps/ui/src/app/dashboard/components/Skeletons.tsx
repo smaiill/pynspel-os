@@ -1,4 +1,3 @@
-import React, { PropsWithChildren } from 'react'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
 const BASE_COLOR = '#202020'

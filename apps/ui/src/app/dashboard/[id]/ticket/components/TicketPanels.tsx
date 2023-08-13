@@ -1,10 +1,9 @@
 import { DashboardCard } from '~/layouts/Dashboard'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { useFetchPanels } from '../hooks/useFetchPanels'
-import CreatePanel from './CreatePanel'
 import { PanelsEmpty } from '../panels/[panelId]/components/PanelsEmpty'
+import CreatePanel from './CreatePanel'
 import { TicketPanel } from './TicketPanel'
-import { Typography } from '~/ui/typography/Typography'
 
 export const TicketPanels = () => {
   const currentGuild = useCurrentGuildValue()

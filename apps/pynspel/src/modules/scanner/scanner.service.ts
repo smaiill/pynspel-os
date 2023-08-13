@@ -95,19 +95,15 @@ class _ScannerService extends ModuleServiceBase<'scanner'> {
 
       if (!scannedContentLinks.passed) {
         if (!links.ignored_channels.includes(message?.channel?.id)) {
-          try {
-            await message.delete()
-            await message.channel.send({
-              embeds: [
-                {
-                  description: `${message.member}, Your message was delete cause of a link detected.`,
-                },
-              ],
-            })
-            // TODO: Perform the action in case.
-          } catch (error) {
-            console.error(error)
-          }
+          await message.delete()
+          await message.channel.send({
+            embeds: [
+              {
+                description: `${message.member}, Your message was delete cause of a link detected.`,
+              },
+            ],
+          })
+          // TODO: Perform the action in case.
 
           return { ...scannedContentLinks }
         }
@@ -123,19 +119,16 @@ class _ScannerService extends ModuleServiceBase<'scanner'> {
 
       if (!scannedContent.passed) {
         if (!words.ignored_channels.includes(message?.channel?.id)) {
-          try {
-            await message.delete()
-            await message.channel.send({
-              embeds: [
-                {
-                  description: `${message.member}, Your message was delete cause of a bad word: ||${scannedContent.detected}||`,
-                },
-              ],
-            })
-            // TODO: Perform the action in case.
-          } catch (error) {
-            console.error(error)
-          }
+          await message.delete()
+          await message.channel.send({
+            embeds: [
+              {
+                description: `${message.member}, Your message was delete cause of a bad word: ||${scannedContent.detected}||`,
+              },
+            ],
+          })
+          // TODO: Perform the action in case.
+
           return { ...scannedContent }
         }
       }

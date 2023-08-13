@@ -1,5 +1,6 @@
 import { HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
+import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
 import { _decrypt } from 'utils/crypto'
 import { HttpException } from 'utils/error'
 import { DashboardService } from './dashboard.service'
@@ -11,6 +12,12 @@ class _DashboardController {
   }
 
   public async fetchMutualGuilds(req: Request, res: Response) {
+    if (!IS_CLIENT_AVAILABLE) {
+      throw new HttpException(
+        HttpStatus.SERVICE_UNAVAILABLE,
+        'Client is corrently unavailabl'
+      )
+    }
     const { user } = req
     const { accessToken } = user as SavedUser
 
@@ -22,6 +29,12 @@ class _DashboardController {
   }
 
   public async fetchGuild(req: Request, res: Response) {
+    if (!IS_CLIENT_AVAILABLE) {
+      throw new HttpException(
+        HttpStatus.SERVICE_UNAVAILABLE,
+        'Client is corrently unavailabl'
+      )
+    }
     const { id } = req.params
 
     if (!id) {

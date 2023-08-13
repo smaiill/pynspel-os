@@ -10,18 +10,10 @@ export class RoleDelete extends BaseEvent<'roleDelete'> {
   }
 
   private async manageCache(role: Role) {
-    const cachedRoles = await redis.hGetObject('guild', role.guild.id, 'roles')
-
-    if (!cachedRoles) {
-      return
-    }
-
-    const newChannels = cachedRoles.filter((_role) => _role.id !== role.id)
-
-    await redis.hSetObject('guild', role.guild.id, 'roles', newChannels)
+    await redis.deleteRole(role.guild.id, role.id)
   }
 
   public async on(client: Client, role: Role) {
-    this.manageCache(role)
+    await this.manageCache(role)
   }
 }

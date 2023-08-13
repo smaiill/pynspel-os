@@ -1,5 +1,5 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react'
-import { RecipeVariantProps, cva } from '../../../styled-system/css'
+import { HTMLAttributes, PropsWithChildren } from 'react'
+import { cva, RecipeVariantProps } from '../../../styled-system/css'
 
 const chipRecipe = cva({
   base: {

@@ -8,6 +8,6 @@ export type RedisChannel = {
 export type RedisRole = {
   id: string
   name: string
-  permissions: number
+  permissions: string
   color: number
 }

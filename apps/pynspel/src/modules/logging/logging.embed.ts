@@ -1,6 +1,6 @@
 import { EmbedBuilder, GuildMember } from 'discord.js'
-import { DiscordColors } from '../../constants/index'
 import { MemberRemove } from 'events/guildMemberRemove'
+import { DiscordColors } from '../../constants/index'
 
 const getGuildMemberAddDescription = (member: GuildMember) => {
   return `

@@ -1,13 +1,15 @@
 import { InferModuleConfigType, ModulesTypes } from '@pynspel/common'
-import { RedisChannel } from '@pynspel/types'
-import { RedisClientType, createClient } from 'redis'
+import { RedisChannel, RedisRole } from '@pynspel/types'
+import { RedisClientType } from 'redis'
 
 const GuildCacheKeys = {
   Modules: 'Modules',
   Channels: 'Channels',
+  Roles: 'Roles',
 } as const
 
-const CHANNELS_TTL = 600
+const CHANNELS_TTL = 300
+const ROLES_TTL = 300
 
 export class GuildCache {
   public _client: RedisClientType | null = null
@@ -94,6 +96,18 @@ export class GuildCache {
     )
   }
 
+  public async updateChannels(guildId: string, channels: RedisChannel[]) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    return await this._client.set(
+      `${GuildCacheKeys.Channels}:${guildId}`,
+      JSON.stringify(channels),
+      { KEEPTTL: true }
+    )
+  }
+
   public async getChannels(guildId: string) {
     if (!this._client) {
       console.error('Invalid redis client')
@@ -109,6 +123,14 @@ export class GuildCache {
     }
 
     return JSON.parse(channels) as RedisChannel[]
+  }
+
+  public async invalidateChannels(guildId: string) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    return await this._client.del(`${GuildCacheKeys.Channels}:${guildId}`)
   }
 
   public async updateChannel(guildId: string) {
@@ -134,21 +156,104 @@ export class GuildCache {
       (_channel) => _channel.id !== channelId
     )
 
-    return await this.setChannels(guildId, newChannels)
+    return await this.updateChannels(guildId, newChannels)
   }
 
   public async createChannel(guildId: string, channel: RedisChannel) {
-    const cachedChannels = (await this.getChannels(guildId)) ?? []
+    const cachedChannels = await this.getChannels(guildId)
 
-    cachedChannels.push({
-      type: channel.type,
-      name: channel.name,
-      id: channel.id,
-      guild_id: channel.guild_id,
-    })
+    if (!cachedChannels) {
+      await this.setChannels(guildId, [channel])
 
-    await this.setChannels(guildId, cachedChannels)
+      return [channel]
+    }
 
-    return cachedChannels
+    await this.updateChannels(guildId, [...cachedChannels, channel])
+
+    return [...cachedChannels, channel]
+  }
+
+  public async setRoles(guildId: string, roles: RedisRole[]) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+    return await this._client.setEx(
+      `${GuildCacheKeys.Roles}:${guildId}`,
+      ROLES_TTL,
+      JSON.stringify(roles)
+    )
+  }
+
+  public async updateRoles(guildId: string, roles: RedisRole[]) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    return await this._client.set(
+      `${GuildCacheKeys.Roles}:${guildId}`,
+      JSON.stringify(roles),
+      { KEEPTTL: true }
+    )
+  }
+
+  public async getRoles(guildId: string) {
+    if (!this._client) {
+      console.error('Invalid redis client')
+      return
+    }
+
+    const roles = await this._client.get(`${GuildCacheKeys.Roles}:${guildId}`)
+
+    if (!roles) {
+      return null
+    }
+
+    return JSON.parse(roles) as RedisRole[]
+  }
+
+  public async invalidateRoles(guildId: string) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    return await this._client.del(`${GuildCacheKeys.Roles}:${guildId}`)
+  }
+
+  public async updateRole(guildId: string) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    return await this._client.del(`${GuildCacheKeys.Roles}:${guildId}`)
+  }
+
+  public async deleteRole(guildId: string, roleId: string) {
+    if (!this._client) {
+      return console.error('Invalid redis client')
+    }
+
+    const cachedRoles = await this.getRoles(guildId)
+
+    if (!cachedRoles) {
+      return
+    }
+
+    const newRoles = cachedRoles.filter((_role) => _role.id !== roleId)
+
+    return await this.updateRoles(guildId, newRoles)
+  }
+
+  public async createRole(guildId: string, role: RedisRole) {
+    const cachedRoles = await this.getRoles(guildId)
+
+    if (!cachedRoles) {
+      await this.setRoles(guildId, [role])
+
+      return [role]
+    }
+
+    await this.updateRoles(guildId, [...cachedRoles, role])
+
+    return [...cachedRoles, role]
   }
 }

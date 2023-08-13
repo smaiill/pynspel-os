@@ -1,6 +1,5 @@
 import { PanelApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
-import { useSetCurrentPanel } from '~/proxys/ticket'
 import { fetchApi } from '~/utils/fetchApi'
 
 type TicketPanel = {

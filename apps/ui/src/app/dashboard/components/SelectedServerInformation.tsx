@@ -1,11 +1,11 @@
+import { ChannelType } from 'discord-api-types/v10'
 import Image from 'next/image'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
-import { SkeletonBox } from './Skeletons'
-import { ChannelType } from 'discord-api-types/v10'
 import { css } from '../../../../styled-system/css'
+import { SkeletonBox } from './Skeletons'
 
 const topStyle = css({
   gap: '10px',

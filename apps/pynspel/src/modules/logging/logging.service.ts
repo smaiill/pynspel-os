@@ -1,7 +1,7 @@
 import { ChannelType, GuildMember } from 'discord.js'
+import { MemberRemove } from 'events/guildMemberRemove'
 import { ModuleServiceBase } from 'modules/module.service.base'
 import { loggingEmbeds } from './logging.embed'
-import { GuildMemberRemove, MemberRemove } from 'events/guildMemberRemove'
 
 class LoggingSevice extends ModuleServiceBase<'logging'> {
   constructor() {

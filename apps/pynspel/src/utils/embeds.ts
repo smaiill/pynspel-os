@@ -1,4 +1,3 @@
-import { ClientInformations } from 'constants/pynspel'
 import { EmbedBuilder } from 'discord.js'
 
 type EmbedOptions = {

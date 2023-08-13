@@ -1,12 +1,11 @@
-import { BiHome } from 'react-icons/bi'
-import { Logo } from '~/components/branding/Logo'
-import { css } from '../../../../styled-system/css'
-import AsideItem from './AsideItem'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
-import { asideItemsData } from '~/data/aside.items'
-import { useGlobalModules, useGuildModulesState } from '../hooks/modules'
-import { SkeletonBox } from './Skeletons'
 import { Home } from 'lucide-react'
+import { Logo } from '~/components/branding/Logo'
+import { asideItemsData } from '~/data/aside.items'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { css } from '../../../../styled-system/css'
+import { useGlobalModules, useGuildModulesState } from '../hooks/modules'
+import AsideItem from './AsideItem'
+import { SkeletonBox } from './Skeletons'
 
 const styles = css({
   backgroundColor: '#191919',

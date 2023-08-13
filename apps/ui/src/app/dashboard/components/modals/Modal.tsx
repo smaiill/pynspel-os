@@ -1,9 +1,9 @@
 import { X } from 'lucide-react'
-import React, { HTMLAttributes, PropsWithChildren } from 'react'
+import { HTMLAttributes, PropsWithChildren } from 'react'
+import { createPortal } from 'react-dom'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { Typography } from '~/ui/typography/Typography'
-import { RecipeVariantProps, css, cva } from '../../../../../styled-system/css'
-import { createPortal } from 'react-dom'
+import { css, cva, RecipeVariantProps } from '../../../../../styled-system/css'
 
 const modalRecipe = cva({
   base: {

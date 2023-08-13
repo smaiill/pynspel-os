@@ -1,30 +1,15 @@
-import {
-  InferModuleConfigType,
-  getModuleSchema,
-  validateModuleConfig,
-} from '@pynspel/common'
-import { AlertCircle } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getModuleSchema, InferModuleConfigType } from '@pynspel/common'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
-import { Alert } from '~/app/dashboard/components/Alert'
-import { PxToastError } from '~/app/dashboard/components/toast/PxToast'
-import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
-import {
-  ButtonDanger,
-  ButtonPrimary,
-  ButtonSpecial,
-  ButtonSuccess,
-  ButtonWarn,
-} from '~/ui/button/Button'
+import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FieldError } from '~/app/dashboard/components/form/FieldError'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'counterRaid'>

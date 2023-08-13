@@ -1,6 +1,4 @@
-import { InferModuleConfigType, ModulesTypes } from '@pynspel/common'
 import { createClient, RedisClientType } from 'redis'
-import { RedisChannel } from '@pynspel/types'
 import { GuildCache } from './guild'
 
 export class CacheManager extends GuildCache {

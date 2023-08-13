@@ -1,9 +1,9 @@
 import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
+import { ModuleStateApi } from '@pynspel/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { fetchApi } from '~/utils/fetchApi'
 import { pxToast } from '../components/toast/toast-handler'
-import { ModuleStateApi } from '@pynspel/types'
 
 export const useFetchModule = <M extends ModulesTypes>(
   module: M,

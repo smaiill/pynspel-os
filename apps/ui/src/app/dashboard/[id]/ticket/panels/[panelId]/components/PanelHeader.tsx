@@ -1,9 +1,6 @@
-import React from 'react'
-import { ButtonSpecial } from '~/ui/button/Button'
-import { css } from '../../../../../../../../styled-system/css'
-import { useCurrentPanelValue } from '~/proxys/ticket'
-import { usePanelMutations } from '../../hooks/usePanelMutations'
 import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
+import { ButtonSpecial } from '~/ui/button/Button'
+import { usePanelMutations } from '../../hooks/usePanelMutations'
 
 type PanelHeaderProps = {
   panelId: string

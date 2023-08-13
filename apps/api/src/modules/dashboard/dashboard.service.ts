@@ -1,4 +1,4 @@
-import { DiscordGuild, SavedGuild } from '@pynspel/types'
+import { ApiGuild, DiscordGuild, SavedGuild } from '@pynspel/types'
 import { ChannelType } from 'discord-api-types/v10'
 import { clientService } from 'modules/client/client.service'
 import { db } from 'modules/db'
@@ -45,14 +45,14 @@ class _DashboardService {
   }
 
   public async getCachedChannelsOrFresh(guildId: string) {
-    const cache = await redis.hGetObject('guild', guildId, 'channels')
+    const cachedChannels = await redis.getChannels(guildId)
 
-    if (cache) {
-      console.log('Cache data')
-      return cache
+    if (cachedChannels) {
+      return cachedChannels
     }
 
     const channels = await this._guildService.fetchChannels(guildId)
+
     const formatedChannels = channels
       .filter((channel) =>
         [
@@ -62,7 +62,6 @@ class _DashboardService {
         ].includes(channel.type)
       )
       .map((_channel) => {
-        console.log(_channel)
         return {
           id: _channel.id,
           type: _channel.type,
@@ -71,20 +70,20 @@ class _DashboardService {
         }
       })
 
-    await redis.hSetObject('guild', guildId, 'channels', formatedChannels)
+    await redis.setChannels(guildId, formatedChannels)
 
     return formatedChannels
   }
 
   public async getCachedRolesOrFresh(guildId: string) {
-    const cache = await redis.hGetObject('guild', guildId, 'roles')
+    const cachedRoles = await redis.getRoles(guildId)
 
-    if (cache) {
-      console.log('Cache data')
-      return cache
+    if (cachedRoles) {
+      return cachedRoles
     }
 
     const roles = await this._guildService.fetchRoles(guildId)
+
     const formatedRoles = roles.map((role) => {
       return {
         id: role.id,
@@ -94,19 +93,18 @@ class _DashboardService {
       }
     })
 
-    await redis.hSetObject('guild', guildId, 'roles', formatedRoles)
+    await redis.setRoles(guildId, formatedRoles)
 
     return formatedRoles
   }
 
-  public async getGuildConfiguration(
-    guildId: string
-  ): Promise<SavedGuild & { channels: { name: string; id: string }[] }> {
+  public async getGuildConfiguration(guildId: string): Promise<ApiGuild> {
     const query = 'SELECT * FROM guilds WHERE guild_id = $1'
     const values = [guildId]
 
     const channels = await this.getCachedChannelsOrFresh(guildId)
     const roles = await this.getCachedRolesOrFresh(guildId)
+
     const [res] = await db.exec<SavedGuild>(query, values)
 
     return {
