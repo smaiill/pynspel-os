@@ -1,0 +1,16 @@
+import { ActionsTranslationBase } from './actions'
+import { DashboardTranslationBase } from './dashboard'
+import { GuildTranslationBase } from './guild'
+import { HomeTranslationBase } from './home'
+import { ModulesTranslationBase } from './modules'
+
+/* eslint-disable */
+export type TranslationBase = {
+  pages: {
+    home: HomeTranslationBase
+    dashboard: DashboardTranslationBase
+    guild: GuildTranslationBase
+  }
+  modules: ModulesTranslationBase
+  actions: ActionsTranslationBase
+}

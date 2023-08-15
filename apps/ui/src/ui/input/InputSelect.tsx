@@ -11,7 +11,7 @@ import {
 import { BsChevronDown, BsPlus } from 'react-icons/bs'
 import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 
 type Option = PropertyKey | null
 type InputSelectTypes = 'role' | 'channel' | 'default'
@@ -27,8 +27,13 @@ export interface InputSelectProps<Value, Multi, Type>
     ? Dispatch<SetStateAction<Value>>
     : Dispatch<SetStateAction<string[]>>
 
-  onChange?: (value: Value) => void
+  onChange?: (
+    value: Multi extends never | false
+      ? Dispatch<SetStateAction<Value>>
+      : Dispatch<SetStateAction<string[]>>
+  ) => void
   type?: Type
+  className?: string
 }
 
 type Item = {
@@ -61,7 +66,7 @@ const styles = css({
 
 const svgDropDownStyle = css({
   pos: 'absolute',
-  right: '20px',
+  right: '10px',
   translate: '0 -50%',
   top: '50%',
   cursor: 'pointer',
@@ -80,6 +85,7 @@ const pickerStyles = css({
   gap: '5px',
   flexWrap: 'wrap',
   cursor: 'pointer',
+  minW: '75px',
 })
 
 const ulStyles = css({
@@ -152,7 +158,16 @@ const InputSelect = <
 >(
   props: InputSelectProps<Value, Multi, Type>
 ) => {
-  const { children, options, value, setValue, multi, type = 'default' } = props
+  const {
+    children,
+    options,
+    value,
+    setValue,
+    multi,
+    type = 'default',
+    onChange,
+    className,
+  } = props
   const ulRef = useRef<HTMLUListElement>(null)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -212,7 +227,7 @@ const InputSelect = <
       <div onClick={handleClick} className="wrapper">
         <div
           style={isOpen ? { border: '1px solid rgb(77, 76, 76)' } : {}}
-          className={pickerStyles}
+          className={cx(pickerStyles, className)}
         >
           {value === null ? (
             'Select...'
@@ -286,10 +301,10 @@ const InputSelect = <
                     }}
                   >
                     <Hashtag />
-                    {String(item.label)}
+                    {item.label}
                   </Flex>
                 ) : (
-                  String(item.label)
+                  item.label
                 )}
                 {_selected ? <Check size={12} /> : null}
               </li>

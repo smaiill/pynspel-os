@@ -13,6 +13,7 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.9.0",
     "@pynspel/cache": "workspace:*",
     "@pynspel/common": "workspace:*",
     "@pynspel/db": "workspace:*",

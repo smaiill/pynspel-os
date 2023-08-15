@@ -1,6 +1,8 @@
 'use client'
 import Link from 'next/link'
+import { LocaleSelector } from '~/components/locale/LocaleSelector'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
+import { Flex } from '~/layouts/Flex'
 import { useUserSnapshot } from '~/proxys/user'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { css } from '../../../../styled-system/css'
@@ -51,7 +53,8 @@ const MainHeader = () => {
         </ul>
       </nav>
 
-      <div>
+      <Flex style={{ alignItems: 'center', gap: 20 }}>
+        <LocaleSelector />
         {userSnap.isAuthenticated ? (
           <UserConnectedHeader />
         ) : (
@@ -59,7 +62,7 @@ const MainHeader = () => {
             Se connecter
           </ButtonPrimary>
         )}
-      </div>
+      </Flex>
     </header>
   )
 }

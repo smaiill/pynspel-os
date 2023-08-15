@@ -56,7 +56,6 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <AppProvider>{children}</AppProvider>
-
             <Toaster />
             <ReactQueryDevtools initialIsOpen={false} />
           </RecoilRoot>

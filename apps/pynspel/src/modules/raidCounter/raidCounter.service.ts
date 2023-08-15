@@ -1,6 +1,7 @@
 import { InferModuleConfigType, Modules } from '@pynspel/common'
 import { Guild, GuildMember } from 'discord.js'
 import { ModuleServiceBase } from 'modules/module.service.base'
+import { logger } from 'utils/logger'
 
 type Action = Pick<InferModuleConfigType<'counterRaid'>, 'action'>['action']
 type MuteUnit = Pick<
@@ -41,22 +42,32 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
     guildId: string,
     interval: number
   ) {
-    const value = await this._cache._client.get(`raidCounter:${guildId}`)
+    try {
+      const value = await this._cache._client.get(`raidCounter:${guildId}`)
 
-    if (!value) {
-      await this._cache._client.setEx(`raidCounter:${guildId}`, interval, '0')
+      if (!value) {
+        await this._cache._client.setEx(`raidCounter:${guildId}`, interval, '0')
 
+        return 0
+      }
+
+      return Number(value)
+    } catch (error) {
+      logger.error('Error in getGuildMemberThresholdOrCreate:', error)
       return 0
     }
-
-    return Number(value)
   }
 
   private async updateGuildMemberThreshold(guildId: string, newValue: number) {
-    await this._cache._client.set(`raidCounter:${guildId}`, newValue, {
-      KEEPTTL: true,
-    })
-    return newValue
+    try {
+      await this._cache._client.set(`raidCounter:${guildId}`, newValue, {
+        KEEPTTL: true,
+      })
+      return newValue
+    } catch (error) {
+      console.error('Error in updateGuildMemberThreshold:', error)
+      return newValue
+    }
   }
 
   private async takeAction({ config, member }: TakeAction) {
@@ -86,13 +97,13 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
 
   public async lockChannels(guild: Guild) {
     const channels = await guild.channels.fetch()
+
     channels.forEach(async (channel) => {
       try {
         if (channel) {
           await channel.permissionOverwrites.edit(guild.roles.everyone, {
             SendMessages: false,
           })
-          console.log(`Channel locked ${channel.name}`)
         }
       } catch (error) {
         console.log(
@@ -104,35 +115,39 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
 
   public async handleMember(member: GuildMember) {
     const guildId = member.guild.id
-    const config = await this.getFreshConfigOrCached(guildId)
+    try {
+      const config = await this.getFreshConfigOrCached(guildId)
 
-    const threshold = await this.getGuildMemberThresholdOrCreate(
-      guildId,
-      config.interval
-    )
+      const threshold = await this.getGuildMemberThresholdOrCreate(
+        guildId,
+        config.interval
+      )
 
-    console.log({ threshold, config })
-    if (threshold >= config.member_threshold) {
-      await this.takeAction({
-        config: {
-          action: config.action,
-          muteTimeout: config.mute_timeout,
-          muteUnit: config.mute_unit,
-          reason: config.action_reason,
-        },
-        member,
-      })
+      if (threshold >= config.member_threshold) {
+        await this.takeAction({
+          config: {
+            action: config.action,
+            muteTimeout: config.mute_timeout,
+            muteUnit: config.mute_unit,
+            reason: config.action_reason,
+          },
+          member,
+        })
 
-      if (config.raid_channel_lockdown) {
-        await this.lockChannels(member.guild)
+        if (config.raid_channel_lockdown) {
+          await this.lockChannels(member.guild)
+        }
+
+        return false
       }
+      const newValue = threshold + 1
+      await this.updateGuildMemberThreshold(guildId, newValue)
 
+      return true
+    } catch (error) {
+      logger.error(error)
       return false
     }
-    const newValue = threshold + 1
-    await this.updateGuildMemberThreshold(guildId, newValue)
-
-    return true
   }
 }
 

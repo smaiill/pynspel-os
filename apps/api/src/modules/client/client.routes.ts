@@ -9,5 +9,5 @@ clientRoutes.get('/serving-guilds', async (req: Request, res: Response) => {
 
   const [_res] = await db.exec<{ count: number }>(query, [true])
 
-  res.json({ count: _res.count })
+  res.json({ count: Number(_res.count) })
 })

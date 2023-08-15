@@ -1,0 +1,87 @@
+import { Translation } from '@smaiill/trin'
+import { TranslationBase } from '../types'
+
+export const en: Translation<TranslationBase> = {
+  actions: {
+    add: 'Add',
+    delete: 'Delete',
+    save: 'Save',
+    send: 'Send',
+    update: 'Update',
+  },
+  pages: {
+    dashboard: {
+      manage_server: 'Manage Server',
+      select_a_server: 'Select a Server',
+    },
+    guild: {
+      welcome: 'Welcome to {{ name }}',
+    },
+    home: {
+      add_pynspel: 'Add Pynspel',
+      description:
+        'Pynspel is a versatile Discord bot designed to assist users in securing and protecting their servers',
+      go_to_dashboard: 'Go to Dashboard',
+      nav: {
+        dashboard: 'Dashboard',
+        home: 'Home',
+      },
+      serving_servers: 'Present on +{{ amount }} servers',
+    },
+  },
+  modules: {
+    captcha: {
+      case_sensitive: 'Case Sensitive',
+      channel: 'Channel where verification will take place',
+      include_numbers: 'Include Numbers',
+      kick_timeout: 'Time before excluding the user if no response',
+      length: 'Captcha Length',
+      max_tries: 'Maximum Number of Tries',
+      role_to_add: 'Role to add if the user has been verified',
+    },
+    command: {
+      ban: 'Ban a Member',
+      kick: 'Kick a User',
+    },
+    common: {
+      action_to_take: 'Action to Take',
+      mute_time: 'Mute Duration',
+      mute_unit: 'Mute Unit',
+      channels_ignore: 'Channels to Ignore',
+    },
+    counter_raid: {
+      interval_to_activate:
+        'The interval during which {{ members }} must join before activating the anti-raid',
+      threshold: 'Number of members who must join within {{ time }} seconds',
+    },
+    logging: {
+      channel: 'Channel to send logs to',
+      user_join: 'When a user joins',
+      user_leave: 'When a user leaves',
+    },
+    scanner: {
+      links: {
+        activate: 'Activate link scanning',
+        to_ban: 'Links to ban {{ ?.exact ? Exact : Not exact}}',
+      },
+      words: {
+        activate: 'Activate word scanning',
+        to_ban: 'Words to ban {{ ?.exact ? Exact : Not exact}}',
+      },
+    },
+    ticket: {
+      create_panel_name: 'Panel Name',
+      max_tickets: 'Maximum number of tickets per member open simultaneously',
+      panel: {
+        channel: 'Channel to send the panel to',
+        interactions: {
+          button_label: 'Button Content',
+          create: 'Create',
+          title: 'Interactions',
+        },
+        message:
+          'Message to be sent with the panel (leave empty if no message)',
+      },
+    },
+  },
+}
