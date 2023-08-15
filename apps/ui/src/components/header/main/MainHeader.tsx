@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { LocaleSelector } from '~/components/locale/LocaleSelector'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
 import { Flex } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { useUserSnapshot } from '~/proxys/user'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { css } from '../../../../styled-system/css'
@@ -40,6 +41,7 @@ const styles = css({
 const MainHeader = () => {
   const userSnap = useUserSnapshot()
 
+  const { t } = useTranslation()
   return (
     <header className={styles}>
       <div>
@@ -48,8 +50,8 @@ const MainHeader = () => {
 
       <nav>
         <ul>
-          <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/">{t('pages.home.nav.home')}</Link>
+          <Link href="/dashboard">{t('pages.home.nav.dashboard')}</Link>
         </ul>
       </nav>
 

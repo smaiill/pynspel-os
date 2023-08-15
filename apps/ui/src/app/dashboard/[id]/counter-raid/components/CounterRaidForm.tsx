@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
@@ -26,6 +27,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
     formState: { isDirty, errors },
     setValue,
     reset,
+    watch,
   } = useForm<InferModuleConfigType<'counterRaid'>>({
     defaultValues: {
       action: data.action,
@@ -38,6 +40,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
     },
     resolver: zodResolver(getModuleSchema('counterRaid')),
   })
+  const { t } = useTranslation()
   const [action, setAction] = useState(getValues('action'))
   const [muteUnit, setMuteUnit] = useState(getValues('mute_unit'))
   const currentGuild = useCurrentGuildValue()
@@ -75,7 +78,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
         {...register('member_threshold', {
           setValueAs: (value) => parseInt(value),
         })}
-        label="Nombres de personnes qui rejoignent"
+        label={t('modules.counter_raid.threshold', {
+          time: watch('interval'),
+        })}
         error={!!errors.member_threshold}
       />
       {errors.member_threshold?.message ? (
@@ -85,7 +90,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
         {...register('interval', {
           setValueAs: (value) => parseInt(value),
         })}
-        label="L'interval dans lequel ils doivent rejoindre pour activer l'anti raid"
+        label={t('modules.counter_raid.interval_to_activate', {
+          members: watch('member_threshold'),
+        })}
         error={!!errors.member_threshold}
       />
       {errors.interval?.message ? (
@@ -101,7 +108,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
         value={action}
         setValue={setAction}
       >
-        L'action a prendre
+        {t('modules.common.action_to_take')}
       </InputSelect>
       {errors.action?.message ? (
         <FieldError message={errors.action.message} />
@@ -109,7 +116,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
       <Input
         error={!!errors.action_reason}
         {...register('action_reason')}
-        label='Raison de l"action'
+        label={t('modules.counter_raid.action_raison')}
       />
       {errors.action_reason?.message ? (
         <FieldError message={errors.action_reason.message} />
@@ -122,10 +129,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
         render={({ field }) => {
           return (
             <Checkbox {...field}>
-              Fermer tout les channels{' '}
-              <span style={{ color: '#D86767' }}>
-                Attention, il faudra remettre les permissions manuellement
-              </span>
+              {t('modules.counter_raid.lock_channels')}
             </Checkbox>
           )
         }}
@@ -141,15 +145,13 @@ const CounterRaidForum = (props: LogginFormProps) => {
             value={muteUnit}
             setValue={setMuteUnit}
           >
-            Le temps du mute
+            {t('modules.common.mute_unit')}
           </InputSelect>
           <Input
             {...register('mute_timeout', {
               setValueAs: (value) => parseInt(value),
             })}
-            label={`Temps du mute, ${
-              muteUnit === 'day' ? '(1 to 5)' : '1 to 7200'
-            }`}
+            label={t('modules.common.mute_time')}
             error={!!errors.mute_timeout}
           />
           {errors.mute_timeout?.message ? (
@@ -164,7 +166,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
           disabled={mutation.isLoading}
           type="submit"
         >
-          Enregistrer
+          {t('actions.save')}
         </ButtonPrimary>
       ) : null}
     </FlexColumn>

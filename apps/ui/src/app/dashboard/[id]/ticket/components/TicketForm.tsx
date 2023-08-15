@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
@@ -24,6 +25,7 @@ const TicketForm = (props: LogginFormProps) => {
     },
   })
   const currentGuild = useCurrentGuildValue()
+  const { t } = useTranslation()
 
   const mutation = useMutateModule('ticket')
 
@@ -41,7 +43,9 @@ const TicketForm = (props: LogginFormProps) => {
         {...register('max_each_user', {
           setValueAs: (value) => parseInt(value),
         })}
-        label={`Le nombres de tickets max par personne, (maximum ${TICKET_MAX_PER_USER})`}
+        label={t('modules.ticket.max_tickets', {
+          amount: TICKET_MAX_PER_USER,
+        })}
         error={!!errors.max_each_user}
       />
       {errors.max_each_user ? (
@@ -54,7 +58,7 @@ const TicketForm = (props: LogginFormProps) => {
           disabled={mutation.isLoading}
           type="submit"
         >
-          Enregistrer
+          {t('actions.save')}
         </ButtonPrimary>
       ) : null}
     </FlexColumn>

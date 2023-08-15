@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { usePanelMutations } from '../panels/hooks/usePanelMutations'
@@ -20,6 +21,8 @@ const CreatePanel = () => {
     },
   })
 
+  const { t } = useTranslation()
+
   const handleCreatePanel = (data: any) => {
     mutateAsync(data).then(() => {
       reset()
@@ -28,13 +31,16 @@ const CreatePanel = () => {
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
-      <Input {...register('name')} label="Nom de votre panel" />
+      <Input
+        {...register('name')}
+        label={t('modules.ticket.create_panel_name')}
+      />
 
       <ButtonPrimary
         disabled={!isDirty}
         onClick={handleSubmit(handleCreatePanel)}
       >
-        Ajouter
+        {t('actions.add')}
       </ButtonPrimary>
     </FlexColumn>
   )

@@ -4,6 +4,7 @@ export type HomeTranslationBase = {
   nav: {
     home: {}
     dashboard: {}
+    login: {}
   }
   description: {}
   add_pynspel: {}

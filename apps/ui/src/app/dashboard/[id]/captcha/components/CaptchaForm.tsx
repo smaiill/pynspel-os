@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import {
   useCurrentGuildChannels,
   useCurrentGuildRoles,
@@ -44,6 +45,7 @@ const CaptchaForm = (props: Props) => {
 
     resolver: zodResolver(getModuleSchema('captcha')),
   })
+  const { t } = useTranslation()
 
   const [verificationRole, setVerificationRole] = useState(getValues('role_id'))
   const [timeoutCaptcha, setTimeoutCaptcha] = useState(getValues('timeout'))
@@ -106,7 +108,9 @@ const CaptchaForm = (props: Props) => {
         {...register('length', {
           setValueAs: (value) => parseInt(value),
         })}
-        label="Taille du Captcha, (4, 6, 8)"
+        label={t('modules.captcha.length', {
+          choices: '(4, 6, 8)',
+        })}
         error={!!formErrors.length}
       />
       {formErrors.length ? (
@@ -117,7 +121,7 @@ const CaptchaForm = (props: Props) => {
         {...register('max_retries', {
           setValueAs: (value) => parseInt(value),
         })}
-        label="Nombres d'essai max"
+        label={t('modules.captcha.max_tries')}
         error={!!formErrors.max_retries}
       />
       {formErrors.max_retries ? (
@@ -129,7 +133,7 @@ const CaptchaForm = (props: Props) => {
         setValue={setVerificationRole}
         type="role"
       >
-        Le role qui sera ajouter après la vérification
+        {t('modules.captcha.role_to_add')}
       </InputSelect>
       {formErrors.role_id ? (
         <FieldError message={formErrors.role_id.message} />
@@ -144,7 +148,7 @@ const CaptchaForm = (props: Props) => {
         value={timeoutCaptcha}
         setValue={setTimeoutCaptcha}
       >
-        Temps avant de kick luser si il na pas résolu le bail
+        {t('modules.captcha.kick_timeout')}
       </InputSelect>
       {formErrors.timeout ? (
         <FieldError message={formErrors.timeout.message} />
@@ -156,7 +160,7 @@ const CaptchaForm = (props: Props) => {
         options={formatedChannels}
         type="channel"
       >
-        Canal de vérification
+        {t('modules.captcha.channel')}
       </InputSelect>
       {formErrors.verification_channel ? (
         <FieldError message={formErrors.verification_channel.message} />
@@ -166,7 +170,11 @@ const CaptchaForm = (props: Props) => {
         name="has_numbers"
         control={control}
         render={({ field }) => {
-          return <Checkbox {...field}>Inclure des nombres</Checkbox>
+          return (
+            <Checkbox {...field}>
+              {t('modules.captcha.include_numbers')}
+            </Checkbox>
+          )
         }}
       />
       {formErrors.has_numbers ? (
@@ -176,7 +184,7 @@ const CaptchaForm = (props: Props) => {
         name="case_sensitive"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>Sensible a la casse</Checkbox>
+          <Checkbox {...field}>{t('modules.captcha.case_sensitive')}</Checkbox>
         )}
       />
       {formErrors.case_sensitive ? (
@@ -188,7 +196,7 @@ const CaptchaForm = (props: Props) => {
           disabled={mutation.isLoading}
           type="submit"
         >
-          Enregistrer
+          {t('actions.save')}
         </ButtonPrimary>
       ) : null}
     </FlexColumn>

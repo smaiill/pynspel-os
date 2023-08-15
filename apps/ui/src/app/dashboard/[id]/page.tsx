@@ -1,6 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
+import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildState } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
 import Aside from '../components/Aside'
@@ -17,6 +18,7 @@ const page = ({ params }: Props) => {
   const { id } = params
   const { data: guildData, isLoading } = useFetchGuild(id)
   const [currentGuild, setCurrentGuild] = useCurrentGuildState()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setCurrentGuild(guildData)
@@ -26,12 +28,18 @@ const page = ({ params }: Props) => {
     return 'Loading....'
   }
 
+  if (!guildData) {
+    return 'Loading...'
+  }
+
   return (
     <DashboardPage>
       <Aside />
       <DashboardView>
         <Typography as="h1">
-          Welcome, smail. 👋 on {currentGuild?.name}
+          {t('pages.guild.welcome', {
+            name: guildData.name,
+          })}
         </Typography>
 
         <SelectedServerInformation />

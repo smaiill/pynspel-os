@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../styled-system/css'
@@ -20,9 +21,9 @@ const styles = css({
 
 const ServerCard = (props: any) => {
   const router = useRouter()
+  const { t } = useTranslation()
 
   const handleManageGuild = () => {
-    console.log('Clicked ')
     router.push(`/dashboard/${props.id}`)
   }
 
@@ -36,7 +37,9 @@ const ServerCard = (props: any) => {
         // src={`https://cdn.discordapp.com/icons/${props.id}/${props.icon}.png`}
       />
       <Typography as="h4">{props.name}</Typography>
-      <ButtonPrimary onClick={handleManageGuild}>Gérer</ButtonPrimary>
+      <ButtonPrimary onClick={handleManageGuild}>
+        {t('pages.dashboard.manage_server')}
+      </ButtonPrimary>
     </FlexColumn>
   )
 }

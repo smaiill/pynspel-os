@@ -6,6 +6,7 @@ import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStyl
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { ButtonDanger, ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { Typography } from '~/ui/typography/Typography'
@@ -91,10 +92,13 @@ export const DiscordButton = ({
 
 const PanelInteractions = (props: Props) => {
   const { interactions } = props
+  const { t } = useTranslation()
 
   return (
     <FlexColumn style={{ gap: 10 }}>
-      <Typography as="span">Interactions</Typography>
+      <Typography as="span">
+        {t('modules.ticket.panel.interactions.title')}
+      </Typography>
       <CreateInteraction />
       {interactions?.map((interaction) => (
         <Interaction key={interaction.id} interaction={interaction} />
@@ -135,6 +139,7 @@ const Interaction = (props: any) => {
   const watchedEmoji = watch('emoji')
   const watchedName = watch('name')
   const watchedStyle = watch('style')
+  const { t } = useTranslation()
 
   const handleStyleChange = ({ style }: { style: number }) => {
     setValue('style', style, {
@@ -148,8 +153,6 @@ const Interaction = (props: any) => {
       shouldDirty: true,
     })
   }
-
-  // TODO: Mutations and delete.
 
   const { deleteInteraction, updateInteraction } = useInteractionMutations()
 
@@ -182,7 +185,10 @@ const Interaction = (props: any) => {
           </ButtonDanger>
         </Flex>
         <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
-          <Input {...register('name')} label="Contenu du bouton" />
+          <Input
+            {...register('name')}
+            label={t('modules.ticket.panel.interactions.button_label')}
+          />
           <ButtonStylePicker
             default={getValues('style')}
             onChange={handleStyleChange}
@@ -199,7 +205,7 @@ const Interaction = (props: any) => {
           {emojis ? <EmojiPicker onEmojiClick={handleEmojiClick} /> : null}
           {isDirty ? (
             <ButtonPrimary onClick={handleSubmit(handleUpdateInteraction)}>
-              Sauvegarder
+              {t('actions.save')}
             </ButtonPrimary>
           ) : null}
         </FlexColumn>

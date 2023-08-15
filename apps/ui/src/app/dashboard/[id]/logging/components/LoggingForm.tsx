@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import {
   useCurrentGuildChannels,
   useCurrentGuildValue,
@@ -35,6 +36,7 @@ const LoggingForm = (props: LogginFormProps) => {
     },
     resolver: zodResolver(getModuleSchema('logging')),
   })
+  const { t } = useTranslation()
   const [verificationChannel, setVerificationChannel] = useState(
     getValues('channel')
   )
@@ -77,7 +79,7 @@ const LoggingForm = (props: LogginFormProps) => {
         options={formatedChannels}
         type="channel"
       >
-        Le channel sur lequel envoyer les logs.
+        {t('modules.logging.channel')}
       </InputSelect>
       {errors.channel ? <FieldError message={errors.channel.message} /> : null}
       <Controller
@@ -85,9 +87,7 @@ const LoggingForm = (props: LogginFormProps) => {
         control={control}
         render={({ field }) => {
           return (
-            <Checkbox {...field}>
-              Quand une personne rejoint le serveur
-            </Checkbox>
+            <Checkbox {...field}>{t('modules.logging.user_join')}</Checkbox>
           )
         }}
       />
@@ -99,7 +99,7 @@ const LoggingForm = (props: LogginFormProps) => {
         name="user_left"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>Quand une personne quitte le serveur</Checkbox>
+          <Checkbox {...field}>{t('modules.logging.user_leave')}</Checkbox>
         )}
       />
       {errors.user_left ? (
@@ -112,7 +112,7 @@ const LoggingForm = (props: LogginFormProps) => {
           disabled={mutation.isLoading}
           type="submit"
         >
-          Enregistrer
+          {t('actions.save')}
         </ButtonPrimary>
       ) : null}
     </FlexColumn>

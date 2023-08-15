@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
@@ -26,6 +27,7 @@ const ScannerForm = (props: LogginFormProps) => {
       links: data.links,
     },
   })
+  const { t } = useTranslation()
   const [bannedWords, setBannedWords] = useState(getValues('words.banned'))
   const [bannedExactWords, setBannedExactWords] = useState(
     getValues('words.banned_exact')
@@ -105,7 +107,7 @@ const ScannerForm = (props: LogginFormProps) => {
       >
         <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography color="secondary" as="span">
-            Activer le scan des mots
+            {t('modules.scanner.words.activate')}
           </Typography>
           <Controller
             name="words.scan"
@@ -120,7 +122,9 @@ const ScannerForm = (props: LogginFormProps) => {
           onChange={(words) => setBannedWords(words)}
           placeholder="Chien..."
         >
-          Vos mots a bannir (non exacte)
+          {t('modules.scanner.words.to_ban', {
+            exact: false,
+          })}
         </InputSelectType>
 
         {/* TODO: Add example of what is exact word */}
@@ -129,7 +133,9 @@ const ScannerForm = (props: LogginFormProps) => {
           onChange={(words) => setBannedExactWords(words)}
           placeholder="Mots a bannir..."
         >
-          Vos mots a bannir (exacte)
+          {t('modules.scanner.words.to_ban', {
+            exact: true,
+          })}
         </InputSelectType>
         <InputSelect
           options={[
@@ -141,10 +147,7 @@ const ScannerForm = (props: LogginFormProps) => {
           value={action}
           setValue={setAction}
         >
-          La sanction{' '}
-          <span style={{ color: '#D86767' }}>
-            Préviligiez un mute plustot que les autres sanctions.
-          </span>
+          {t('modules.common.action_to_take')}
         </InputSelect>
         <InputSelect
           multi
@@ -153,7 +156,7 @@ const ScannerForm = (props: LogginFormProps) => {
           setValue={setIgnoredChannels}
           type="channel"
         >
-          Channels a ignoré
+          {t('modules.common.channels_ignore')}
         </InputSelect>
         {action === 'mute' ? (
           <>
@@ -164,12 +167,14 @@ const ScannerForm = (props: LogginFormProps) => {
               ]}
               value={muteUnit}
               setValue={setMuteUnit}
-            />
+            >
+              {t('modules.common.mute_unit')}
+            </InputSelect>
             <Input
               {...register('words.mute_timeout', {
                 setValueAs: (value) => parseInt(value),
               })}
-              label="Temps du mute"
+              label={t('modules.common.mute_time')}
             />
           </>
         ) : null}
@@ -184,7 +189,7 @@ const ScannerForm = (props: LogginFormProps) => {
       >
         <Flex style={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography color="secondary" as="span">
-            Activer le scan des liens
+            {t('modules.scanner.links.activate')}
           </Typography>
           <Controller
             name="links.scan"
@@ -199,7 +204,7 @@ const ScannerForm = (props: LogginFormProps) => {
           onChange={(domains) => setAllowedDomains(domains)}
           placeholder="pynspel.com"
         >
-          Les domaines autoriser
+          {t('modules.scanner.links.authorized_domains')}
         </InputSelectType>
         <InputSelect
           options={[
@@ -211,10 +216,7 @@ const ScannerForm = (props: LogginFormProps) => {
           value={actionLinks}
           setValue={setActionLinks}
         >
-          La sanction{' '}
-          <span style={{ color: '#D86767' }}>
-            Préviligiez un mute plustot que les autres sanctions.
-          </span>
+          {t('modules.common.action_to_take')}
         </InputSelect>
         {/* TODO: Show only the text channels */}
         <InputSelect
@@ -223,7 +225,7 @@ const ScannerForm = (props: LogginFormProps) => {
           value={ignoredChannelsLinks}
           setValue={setIgnoredChannelsLinks}
         >
-          Les channels a ignoré
+          {t('modules.common.channels_ignore')}
         </InputSelect>
         {actionLinks === 'mute' ? (
           <>
@@ -234,12 +236,14 @@ const ScannerForm = (props: LogginFormProps) => {
               ]}
               value={muteUnitLinks}
               setValue={setMuteUnitLinks}
-            />
+            >
+              {t('modules.common.mute_unit')}
+            </InputSelect>
             <Input
               {...register('links.mute_timeout', {
                 setValueAs: (value) => parseInt(value),
               })}
-              label="Temps du mute"
+              label={t('modules.common.mute_time')}
             />
           </>
         ) : null}
@@ -249,7 +253,7 @@ const ScannerForm = (props: LogginFormProps) => {
         disabled={mutation.isLoading}
         type="submit"
       >
-        Enregistrer
+        {t('actions.save')}
       </ButtonPrimary>
     </FlexColumn>
   )

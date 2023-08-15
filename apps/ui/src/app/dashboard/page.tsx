@@ -1,12 +1,14 @@
 'use client'
 import { MainHeader } from '~/components/header/main/MainHeader'
 import { Flex, FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { useUserGuildsSnapshot } from '~/proxys/user'
 import { Typography } from '~/ui/typography/Typography'
 import { ServerCard } from './components/ServerCard'
 
 const page = () => {
   const userGuildsSnapshot = useUserGuildsSnapshot()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -20,7 +22,7 @@ const page = () => {
           padding: 50,
         }}
       >
-        <Typography as="h1">Select a server !</Typography>
+        <Typography as="h1">{t('pages.dashboard.select_a_server')}</Typography>
 
         <Flex
           style={{

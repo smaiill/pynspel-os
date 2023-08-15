@@ -4,6 +4,7 @@ import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStyl
 import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEmojiPicker'
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
 import { DashboardCard } from '~/layouts/Dashboard'
+import { useTranslation } from '~/locales/Provider'
 import { ButtonSpecial } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { Typography } from '~/ui/typography/Typography'
@@ -20,6 +21,7 @@ export const CreateInteraction = () => {
       emoji: null,
     },
   })
+  const { t } = useTranslation()
 
   const { createInteraction } = useInteractionMutations()
 
@@ -42,9 +44,12 @@ export const CreateInteraction = () => {
       }}
     >
       <Typography color="secondary" as="span">
-        Create interaction
+        {t('modules.ticket.panel.interactions.title')}
       </Typography>
-      <Input {...register('name')} label="Le label du bouton" />
+      <Input
+        {...register('name')}
+        label={t('modules.ticket.panel.interactions.button_label')}
+      />
       <ButtonStylePicker
         default={getValues('style')}
         onChange={({ style }) => setValue('style', style)}

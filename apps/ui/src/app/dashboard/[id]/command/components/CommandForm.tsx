@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Typography } from '~/ui/typography/Typography'
@@ -27,6 +28,7 @@ const CommandForm = (props: LogginFormProps) => {
     },
     resolver: zodResolver(getModuleSchema('command')),
   })
+  const { t } = useTranslation()
   const mutation = useMutateModule('command')
 
   const handleSubmitForm = (data: InferModuleConfigType<'command'>) => {
@@ -42,7 +44,7 @@ const CommandForm = (props: LogginFormProps) => {
         name="ban"
         control={control}
         render={({ field }) => {
-          return <Checkbox {...field}>Bannir une personne</Checkbox>
+          return <Checkbox {...field}>{t('modules.command.ban')}</Checkbox>
         }}
       />
       {formErrors.ban ? <FieldError message={formErrors.ban.message} /> : null}
@@ -51,7 +53,7 @@ const CommandForm = (props: LogginFormProps) => {
         name="kick"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>Exclure une personne</Checkbox>
+          <Checkbox {...field}>{t('modules.command.kick')}</Checkbox>
         )}
       />
       {formErrors?.kick ? (
@@ -64,7 +66,7 @@ const CommandForm = (props: LogginFormProps) => {
           disabled={mutation.isLoading}
           type="submit"
         >
-          Enregistrer
+          {t('actions.save')}
         </ButtonPrimary>
       ) : null}
     </FlexColumn>

@@ -11,7 +11,7 @@ export const fr: Translation<TranslationBase> = {
   },
   pages: {
     dashboard: {
-      manage_server: 'Gérer le serveur',
+      manage_server: 'Gérer',
       select_a_server: 'Sélectionner un serveur',
     },
     guild: {
@@ -25,6 +25,7 @@ export const fr: Translation<TranslationBase> = {
       nav: {
         dashboard: 'Tableau de bord',
         home: 'Accueil',
+        login: 'Se connecter',
       },
       serving_servers: 'Présent sur +{{ amount }} serveurs.',
     },
@@ -36,7 +37,7 @@ export const fr: Translation<TranslationBase> = {
       include_numbers: 'Inclure des nombres',
       kick_timeout:
         "Temps avant d'exclure l'utilisateur en cas d'absence de réponse",
-      length: 'Taille du captcha',
+      length: 'Taille du captcha {{ choices }}',
       max_tries: "Nombre d'essais maximum",
       role_to_add: "Rôle à ajouter si l'utilisateur a été vérifié.",
     },
@@ -55,6 +56,9 @@ export const fr: Translation<TranslationBase> = {
         "L'intervalle pendant lequel {{ members }} doivent rejoindre avant d'activer l'anti-raid",
       threshold:
         'Nombre de membres qui doivent rejoindre en {{ time }} secondes',
+      lock_channels:
+        'Fermer tout les salons, Attention il faudra remettre les permissions manuellement',
+      action_raison: 'Raison indiqué',
     },
     logging: {
       channel: 'Salon sur lequel envoyer les logs',
@@ -64,16 +68,18 @@ export const fr: Translation<TranslationBase> = {
     scanner: {
       links: {
         activate: 'Activer la vérification des liens',
-        to_ban: 'Les liens à bannir {{ ?.exact ? Exact : Non exact}}',
+        to_ban: 'Les liens à bannir {{ ?.exact ? (Exact) : (Non exact)}}',
+        authorized_domains: 'Les domaines a autorisé',
       },
       words: {
         activate: 'Activer la vérification des mots',
-        to_ban: 'Les mots à bannir {{ ?.exact ? Exact : Non exact}}',
+        to_ban: 'Les mots à bannir {{ ?.exact ? (Exact) : (Non exact)}}',
       },
     },
     ticket: {
       create_panel_name: 'Nom du panneau de création',
-      max_tickets: 'Nombre maximal de tickets par membre ouverts simultanément',
+      max_tickets:
+        'Nombre maximal de tickets par membre ouverts simultanément maximum ({{amount}})',
       panel: {
         channel: 'Salon où envoyer le panneau',
         interactions: {

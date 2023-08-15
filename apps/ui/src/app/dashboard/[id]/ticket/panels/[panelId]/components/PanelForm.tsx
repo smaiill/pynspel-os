@@ -3,6 +3,7 @@ import { ChannelType } from 'discord-api-types/v10'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import {
   useCurrentGuildChannels,
   useCurrentGuildValue,
@@ -18,11 +19,6 @@ type Props = {
 
 export const PanelForm = (props: Props) => {
   const { data } = props
-
-  if (!data) {
-    return 'No data...'
-  }
-
   const currentGuild = useCurrentGuildValue()
 
   const { register, handleSubmit, getValues } = useForm({
@@ -32,6 +28,8 @@ export const PanelForm = (props: Props) => {
       channel_id: data.channel_id,
     },
   })
+
+  const { t } = useTranslation()
 
   const [selectedChannel, setSelectedChannel] = useState(
     getValues('channel_id')
@@ -57,26 +55,38 @@ export const PanelForm = (props: Props) => {
     })
   }
 
+  if (!data) {
+    return 'No data...'
+  }
+
   if (!currentGuild) {
     return <h1>Loading guild....</h1>
   }
 
   return (
     <FlexColumn style={{ gap: 5, alignItems: 'flex-start' }}>
-      <Input {...register('name')} label="Nom du panel" />
-      <Input {...register('message')} label="Message" />
+      <Input
+        {...register('name')}
+        label={t('modules.ticket.create_panel_name')}
+      />
+      <Input
+        {...register('message')}
+        label={t('modules.ticket.panel.message')}
+      />
       <InputSelect
         options={formatedChannels}
         value={selectedChannel}
         setValue={setSelectedChannel}
-      />
+      >
+        {t('modules.ticket.panel.channel')}
+      </InputSelect>
 
       <ButtonPrimary
         onClick={handleSubmit(handleUpdatePanel)}
         disabled={updatePanel.isLoading}
         type="submit"
       >
-        Enregistrer
+        {t('actions.save')}
       </ButtonPrimary>
     </FlexColumn>
   )

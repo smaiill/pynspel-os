@@ -11,7 +11,7 @@ export const en: Translation<TranslationBase> = {
   },
   pages: {
     dashboard: {
-      manage_server: 'Manage Server',
+      manage_server: 'Manage',
       select_a_server: 'Select a Server',
     },
     guild: {
@@ -25,6 +25,7 @@ export const en: Translation<TranslationBase> = {
       nav: {
         dashboard: 'Dashboard',
         home: 'Home',
+        login: 'Login',
       },
       serving_servers: 'Present on +{{ amount }} servers',
     },
@@ -35,7 +36,7 @@ export const en: Translation<TranslationBase> = {
       channel: 'Channel where verification will take place',
       include_numbers: 'Include Numbers',
       kick_timeout: 'Time before excluding the user if no response',
-      length: 'Captcha Length',
+      length: 'Captcha Length {{ choices }}',
       max_tries: 'Maximum Number of Tries',
       role_to_add: 'Role to add if the user has been verified',
     },
@@ -53,6 +54,9 @@ export const en: Translation<TranslationBase> = {
       interval_to_activate:
         'The interval during which {{ members }} must join before activating the anti-raid',
       threshold: 'Number of members who must join within {{ time }} seconds',
+      lock_channels:
+        'Close all the channels, you will need to set back the permission s manually',
+      action_raison: 'The raison of the action',
     },
     logging: {
       channel: 'Channel to send logs to',
@@ -62,16 +66,18 @@ export const en: Translation<TranslationBase> = {
     scanner: {
       links: {
         activate: 'Activate link scanning',
-        to_ban: 'Links to ban {{ ?.exact ? Exact : Not exact}}',
+        to_ban: 'Links to ban {{ ?.exact ? (Exact) : (Not exact)}}',
+        authorized_domains: 'Domains to authorize',
       },
       words: {
         activate: 'Activate word scanning',
-        to_ban: 'Words to ban {{ ?.exact ? Exact : Not exact}}',
+        to_ban: 'Words to ban {{ ?.exact ? (Exact) : (Not exact)}}',
       },
     },
     ticket: {
       create_panel_name: 'Panel Name',
-      max_tickets: 'Maximum number of tickets per member open simultaneously',
+      max_tickets:
+        'Maximum number of tickets per member open simultaneously maximum ({{amount}})',
       panel: {
         channel: 'Channel to send the panel to',
         interactions: {

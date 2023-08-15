@@ -8,7 +8,9 @@ export type ModulesTranslationBase = {
     channels_ignore: {}
   }
   captcha: {
-    length: {}
+    length: {
+      choices: string
+    }
     max_tries: {}
     role_to_add: {}
     kick_timeout: {}
@@ -22,7 +24,9 @@ export type ModulesTranslationBase = {
     user_leave: {}
   }
   ticket: {
-    max_tickets: {}
+    max_tickets: {
+      amount: number
+    }
     create_panel_name: {}
     panel: {
       message: {}
@@ -50,6 +54,7 @@ export type ModulesTranslationBase = {
       to_ban: {
         exact: boolean
       }
+      authorized_domains: {}
     }
   }
   counter_raid: {
@@ -59,5 +64,7 @@ export type ModulesTranslationBase = {
     interval_to_activate: {
       members: number
     }
+    action_raison: {}
+    lock_channels: {}
   }
 }

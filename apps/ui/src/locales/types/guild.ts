@@ -2,6 +2,6 @@
 
 export type GuildTranslationBase = {
   welcome: {
-    guildName: string
+    name: string
   }
 }
