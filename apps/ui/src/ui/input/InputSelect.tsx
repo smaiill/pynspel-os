@@ -5,6 +5,7 @@ import {
   MouseEvent,
   PropsWithChildren,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from 'react'
@@ -15,8 +16,6 @@ import { css, cx } from '../../../styled-system/css'
 
 type Option = PropertyKey | null
 type InputSelectTypes = 'role' | 'channel' | 'default'
-
-const __INVALID_VALUE = 'Invalid value'
 
 export interface InputSelectProps<Value, Multi, Type>
   extends PropsWithChildren {
@@ -199,7 +198,7 @@ const InputSelect = <
 
   const getItemLabelByValue = (value: string) => {
     const item = options.find((el) => el.value === value)
-    return item ? item.label : 'Valeur Invalide'
+    return item ? item.label : null
   }
 
   const handleRemoveItem = (
@@ -218,8 +217,15 @@ const InputSelect = <
   const isSelected = (itemValue: string) =>
     Boolean(multi ? value?.includes(itemValue) : itemValue === value)
 
-  // TODO: When i set a channel and removes it on discord, the value in the select is an empty string,
-  // TODO: Correct that and put a message error in red;
+  useEffect(() => {
+    if (!multi) {
+      const item = getItemLabelByValue(props.value)
+
+      if (!item) {
+        setValue(null)
+      }
+    }
+  }, [])
 
   return (
     <FlexColumn className={styles}>

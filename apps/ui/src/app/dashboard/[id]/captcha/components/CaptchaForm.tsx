@@ -55,8 +55,6 @@ const CaptchaForm = (props: Props) => {
 
   const mutation = useMutateModule('captcha')
 
-  // TODO: useCurrentGuildRoles
-
   const handleSubmitForm = async (data: InferModuleConfigType<'captcha'>) => {
     // Ask for the embed builder the data of the embed.
 
@@ -95,7 +93,6 @@ const CaptchaForm = (props: Props) => {
     return { label: role.name, value: role.id, color: role.color }
   })
 
-  // TODO: useCurrentGuildChannels;
   const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
     (channel) => {
       return { label: channel.name, value: channel.id }

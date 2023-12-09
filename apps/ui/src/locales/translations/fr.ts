@@ -2,12 +2,24 @@ import { Translation } from '@smaiill/trin'
 import { TranslationBase } from '../types'
 
 export const fr: Translation<TranslationBase> = {
+  subscription: {
+    manage: 'Gèrer mon abonnement',
+    monthly: {
+      title: 'Abonnement de 1 mois',
+      value: 'Mensuel',
+    },
+    yearly: {
+      title: 'Abonnement de 1 an',
+      value: 'Annuel',
+    },
+  },
   actions: {
     add: 'Ajouter',
     delete: 'Supprimer',
     save: 'Sauvegarder',
     send: 'Envoyer',
     update: 'Mettre à jour',
+    claim: 'Obtenir',
   },
   pages: {
     dashboard: {
@@ -86,6 +98,7 @@ export const fr: Translation<TranslationBase> = {
           button_label: 'Libellé du bouton',
           create: 'Créer',
           title: 'Interactions',
+          category: 'La catégorie dans laquel ouvrir le ticket',
         },
         message:
           'Message qui sera envoyé avec le panneau (laisser vide si aucun message)',

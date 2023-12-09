@@ -6,6 +6,7 @@ const GuildCacheKeys = {
   Modules: 'Modules',
   Channels: 'Channels',
   Roles: 'Roles',
+  Guilds: 'Guilds',
 } as const
 
 const CHANNELS_TTL = 300
@@ -89,6 +90,8 @@ export class GuildCache {
     if (!this._client) {
       return console.error('Invalid redis client')
     }
+
+    console.log(`Setting channels... for guild ${guildId}`)
     return await this._client.setEx(
       `${GuildCacheKeys.Channels}:${guildId}`,
       CHANNELS_TTL,
@@ -131,6 +134,25 @@ export class GuildCache {
     }
 
     return await this._client.del(`${GuildCacheKeys.Channels}:${guildId}`)
+  }
+
+  public async doesChannelExists(guildId: string, channelId: string) {
+    const guildChannels = await this.getChannels(guildId)
+
+    console.log({ guildChannels })
+    if (!guildChannels) {
+      return false
+    }
+
+    return !!guildChannels.find((channel) => channel.id === channelId)
+  }
+
+  public async areValidChannels(guildId: string, channels: string[]) {
+    const guildChannels = (await this.getChannels(guildId)) ?? []
+
+    return channels.every((channelId) =>
+      guildChannels.some((channel) => channel.id === channelId)
+    )
   }
 
   public async updateChannel(guildId: string) {
@@ -196,6 +218,24 @@ export class GuildCache {
     )
   }
 
+  public async doesRoleExists(guildId: string, roleId: string) {
+    const guildRoles = await this.getRoles(guildId)
+
+    if (!guildRoles) {
+      return false
+    }
+
+    return !!guildRoles.find((role) => role.id === roleId)
+  }
+
+  public async areValidRoles(guildId: string, roles: string[]) {
+    const guildRoles = (await this.getRoles(guildId)) ?? []
+
+    return roles.every((roleId) =>
+      guildRoles.some((role) => role.id === roleId)
+    )
+  }
+
   public async getRoles(guildId: string) {
     if (!this._client) {
       console.error('Invalid redis client')
@@ -203,7 +243,7 @@ export class GuildCache {
     }
 
     const roles = await this._client.get(`${GuildCacheKeys.Roles}:${guildId}`)
-
+    console.log({ roles })
     if (!roles) {
       return null
     }

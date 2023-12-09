@@ -1,20 +1,23 @@
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express, { Request, Response } from 'express'
+import express, { Response } from 'express'
 import 'express-async-errors'
 import session from 'express-session'
 import { writeFile } from 'fs'
+import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
-import routes from 'routes'
-import { API_ENDPOINT } from 'utils/constants'
-import { customHeaders } from 'utils/custom.headers'
-import { env } from 'utils/env'
-import { errorHandler } from 'utils/error'
-import { lg } from 'utils/logger'
-import { redis } from 'utils/redis'
-import { deserializeSession } from 'utils/session'
+import { IS_DEV } from '../constants'
 import '../managers/websocket'
+import { rateLimiter } from '../middlewares/rate.limiter'
+import routes from '../routes'
+import { API_ENDPOINT } from '../utils/constants'
+import { customHeaders } from '../utils/custom.headers'
+import { env } from '../utils/env'
+import { errorHandler } from '../utils/error'
+import { lg } from '../utils/logger'
+import { redis } from '../utils/redis'
+import { deserializeSession } from '../utils/session'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 
 const app = express()
@@ -31,11 +34,19 @@ if (env.NODE_ENV === 'production') {
   })
 }
 
-app.use(express.json())
+app.use(
+  express.json({
+    limit: '64kb',
+    verify: (req, res, buf) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      req.rawBody = buf
+    },
+  })
+)
 app.use(express.urlencoded({ extended: false }))
+app.use(helmet())
 
-// TODO: Add helmet package for security.
-// TODO: Add rate limiting.
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -59,24 +70,26 @@ app.use(
 )
 
 app.use('/static', express.static(path.join(process.cwd(), 'src/public')))
-app.get('/', (req: Request, res: Response) => {
+
+app.use(deserializeSession)
+app.use(rateLimiter)
+
+app.get('/', (_, res: Response) => {
   res.json({ uptime: process.uptime() })
 })
 
-app.use(deserializeSession)
 app.use(API_ENDPOINT, routes)
 app.use(errorHandler)
 
 app.listen(env.PORT, async () => {
   lg.info(`[API] Started at port: ${env.PORT}.`)
+
   await redis
     .ping()
     .then(() => lg.info('[REDIS] Started.'))
     .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-  // await redis._client.flushAll()
-
-  if (env.NODE_ENV === 'developement') {
+  if (IS_DEV) {
     lg.info('Generating endpoints.')
     app._router.stack.forEach(handleGenerateRoutes.bind(null, []))
     writeFile(
@@ -87,27 +100,6 @@ app.listen(env.PORT, async () => {
       }
     )
   }
-
-  // await redis._client.flushAll()
-
-  // await db.exec('UPDATE guilds SET bot = $1', [true])
-
-  // console.log(await db.exec('DELETE FROM panels'))
-
-  // console.log(
-  //   await db.exec('SELECT * FROM users WHERE discord_id = $1', [
-  //     '504227742678646784',
-  //   ])
-  // )
-  // console.log(await db.exec('SELECT * FROM panels'))
-  // await db.exec('DELETE FROM panel_interactions')
-  // await db.exec(
-  //   'INSERT INTO panel_interactions (name, panel_id, style) VALUES ($1, $2, $3)',
-  //   ['test', '886318969048956929', 3]
-  // )
-  // console.log(await db.exec('DELETE FROM panel_interactions'))
-  // console.log(await db.exec('DELETE FROM panels'))
-  // console.log(await db.exec('DELETE FROM guild_modules'))
 })
 
 export default app

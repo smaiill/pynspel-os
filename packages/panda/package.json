@@ -1,0 +1,24 @@
+{
+  "name": "@pynspel/panda",
+  "version": "1.0.0",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepare": "panda codegen",
+    "dev": "tsup --config scripts/tsup.dev.js",
+    "build": "tsup --config scripts/tsup.build.js",
+    "clean": "rimraf dist",
+    "clean:all": "rimraf dist && rimraf node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@pandacss/dev": "^0.3.2",
+    "tsup": "^7.2.0"
+  }
+}

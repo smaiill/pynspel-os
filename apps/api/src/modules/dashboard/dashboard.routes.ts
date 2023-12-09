@@ -1,9 +1,12 @@
-import { HttpStatus } from '@pynspel/types'
+import { isAValidModule } from '@pynspel/common'
+import { Errors, HttpStatus } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { db } from 'modules/db'
 import { ProtectedRouter } from 'routes/protected.router'
-import { HttpException } from 'utils/error'
+import { _decrypt } from 'utils/crypto'
+import { HttpCantAccesGuildException, HttpException } from 'utils/error'
 import { DashboardController } from './dashboard.controller'
+import { DashboardService } from './dashboard.service'
 import { botModuleRouter } from './modules/bot/bot.router'
 import { captchaModuleRouter } from './modules/captcha/captcha.router'
 import { commandModuleRouter } from './modules/command/command.router'
@@ -34,7 +37,23 @@ dashboardRoutes.get(
       throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid guild id')
     }
 
-    // TODO: Check if the bot and user are in the guild.
+    const isBotInGuild = await db.isClientInGuild(id)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, 'Invalid guild.')
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId,
+        guildId: id,
+        accessToken: _decrypt(req.user?.accessToken),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
     const modules = await db.exec(
       'SELECT name, is_active, guild_modules.module_id AS module_id FROM modules JOIN guild_modules ON modules.module_id = guild_modules.module_id WHERE guild_modules.guild_id = $1',
       [id]
@@ -48,12 +67,10 @@ dashboardRoutes.get(
   }
 )
 
-// This is cause i didnt setup for multiple middlewares
 dashboardRoutes.put(
   '/guilds/:id/modules/:moduleName',
   async (req: Request, res: Response) => {
     const { id, moduleName } = req.params
-    console.log({ id, moduleName })
 
     const { is_active } = req.body
 
@@ -61,7 +78,40 @@ dashboardRoutes.put(
       throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid guild id')
     }
 
-    // TODO: Check if the bot and user are in the guild.
+    const isModuleValid = isAValidModule(moduleName)
+
+    if (!isModuleValid) {
+      throw new HttpException(HttpStatus.BAD_GATEWAY, 'Invalid module')
+    }
+
+    const isBotInGuild = await db.isClientInGuild(id)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId,
+        guildId: id,
+        accessToken: _decrypt(req.user?.accessToken),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const [hasModule] = await db.exec(
+      'SELECT is_active FROM guild_modules WHERE guild_id = $1 AND module_id = (SELECT module_id FROM modules WHERE name = $2)',
+      [id, moduleName]
+    )
+
+    if (!hasModule) {
+      await db.createModuleConfigForGuild(id, moduleName)
+
+      return res.json({ is_active })
+    }
+
     await db.exec(
       'UPDATE guild_modules SET is_active = $1 WHERE guild_id = $2 AND module_id = (SELECT module_id FROM modules WHERE name = $3)',
       [Boolean(is_active), id, moduleName]

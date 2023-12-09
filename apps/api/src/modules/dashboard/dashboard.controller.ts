@@ -22,10 +22,11 @@ class _DashboardController {
     const { accessToken } = user as SavedUser
 
     const guilds = await this._dashboardService.fetchMutualGuilds(
-      _decrypt(accessToken)
+      _decrypt(accessToken),
+      user?.discordId as string
     )
 
-    res.json(guilds)
+    return res.json(guilds)
   }
 
   public async fetchGuild(req: Request, res: Response) {

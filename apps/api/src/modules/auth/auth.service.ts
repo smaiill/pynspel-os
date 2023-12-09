@@ -39,9 +39,7 @@ class _AuthService {
   private async deleteSessionInDb(sessionId: string) {
     const query = 'DELETE FROM sessions WHERE session_id = $1'
 
-    const res = await db.exec(query, [sessionId])
-
-    console.log(res)
+    await db.exec(query, [sessionId])
   }
 
   public async revokeAccess({
@@ -86,6 +84,7 @@ class _AuthService {
       avatar: user.avatar,
       accessToken: _encrypt(access_token),
       refreshToken: _encrypt(refresh_token),
+      email: user.email as string,
     })
 
     await serializeSession(req, newUser)

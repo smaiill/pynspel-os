@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SCHEMA_UPDATE_INTERACTION } from '@pynspel/common'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { BsEmojiWink } from 'react-icons/bs'
@@ -7,8 +9,10 @@ import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
+import { useCurrentGuildCategorys } from '~/proxys/dashboard'
 import { ButtonDanger, ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
+import { InputSelect } from '~/ui/input/InputSelect'
 import { Typography } from '~/ui/typography/Typography'
 import {
   css,
@@ -120,6 +124,8 @@ const emojiPickerStyle = css({
 const Interaction = (props: any) => {
   const { interaction } = props
 
+  console.log(interaction)
+
   const {
     register,
     setValue,
@@ -133,9 +139,12 @@ const Interaction = (props: any) => {
       emoji: interaction.emoji,
       name: interaction.name,
       style: interaction.style,
+      parent_id: interaction.parent_id,
     },
+    resolver: zodResolver(SCHEMA_UPDATE_INTERACTION),
   })
   const [emojis, setEmojis] = useState(false)
+  const [parentId, setParentId] = useState(getValues('parent_id'))
   const watchedEmoji = watch('emoji')
   const watchedName = watch('name')
   const watchedStyle = watch('style')
@@ -147,18 +156,25 @@ const Interaction = (props: any) => {
     })
   }
 
-  // TODO: The user should be abble to only open one emoji picker.
   const handleEmojiClick = (e) => {
     setValue('emoji', e.emoji, {
       shouldDirty: true,
     })
   }
 
+  const formatedCategorys = useCurrentGuildCategorys().map((channel) => {
+    return { label: channel.name, value: channel.id }
+  })
+
   const { deleteInteraction, updateInteraction } = useInteractionMutations()
 
-  const handleUpdateInteraction = (data: UpdateInteractionPayload) => {
-    // TODO: Validate the data.
+  useEffect(() => {
+    setValue('parent_id', parentId, {
+      shouldDirty: true,
+    })
+  }, [parentId])
 
+  const handleUpdateInteraction = (data: UpdateInteractionPayload) => {
     updateInteraction
       .mutateAsync({ id: interaction.id, payload: data })
       .then(() => {
@@ -189,6 +205,13 @@ const Interaction = (props: any) => {
             {...register('name')}
             label={t('modules.ticket.panel.interactions.button_label')}
           />
+          <InputSelect
+            value={parentId}
+            setValue={setParentId}
+            options={formatedCategorys}
+          >
+            {t('modules.ticket.panel.interactions.category')}
+          </InputSelect>
           <ButtonStylePicker
             default={getValues('style')}
             onChange={handleStyleChange}

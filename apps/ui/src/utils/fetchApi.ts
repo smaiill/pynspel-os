@@ -4,8 +4,6 @@ export const fetchApi = async <T = unknown>(
   uri: string,
   options?: RequestInit
 ) => {
-  // throw new Error('Stop here !')
-
   const res = await fetch(`${API_URL}${uri}`, {
     ...options,
     credentials: 'include',

@@ -8,26 +8,21 @@ import {
 } from 'react'
 import DashboardHeader from '~/app/dashboard/components/DashboardHeader'
 import { Typography } from '~/ui/typography/Typography'
+import { css } from '../../styled-system/css'
 import { Flex, FlexColumn } from './Flex'
 
 const DashboardView = (props: PropsWithChildren) => {
   const { children } = props
   return (
     <FlexColumn
-      style={{
+      className={css({
         flex: 1,
         overflowY: 'auto',
-        backgroundColor: '#1F1F1F',
-      }}
+        bg: 'news.backgrounds.primary',
+      })}
     >
       <DashboardHeader />
-      <FlexColumn
-        style={{
-          flexDirection: 'column',
-          padding: 20,
-          flex: 1,
-        }}
-      >
+      <FlexColumn className={css({ flexDir: 'column', p: 20, flex: 1 })}>
         {children}
       </FlexColumn>
     </FlexColumn>

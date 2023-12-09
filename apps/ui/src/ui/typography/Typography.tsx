@@ -52,6 +52,15 @@ const typo = cva({
       warn: {
         color: 'fonts.warn',
       },
+      special: {
+        color: 'special',
+      },
+      'news.label': {
+        color: 'news.fonts.label',
+      },
+      'news.primary': {
+        color: 'news.fonts.primary',
+      },
     },
   },
 })

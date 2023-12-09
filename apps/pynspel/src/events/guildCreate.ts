@@ -1,5 +1,5 @@
 import { BaseEvent } from '@pynspel/px'
-import { Guild as PynspelGuild, KeysToCamelCase } from '@pynspel/types'
+import { Guild as PynspelGuild } from '@pynspel/types'
 import { db } from 'db'
 import { Client, Guild } from 'discord.js'
 import { env } from 'utils/env'
@@ -13,14 +13,15 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
   public async on(client: Client, guild: Guild) {
     await this.handleNewGuild(client, {
       name: guild.name,
-      guildId: guild.id,
-      avatar: guild.icon as string,
+      guild_id: guild.id,
+      avatar: guild.icon,
+      ownerId: guild.ownerId,
     })
   }
 
   private async handleNewGuild(
     client: Client,
-    guild: KeysToCamelCase<PynspelGuild>
+    guild: Omit<PynspelGuild, 'bot'>
   ) {
     try {
       const res = await this._db.handleNewGuild(guild)
@@ -29,12 +30,12 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
     } catch (error) {
       if (env.NODE_ENV === 'developement') {
         return console.log(
-          `Should leave the guild in production ${guild.guildId}`,
+          `Should leave the guild in production ${guild.guild_id}`,
           error
         )
       }
 
-      const _guild = await client.guilds.fetch(guild.guildId)
+      const _guild = await client.guilds.fetch(guild.guild_id)
       await _guild.leave()
     }
   }

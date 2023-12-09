@@ -3,7 +3,14 @@ import { ModuleBase } from '../base'
 
 class _LoggingModuleService extends ModuleBase<typeof Modules.logging> {
   constructor() {
-    super(Modules.logging)
+    super(Modules.logging, {
+      update: {
+        validators: {
+          channels: ['channel'],
+          roles: [],
+        },
+      },
+    })
   }
 }
 

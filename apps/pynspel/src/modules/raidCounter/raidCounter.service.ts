@@ -23,7 +23,7 @@ const daysToMs = (days: number) => days * (1000 * 60 * 60 * 24)
 
 const minutesToMs = (minutes: number) => minutes * (1000 * 60)
 
-const unitToMs = (unit: MuteUnit, value: number) => {
+export const unitToMs = (unit: MuteUnit, value: number) => {
   if (unit === 'day') {
     return daysToMs(value)
   }

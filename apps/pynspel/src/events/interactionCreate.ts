@@ -1,4 +1,5 @@
 import { BaseEvent } from '@pynspel/px'
+import { TicketStatus } from '@pynspel/types'
 import { db } from 'db'
 import {
   ActionRowBuilder,
@@ -9,13 +10,15 @@ import {
   Client,
   Guild,
   Interaction,
+  InteractionReplyOptions,
   PermissionFlagsBits,
 } from 'discord.js'
 import { TicketService } from 'modules/ticket/ticket.service'
+import { mentionChannel } from 'utils/mentions'
 
 enum ButtonAction {
   CreateTicket = 1,
-  CloseTicket = 2,
+  CloseTicket,
   TranspileTicket,
 }
 
@@ -69,19 +72,39 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
   private async handleConfirmCloseTicket(interaction: ButtonInteraction) {
     const channel = interaction.channel
+    const interactionGuild = interaction.guild
 
-    if (!channel) {
+    if (
+      !channel ||
+      !interactionGuild ||
+      channel.type !== ChannelType.GuildText
+    ) {
       return
     }
 
+    const channelDb = await this._db.getTicketById(
+      channel.id,
+      interactionGuild.id
+    )
+
+    if (!channelDb || channelDb.status !== TicketStatus.Open) {
+      return
+    }
+
+    const authorId = channelDb.author_id
+
+    await channel.permissionOverwrites.create(authorId, {
+      ViewChannel: false,
+    })
+
+    await db.closeTicket(channel.id, interactionGuild.id)
+
     const row = this.getChannelClosedResponse()
 
-    const message = await channel.send({
+    await channel.send({
       content: 'Channel closed',
       components: [row],
     })
-
-    // TODO: Remove permissions to the user who created the channel.
   }
 
   private async handleTranspileTicket(
@@ -129,7 +152,6 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       case ButtonAction.TranspileTicket:
         this.handleTranspileTicket(parsedButton.third, interaction)
         break
-      // TODO: Check if user can create the ticket.
       case ButtonAction.CreateTicket:
         this.handleCreateTicket(parsedButton.third, interaction)
         break
@@ -154,7 +176,10 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
   }
 
   private normalizeUsername(username: string) {
-    return username.trim().toLowerCase().replace(/\s+/g, '_')
+    return username
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '-')
   }
 
   private async getGuildChannel(guild: Guild, channelId: string | null) {
@@ -201,23 +226,72 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       })
   }
 
+  private async getMemberTicketsForGuild(memberId: string, guildId: string) {
+    const query =
+      'SELECT COUNT(*) FROM tickets WHERE author_id = $1 AND guild_id = $2 AND status = $3'
+    const values = [memberId, guildId, TicketStatus.Open]
+
+    const [res] = await this._db.exec<{ count: number }>(query, values)
+
+    return res?.count ?? 0
+  }
+
+  public async replyOrEditReplyForInteraction(
+    interaction: ButtonInteraction,
+    options: InteractionReplyOptions
+  ) {
+    if (interaction.replied) {
+      interaction.editReply(options)
+    } else {
+      interaction.reply(options)
+    }
+  }
+
   private async handleCreateTicket(
     buttonParsedId: string,
     interaction: ButtonInteraction
   ) {
+    if (!interaction.guild) {
+      return console.log('Invalid guild !')
+    }
+
     const [interactionDB] = await db.exec<{
-      id: string
-      name: string
+      message: string | null
       parent_id: string | null
-      panel_id: string
     }>(
-      // 'SELECT * FROM panel_interactions JOIN panels ON panel_interactions.panel_id = panels.id WHERE panel_interactions.id = $1',
-      'SELECT * FROM panel_interactions WHERE id = $1',
+      `SELECT
+        panel_interactions.parent_id AS parent_id,
+        panels.message AS message
+      FROM
+        panel_interactions
+      JOIN
+        panels ON panel_interactions.panel_id = panels.id
+      WHERE
+        panel_interactions.id = $1`,
       [buttonParsedId]
     )
 
-    if (!interaction.guild?.available) {
-      return console.log('Invalid guild !')
+    if (!interactionDB) {
+      return interaction.reply({
+        content: `Invalid interaction`,
+        ephemeral: true,
+      })
+    }
+
+    const memberActiveTickets = await this.getMemberTicketsForGuild(
+      interaction.user.id,
+      interaction.guild.id
+    )
+
+    const { max_each_user } = await TicketService.getFreshConfigOrCached(
+      interaction.guild.id
+    )
+
+    if (memberActiveTickets >= max_each_user) {
+      return interaction.reply({
+        content: `You already reached the maximum tickets \`${max_each_user}\`, on this server`,
+        ephemeral: true,
+      })
     }
 
     const parentCategory = await this.getGuildChannel(
@@ -226,42 +300,22 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     )
 
     if (parentCategory && parentCategory.type !== ChannelType.GuildCategory) {
-      return console.log('Not a category')
+      return interaction.reply({
+        content:
+          "Couldn't open a ticket, contact the server support `INVALID_GUILD_CATEGORY`",
+        ephemeral: true,
+      })
     }
 
     const normalizedUsername = this.normalizeUsername(interaction.user.username)
-
-    if (!parentCategory) {
-      const channel = await interaction.guild.channels.create({
-        name: `ticket-${normalizedUsername}`,
-        permissionOverwrites: [
-          {
-            id: interaction.user.id,
-            allow: [PermissionFlagsBits.ViewChannel],
-          },
-          {
-            id: interaction.guild.roles.everyone,
-            deny: [PermissionFlagsBits.ViewChannel],
-          },
-        ],
-      })
-
-      const closeMessage = this.closeTicketMessage()
-
-      const res = await channel.send({
-        content: 'Hello world',
-        components: [closeMessage],
-      })
-
-      return
-    }
+    const userId = interaction.user.id
 
     const channel = await interaction.guild.channels.create({
-      parent: parentCategory,
+      parent: interactionDB.parent_id,
       name: `ticket-${normalizedUsername}`,
       permissionOverwrites: [
         {
-          id: interaction.user.id,
+          id: userId,
           allow: [PermissionFlagsBits.ViewChannel],
         },
         {
@@ -271,11 +325,23 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       ],
     })
 
+    await this._db.createTicket({
+      author_id: userId,
+      channel_id: channel.id,
+      guild_id: channel.guildId,
+      status: TicketStatus.Open,
+    })
+
     const closeMessage = this.closeTicketMessage()
 
     await channel.send({
-      content: 'Hello world',
+      content: interactionDB.message ?? undefined,
       components: [closeMessage],
+    })
+
+    return this.replyOrEditReplyForInteraction(interaction, {
+      content: `Your ticket was opened ${mentionChannel(channel.id)}`,
+      ephemeral: true,
     })
   }
 

@@ -115,13 +115,16 @@ export class CaptchaManager {
           (typeof Modules)['captcha']
         >['length']
       ]
-    // TODO; Draw a line for the diff points.
+
     for (let i = 0; i < code.length; i++) {
       const randomRotate = Math.random() * 0.2
       ctx.rotate(randomRotate)
-      ctx.fillText(code[i], 40 * i + spacesToAdd, 15 * (i === 0 ? i + 5 : 5))
+      const x = 40 * i + spacesToAdd
+      const y = 15 * (i === 0 ? i + 5 : 5)
+      ctx.fillText(code[i], x, y)
       ctx.rotate(-randomRotate)
     }
+
     this._code = code
 
     for (let i = 0; i < 125; i++) {

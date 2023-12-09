@@ -4,6 +4,7 @@ import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildState } from '~/proxys/dashboard'
 import { Typography } from '~/ui/typography/Typography'
+import { css } from '../../../../styled-system/css'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
 import { useFetchGuild } from '../hooks/useFetchGuild'
@@ -36,7 +37,7 @@ const page = ({ params }: Props) => {
     <DashboardPage>
       <Aside />
       <DashboardView>
-        <Typography as="h1">
+        <Typography className={css({ mb: '30px' })} as="h1">
           {t('pages.guild.welcome', {
             name: guildData.name,
           })}

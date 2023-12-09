@@ -11,6 +11,9 @@ export const Modules = {
   scanner: 'scanner',
 } as const
 
+export const isAValidModule = (name: string): name is ModulesTypes =>
+  Object.keys(Modules).includes(name)
+
 export type ModulesTypes = keyof typeof Modules
 
 const MAX_MUTE_MS = 432000000 // 5 days
@@ -44,12 +47,15 @@ const words = z.object({
   mute_timeout: z.number().min(1).default(1),
 })
 
+export const DOMAIN_SCHEMA = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .regex(/(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+)/g)
+
 const links = z.object({
   scan: z.boolean().default(true),
-  // TODO: Regex to check if its a domain.
-  allowed_domains: z
-    .array(z.string().trim().toLowerCase())
-    .default(['pynspel.com']),
+  allowed_domains: z.array(DOMAIN_SCHEMA).default(['pynspel.com']),
   action: z
     .union([
       z.literal('kick'),
@@ -76,7 +82,7 @@ function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const modulesSchemas = {
   bot: z.object({
-    name: z.string().min(3).max(20).trim().default('pynspel'),
+    name: z.string().trim().min(3).max(20).default('pynspel'),
     status: z
       .union([z.literal('dnd'), z.literal('online'), z.literal('idle')])
       .default('online'),

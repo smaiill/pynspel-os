@@ -3,7 +3,9 @@ import { MainHeader } from '~/components/header/main/MainHeader'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { useUserGuildsSnapshot } from '~/proxys/user'
+import { Input } from '~/ui/input/Input'
 import { Typography } from '~/ui/typography/Typography'
+import { css } from '../../../styled-system/css'
 import { ServerCard } from './components/ServerCard'
 
 const page = () => {
@@ -18,15 +20,27 @@ const page = () => {
         style={{
           flex: 1,
           height: '100vh',
-          alignItems: 'center',
-          padding: 50,
+          padding: 60,
         }}
       >
-        <Typography as="h1">{t('pages.dashboard.select_a_server')}</Typography>
+        <Flex
+          className={css({
+            flexWrap: 'wrap',
+            columnGap: '30px',
+            rowGap: '10px',
+          })}
+        >
+          <Typography as="h1">Select a guild</Typography>
+
+          <Input
+            placeholder="Filter guilds..."
+            classNameWrapper={css({ maxW: '400px' })}
+          />
+        </Flex>
 
         <Flex
           style={{
-            marginTop: 75,
+            marginTop: 30,
             gap: 10,
             flexWrap: 'wrap',
           }}

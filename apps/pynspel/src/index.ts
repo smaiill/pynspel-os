@@ -3,8 +3,11 @@ import { ChannelCreate } from 'events/channelCreate'
 import { ChannelDelete } from 'events/channelDelete'
 import { ChannelUpdate } from 'events/channelUpdate'
 import { GuildCreate } from 'events/guildCreate'
+import { GuildDelete } from 'events/guildDelete'
 import { GuildMemberAdd } from 'events/guildMemberAdd'
 import { GuildMemberRemove } from 'events/guildMemberRemove'
+import { GuildMemberUpdate } from 'events/guildMemberUpdate'
+import { GuildUpdate } from 'events/guildUpdate'
 import { InteractionCreate } from 'events/interactionCreate'
 import { MessageCreate } from 'events/messageCreate'
 import { RoleCreate } from 'events/roleCreate'
@@ -34,18 +37,21 @@ const client = new Px({
   commands: [new KickCommand(), new BanCommand()],
   // syncCommands: true,
   events: [
-    new GuildMemberRemove(),
-    new GuildMemberAdd(),
-    new GuildCreate(),
-    new ChannelUpdate(),
     new ChannelCreate(),
     new ChannelDelete(),
+    new ChannelUpdate(),
+    new GuildCreate(),
+    new GuildDelete(),
+    new GuildMemberAdd(),
+    new GuildMemberRemove(),
+    new GuildMemberUpdate(),
+    new InteractionCreate(),
+    new MessageCreate(),
     new RoleCreate(),
     new RoleDelete(),
     new RoleUpdate(),
-    new InteractionCreate(),
-    new MessageCreate(),
+    new GuildUpdate(),
   ],
 })
 
-// client.exe()
+client.exe()

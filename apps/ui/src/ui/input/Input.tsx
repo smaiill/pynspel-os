@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 
 const wrapper = css({
   display: 'flex',
@@ -56,14 +56,23 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   _prefix?: ReactNode
   _suffix?: ReactNode
   error?: boolean
+  classNameWrapper?: string
 }
 
 const Input = forwardRef(
   (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { icon, className, label, error, onIconClick, ...rest } = props
+    const {
+      icon,
+      className,
+      label,
+      error,
+      onIconClick,
+      classNameWrapper,
+      ...rest
+    } = props
 
     return (
-      <div className={wrapper}>
+      <div className={cx(wrapper, classNameWrapper)}>
         {label && <label htmlFor="input">{label}</label>}
         <div style={error ? { border: '1px solid red' } : {}} className={body}>
           <input

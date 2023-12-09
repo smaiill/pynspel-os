@@ -1,35 +1,13 @@
-import { OAuth2User } from '@pynspel/types'
+import { OAuth2User, SavedUser } from '@pynspel/types'
+import { db } from 'modules/db'
 import { Caches, usersCache } from 'utils/cache'
 import { DiscordRoutes } from 'utils/constants'
-import { env } from 'utils/env'
 
 class _UserService {
   public async getDiscordUser(
     accessToken: string,
     userId?: string
   ): Promise<OAuth2User> {
-    console.log('1')
-    if (env.NODE_ENV === 'developement') {
-      console.log('2')
-      return {
-        id: '504227742678646784',
-        username: 'smail.',
-        avatar: 'dd5bf03cf11d79ecbe51088cfde42940',
-        discriminator: '0',
-        public_flags: 256,
-        flags: 256,
-        banner: null,
-        accent_color: 723466,
-        locale: 'fr',
-        mfa_enabled: true,
-        premium_type: 0,
-        email: 'smailaberkaoui@gmail.com',
-        verified: true,
-      }
-    }
-
-    console.log('3')
-
     if (userId) {
       if (usersCache.has(`${Caches.Users}-${userId}`)) {
         console.log('Sending cache data')
@@ -54,6 +32,14 @@ class _UserService {
     }
 
     return jsonRes
+  }
+
+  async getUserByDiscordId(discordId: string) {
+    const [user] = await db.exec('SELECT * FROM users WHERE discord_id = $1', [
+      discordId,
+    ])
+
+    return user as SavedUser
   }
 }
 

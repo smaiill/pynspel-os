@@ -1,3 +1,5 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SCHEMA_CREATE_INTERACTION } from '@pynspel/common'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
@@ -5,8 +7,10 @@ import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEm
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { useTranslation } from '~/locales/Provider'
+import { useCurrentGuildCategorys } from '~/proxys/dashboard'
 import { ButtonSpecial } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
+import { InputSelect } from '~/ui/input/InputSelect'
 import { Typography } from '~/ui/typography/Typography'
 import {
   CreateOrUpdateInteractionPayload,
@@ -19,18 +23,23 @@ export const CreateInteraction = () => {
       name: null,
       style: 1,
       emoji: null,
+      parent_id: null,
     },
+    resolver: zodResolver(SCHEMA_CREATE_INTERACTION),
   })
   const { t } = useTranslation()
+  const [parentId, setParentId] = useState(getValues('parent_id'))
 
   const { createInteraction } = useInteractionMutations()
+
+  const formatedCategorys = useCurrentGuildCategorys().map((channel) => {
+    return { label: channel.name, value: channel.id }
+  })
 
   const [emojis, setEmojis] = useState(false)
   const watchedEmoji = watch('emoji')
 
   const handleCreateInteraction = (data: CreateOrUpdateInteractionPayload) => {
-    // TODO: validate data.
-    // console.log(window.location)
     createInteraction.mutate(data)
   }
 
@@ -50,6 +59,13 @@ export const CreateInteraction = () => {
         {...register('name')}
         label={t('modules.ticket.panel.interactions.button_label')}
       />
+      <InputSelect
+        value={parentId}
+        setValue={setParentId}
+        options={formatedCategorys}
+      >
+        {t('modules.ticket.panel.interactions.category')}
+      </InputSelect>
       <ButtonStylePicker
         default={getValues('style')}
         onChange={({ style }) => setValue('style', style)}

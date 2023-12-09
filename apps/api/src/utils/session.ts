@@ -3,7 +3,6 @@ import cookieParser from 'cookie-parser'
 import { NextFunction, Request, Response } from 'express'
 import { db } from 'modules/db'
 import { env } from './env'
-import { lg } from './logger'
 
 interface SessionData {
   session_id: string
@@ -43,6 +42,7 @@ export const deserializeSession = async (
   const authCookie = req.cookies[env.AUTH_COOKIE_NAME]
 
   if (!authCookie) {
+    req.user = undefined
     return next()
   }
 
@@ -50,24 +50,22 @@ export const deserializeSession = async (
     .signedCookie(authCookie, env.CRYPTION_KEY_SESSION)
     .toString()
 
-  const sessionQuery = 'SELECT * FROM sessions WHERE session_id = $1;'
+  const sessionQuery = 'SELECT * FROM sessions WHERE session_id = $1'
   const sessionValues = [sessionId]
   const [sessionDB] = await db.exec<SessionData>(sessionQuery, sessionValues)
+
   if (!sessionDB) {
-    console.log('No Session')
+    req.user = undefined
     return next()
   }
 
   const currentTime = new Date()
 
   if (sessionDB.expires_at < currentTime) {
-    console.log('Session Expired')
-
     const deleteQuery = 'DELETE FROM sessions WHERE session_id = $1;'
     const deleteValues = [sessionId]
+    req.user = undefined
     await db.exec(deleteQuery, deleteValues)
-
-    lg.info(`Session ${sessionId} has expired and deleted`)
   } else {
     const data = sessionDB.data
     req.user = data

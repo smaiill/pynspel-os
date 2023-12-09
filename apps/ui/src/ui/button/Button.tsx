@@ -13,6 +13,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
 }
 
+type ButtonChildProps = PropsWithChildren<
+  ButtonHTMLAttributes<HTMLButtonElement>
+> &
+  Pick<ButtonProps, 'href'>
+
 export const Button = forwardRef(
   (
     props: PropsWithChildren<ButtonProps>,
@@ -32,7 +37,7 @@ export const Button = forwardRef(
         className={cx(
           buttonRecipe({
             visual: variants?.visual,
-            format: variants?.format,
+            format: variants?.format
           }),
           className
         )}
@@ -45,10 +50,7 @@ export const Button = forwardRef(
 )
 
 export const ButtonPrimary = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}
@@ -60,10 +62,7 @@ export const ButtonPrimary = forwardRef(
 )
 
 export const ButtonDanger = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}
@@ -75,10 +74,7 @@ export const ButtonDanger = forwardRef(
 )
 
 export const ButtonSuccess = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}
@@ -90,10 +86,7 @@ export const ButtonSuccess = forwardRef(
 )
 
 export const ButtonWarn = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}
@@ -105,10 +98,7 @@ export const ButtonWarn = forwardRef(
 )
 
 export const ButtonSpecial = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}
@@ -118,12 +108,8 @@ export const ButtonSpecial = forwardRef(
     )
   }
 )
-
 export const ButtonPremium = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     const { children, ...rest } = props
 
     return (
@@ -140,10 +126,7 @@ export const ButtonPremium = forwardRef(
 )
 
 export const ButtonOutline = forwardRef(
-  (
-    props: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+  (props: ButtonChildProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         {...props}

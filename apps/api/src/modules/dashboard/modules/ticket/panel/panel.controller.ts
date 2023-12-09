@@ -1,18 +1,14 @@
 import { ButtonBuilder } from '@discordjs/builders'
-import { HttpStatus, Interaction, PanelApi } from '@pynspel/types'
+import { Errors, HttpStatus, Interaction, PanelApi } from '@pynspel/types'
 import { Request, Response } from 'express'
+import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
 import { DISCORD_BASE_API } from 'utils/constants'
+import { _decrypt } from 'utils/crypto'
 import { env } from 'utils/env'
-import { HttpException } from 'utils/error'
+import { HttpCantAccesGuildException, HttpException } from 'utils/error'
+import { lg } from 'utils/logger'
 
-// TODO: All securitys
-
-// ({
-//   custom_id: `ticket.create.${int.id}`,
-//   style: Number(int.style),
-//   label: int.name,
-// })
 const createInteractions = (interactions: Interaction[]) => {
   const returnedInteractions = []
 
@@ -41,6 +37,10 @@ class _PanelController {
   public async handleGetPanel(req: Request, res: Response) {
     const { panelId } = req.params
 
+    if (!panelId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
     const [panelWithInteractionsDb] = await db.exec(
       `
       SELECT
@@ -66,10 +66,28 @@ class _PanelController {
       [panelId]
     )
 
-    console.log(panelWithInteractionsDb)
+    if (!panelWithInteractionsDb) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
 
-    // TODO: Check if the user has access to the panel.
-    // ? We dont need to check if the panel exists cause when the bot lefts the guild it automaticly delete it
+    const isBotInGuild = await db.isClientInGuild(
+      panelWithInteractionsDb.guild_id
+    )
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, 'Invalid guild.')
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelWithInteractionsDb.guild_id as string,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
 
     res.json(panelWithInteractionsDb)
   }
@@ -77,7 +95,23 @@ class _PanelController {
   public async handleGetPanels(req: Request, res: Response) {
     const { guildId } = req.params
 
-    // TODO: Check if the user has permissions or is bot in guild.
+    const isBotInGuild = await db.isClientInGuild(guildId)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: guildId,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
     const panelsDb = await db.exec('SELECT * FROM panels WHERE guild_id = $1', [
       guildId,
     ])
@@ -88,7 +122,22 @@ class _PanelController {
   public async handleCreatePanel(req: Request, res: Response) {
     const { name, guild_id } = req.body
 
-    // TODO: Check if the bot and the user are in the guild.
+    const isBotInGuild = await db.isClientInGuild(guild_id)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: guild_id,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
 
     const [insertedPanel] = await db.exec(
       'INSERT INTO panels (name, guild_id) VALUES ($1, $2) RETURNING *',
@@ -102,7 +151,46 @@ class _PanelController {
     const { panelId } = req.params
     const { name, message, channel_id } = req.body
 
-    // TODO: Check if the bot and the user are in the guild. and that is a valid channel.
+    if (!panelId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const panelGuildId = await this.getGuildIdUsingPanelId(panelId)
+
+    if (!panelGuildId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuildId)
+
+    if (!isBotInGuild) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuildId,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    if (channel_id) {
+      // TODO: Check if the channel is valid in fresh.
+      const validChannels = await DashboardService.getCachedChannelsOrFresh(
+        panelGuildId
+      )
+
+      if (!validChannels.includes(channel_id)) {
+        throw new HttpException(
+          HttpStatus.BAD_REQUEST,
+          Errors.E_UNKNOWN_CHANNEL
+        )
+      }
+    }
 
     await db.exec(
       'UPDATE panels SET name = $1, message = $2, channel_id = $3 WHERE id = $4',
@@ -120,9 +208,34 @@ class _PanelController {
   public async handleDeletePanel(req: Request, res: Response) {
     const { panelId } = req.params
 
-    // TODO: Check that the user has access to the panel.
     if (!panelId) {
-      return
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const [panelGuildDb] = await db.exec(
+      'SELECT guild_id FROM panels WHERE id = $1',
+      [panelId]
+    )
+
+    if (!panelGuildDb) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuildDb.guild_id)
+
+    if (!isBotInGuild) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuildDb.guild_id,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
     }
 
     const query = 'DELETE FROM panel_interactions WHERE panel_id = $1'
@@ -135,6 +248,38 @@ class _PanelController {
   }
 
   public async handleGetPanelInteractions(req: Request, res: Response) {
+    const { panelId } = req.params
+
+    if (!panelId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const [panelGuildDb] = await db.exec(
+      'SELECT guild_id FROM panels WHERE id = $1',
+      [panelId]
+    )
+
+    if (!panelGuildDb) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuildDb.guild_id)
+
+    if (!isBotInGuild) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuildDb.guild_id,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
     const query = 'SELECT * FROM panel_interactions WHERE panel_id = $1'
 
     const _res = await db.exec(query, [req.params.panelId])
@@ -147,7 +292,36 @@ class _PanelController {
 
     const { name, parent_id, style, emoji } = req.body
 
-    // TODO: All securitys
+    if (!panelId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const [panelGuildDb] = await db.exec(
+      'SELECT guild_id FROM panels WHERE id = $1',
+      [panelId]
+    )
+
+    if (!panelGuildDb) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuildDb.guild_id)
+
+    if (!isBotInGuild) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuildDb.guild_id,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
     const query =
       'INSERT INTO panel_interactions (name, panel_id, parent_id, style, emoji) VALUES ($1, $2, $3, $4, $5) RETURNING *'
     const values = [name, panelId, parent_id, style, emoji]
@@ -157,9 +331,49 @@ class _PanelController {
     res.json(insertedInteraction)
   }
 
+  private async getGuildIdUsingPanelId(panelId: string) {
+    const [panelDb] = await db.exec<{ guild_id: string }>(
+      'SELECT guild_id FROM panels WHERE id = $1',
+      [panelId]
+    )
+
+    if (!panelDb || !panelDb.guild_id) {
+      return null
+    }
+
+    return panelDb.guild_id
+  }
+
   public async handleUpdatePanelInteraction(req: Request, res: Response) {
-    const { interactionId } = req.params
+    const { panelId, interactionId } = req.params
     const { name, parent_id, style, emoji } = req.body
+
+    if (!panelId || !interactionId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_DATA)
+    }
+
+    const panelGuilId = await this.getGuildIdUsingPanelId(panelId)
+
+    if (!panelGuilId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuilId)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuilId,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
 
     await db.exec(
       'UPDATE panel_interactions SET name = $1, parent_id = $2, style = $3, emoji = $4 WHERE id = $5',
@@ -176,10 +390,33 @@ class _PanelController {
   }
 
   public async handleDeleteInteraction(req: Request, res: Response) {
-    const { interactionId } = req.params
+    const { interactionId, panelId } = req.params
 
-    if (!interactionId) {
-      return
+    if (!panelId || !interactionId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_DATA)
+    }
+
+    const panelGuilId = await this.getGuildIdUsingPanelId(panelId)
+
+    if (!panelGuilId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuilId)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuilId,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
     }
 
     const query = 'DELETE FROM panel_interactions WHERE id = $1'
@@ -191,7 +428,33 @@ class _PanelController {
 
   public async handleSendInteractionPanel(req: Request, res: Response) {
     const { panelId } = req.params
-    // todo: add channel to send too in the body.
+
+    if (!panelId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const panelGuilId = await this.getGuildIdUsingPanelId(panelId)
+
+    if (!panelGuilId) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
+    }
+
+    const isBotInGuild = await db.isClientInGuild(panelGuilId)
+
+    if (!isBotInGuild) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: panelGuilId,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
 
     const [panelDb] = await db.exec<PanelApi>(
       `
@@ -218,19 +481,20 @@ class _PanelController {
       [panelId]
     )
 
-    if (!panelDb) {
-      throw new HttpException(HttpStatus.NOT_FOUND, 'Invalid panel')
-    }
-
     if (panelDb.interactions.length <= 0) {
-      throw new HttpException(HttpStatus.BAD_REQUEST, 'You have no shit.')
+      throw new HttpException(
+        HttpStatus.BAD_REQUEST,
+        Errors.E_EMPTY_INTERACTIONS
+      )
     }
 
     if (!panelDb.channel_id) {
-      throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid channel.')
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_CHANNEL)
     }
 
     const interactions = createInteractions(panelDb.interactions)
+
+    // TODO: Check if the channel is valid.
 
     try {
       const message = await fetch(
@@ -256,7 +520,9 @@ class _PanelController {
 
       res.json({ id: json.id })
     } catch (error) {
-      throw new HttpException(404, error?.message ?? '')
+      const err = error as Error
+      lg.error(err.message)
+      throw new HttpException(HttpStatus.SERVER_ERROR, Errors.E_REPORT_ERROR)
     }
   }
 }

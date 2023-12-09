@@ -197,8 +197,7 @@ type PropertyValueTypes  = {
 	stroke: Tokens["colors"];
 	srOnly: boolean;
 	debug: boolean;
-	colorPalette: "hover" | "fonts" | "gray" | "red" | "orange" | "yellow";
-	textStyle: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "8xl" | "9xl";
+	colorPalette: "gray" | "neutral" | "red" | "orange" | "yellow" | "blue" | "blackAlpha" | "whiteAlpha" | "hover" | "fonts" | "news" | "news.fonts" | "news.borders" | "news.backgrounds";
 }
 
 

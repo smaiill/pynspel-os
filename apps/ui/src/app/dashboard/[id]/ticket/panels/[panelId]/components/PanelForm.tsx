@@ -1,3 +1,5 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SCHEMA_UPDATE_PANEL } from '@pynspel/common'
 import { PanelApi } from '@pynspel/types'
 import { ChannelType } from 'discord-api-types/v10'
 import { useState } from 'react'
@@ -27,6 +29,7 @@ export const PanelForm = (props: Props) => {
       message: data.message,
       channel_id: data.channel_id,
     },
+    resolver: zodResolver(SCHEMA_UPDATE_PANEL),
   })
 
   const { t } = useTranslation()
@@ -44,8 +47,6 @@ export const PanelForm = (props: Props) => {
   const { updatePanel } = usePanelMutations()
 
   const handleUpdatePanel = (parsedData: any) => {
-    // TODO: Validate the data
-
     updatePanel.mutate({
       data: {
         ...parsedData,

@@ -1,14 +1,12 @@
 import { WebSocketBody, WebSocketOperations } from '@pynspel/types'
-import { env } from 'utils/env'
-import { lg } from 'utils/logger'
-import { redis } from 'utils/redis'
+import { env } from '../utils/env'
+import { lg } from '../utils/logger'
 import { Server } from 'ws'
 
 const wss = new Server({ port: 4053 })
 
 let lastHeartbeatReceived = Date.now()
 export let IS_CLIENT_AVAILABLE = true
-let isCacheCleared = false
 
 const TIME_CONCIDER_CLIENT_UNAVAILABLE = 5000
 
@@ -56,22 +54,16 @@ wss.on('connection', (ws, req) => {
 })
 
 setInterval(async () => {
+  // TODO: Instead of invalidating all the cache, just set a setTimeout and
+  // TODO: create a variable called isCacheValid to know if it should pick from the cache
+  // TODO: After the timeout the cache will be valid again.
   const currentTime = Date.now()
   const timeSinceLastHeartbeat = currentTime - lastHeartbeatReceived
 
   if (timeSinceLastHeartbeat > TIME_CONCIDER_CLIENT_UNAVAILABLE) {
     lg.warn('No heartbeat received, API may be unavailable')
     IS_CLIENT_AVAILABLE = false
-    try {
-      if (!isCacheCleared) {
-        await redis._client.flushAll()
-        isCacheCleared = true
-      }
-    } catch (error) {
-      isCacheCleared = false
-    }
   } else {
     IS_CLIENT_AVAILABLE = true
-    isCacheCleared = false
   }
 }, 1000)

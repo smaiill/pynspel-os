@@ -1,5 +1,5 @@
-import { useRouter } from 'next/navigation'
-import { MouseEvent, PropsWithChildren, ReactNode, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { MouseEvent, PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import { Flex } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonDanger, ButtonOutline, ButtonPrimary } from '~/ui/button/Button'
@@ -7,20 +7,20 @@ import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Chip } from '~/ui/chip/Chip'
 import { Typography } from '~/ui/typography/Typography'
 import { css, cx } from '../../../../styled-system/css'
-import { useGuildModulesState, useMutateModuleState } from '../hooks/modules'
+import { useMutateModuleState } from '../hooks/modules'
 import { Modal } from './modals/Modal'
 
 const styles = css({
-  padding: '15px',
+  p: '15px',
   display: 'flex',
-  color: 'white',
   alignItems: 'center',
   gap: '15px',
   textDecoration: 'none',
-  marginTop: '10px',
-  borderRadius: '10px',
+  mt: '10px',
+  rounded: '10px',
   transition: '0.3s',
   justifyContent: 'space-between',
+  color: 'primary',
 
   '&[data-disabled=false]': {
     _hover: {
@@ -79,29 +79,18 @@ const AsideItem = <Type extends AsideItemTypes>(
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { data: guildModules, isLoading } = useGuildModulesState(
-    currentGuild?.guild_id
-  )
-
   const { mutate } = useMutateModuleState(props.name)
 
-  if (isLoading) {
-    return null
-  }
-
   const handleClick = () => {
-    if (type === 'module' && !props.globalActive) {
+    if (type === 'module' && (!props.globalActive || !props.isActiveForGuild)) {
       return
     }
 
-    console.log('Handle click...')
     router.push(`/dashboard/${currentGuild?.guild_id}/${href}`)
   }
 
   const isModuleAndGlobalDisabled = type === 'module' && !props.globalActive
-  const isActive = guildModules?.find(
-    (element) => element.name === props?.name
-  )?.is_active
+  const isActive = props?.isActiveForGuild
 
   const handleToggleModule = (e: MouseEvent<HTMLInputElement>) => {
     e.stopPropagation()
@@ -112,21 +101,30 @@ const AsideItem = <Type extends AsideItemTypes>(
   const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     setIsModalOpen(false)
-    console.log('Stoping')
   }
 
   const handleAction = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     mutate(!isActive)
     setIsModalOpen(false)
-    console.log('Mutate')
   }
+
+  const pathName = usePathname().split('/')[3] ?? ''
+
 
   return (
     <div
       onClick={handleClick}
       className={cx(styles, isModuleAndGlobalDisabled && globalInactive)}
-      data-disabled={isModuleAndGlobalDisabled}
+      data-disabled={
+        isModuleAndGlobalDisabled ||
+        (type === 'module' && !props.isActiveForGuild)
+      }
+      style={
+        pathName === props.href.slice(1, props.href.length)
+          ? { backgroundColor: '#1f1f1f' }
+          : {}
+      }
     >
       {type === 'module' && isModalOpen ? (
         isActive ? (
@@ -151,7 +149,6 @@ const AsideItem = <Type extends AsideItemTypes>(
         )
       ) : null}
       <Flex style={{ alignItems: 'center', gap: 10 }}>
-        {/* TODO: Change color to white when selected */}
         {icon && icon}
         <Typography color="secondary" as="span">
           {children}

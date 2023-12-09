@@ -353,8 +353,6 @@ const EmbedFields = (
   )
 }
 
-// TODO: Possibility to not have images etc...
-
 type EmbedBuilderProps = {
   images?: boolean
   data: APIEmbed

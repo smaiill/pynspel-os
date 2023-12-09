@@ -7,7 +7,6 @@ import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
-import { Typography } from '~/ui/typography/Typography'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'command'>
@@ -37,9 +36,6 @@ const CommandForm = (props: LogginFormProps) => {
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
-      <Typography color="warn" as="span">
-        TODO: Make it as cards
-      </Typography>
       <Controller
         name="ban"
         control={control}

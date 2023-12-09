@@ -264,8 +264,7 @@ const classNameMap = {
   "fill": "fill",
   "stroke": "stroke",
   "srOnly": "sr",
-  "debug": "debug",
-  "textStyle": "textStyle"
+  "debug": "debug"
 }
 
 const shorthands = {

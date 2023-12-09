@@ -13,11 +13,15 @@ export const useCurrentGuildValue = () => useRecoilValue(currentGuildAtom)
 export const useSetCurrentGuild = () => useSetRecoilState(currentGuildAtom)
 export const useCurrentGuildState = () => useRecoilState(currentGuildAtom)
 
-export const useCurrentGuildChannels = (type: ChannelType) => {
+export const useCurrentGuildChannels = (type?: ChannelType) => {
   const guild = useCurrentGuildValue()
 
   if (!guild) {
     return []
+  }
+
+  if (!type) {
+    return guild.channels
   }
 
   return guild.channels.filter((channel) => channel.type === type)
@@ -36,3 +40,6 @@ export const useCurrentGuildRoles = (includeEveryone = false) => {
 
   return guild.roles.filter((_role) => _role.id !== guild.guild_id)
 }
+
+export const useCurrentGuildCategorys = () =>
+  useCurrentGuildChannels(ChannelType.GuildCategory)

@@ -4,6 +4,7 @@ import {
   MessageActionRowComponent,
   TextChannel,
 } from 'discord.js'
+import { ModuleServiceBase } from 'modules/module.service.base'
 import { env } from 'utils/env'
 
 const MAX_MESSAGES_TO_TRANSPILE = 99
@@ -29,7 +30,10 @@ export type TranspileMetadata = {
     name: string
   }
 }
-class _TicketService {
+class _TicketService extends ModuleServiceBase<'ticket'> {
+  constructor() {
+    super('ticket')
+  }
   public async transpileFromChannel(channel: TextChannel) {
     const messages = await channel.messages.fetch({
       limit: MAX_MESSAGES_TO_TRANSPILE,

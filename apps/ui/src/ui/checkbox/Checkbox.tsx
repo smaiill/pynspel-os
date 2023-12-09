@@ -7,7 +7,11 @@ import {
 import { FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../styled-system/css'
 
-type Props = InputHTMLAttributes<HTMLInputElement>
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+  styles?: {
+    label: string
+  }
+}
 
 const checkboxWrapper = css({
   alignItems: 'flex-start',
@@ -77,10 +81,13 @@ const wrapperStyle = css({
 
 const Checkbox = forwardRef(
   (props: PropsWithChildren<Props>, ref: ForwardedRef<HTMLInputElement>) => {
-    const { children, value, ...rest } = props
+    const { children, value, styles, ...rest } = props
+
     return (
       <FlexColumn className={checkboxWrapper}>
-        <label htmlFor="checkbox">{children}</label>
+        <label className={styles?.label} htmlFor="checkbox">
+          {children}
+        </label>
         <div className={wrapperStyle}>
           <input type="checkbox" ref={ref} {...rest} checked={value} />
           <span />

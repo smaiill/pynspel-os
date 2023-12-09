@@ -21,9 +21,12 @@ const envSchema = z.object({
   CLIENT_TOKEN: z.string(),
   DB_URI: z.string(),
   NODE_ENV: z
-    .union([z.literal('production'), z.literal('developement')])
+    .string()
     .default('developement'),
   REDIS_URL: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
+  STRIPE_SECRET_WEBHOOK: z.string(),
+  FRONT_URL: z.string().url(),
 })
 
 export const env = envSchema.parse(process.env)

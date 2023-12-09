@@ -13,4 +13,15 @@ export type TranslationBase = {
   }
   modules: ModulesTranslationBase
   actions: ActionsTranslationBase
+  subscription: {
+    manage: {}
+    yearly: {
+      title: {}
+      value: {}
+    }
+    monthly: {
+      title: {}
+      value: {}
+    }
+  }
 }

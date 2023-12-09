@@ -13,7 +13,6 @@ type Props = {
   }
 }
 
-// TODO: Transform the command to card, with small exampels of usage.
 const page = ({ params }: Props) => {
   const { id } = params
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)

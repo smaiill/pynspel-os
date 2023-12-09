@@ -34,6 +34,12 @@ export class ChannelDelete extends BaseEvent<'channelDelete'> {
   }
 
   public async on(client: Client, channel: Channel) {
-    await this.manageCache(channel)
+    await this.manageCache(channel).catch((err) =>
+      logger.error(`CACHE_ERROR: ${err}`)
+    )
+
+    if (channel.type === ChannelType.GuildText) {
+      await this._db.closeTicket(channel.id, channel.guild.id)
+    }
   }
 }

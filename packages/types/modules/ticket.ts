@@ -26,3 +26,17 @@ export type InteractionCreatedApi = {
   emoji: string | null
   style: DiscordButtonStyle
 }
+
+export enum TicketStatus {
+  Open = 'open',
+  Closed = 'close',
+}
+
+export type Ticket = {
+  channel_id: string
+  author_id: string
+  guild_id: string
+  status: TicketStatus
+}
+
+export type SavedTicket = Ticket & { id: string }

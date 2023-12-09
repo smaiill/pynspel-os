@@ -1,8 +1,8 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { MainHeader } from '~/components/header/main/MainHeader'
 import { useGuildService } from '~/hooks/useGuildService'
 import { Flex } from '~/layouts/Flex'
+import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
 import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary, ButtonSpecial } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
@@ -11,6 +11,7 @@ import { css, cx } from '../../styled-system/css'
 const serversStyles = css({
   marginTop: '20px',
   position: 'relative',
+  zIndex: 2,
 
   _before: {
     content: '""',
@@ -33,6 +34,14 @@ const main = css({
   alignItems: 'center',
   flexDirection: 'column',
   backgroundSize: '22px 22px',
+  _after: {
+    content: '""',
+    position: 'absolute',
+    bottom: '0',
+    width: '100%',
+    height: '600px',
+    background: 'linear-gradient(to bottom, rgba(255, 0, 0, 0), #1f1f1f)',
+  },
 
   '& h1': {
     textAlign: 'center',
@@ -42,7 +51,7 @@ const main = css({
 const page = () => {
   const { getServingGuilds } = useGuildService()
 
-  const { data, refetch } = useQuery<{
+  const { data } = useQuery<{
     count: number
   }>({
     queryKey: ['serving-guilds'],
@@ -52,9 +61,7 @@ const page = () => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <MainHeader />
-
+    <HeaderAndFooterLayout>
       <main className={cx(main, '__decoration')}>
         <Typography
           style={{
@@ -74,12 +81,7 @@ const page = () => {
         >
           {t('pages.home.description')}
         </Typography>
-        <Flex
-          style={{
-            gap: 10,
-            marginTop: 30,
-          }}
-        >
+        <Flex className={css({ gap: 10, mt: 30, zIndex: 2 })}>
           <ButtonPrimary>{t('pages.home.add_pynspel')}</ButtonPrimary>
           <ButtonSpecial>{t('pages.home.go_to_dashboard')}</ButtonSpecial>
         </Flex>
@@ -89,7 +91,7 @@ const page = () => {
           })}
         </Typography>
       </main>
-    </>
+    </HeaderAndFooterLayout>
   )
 }
 

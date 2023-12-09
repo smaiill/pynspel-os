@@ -1,47 +1,96 @@
-import { ApiGuild, DiscordGuild, SavedGuild } from '@pynspel/types'
+import {
+  ApiGuild,
+  DiscordGuild,
+  RedisUserGuild,
+  SavedGuild,
+} from '@pynspel/types'
 import { ChannelType } from 'discord-api-types/v10'
 import { clientService } from 'modules/client/client.service'
 import { db } from 'modules/db'
 import { guildService } from 'modules/services/guild.service'
 import { DiscordRoutes } from 'utils/constants'
-import { env } from 'utils/env'
 import { redis } from 'utils/redis'
 
+export type FetchUserGuilds =
+  | { cache: false; guilds: DiscordGuild[] }
+  | { cache: true; guilds: RedisUserGuild[] }
 class _DashboardService {
   _clientService = clientService
   _guildService = guildService
 
-  public async fetchUserGuilds(accessToken: string): Promise<DiscordGuild[]> {
-    if (env.NODE_ENV === 'developement') {
-      return [
-        {
-          id: '974775347553906718',
-          name: 'dev serv',
-          icon: 'c7fb03b4e32c68b3f28c216c5c58cd86',
-          owner: true,
-          permissions: '140737488355327',
-          features: [],
-        },
-      ]
-    }
-    const response = await fetch(DiscordRoutes.USERS_GUILDS, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+  public async fetchUserGuilds(
+    accessToken: string,
+    userId: string
+  ): Promise<FetchUserGuilds> {
+    const userCachedGuilds = await redis.user.getGuilds(userId)
 
-    return await response.json()
+    if (!userCachedGuilds) {
+      const response = await fetch(DiscordRoutes.USERS_GUILDS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+
+      const userGuilds = await response.json()
+
+      redis.user.setGuilds(userId, userGuilds)
+
+      return { cache: false, guilds: userGuilds }
+    }
+
+    return { cache: true, guilds: userCachedGuilds }
   }
 
-  public async fetchMutualGuilds(accessToken: string) {
-    const userGuilds = await this.fetchUserGuilds(accessToken)
-    const mutualGuilds = await this._clientService.getMutualGuilds(userGuilds)
+  private isAdmin(permissions: string) {
+    return (parseInt(permissions) & 0x8) === 0x8
+  }
 
-    const mutualAdminGuilds = mutualGuilds.filter(
-      ({ permissions }) => (parseInt(permissions) & 0x8) === 0x8
-    )
+  public async fetchMutualGuilds(
+    accessToken: string,
+    userId: string
+  ): Promise<DiscordGuild[]> {
+    const { cache, guilds } = await this.fetchUserGuilds(accessToken, userId)
 
-    return mutualAdminGuilds
+    console.log({ cache, guilds: guilds.length })
+    if (cache) {
+      const guildsWithData = [] as DiscordGuild[]
+
+      for (const cachedGuild of guilds) {
+        const isAdminOrOwner = this.isAdmin(cachedGuild.permissions)
+
+        if (isAdminOrOwner) {
+          const [dbGuild] = await db.exec<{
+            name: string
+            avatar: string
+          }>('SELECT name, avatar FROM guilds WHERE guild_id = $1', [
+            cachedGuild.id,
+          ])
+
+          if (dbGuild) {
+            guildsWithData.push({
+              features: [],
+              icon: dbGuild.avatar,
+              id: cachedGuild.id,
+              name: dbGuild.name,
+              owner: cachedGuild.owner,
+              permissions: cachedGuild.permissions,
+            })
+          }
+        }
+      }
+
+      return guildsWithData
+    } else {
+      const userAdminGuilds = guilds.filter(
+        ({ permissions }) => (parseInt(permissions) & 0x8) === 0x8
+      )
+
+      const mutualGuilds = await this._clientService.getMutualGuilds(
+        userAdminGuilds
+      )
+
+      return mutualGuilds
+    }
   }
 
   public async getCachedChannelsOrFresh(guildId: string) {
@@ -99,7 +148,8 @@ class _DashboardService {
   }
 
   public async getGuildConfiguration(guildId: string): Promise<ApiGuild> {
-    const query = 'SELECT * FROM guilds WHERE guild_id = $1'
+    const query =
+      'SELECT id, guild_id, name, avatar, bot, plan FROM guilds WHERE guild_id = $1'
     const values = [guildId]
 
     const channels = await this.getCachedChannelsOrFresh(guildId)
@@ -112,6 +162,39 @@ class _DashboardService {
       channels,
       roles,
     }
+  }
+
+  public async getGuildFromDatabaseIfBotIn(guildId: string) {
+    const query = 'SELECT * FROM guilds WHERE guild_id = $1 AND bot = $2'
+    const values = [guildId, true]
+
+    const [guild] = await db.exec<SavedGuild>(query, values)
+
+    if (!guild) {
+      return null
+    }
+
+    return guild
+  }
+
+  public async userHasPermissionsCachedOrFresh({
+    userId,
+    guildId,
+    accessToken,
+  }: {
+    userId: string
+    guildId: string
+    accessToken: string
+  }) {
+    const { guilds } = await this.fetchUserGuilds(accessToken, userId)
+
+    const guild = guilds.find((guild) => guild.id === guildId)
+
+    if (!guild) {
+      return false
+    }
+
+    return guild.owner || this.isAdmin(guild.permissions)
   }
 }
 

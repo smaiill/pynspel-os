@@ -6,7 +6,7 @@ import {
   ModulesTypes,
 } from '@pynspel/common'
 
-import { Guild, KeysToCamelCase } from '@pynspel/types'
+import { Guild, Ticket, TicketStatus } from '@pynspel/types'
 
 export type DbWrapperOptions = {
   debug?: boolean
@@ -48,7 +48,7 @@ export class _DbWrapper {
     }
   }
 
-  private debug(query: string, values: unknown[]) {
+  private debug(query: string) {
     this._debug && _customLog(COLORS.GREEN, `${COLORS.CYAN}${query}`)
   }
 
@@ -59,7 +59,7 @@ export class _DbWrapper {
       throw new DbError(`Error while executing the query: ${query}`)
     }
 
-    this.debug(query, values)
+    this.debug(query)
 
     return <[T]>res.rows
   }
@@ -71,30 +71,40 @@ export class _DbWrapper {
 
     const [res] = await this.exec<{ exists: boolean }>(query, values)
 
-    return res.exists
+    return res?.exists
   }
 
-  public async updateGuild({ guildId, avatar, name }: KeysToCamelCase<Guild>) {
+  public async updateGuild({
+    guild_id,
+    avatar,
+    name,
+    ownerId,
+  }: Omit<Guild, 'bot'>) {
     const query =
-      'UPDATE guilds SET (avatar, name) VALUES ($1, $2) WHERE guild_id = $3'
-    const values = [avatar, name, guildId]
+      'UPDATE guilds SET avatar = $1, name = $2, bot = $3, owner = $4 WHERE guild_id = $5'
+    const values = [avatar, name, true, ownerId, guild_id]
 
     await this.exec(query, values)
 
-    return { guildId, avatar, name }
+    return { guild_id, avatar, name, bot: true }
   }
 
-  public async createGuild({ guildId, avatar, name }: KeysToCamelCase<Guild>) {
+  public async createGuild({
+    guild_id,
+    avatar,
+    name,
+    ownerId,
+  }: Omit<Guild, 'bot'>) {
     const query =
-      'INSERT INTO guilds (guild_id, avatar, name) VALUES ($1, $2, $3)'
-    const values = [guildId, avatar, name]
+      'INSERT INTO guilds (guild_id, avatar, name, bot, owner) VALUES ($1, $2, $3, $4, $5)'
+    const values = [guild_id, avatar, name, true, ownerId]
 
     await this.exec(query, values)
 
-    return { guildId, avatar, name }
+    return { guild_id, avatar, name, bot: true, ownerId }
   }
 
-  public async deleteGuild({ guildId }: KeysToCamelCase<Guild>) {
+  public async deleteGuild(guildId: string) {
     const query = 'UPDATE guilds SET bot = $1 WHERE guild_id = $2'
     const values = [false, guildId]
 
@@ -104,19 +114,26 @@ export class _DbWrapper {
   }
 
   public async handleNewGuild({
-    guildId,
+    guild_id,
     avatar,
     name,
-  }: KeysToCamelCase<Guild>) {
-    const exists = await this.isClientInGuild(guildId)
+    ownerId,
+  }: Omit<Guild, 'bot'>) {
+    const [exists] = await this.exec(
+      'SELECT guild_id FROM guilds WHERE guild_id = $1',
+      [guild_id]
+    )
 
-    if (!exists) {
-      await this.createGuild({ guildId, avatar, name })
-      return { guildId, name, avatar }
+    const guildExists = !!exists
+    console.log({ guildExists })
+
+    if (!guildExists) {
+      await this.createGuild({ guild_id, avatar, name, ownerId })
+      return { guild_id, name, avatar, bot: true, ownerId }
     }
 
-    await this.updateGuild({ guildId, avatar, name })
-    return { guildId, name, avatar }
+    await this.updateGuild({ guild_id, avatar, name, ownerId })
+    return { guild_id, name, avatar, bot: true, ownerId }
   }
 
   public async getModuleConfigForGuild<
@@ -131,7 +148,7 @@ export class _DbWrapper {
       moduleName,
     ])
 
-    return res?.config
+    return res.config
   }
 
   public async createModuleConfigForGuild<
@@ -142,7 +159,7 @@ export class _DbWrapper {
       INSERT INTO guild_modules (guild_id, module_id, is_active, config)
       SELECT $1, module_id, $3, $4
       FROM modules
-      WHERE name = $2
+      WHERE name = $2 RETURNING *
     `
 
     const defaultConfig = getModuleDefaultConfig(moduleName)
@@ -165,6 +182,44 @@ export class _DbWrapper {
     }
 
     return res
+  }
+
+  public async createTicket(ticket: Ticket) {
+    const query =
+      'INSERT INTO tickets (channel_id, author_id, guild_id, status) VALUES ($1, $2, $3, $4)'
+
+    const values = [
+      ticket.channel_id,
+      ticket.author_id,
+      ticket.guild_id,
+      ticket.status,
+    ]
+
+    await this.exec(query, values)
+
+    return ticket
+  }
+
+  public async closeTicket(channelId: string, guildId: string) {
+    const query =
+      'UPDATE tickets SET status = $1 WHERE channel_id = $2 AND guild_id = $3'
+    const values = [TicketStatus.Closed, channelId, guildId]
+
+    return await this.exec(query, values)
+  }
+
+  public async getTicketById(id: string, guildId: string) {
+    const query =
+      'SELECT * FROM tickets WHERE channel_id = $1 AND guild_id = $2'
+    const values = [id, guildId]
+
+    const [channel] = await this.exec(query, values)
+
+    if (!channel) {
+      return null
+    }
+
+    return channel as Ticket
   }
 }
 

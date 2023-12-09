@@ -1,11 +1,15 @@
 import { InferModuleConfigType, validateModuleConfig } from '@pynspel/common'
+import { ChannelType } from 'discord-api-types/v10'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
+import {
+  useCurrentGuildChannels,
+  useCurrentGuildValue,
+} from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
@@ -91,9 +95,11 @@ const ScannerForm = (props: LogginFormProps) => {
     return 'Invalid guild.'
   }
 
-  const formatedChannels = currentGuild.channels.map((channel) => {
-    return { label: channel.name, value: channel.id }
-  })
+  const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
+    (channel) => {
+      return { label: channel.name, value: channel.id }
+    }
+  )
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
@@ -127,7 +133,6 @@ const ScannerForm = (props: LogginFormProps) => {
           })}
         </InputSelectType>
 
-        {/* TODO: Add example of what is exact word */}
         <InputSelectType
           words={bannedExactWords}
           onChange={(words) => setBannedExactWords(words)}
@@ -218,7 +223,6 @@ const ScannerForm = (props: LogginFormProps) => {
         >
           {t('modules.common.action_to_take')}
         </InputSelect>
-        {/* TODO: Show only the text channels */}
         <InputSelect
           multi
           options={formatedChannels}

@@ -7,16 +7,29 @@ import {
 import { HttpStatus } from '@pynspel/types'
 import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
 import { db } from 'modules/db'
+import { ObjectKeysPath } from 'types/utils'
 import { HttpException, HttpZodValidationError } from 'utils/error'
+import { accesToObjectKeyUsingPath } from 'utils/misc'
 import { redis } from 'utils/redis'
+import { DashboardService } from '../dashboard.service'
 
+type ModuleBaseOptions<M extends ModulesTypes> = {
+  update?: {
+    validators?: {
+      channels?: Array<ObjectKeysPath<InferModuleConfigType<M>>> | string[]
+      roles?: Array<ObjectKeysPath<InferModuleConfigType<M>>> | string[]
+    }
+  }
+}
 export abstract class ModuleBase<M extends ModulesTypes> {
   private _db = db
-  _name = '' as ModulesTypes
-  _defaultConfig = {}
-  constructor(name: M) {
+  private _name = '' as ModulesTypes
+  private _defaultConfig = {}
+  private _options = {} as ModuleBaseOptions<M>
+  constructor(name: M, options?: ModuleBaseOptions<M>) {
     this._name = name
     this._defaultConfig = getModuleDefaultConfig(this._name)
+    this._options = options ?? {}
   }
 
   public async get(guildId: string) {
@@ -29,7 +42,6 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     const cache = await redis.getModule(guildId, this._name)
 
     if (cache) {
-      console.log('Returning cached config', cache)
       return cache
     }
 
@@ -63,7 +75,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     if (!IS_CLIENT_AVAILABLE) {
       throw new HttpException(
         HttpStatus.SERVICE_UNAVAILABLE,
-        'Client is corrently unavailabl'
+        'Client is corrently unavailable'
       )
     }
     const isClientInGuild = await this._db.isClientInGuild(guildId)
@@ -85,6 +97,36 @@ export abstract class ModuleBase<M extends ModulesTypes> {
       newConfig
     ) as InferModuleConfigType<M>
 
+    const allChannelsToCheck =
+      this?._options?.update?.validators?.channels
+        ?.map((dataPath) => {
+          const value = accesToObjectKeyUsingPath(
+            dataPath as string,
+            validatedData
+          )
+
+          return value ?? '_invalid-channel'
+        })
+        .flat() ?? []
+
+    const allRolesToCheck =
+      this?._options?.update?.validators?.roles
+        ?.map((dataPath) => {
+          const value = accesToObjectKeyUsingPath(
+            dataPath as string,
+            validatedData
+          )
+
+          return value ?? '_invalid-role'
+        })
+        .flat() ?? []
+
+    await this.validChannelsAndRoles(
+      guildId,
+      allChannelsToCheck as string[],
+      allRolesToCheck as string[]
+    )
+
     const values = [guildId, JSON.stringify(validatedData), this._name]
 
     await this._db.exec<{
@@ -100,11 +142,47 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     return validatedData
   }
 
+  private async validChannelsAndRoles(
+    guildId: string,
+    channels: string[],
+    roles: string[]
+  ) {
+    if (roles.length > 0) {
+      const validRoles = await DashboardService.getCachedRolesOrFresh(guildId)
+
+      const areRolesValid = roles.every((roleId) => {
+        const value = validRoles.find((role) => role.id === roleId)
+
+        return Boolean(value)
+      })
+
+      if (!areRolesValid) {
+        throw new HttpException(HttpStatus.BAD_REQUEST, 'E_UNKNOWN_ROLE')
+      }
+    }
+
+    if (channels.length > 0) {
+      const validChannels = await DashboardService.getCachedChannelsOrFresh(
+        guildId
+      )
+
+      const areChannelsValid = channels.every((channelId) => {
+        const value = validChannels.find((channel) => channel.id === channelId)
+
+        return Boolean(value)
+      })
+
+      if (!areChannelsValid) {
+        throw new HttpException(HttpStatus.BAD_REQUEST, 'E_UNKNOWN_CHANNEL')
+      }
+    }
+  }
+
   protected validateConfig(config: InferModuleConfigType<M>) {
     const res = validateModuleConfig(this._name, config)
 
     if (!res.success) {
-      throw new HttpZodValidationError('Invalid configuration', res.error ?? [])
+      throw new HttpZodValidationError(res.error ?? [])
     }
 
     return res.data

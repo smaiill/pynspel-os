@@ -15,8 +15,8 @@ const styles = css({
   justifyContent: 'space-between',
   padding: '0 10%',
   height: '100px',
-  borderBottom: '1px solid #333131',
-  backgroundColor: '#191919',
+  borderBottom: 'news.grey',
+  backgroundColor: 'news.backgrounds.secondary',
 
   '& nav': {
     '& ul': {

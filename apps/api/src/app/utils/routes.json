@@ -69,6 +69,38 @@
     "path": "api/dashboard/bot/:guildId"
   },
   {
+    "routeName": "getBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
+    "routeName": "getBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
+    "routeName": "putBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
+    "routeName": "putBotGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/bot/:guildId"
+  },
+  {
     "routeName": "putBotGuildId",
     "_args": [
       "guildId"
@@ -82,6 +114,38 @@
       "guildId"
     ],
     "method": "GET",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "getCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "getCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "putCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/captcha/:guildId"
+  },
+  {
+    "routeName": "putCaptchaGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
     "path": "api/dashboard/captcha/:guildId"
   },
   {
@@ -101,6 +165,38 @@
     "path": "api/dashboard/logging/:guildId"
   },
   {
+    "routeName": "getLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
+    "routeName": "getLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
+    "routeName": "putLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
+    "routeName": "putLoggingGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/logging/:guildId"
+  },
+  {
     "routeName": "putLoggingGuildId",
     "_args": [
       "guildId"
@@ -114,6 +210,38 @@
       "guildId"
     ],
     "method": "GET",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "getTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "getTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "putTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/ticket/:guildId"
+  },
+  {
+    "routeName": "putTicketGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
     "path": "api/dashboard/ticket/:guildId"
   },
   {
@@ -133,12 +261,60 @@
     "path": "api/dashboard/command/:guildId"
   },
   {
+    "routeName": "getCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "getCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
     "routeName": "putCommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
     "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "putCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "putCommandGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/command/:guildId"
+  },
+  {
+    "routeName": "getCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/counter-raid/:guildId"
+  },
+  {
+    "routeName": "getCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/counter-raid/:guildId"
   },
   {
     "routeName": "getCounterRaidGuildId",
@@ -157,11 +333,59 @@
     "path": "api/dashboard/counter-raid/:guildId"
   },
   {
+    "routeName": "putCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/counter-raid/:guildId"
+  },
+  {
+    "routeName": "putCounterRaidGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/counter-raid/:guildId"
+  },
+  {
     "routeName": "getScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "getScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "getScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "putScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/dashboard/scanner/:guildId"
+  },
+  {
+    "routeName": "putScannerGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
     "path": "api/dashboard/scanner/:guildId"
   },
   {
@@ -288,6 +512,48 @@
     "_args": [],
     "method": "GET",
     "path": "api/client/serving-guilds"
+  },
+  {
+    "routeName": "getSubscriptionsSuccess",
+    "_args": [],
+    "method": "GET",
+    "path": "api/subscriptions/success"
+  },
+  {
+    "routeName": "getSubscriptionsCancel",
+    "_args": [],
+    "method": "GET",
+    "path": "api/subscriptions/cancel"
+  },
+  {
+    "routeName": "getSubscriptionsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/subscriptions/:guildId"
+  },
+  {
+    "routeName": "postSubscriptionsWebhook",
+    "_args": [],
+    "method": "POST",
+    "path": "api/subscriptions/webhook"
+  },
+  {
+    "routeName": "getSubscriptionsPortalGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/subscriptions/portal/:guildId"
+  },
+  {
+    "routeName": "postSubscriptionsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "POST",
+    "path": "api/subscriptions/:guildId"
   },
   {
     "routeName": "getModules",

@@ -6,4 +6,5 @@ export type ActionsTranslationBase = {
   update: {}
   send: {}
   save: {}
+  claim: {}
 }

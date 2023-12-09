@@ -8,12 +8,12 @@ import AsideItem from './AsideItem'
 import { SkeletonBox } from './Skeletons'
 
 const styles = css({
-  backgroundColor: '#191919',
+  backgroundColor: 'news.backgrounds.secondary',
   width: '325px',
   overflowY: 'auto',
   maxHeight: '100vh',
   padding: '20px',
-  borderRight: '1px solid #333131',
+  borderRight: 'news.grey',
   display: 'none',
   lg: {
     display: 'block',
@@ -59,7 +59,6 @@ const Aside = () => {
   }
 
   const isModuleActiveForGuild = (name: string) => {
-    console.log()
     return Boolean(
       guildModulesState?.find(
         (element) => element.name === name && element.is_active
@@ -80,6 +79,13 @@ const Aside = () => {
         >
           Tableau de bord
         </AsideItem>
+        <AsideItem
+          type="normal"
+          href={`/premium`}
+          icon={<Home strokeWidth={1.5} size={20} />}
+        >
+          Premium
+        </AsideItem>
 
         {globalModules && globalModules.length > 0
           ? globalModules.map((item) => {
@@ -87,7 +93,7 @@ const Aside = () => {
                 (_item) => _item.name === item.name
               )
 
-              if (!moduleData) {
+              if (!moduleData || !item.active) {
                 return null
               }
 

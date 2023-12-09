@@ -2,6 +2,7 @@ import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
 import { ModuleStateApi } from '@pynspel/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { useGlobalModulesState } from '~/proxys/modules'
 import { fetchApi } from '~/utils/fetchApi'
 import { pxToast } from '../components/toast/toast-handler'
 
@@ -36,6 +37,7 @@ export const useGuildModulesState = (guildId: string) => {
 export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
   const queryClient = useQueryClient()
   const currentGuild = useCurrentGuildValue()
+  const [globalModules] = useGlobalModulesState()
 
   return useMutation({
     mutationFn: async (newValue: boolean) => {
@@ -51,6 +53,19 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
       queryClient.setQueryData(
         ['modules', currentGuild?.guild_id],
         (previous) => {
+          const hasModule = previous.find((element) => element.name === module)
+
+          if (!hasModule) {
+            const moduleId = globalModules.find(
+              (module) => module.name === module
+            )?.module_id
+            console.log(globalModules)
+
+            return [
+              ...previous,
+              { name: module, id: moduleId, is_active: value },
+            ]
+          }
           const updatedData = previous.map((_module) => {
             if (_module.name === module) {
               return {
@@ -100,10 +115,16 @@ export const useMutateModule = <M extends ModulesTypes>(
 }
 
 export const useGlobalModules = () => {
+  const [_, setModules] = useGlobalModulesState()
+
   return useQuery<ModuleStateApi[]>({
     queryKey: ['modules'],
     queryFn: async () => {
       return await fetchApi('/api/modules')
+    },
+
+    onSuccess(data) {
+      setModules(data)
     },
   })
 }

@@ -10,8 +10,8 @@ $dot-space: 22px; */
 }
 
 body {
-  background-color: #1f1f1f;
-  overflow: hidden;
+  background-color: #141414;
+  /* overflow: hidden; */
 }
 
 .__days {
@@ -19,9 +19,9 @@ body {
 }
 
 .__decoration {
-  background-color: #1f1f1f;
-  background-image: linear-gradient(#2e2f30 1px, transparent 0.5px),
-    linear-gradient(to right, #2e2f30 1px, #1f1f1f 0.5px);
+  background-color: #141414;
+  background-image: linear-gradient(rgb(60, 61, 63) 1px, transparent 0.5px),
+    linear-gradient(to right, rgb(60, 61, 63) 1px, #141414 0.5px);
   background-size: 100px 100px;
 }
 

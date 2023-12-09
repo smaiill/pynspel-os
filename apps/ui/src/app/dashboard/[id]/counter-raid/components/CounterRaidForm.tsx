@@ -11,6 +11,7 @@ import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
+import { css } from '../../../../../../styled-system/css'
 
 type LogginFormProps = {
   data: InferModuleConfigType<'counterRaid'>
@@ -55,7 +56,6 @@ const CounterRaidForum = (props: LogginFormProps) => {
     })
   }
 
-  // TODO: Refactor this shit, add on change on InputSelect.
   useEffect(() => {
     setValue('action', action, {
       shouldDirty: true,
@@ -121,14 +121,16 @@ const CounterRaidForum = (props: LogginFormProps) => {
       {errors.action_reason?.message ? (
         <FieldError message={errors.action_reason.message} />
       ) : null}
-      {/* TODO: Add warning to prevent to check all the permissions */}
 
       <Controller
         name="raid_channel_lockdown"
         control={control}
         render={({ field }) => {
           return (
-            <Checkbox {...field}>
+            <Checkbox
+              styles={{ label: css({ color: 'red.400 !important' }) }}
+              {...field}
+            >
               {t('modules.counter_raid.lock_channels')}
             </Checkbox>
           )

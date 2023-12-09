@@ -35,6 +35,7 @@ export type ModulesTranslationBase = {
         title: {}
         create: {}
         button_label: {}
+        category: {}
       }
     }
   }
