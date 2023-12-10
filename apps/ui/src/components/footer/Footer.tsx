@@ -1,6 +1,7 @@
 import { MoveUpRight } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { BsDiscord } from 'react-icons/bs'
+import { DISCORD_LINK } from '~/constants'
 import { Flex } from '~/layouts/Flex'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../styled-system/css'
@@ -11,7 +12,7 @@ import { SocialLink } from '../SocialLink'
 const SocialLinks = [
   {
     icon: <BsDiscord />,
-    href: 'https://discord.com',
+    href: DISCORD_LINK,
   },
 ]
 
@@ -148,20 +149,30 @@ const FooterSection = ({
   )
 }
 
+const TIME = 7.5
+
 const ExploreOurProduct = () => {
   const [width, setWidth] = useState(0)
+  const [isPressing, setIsPressing] = useState(false)
   const intervalRef = useRef(0)
+  const downIntervalRef = useRef(0)
   const onMouseDown = () => {
+    clearInterval(downIntervalRef.current)
+    setIsPressing(true)
     const intervalId = setInterval(() => {
-      setWidth((prevV) => (prevV + 1 >= 100 ? 0 : prevV + 1))
-    }, 100)
+      setWidth((prevV) => (prevV + 1 >= 100 ? 100 : prevV + 1))
+    }, TIME)
 
     intervalRef.current = intervalId
   }
 
   const onMouseUp = () => {
     clearInterval(intervalRef.current)
-    setWidth(0)
+    setIsPressing(false)
+    const intervalId = setInterval(() => {
+      setWidth((prevV) => (prevV - 1 <= 0 ? 0 : prevV - 1))
+    }, TIME)
+    downIntervalRef.current = intervalId
   }
   return (
     <div
@@ -178,7 +189,7 @@ const ExploreOurProduct = () => {
         pos: 'relative',
         cursor: 'pointer',
         overflow: 'hidden',
-
+        userSelect: 'none',
         _before: {
           content: '""',
           height: '30px',
@@ -187,6 +198,7 @@ const ExploreOurProduct = () => {
           pos: 'absolute',
           top: '0',
           right: '7%',
+          zIndex: 99,
         },
 
         _after: {
@@ -197,24 +209,34 @@ const ExploreOurProduct = () => {
           pos: 'absolute',
           bottom: '0',
           right: '7%',
+          zIndex: 99,
         },
       })}
+      style={!isPressing ? {} : { animation: 'animateThis 0.2s infinite' }}
     >
       <div
         className={css({
           pos: 'absolute',
           height: '100%',
-          bg: 'news.backgrounds.primary',
+          bg: '#CFD0C8',
           left: 0,
           top: 0,
           zIndex: '1',
         })}
-        style={{ width: `${width}%` }}
+        style={{
+          width: `${width}%`,
+        }}
       />
-      <Typography className={css({ zIndex: 99 })} as="h5">
+      <Typography
+        className={css({ zIndex: 99, mixBlendMode: 'difference' })}
+        as="h5"
+      >
         Explore Pynspel
       </Typography>
-      <MoveUpRight className={css({ zIndex: 99 })} color="white" />
+      <MoveUpRight
+        className={css({ zIndex: 99, mixBlendMode: 'difference' })}
+        color="white"
+      />
     </div>
   )
 }

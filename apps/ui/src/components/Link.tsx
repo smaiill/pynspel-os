@@ -71,6 +71,7 @@ type InternalLinkProps = {
    */
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
 }
+
 export const CustomLink = (
   props: PropsWithChildren<
     AnchorHTMLAttributes<HTMLAnchorElement> & InternalLinkProps

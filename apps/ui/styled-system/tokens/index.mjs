@@ -52,7 +52,7 @@ const tokens = {
     "variable": "var(--colors-black)"
   },
   "colors.white": {
-    "value": "#fff",
+    "value": "#CFD0C8",
     "variable": "var(--colors-white)"
   },
   "colors.gray.50": {

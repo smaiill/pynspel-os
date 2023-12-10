@@ -18,20 +18,23 @@ body {
   font-family: 'Days one';
 }
 
-.__decoration {
-  background-color: #141414;
-  background-image: linear-gradient(rgb(60, 61, 63) 1px, transparent 0.5px),
-    linear-gradient(to right, rgb(60, 61, 63) 1px, #141414 0.5px);
-  background-size: 100px 100px;
-}
-
 ::-webkit-scrollbar {
-  border-radius: 10px;
   background-color: rgb(58, 56, 56);
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(117, 114, 114);
-  border-radius: 5px;
+  background-color: #cfd0c8;
+}
+
+@keyframes animateThis {
+  0% {
+    rotate: 1deg;
+  }
+  50% {
+    rotate: -1deg;
+  }
+  100% {
+    rotate: 1deg;
+  }
 }

@@ -26,7 +26,7 @@ const getLocaleByValue = (value: string) => {
 export const LocaleSelector = () => {
   const { update, locale } = useTranslation()
   const [currentValue, setCurrentValue] = useState(locale)
-  const [open, setIsOpen] = useState(false)
+  const [open, setIsOpen] = useState(true)
 
   const onChange = (newValue: string) => {
     update(newValue)
@@ -39,7 +39,11 @@ export const LocaleSelector = () => {
   return (
     <FlexColumn
       onClick={() => setIsOpen((prevV) => !prevV)}
-      className={css({ pos: 'relative', cursor: 'pointer' })}
+      className={css({
+        pos: 'relative',
+        cursor: 'pointer',
+        userSelect: 'none',
+      })}
     >
       <Flex className={css({ gap: '15px', alignItems: 'center' })}>
         <Flex className={css({ gap: '5px', alignItems: 'center' })}>
@@ -72,14 +76,15 @@ export const LocaleSelector = () => {
           className={css({
             translate: '-50%',
             pos: 'absolute',
-            bg: '#2b2929',
+            bg: 'news.backgrounds.tertiary',
             top: '30px',
-            padding: '10px',
+            padding: '5px',
             left: '50%',
             width: '175px',
             zIndex: 9999,
             rounded: '5px',
-            gap: '10px',
+            gap: '5px',
+            border: 'news.grey',
           })}
         >
           {locales.map((locale) => (
@@ -91,11 +96,11 @@ export const LocaleSelector = () => {
               className={css({
                 alignItems: 'center',
                 gap: '10px',
-                padding: '5px',
+                padding: '10px',
                 cursor: 'pointer',
                 rounded: '5px',
                 _hover: {
-                  bg: '#323030',
+                  bg: 'news.backgrounds.secondary',
                 },
               })}
               key={locale.value}

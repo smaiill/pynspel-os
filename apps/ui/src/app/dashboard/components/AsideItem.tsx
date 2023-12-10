@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'next/navigation'
-import { MouseEvent, PropsWithChildren, ReactNode, useEffect, useState } from 'react'
+import { MouseEvent, PropsWithChildren, ReactNode, useState } from 'react'
 import { Flex } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonDanger, ButtonOutline, ButtonPrimary } from '~/ui/button/Button'
@@ -16,7 +16,7 @@ const styles = css({
   alignItems: 'center',
   gap: '15px',
   textDecoration: 'none',
-  mt: '10px',
+  mt: '5px',
   rounded: '10px',
   transition: '0.3s',
   justifyContent: 'space-between',
@@ -24,7 +24,7 @@ const styles = css({
 
   '&[data-disabled=false]': {
     _hover: {
-      backgroundColor: '#1f1f1f',
+      backgroundColor: 'news.backgrounds.tertiary',
       cursor: 'pointer',
     },
   },
@@ -111,7 +111,6 @@ const AsideItem = <Type extends AsideItemTypes>(
 
   const pathName = usePathname().split('/')[3] ?? ''
 
-
   return (
     <div
       onClick={handleClick}
@@ -122,7 +121,7 @@ const AsideItem = <Type extends AsideItemTypes>(
       }
       style={
         pathName === props.href.slice(1, props.href.length)
-          ? { backgroundColor: '#1f1f1f' }
+          ? { backgroundColor: 'var(--colors-news-backgrounds-tertiary)' }
           : {}
       }
     >

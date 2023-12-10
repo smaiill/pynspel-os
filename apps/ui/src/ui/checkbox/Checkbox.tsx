@@ -27,14 +27,13 @@ const wrapperStyle = css({
   width: '55px',
   height: '25px',
   position: 'relative',
-  rounded: '10px',
   overflow: 'hidden',
   border: '1px solid rgb(77, 76, 76)',
   cursor: 'pointer !important',
 
   '&:has(input:checked)': {
     '& span': {
-      bgColor: 'special !important',
+      bg: 'special !important',
 
       _before: {
         left: '63% !important',
@@ -70,7 +69,6 @@ const wrapperStyle = css({
       width: '18px',
       height: '70%',
       bgColor: 'white',
-      rounded: '10px',
       translate: '0 -50%',
       top: '50%',
       transition: '.3s',

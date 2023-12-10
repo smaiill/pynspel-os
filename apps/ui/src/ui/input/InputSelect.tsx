@@ -74,9 +74,8 @@ const svgDropDownStyle = css({
 
 const pickerStyles = css({
   color: 'white',
-  backgroundColor: '#2b2929',
+  bg: 'news.backgrounds.tertiary',
   padding: '10px',
-  borderRadius: '10px',
   minHeight: '50px',
   // bg: 'red',
   display: 'flex',
@@ -88,9 +87,8 @@ const pickerStyles = css({
 })
 
 const ulStyles = css({
-  backgroundColor: '#2b2929',
+  bg: 'news.backgrounds.tertiary',
   padding: '5px',
-  borderRadius: '10px',
   color: 'white',
   transition: '0.3s',
   position: 'absolute',
@@ -103,7 +101,6 @@ const ulStyles = css({
   animation: '.3s fadeIn',
 
   '& li': {
-    borderRadius: '5px',
     cursor: 'pointer',
     transition: '0.3s',
     padding: '10px',
@@ -112,14 +109,15 @@ const ulStyles = css({
     justifyContent: 'space-between',
 
     '&.selected': {
-      bgColor: '#1F1F1F',
+      bg: 'white',
+      color: 'black !important',
     },
 
     '& svg': {
       color: 'special',
     },
     _hover: {
-      bg: '#323030',
+      bg: 'news.backgrounds.secondary',
     },
   },
 
@@ -129,17 +127,16 @@ const ulStyles = css({
 })
 
 const multiWordStyle = css({
-  bg: 'specialBg',
+  bg: 'white',
   padding: '2px 4px',
-  rounded: '5px',
-  color: 'special',
+  color: 'black',
 
   '& button': {
-    color: 'special',
+    color: 'black',
     transition: '0.4s',
     cursor: 'pointer',
     _hover: {
-      color: 'white',
+      color: 'red',
     },
   },
 
@@ -278,7 +275,7 @@ const InputSelect = <
 
       {isOpen ? (
         <ul ref={ulRef} className={ulStyles}>
-          {options.map((item) => {
+          {options.map((item, idx) => {
             const _selected = isSelected(item.value)
 
             const classx = clsx(_selected && 'selected')
@@ -288,16 +285,16 @@ const InputSelect = <
                 onClick={() => handleElementClicked(item)}
                 key={String(item.value)}
                 className={classx}
-                style={
-                  type === 'role'
+                style={{
+                  ...(type === 'role'
                     ? {
                         color:
                           item.color === 0
                             ? 'grey'
                             : `#${item.color.toString(16)}`,
                       }
-                    : {}
-                }
+                    : {}),
+                }}
               >
                 {type === 'channel' ? (
                   <Flex
@@ -312,7 +309,7 @@ const InputSelect = <
                 ) : (
                   item.label
                 )}
-                {_selected ? <Check size={12} /> : null}
+                {_selected ? <Check color="black" size={15} /> : null}
               </li>
             )
           })}

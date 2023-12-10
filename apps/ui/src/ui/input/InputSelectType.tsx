@@ -12,24 +12,22 @@ type InputSelectTypeProps = {
 }
 
 const wordStyle = css({
-  bg: 'specialBg',
+  bg: 'white',
   padding: '1px 4px',
-  rounded: '5px',
   alignItems: 'center',
   gap: '5px',
 
   '& span ': {
-    color: 'special',
+    color: 'black',
   },
 
   '& button': {
-    stroke: 'red',
-    color: 'special',
+    color: 'black',
     transition: '0.4s',
     cursor: 'pointer',
 
     _hover: {
-      color: 'white',
+      color: 'red',
     },
 
     '& svg': {

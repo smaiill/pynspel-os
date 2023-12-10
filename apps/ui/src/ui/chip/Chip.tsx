@@ -4,8 +4,7 @@ import { cva, RecipeVariantProps } from '../../../styled-system/css'
 const chipRecipe = cva({
   base: {
     padding: '5px',
-    fontSize: '12px',
-    rounded: '13px',
+    fontSize: '10px',
   },
   variants: {
     visual: {

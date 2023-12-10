@@ -31,6 +31,7 @@ export const SocialLink = (props: PropsWithChildren<SocialLinkProps>) => {
           },
         })
       )}
+      target="_blank"
       {...rest}
     >
       {children}

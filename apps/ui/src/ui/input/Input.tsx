@@ -19,14 +19,13 @@ const body = css({
   alignItems: 'center',
   padding: '10px',
   gap: '10px',
-  borderRadius: '10px',
   justifyContent: 'space-between',
   transition: '0.3s',
-  backgroundColor: '#2b2929',
+  backgroundColor: 'news.backgrounds.tertiary',
+  border: 'news.grey',
 
   '&:has(input:focus)': {
     transition: '0',
-    outline: '1px solid rgb(77, 76, 76)',
   },
 
   '& p': {

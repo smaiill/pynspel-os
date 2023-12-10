@@ -8,9 +8,22 @@ export const buttonRecipe = cva({
     pos: 'relative',
     transition: '0.3s',
     fontSize: '13px',
+    _before: {
+      content: '""',
+      pos: 'absolute',
+      bottom: '0',
+      left: '0',
+      width: '100%',
+      bg: 'rgba(0, 0, 0, 0.5)',
+      height: '5px',
+      transition: '.1s',
+    },
     _active: {
       _enabled: {
         scale: '0.95',
+      },
+      _before: {
+        height: '0px',
       },
     },
 

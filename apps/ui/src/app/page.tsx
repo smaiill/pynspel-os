@@ -33,19 +33,7 @@ const main = css({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-  backgroundSize: '22px 22px',
-  _after: {
-    content: '""',
-    position: 'absolute',
-    bottom: '0',
-    width: '100%',
-    height: '600px',
-    background: 'linear-gradient(to bottom, rgba(255, 0, 0, 0), #1f1f1f)',
-  },
-
-  '& h1': {
-    textAlign: 'center',
-  },
+  textAlign: 'center',
 })
 
 const page = () => {
@@ -91,6 +79,8 @@ const page = () => {
           })}
         </Typography>
       </main>
+
+      {/* <ShowcaseDiscords /> */}
     </HeaderAndFooterLayout>
   )
 }

@@ -4,7 +4,6 @@ import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { useUserGuildsSnapshot } from '~/proxys/user'
 import { Input } from '~/ui/input/Input'
-import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../styled-system/css'
 import { ServerCard } from './components/ServerCard'
 
@@ -30,8 +29,6 @@ const page = () => {
             rowGap: '10px',
           })}
         >
-          <Typography as="h1">Select a guild</Typography>
-
           <Input
             placeholder="Filter guilds..."
             classNameWrapper={css({ maxW: '400px' })}

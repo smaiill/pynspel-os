@@ -1,5 +1,5 @@
 'use client'
-import Link from 'next/link'
+import { CustomLink } from '~/components/Link'
 import { LocaleSelector } from '~/components/locale/LocaleSelector'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
 import { Flex } from '~/layouts/Flex'
@@ -50,8 +50,10 @@ const MainHeader = () => {
 
       <nav>
         <ul>
-          <Link href="/">{t('pages.home.nav.home')}</Link>
-          <Link href="/dashboard">{t('pages.home.nav.dashboard')}</Link>
+          <CustomLink href="/">{t('pages.home.nav.home')}</CustomLink>
+          <CustomLink href="/dashboard">
+            {t('pages.home.nav.dashboard')}
+          </CustomLink>
         </ul>
       </nav>
 

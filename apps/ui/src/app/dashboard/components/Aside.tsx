@@ -93,7 +93,7 @@ const Aside = () => {
                 (_item) => _item.name === item.name
               )
 
-              if (!moduleData || !item.active) {
+              if (!moduleData) {
                 return null
               }
 

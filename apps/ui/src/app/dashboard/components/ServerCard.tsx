@@ -15,14 +15,16 @@ const styles = css({
   alignItems: 'center',
   justifyContent: 'center',
   border: 'news.grey',
-
-  '& img': {
-    rounded: '50%',
-  },
+  pos: 'relative',
+  overflow: 'hidden',
 
   '& div': {
     w: '100%',
     justifyContent: 'space-between',
+
+    '& img': {
+      rounded: '50%',
+    },
   },
 })
 
@@ -34,15 +36,31 @@ const ServerCard = (props: any) => {
     router.push(`/dashboard/${props.id}`)
   }
 
+  const serverIcon = props.icon
+    ? `https://cdn.discordapp.com/icons/${props.id}/${props.icon}.png`
+    : '/icons/discord.svg'
+
   return (
     <FlexColumn className={styles}>
+      <img
+        className={css({
+          pos: 'absolute',
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          filter: 'blur(0px)',
+          opacity: '.1',
+        })}
+        src={serverIcon}
+      />
       <Image
+        className={css({ zIndex: '100' })}
         alt="server-image"
         width={75}
         height={75}
-        src={`https://cdn.discordapp.com/icons/${props.id}/${props.icon}.png`}
+        src={serverIcon}
       />
-      <Flex>
+      <Flex className={css({ zIndex: '100' })}>
         <Typography as="h4">{props.name}</Typography>
         <ButtonPrimary onClick={handleManageGuild}>
           {t('pages.dashboard.manage_server')}
