@@ -3,8 +3,6 @@ import { useEffect } from 'react'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildState } from '~/proxys/dashboard'
-import { Typography } from '~/ui/typography/Typography'
-import { css } from '../../../../styled-system/css'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
 import { useFetchGuild } from '../hooks/useFetchGuild'
@@ -32,17 +30,10 @@ const page = ({ params }: Props) => {
   if (!guildData) {
     return 'Loading...'
   }
-
   return (
     <DashboardPage>
       <Aside />
       <DashboardView>
-        <Typography className={css({ mb: '30px' })} as="h1">
-          {t('pages.guild.welcome', {
-            name: guildData.name,
-          })}
-        </Typography>
-
         <SelectedServerInformation />
       </DashboardView>
     </DashboardPage>

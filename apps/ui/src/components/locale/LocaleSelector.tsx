@@ -26,7 +26,7 @@ const getLocaleByValue = (value: string) => {
 export const LocaleSelector = () => {
   const { update, locale } = useTranslation()
   const [currentValue, setCurrentValue] = useState(locale)
-  const [open, setIsOpen] = useState(true)
+  const [open, setIsOpen] = useState(false)
 
   const onChange = (newValue: string) => {
     update(newValue)
@@ -82,7 +82,6 @@ export const LocaleSelector = () => {
             left: '50%',
             width: '175px',
             zIndex: 9999,
-            rounded: '5px',
             gap: '5px',
             border: 'news.grey',
           })}
@@ -98,7 +97,6 @@ export const LocaleSelector = () => {
                 gap: '10px',
                 padding: '10px',
                 cursor: 'pointer',
-                rounded: '5px',
                 _hover: {
                   bg: 'news.backgrounds.secondary',
                 },

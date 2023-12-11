@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react'
 
 const Logo = ({
-  color = '#5D5FEF',
+  color = '#f7931e',
   width = 50,
   height = 50,
   box,

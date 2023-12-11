@@ -9,7 +9,6 @@ import { css } from '../../../../styled-system/css'
 const styles = css({
   backgroundColor: 'news.backgrounds.secondary',
   flex: '1 0 300px',
-  rounded: '10px',
   padding: '40px 25px 25px 25px',
   gap: '20px',
   alignItems: 'center',

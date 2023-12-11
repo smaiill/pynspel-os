@@ -416,7 +416,7 @@ const tokens = {
     "variable": "var(--colors-warn)"
   },
   "colors.special": {
-    "value": "#5D5FEF",
+    "value": "#f7931e",
     "variable": "var(--colors-special)"
   },
   "colors.specialBg": {
@@ -448,7 +448,7 @@ const tokens = {
     "variable": "var(--colors-fonts-danger-hover)"
   },
   "colors.fonts.special": {
-    "value": "#5D5FEF",
+    "value": "#f7931e",
     "variable": "var(--colors-fonts-special)"
   },
   "colors.fonts.warn": {
@@ -456,7 +456,7 @@ const tokens = {
     "variable": "var(--colors-fonts-warn)"
   },
   "colors.news.special": {
-    "value": "#5D5FEF",
+    "value": "#f7931e",
     "variable": "var(--colors-news-special)"
   },
   "colors.news.fonts.label": {
@@ -488,7 +488,7 @@ const tokens = {
     "variable": "var(--colors-news-backgrounds-tertiary)"
   },
   "borders.specialDashed": {
-    "value": "1px dashed #5D5FEF",
+    "value": "1px dashed #f7931e",
     "variable": "var(--borders-special-dashed)"
   },
   "borders.news.grey": {

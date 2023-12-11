@@ -104,7 +104,7 @@
   --colors-danger: #dd3d59;
   --colors-success: #3d8b2e;
   --colors-warn: #e5871a;
-  --colors-special: #5D5FEF;
+  --colors-special: #f7931e;
   --colors-special-bg: #5D5FEF30;
   --colors-inactive: #1f1f1f;
   --colors-hover-special: #4849B9;
@@ -112,9 +112,9 @@
   --colors-fonts-secondary: #8b8787;
   --colors-fonts-danger: #b35454;
   --colors-fonts-danger-hover: #bd3838;
-  --colors-fonts-special: #5D5FEF;
+  --colors-fonts-special: #f7931e;
   --colors-fonts-warn: #e5871a;
-  --colors-news-special: #5D5FEF;
+  --colors-news-special: #f7931e;
   --colors-news-fonts-label: #606260;
   --colors-news-fonts-primary: #CFD0C8;
   --colors-news-fonts-reverse\.primary: black;
@@ -122,7 +122,7 @@
   --colors-news-backgrounds-primary: #141414;
   --colors-news-backgrounds-secondary: #1A1A1A;
   --colors-news-backgrounds-tertiary: #222222;
-  --borders-special-dashed: 1px dashed #5D5FEF;
+  --borders-special-dashed: 1px dashed #f7931e;
   --borders-news-grey: 1px solid #262626;
   --gradients-decoration: linear-gradient(39deg, rgba(0,0,0,1) 0%, rgba(62,62,61,1) 100%);
   --breakpoints-sm: 640px;

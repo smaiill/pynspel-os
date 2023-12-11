@@ -51,7 +51,6 @@ class _DashboardService {
   ): Promise<DiscordGuild[]> {
     const { cache, guilds } = await this.fetchUserGuilds(accessToken, userId)
 
-    console.log({ cache, guilds: guilds.length })
     if (cache) {
       const guildsWithData = [] as DiscordGuild[]
 

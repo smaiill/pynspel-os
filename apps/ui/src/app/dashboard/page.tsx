@@ -6,14 +6,15 @@ import { useUserGuildsSnapshot } from '~/proxys/user'
 import { Input } from '~/ui/input/Input'
 import { css } from '../../../styled-system/css'
 import { ServerCard } from './components/ServerCard'
+import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
 
 const page = () => {
   const userGuildsSnapshot = useUserGuildsSnapshot()
   const { t } = useTranslation()
 
   return (
-    <>
-      <MainHeader />
+    <HeaderAndFooterLayout>
+      {/* <MainHeader /> */}
 
       <FlexColumn
         style={{
@@ -47,7 +48,7 @@ const page = () => {
           ))}
         </Flex>
       </FlexColumn>
-    </>
+    </HeaderAndFooterLayout>
   )
 }
 

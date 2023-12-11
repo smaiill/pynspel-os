@@ -8,7 +8,6 @@ import { css, cva, RecipeVariantProps } from '../../../../../styled-system/css'
 const modalRecipe = cva({
   base: {
     padding: '15px',
-    rounded: '15px',
     maxW: '500px',
   },
   variants: {

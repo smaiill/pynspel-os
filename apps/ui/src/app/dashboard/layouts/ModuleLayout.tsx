@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import Aside from '../components/Aside'
 
-export const ModuleLayout = ({ children }: PropsWithChildren) => {
+export const ModuleLayout = ({ children, params }: PropsWithChildren) => {
   return (
     <DashboardPage>
       <Aside />

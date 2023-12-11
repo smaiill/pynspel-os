@@ -149,7 +149,8 @@ const FooterSection = ({
   )
 }
 
-const TIME = 7.5
+const TIME = 0
+const W_TO_ADD = 0.2
 
 const ExploreOurProduct = () => {
   const [width, setWidth] = useState(0)
@@ -160,7 +161,7 @@ const ExploreOurProduct = () => {
     clearInterval(downIntervalRef.current)
     setIsPressing(true)
     const intervalId = setInterval(() => {
-      setWidth((prevV) => (prevV + 1 >= 100 ? 100 : prevV + 1))
+      setWidth((prevV) => (prevV + W_TO_ADD >= 100 ? 100 : prevV + W_TO_ADD))
     }, TIME)
 
     intervalRef.current = intervalId
@@ -170,7 +171,7 @@ const ExploreOurProduct = () => {
     clearInterval(intervalRef.current)
     setIsPressing(false)
     const intervalId = setInterval(() => {
-      setWidth((prevV) => (prevV - 1 <= 0 ? 0 : prevV - 1))
+      setWidth((prevV) => (prevV - W_TO_ADD <= 0 ? 0 : prevV - W_TO_ADD))
     }, TIME)
     downIntervalRef.current = intervalId
   }
@@ -184,7 +185,6 @@ const ExploreOurProduct = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        rounded: '10px',
         border: 'news.grey',
         pos: 'relative',
         cursor: 'pointer',
@@ -212,7 +212,7 @@ const ExploreOurProduct = () => {
           zIndex: 99,
         },
       })}
-      style={!isPressing ? {} : { animation: 'animateThis 0.2s infinite' }}
+      style={!isPressing ? {} : { animation: 'animateThis 0.1s infinite' }}
     >
       <div
         className={css({

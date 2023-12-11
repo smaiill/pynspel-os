@@ -7,17 +7,6 @@ const UserCacheKeys = {
 
 const USER_GUILDS_TTL = 300
 
-export enum UserCacheReasons {
-  NoCache = 'NoCache',
-  NotInGuild = 'NotInGuild',
-  Normal = 'Normal',
-}
-
-type UserHasAdminPermsOrIsOwnerReturn =
-  | { value: false; reason: UserCacheReasons.NoCache }
-  | { value: false; reason: UserCacheReasons.NotInGuild }
-  | { value: boolean; reason: UserCacheReasons.Normal }
-
 export class UserCache {
   constructor(private _client: RedisClientType) {}
 
@@ -73,32 +62,6 @@ export class UserCache {
 
   private isAdmin(permissions: string) {
     return (parseInt(permissions) & 0x8) === 0x8
-  }
-
-  /**
-   * @deprecated This is only based in the cache, but if the user has no cache it will return false.
-   * we need to fetch the fresh data if the cache is invalid.
-   */
-  public async userHasAdminPermsOrIsOwner(
-    userId: string,
-    guildId: string
-  ): Promise<UserHasAdminPermsOrIsOwnerReturn> {
-    const cachedUserGuilds = await this.getGuilds(userId)
-
-    if (!cachedUserGuilds) {
-      return { value: false, reason: UserCacheReasons.NoCache }
-    }
-
-    const guild = cachedUserGuilds.find((guild) => guild.id === guildId)
-
-    if (!guild) {
-      return { value: false, reason: UserCacheReasons.NotInGuild }
-    }
-
-    return {
-      value: guild.owner || this.isAdmin(guild.permissions),
-      reason: UserCacheReasons.Normal,
-    }
   }
 
   public async invalidateGuilds(userId: string) {

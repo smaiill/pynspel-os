@@ -17,7 +17,6 @@ const styles = css({
   gap: '15px',
   textDecoration: 'none',
   mt: '5px',
-  rounded: '10px',
   transition: '0.3s',
   justifyContent: 'space-between',
   color: 'primary',
@@ -127,7 +126,7 @@ const AsideItem = <Type extends AsideItemTypes>(
     >
       {type === 'module' && isModalOpen ? (
         isActive ? (
-          <Modal>
+          <Modal visual='danger'>
             <Modal.Header
               description="Tes paramètres ne seront pas perdus, mais tu ne pourras pas utiliser le module tant que tu ne l'auras pas réactivé."
               title={`Are you sure to disable module ${props.label}`}
@@ -156,7 +155,7 @@ const AsideItem = <Type extends AsideItemTypes>(
       {isModuleAndGlobalDisabled ? (
         <Chip visual="danger">Temporarly disabled</Chip>
       ) : type === 'module' ? (
-        <Checkbox value={isActive} onClick={handleToggleModule} />
+        <Checkbox size={0.8} value={isActive} onClick={handleToggleModule} />
       ) : null}
     </div>
   )

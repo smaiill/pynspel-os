@@ -11,6 +11,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   styles?: {
     label: string
   }
+  size?: number
 }
 
 const checkboxWrapper = css({
@@ -24,8 +25,6 @@ const checkboxWrapper = css({
 
 const wrapperStyle = css({
   display: 'flex',
-  width: '55px',
-  height: '25px',
   position: 'relative',
   overflow: 'hidden',
   border: '1px solid rgb(77, 76, 76)',
@@ -33,7 +32,7 @@ const wrapperStyle = css({
 
   '&:has(input:checked)': {
     '& span': {
-      bg: 'special !important',
+      bg: 'special',
 
       _before: {
         left: '63% !important',
@@ -58,7 +57,7 @@ const wrapperStyle = css({
     position: 'absolute',
     top: '0',
     left: '0',
-    bgColor: '#2B2929',
+    bgColor: 'news.backgrounds.tertiary',
     padding: '3px',
     transition: '.3s',
     cursor: 'pointer !important',
@@ -66,9 +65,9 @@ const wrapperStyle = css({
     _before: {
       content: '""',
       position: 'absolute',
-      width: '18px',
+      // width: '18px',
       height: '70%',
-      bgColor: 'white',
+      bg: 'white',
       translate: '0 -50%',
       top: '50%',
       transition: '.3s',
@@ -79,16 +78,17 @@ const wrapperStyle = css({
 
 const Checkbox = forwardRef(
   (props: PropsWithChildren<Props>, ref: ForwardedRef<HTMLInputElement>) => {
-    const { children, value, styles, ...rest } = props
+    const { children, value, styles, size = 1, ...rest } = props
+    const sizes = { wrapperWidth: `${ 55 * size}px`, wrapperHeight: `${ 25 * size}px`, beforeSize: `${18 * size}px`  }
 
     return (
       <FlexColumn className={checkboxWrapper}>
         <label className={styles?.label} htmlFor="checkbox">
           {children}
         </label>
-        <div className={wrapperStyle}>
+        <div style={{ width: sizes.wrapperWidth, height: sizes.wrapperHeight }} className={wrapperStyle}>
           <input type="checkbox" ref={ref} {...rest} checked={value} />
-          <span />
+          <span style={{ '--checkbox-before-width': sizes.beforeSize }} className='__checkbox_before'  />
         </div>
       </FlexColumn>
     )

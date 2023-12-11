@@ -20,6 +20,12 @@ export const en: Translation<TranslationBase> = {
     send: 'Send',
     update: 'Update',
     claim: 'Obtenir',
+    modules: {
+      updated: {
+        fail: 'An error occurred while updating your module.',
+        success: 'Module updated successfully.',
+      },
+    },
   },
   pages: {
     dashboard: {

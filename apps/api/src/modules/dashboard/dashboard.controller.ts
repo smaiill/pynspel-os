@@ -1,4 +1,4 @@
-import { HttpStatus, SavedUser } from '@pynspel/types'
+import { Errors, HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
 import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
 import { _decrypt } from 'utils/crypto'
@@ -15,7 +15,7 @@ class _DashboardController {
     if (!IS_CLIENT_AVAILABLE) {
       throw new HttpException(
         HttpStatus.SERVICE_UNAVAILABLE,
-        'Client is corrently unavailabl'
+        Errors.E_SERVICE_UNAVAILABLE
       )
     }
     const { user } = req
@@ -33,7 +33,7 @@ class _DashboardController {
     if (!IS_CLIENT_AVAILABLE) {
       throw new HttpException(
         HttpStatus.SERVICE_UNAVAILABLE,
-        'Client is corrently unavailabl'
+        Errors.E_SERVICE_UNAVAILABLE
       )
     }
     const { id } = req.params

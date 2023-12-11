@@ -5,24 +5,38 @@ import { cva, RecipeVariantProps } from '../../../../../styled-system/css'
 const toastRecipe = cva({
   base: {
     p: '10px 15px',
-    rounded: '5px',
     alignItems: 'center',
     gap: 10,
-    backdropFilter: 'blur(2px)',
+    backdropFilter: 'blur(5px)',
     animation: '.5s enter',
-  },
+    pos: 'relative',
 
+    _before: {
+      content: '""',
+      pos: 'absolute',
+      width: '5px',
+      height: '100%',
+      right: '0',
+      top: '0',
+    },
+  },
   variants: {
     visual: {
       success: {
-        bgColor: '#04FF0030',
-        color: '#79DA76',
-        border: '1px solid #79DA7610',
+        bg: '#4CAF5070', // Light green background for success
+        color: 'white', // Dark text color for success
+
+        _before: {
+          bg: '#4CAF50', // Same as the background for consistency
+        },
       },
       error: {
-        bgColor: '#FF000030',
-        color: '#DA7676',
-        border: '1px solid #DA767610',
+        bg: '#F4433670', // Light red background for error
+        color: 'white', // Dark text color for error
+
+        _before: {
+          bg: '#F44336', // Same as the background for consistency
+        },
       },
     },
   },
@@ -53,8 +67,8 @@ const PxToast = (props: Props) => {
   const { visual, content, noIcon } = props
   return (
     <Flex className={toastRecipe({ visual })}>
-      {!noIcon && Icons[visual]}
       <span>{content}</span>
+      {!noIcon && Icons[visual]}
     </Flex>
   )
 }

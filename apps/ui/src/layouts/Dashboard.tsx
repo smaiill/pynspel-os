@@ -22,7 +22,7 @@ const DashboardView = (props: PropsWithChildren) => {
       })}
     >
       <DashboardHeader />
-      <FlexColumn className={css({ flexDir: 'column', p: 20, flex: 1 })}>
+      <FlexColumn className={css({ flexDir: 'column', p: 10, flex: 1 })}>
         {children}
       </FlexColumn>
     </FlexColumn>
@@ -66,17 +66,19 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
   return (
     <div
       style={{
+        ...(openable ? { maxHeight: isOpen ? openHeight : '55px' } : {}),
+      }}
+      className={css({
         padding: 15,
-        borderRadius: 10,
-        backgroundColor: '#191919',
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
         // overflow: 'hidden',
         transition: 'max-height 1s',
+        bg: 'news.backgrounds.secondary',
         width: '100%',
-        ...(openable ? { maxHeight: isOpen ? openHeight : '55px' } : {}),
-      }}
+        border: 'news.grey',
+      })}
       ref={cardRef}
       onClick={() => setIsOpen((prevV) => !prevV)}
       {...rest}

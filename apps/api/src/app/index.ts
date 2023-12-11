@@ -89,6 +89,10 @@ app.listen(env.PORT, async () => {
     .then(() => lg.info('[REDIS] Started.'))
     .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
+  setInterval(async () => {
+    console.log(await redis._client.ttl('UserGuilds::504227742678646784'))
+  }, 1000)
+
   if (IS_DEV) {
     lg.info('Generating endpoints.')
     app._router.stack.forEach(handleGenerateRoutes.bind(null, []))

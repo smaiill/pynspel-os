@@ -26,12 +26,14 @@ export const pxToast = (
     case 'error':
       toast.custom(<PxToastError content={content} />, {
         duration: TOAST_DURATION,
+        position: 'top-right',
         ...options,
       })
       break
     case 'success':
       toast.custom(<PxToastSuccess content={content} />, {
         duration: TOAST_DURATION,
+        position: 'top-right',
         ...options,
       })
       break

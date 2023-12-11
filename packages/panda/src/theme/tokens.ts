@@ -21,7 +21,7 @@ export const tokens = defineTokens({
     success: { value: '#3d8b2e' },
     warn: { value: '#e5871a' },
     special: {
-      value: '#5D5FEF',
+      value: '#f7931e',
     },
     specialBg: {
       value: '#5D5FEF30',
@@ -42,7 +42,7 @@ export const tokens = defineTokens({
     },
 
     news: {
-      special: { value: '#5D5FEF' },
+      special: { value: '#f7931e' },
       fonts: {
         label: { value: '#606260' },
         primary: { value: '#CFD0C8' },

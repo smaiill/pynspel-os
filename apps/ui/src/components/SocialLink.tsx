@@ -15,7 +15,6 @@ export const SocialLink = (props: PropsWithChildren<SocialLinkProps>) => {
         className,
         css({
           p: '15px',
-          rounded: '50%',
           border: 'news.grey',
           color: 'news.fonts.primary',
           cursor: 'pointer',

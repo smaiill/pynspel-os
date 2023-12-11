@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { Tag } from '~/ui/Tag'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../styled-system/css'
 import { SkeletonBox } from './Skeletons'
@@ -34,32 +35,55 @@ const SelectedServerInformation = () => {
           </FlexColumn>
         </Flex>
         <Flex style={{ gap: 50, flexWrap: 'wrap' }}>
-          <Typography color="secondary" as="span">
-            Text Chanels:{' '}
-            {
-              currentGuild.channels.filter(
-                (channel) => channel.type === ChannelType.GuildText
-              ).length
-            }
+          <Typography
+            className={css({ display: 'flex', gap: '2px' })}
+            color="secondary"
+            as="span"
+          >
+            Text Chanels:
+            <Tag>
+              {
+                currentGuild.channels.filter(
+                  (channel) => channel.type === ChannelType.GuildText
+                ).length
+              }
+            </Tag>
           </Typography>
-          <Typography color="secondary" as="span">
-            Voice Chanels:{' '}
-            {
-              currentGuild.channels.filter(
-                (channel) => channel.type === ChannelType.GuildVoice
-              ).length
-            }
+          <Typography
+            className={css({ display: 'flex', gap: '2px' })}
+            color="secondary"
+            as="span"
+          >
+            Voice Chanels:
+            <Tag>
+              {
+                currentGuild.channels.filter(
+                  (channel) => channel.type === ChannelType.GuildVoice
+                ).length
+              }
+            </Tag>
           </Typography>
-          <Typography color="secondary" as="span">
-            Categories:{' '}
-            {
-              currentGuild.channels.filter(
-                (channel) => channel.type === ChannelType.GuildCategory
-              ).length
-            }
+          <Typography
+            className={css({ display: 'flex', gap: '2px' })}
+            color="secondary"
+            as="span"
+          >
+            Categories:
+            <Tag>
+              {
+                currentGuild.channels.filter(
+                  (channel) => channel.type === ChannelType.GuildCategory
+                ).length
+              }
+            </Tag>
           </Typography>
-          <Typography color="secondary" as="span">
-            Roles: {currentGuild.roles.length}
+          <Typography
+            className={css({ display: 'flex', gap: '2px' })}
+            color="secondary"
+            as="span"
+          >
+            Roles:
+            <Tag>{currentGuild.roles.length}</Tag>
           </Typography>
         </Flex>
       </FlexColumn>

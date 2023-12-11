@@ -20,6 +20,12 @@ export const fr: Translation<TranslationBase> = {
     send: 'Envoyer',
     update: 'Mettre à jour',
     claim: 'Obtenir',
+    modules: {
+      updated: {
+        fail: "Une erreur s'est produite lors de la mise à jour de votre module.",
+        success: 'Module mis à jour avec succès.',
+      },
+    },
   },
   pages: {
     dashboard: {

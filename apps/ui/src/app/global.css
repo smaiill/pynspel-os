@@ -38,3 +38,8 @@ body {
     rotate: 1deg;
   }
 }
+
+
+.__checkbox_before::before {
+  width: var(--checkbox-before-width)
+}
