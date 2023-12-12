@@ -1,9 +1,7 @@
 'use client'
 import { Modules } from '@pynspel/common'
-import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
-import Aside from '../../components/Aside'
-import { SkeletonBox, SkeletonTitle } from '../../components/Skeletons'
+import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
@@ -24,16 +22,7 @@ const page = ({ params }: Props) => {
   )
 
   if (isGuildLoading || isModuleLoading) {
-    return (
-      <ModuleLayout>
-        <FlexColumn style={{ gap: 10 }}>
-          <SkeletonBox />
-          <SkeletonTitle />
-          <SkeletonBox />
-          <SkeletonTitle />
-        </FlexColumn>
-      </ModuleLayout>
-    )
+    return <LoadingModule />
   }
 
   if (!guildData) {
@@ -45,14 +34,11 @@ const page = ({ params }: Props) => {
   }
 
   return (
-    <DashboardPage>
-      <Aside />
-      <DashboardView>
-        <FlexColumn style={{ gap: 10 }}>
-          <CaptchaForm data={moduleData} />
-        </FlexColumn>
-      </DashboardView>
-    </DashboardPage>
+    <ModuleLayout params={params}>
+      <FlexColumn style={{ gap: 10 }}>
+        <CaptchaForm data={moduleData} />
+      </FlexColumn>
+    </ModuleLayout>
   )
 }
 

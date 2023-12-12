@@ -1,7 +1,8 @@
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useUserService } from '~/hooks/useUserService'
 import { css } from '../../styled-system/css'
+import { Dropdown } from './dropdown/Dropdown'
 
 const styles = css({
   pos: 'relative',
@@ -10,22 +11,22 @@ const styles = css({
     rounded: '50%',
   },
 
-  '& ul': {
-    translate: '-50% -50%',
-    pos: 'absolute',
-    width: '150px',
-    textAlign: 'center',
-    left: '50%',
-    bottom: '-75px',
-    padding: '10px',
-    rounded: '5px',
-    bg: '#1f1f1f',
-    border: '1px solid #2e2f30',
-  },
+  // '& ul': {
+  // translate: '0% -50%',
+  // pos: 'absolute',
+  // width: '150px',
+  // textAlign: 'center',
+  // right: '0%',
+  // bottom: '-75px',
+  // padding: '10px',
+  // rounded: '5px',
+  // bg: '#1f1f1f',
+  // border: '1px solid #2e2f30',
+  // },
 
-  '& .logout': {
-    color: 'red',
-  },
+  // '& .logout': {
+  //   color: 'red',
+  // },
 })
 
 const UserConnectedHeader = () => {
@@ -37,23 +38,6 @@ const UserConnectedHeader = () => {
     setOpen((prevV) => !prevV)
   }
 
-  const handleClose = () => {
-    setOpen(false) // Ferme le menu
-  }
-
-  const handleOutsideClick = (event) => {
-    if (containerRef.current && !containerRef.current.contains(event.target)) {
-      handleClose()
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  }, [])
-
   return (
     <div ref={containerRef} className={styles}>
       <Image
@@ -64,14 +48,18 @@ const UserConnectedHeader = () => {
         alt="profile-image"
         height={45}
         width={45}
+        className={css({ cursor: 'pointer' })}
       />
 
       {open ? (
-        <ul>
-          <li onClick={handleLogout} className="logout">
+        <Dropdown parentRef={containerRef} askClose={() => setOpen(false)}>
+          <Dropdown.Item
+            onClick={handleLogout}
+            className={css({ color: 'red.600 !important' })}
+          >
             Se déconnecter
-          </li>
-        </ul>
+          </Dropdown.Item>
+        </Dropdown>
       ) : null}
     </div>
   )

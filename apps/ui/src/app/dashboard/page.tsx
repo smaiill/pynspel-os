@@ -1,21 +1,16 @@
 'use client'
-import { MainHeader } from '~/components/header/main/MainHeader'
 import { Flex, FlexColumn } from '~/layouts/Flex'
-import { useTranslation } from '~/locales/Provider'
+import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
 import { useUserGuildsSnapshot } from '~/proxys/user'
 import { Input } from '~/ui/input/Input'
 import { css } from '../../../styled-system/css'
 import { ServerCard } from './components/ServerCard'
-import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
 
 const page = () => {
   const userGuildsSnapshot = useUserGuildsSnapshot()
-  const { t } = useTranslation()
 
   return (
     <HeaderAndFooterLayout>
-      {/* <MainHeader /> */}
-
       <FlexColumn
         style={{
           flex: 1,

@@ -39,8 +39,9 @@ const page = ({ params }: Props) => {
     return <h1>Loading module data...</h1>
   }
 
+  console.log({ iiiiiiiiiiiii: params })
   return (
-    <ModuleLayout>
+    <ModuleLayout params={params}>
       <FlexColumn style={{ gap: 10 }}>
         <CommandForm data={moduleData} />
       </FlexColumn>

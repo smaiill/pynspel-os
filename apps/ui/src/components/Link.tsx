@@ -94,7 +94,7 @@ export const CustomLink = (
             pos: 'absolute',
             content: '""',
             width: '0%',
-            height: '3px',
+            height: '2px',
             bg: 'news.special',
             bottom: '-2.5px',
             left: 0,
