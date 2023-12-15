@@ -1,7 +1,7 @@
 'use client'
 import { Modules } from '@pynspel/common'
 import { FlexColumn } from '~/layouts/Flex'
-import { SkeletonBox, SkeletonTitle } from '../../components/Skeletons'
+import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
@@ -21,25 +21,8 @@ const page = ({ params }: Props) => {
     id
   )
 
-  if (isGuildLoading || isModuleLoading) {
-    return (
-      <ModuleLayout>
-        <FlexColumn style={{ gap: 10 }}>
-          <SkeletonBox />
-          <SkeletonTitle />
-          <SkeletonBox />
-          <SkeletonTitle />
-        </FlexColumn>
-      </ModuleLayout>
-    )
-  }
-
-  if (!guildData) {
-    return <h1>Loading guild...</h1>
-  }
-
-  if (!moduleData) {
-    return <h1>Loading module data...</h1>
+  if (isGuildLoading || isModuleLoading || !guildData || !moduleData) {
+    return <LoadingModule />
   }
 
   return (

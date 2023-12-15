@@ -40,15 +40,11 @@ const TicketPanel = ({ panel }: TicketPanelProps) => {
       className={css({
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#1F1F1F',
+        backgroundColor: 'news.backgrounds.tertiary',
         padding: '20px',
-        borderRadius: '5px',
         marginTop: '10px',
         cursor: 'pointer',
         transition: '.3s',
-        _hover: {
-          bg: 'rgb(77, 76, 76)',
-        },
       })}
     >
       <Typography as="span">{panel.name}</Typography>

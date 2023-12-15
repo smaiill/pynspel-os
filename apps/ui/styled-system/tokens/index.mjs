@@ -399,6 +399,50 @@ const tokens = {
     "value": "rgba(255, 255, 255, 0.92)",
     "variable": "var(--colors-white-alpha-900)"
   },
+  "colors.green.50": {
+    "value": "#f0fdf4",
+    "variable": "var(--colors-green-50)"
+  },
+  "colors.green.100": {
+    "value": "#dcfce7",
+    "variable": "var(--colors-green-100)"
+  },
+  "colors.green.200": {
+    "value": "#bbf7d0",
+    "variable": "var(--colors-green-200)"
+  },
+  "colors.green.300": {
+    "value": "#86efac",
+    "variable": "var(--colors-green-300)"
+  },
+  "colors.green.400": {
+    "value": "#4ade80",
+    "variable": "var(--colors-green-400)"
+  },
+  "colors.green.500": {
+    "value": "#22c55e",
+    "variable": "var(--colors-green-500)"
+  },
+  "colors.green.600": {
+    "value": "#16a34a",
+    "variable": "var(--colors-green-600)"
+  },
+  "colors.green.700": {
+    "value": "#15803d",
+    "variable": "var(--colors-green-700)"
+  },
+  "colors.green.800": {
+    "value": "#166534",
+    "variable": "var(--colors-green-800)"
+  },
+  "colors.green.900": {
+    "value": "#14532d",
+    "variable": "var(--colors-green-900)"
+  },
+  "colors.green.950": {
+    "value": "#0a2f1f",
+    "variable": "var(--colors-green-950)"
+  },
   "colors.primary": {
     "value": "#3498db",
     "variable": "var(--colors-primary)"
@@ -475,6 +519,10 @@ const tokens = {
     "value": "#262626",
     "variable": "var(--colors-news-borders-grey)"
   },
+  "colors.news.borders.tertiary": {
+    "value": "#2E2E2E",
+    "variable": "var(--colors-news-borders-tertiary)"
+  },
   "colors.news.backgrounds.primary": {
     "value": "#141414",
     "variable": "var(--colors-news-backgrounds-primary)"
@@ -494,6 +542,10 @@ const tokens = {
   "borders.news.grey": {
     "value": "1px solid #262626",
     "variable": "var(--borders-news-grey)"
+  },
+  "borders.news.tertiary": {
+    "value": "1px solid #2E2E2E",
+    "variable": "var(--borders-news-tertiary)"
   },
   "gradients.decoration": {
     "value": "linear-gradient(39deg, rgba(0,0,0,1) 0%, rgba(62,62,61,1) 100%)",

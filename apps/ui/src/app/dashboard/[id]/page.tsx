@@ -1,11 +1,8 @@
 'use client'
-import { useEffect } from 'react'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
-import { useTranslation } from '~/locales/Provider'
-import { useCurrentGuildState } from '~/proxys/dashboard'
 import Aside from '../components/Aside'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
-import { useFetchGuild } from '../hooks/useFetchGuild'
+import { GuildDataLayout } from '../layouts/GuildDataLayout'
 
 export interface Props {
   params: {
@@ -14,29 +11,15 @@ export interface Props {
 }
 
 const page = ({ params }: Props) => {
-  const { id } = params
-  const { data: guildData, isLoading } = useFetchGuild(id)
-  const [currentGuild, setCurrentGuild] = useCurrentGuildState()
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    setCurrentGuild(guildData)
-  }, [guildData])
-
-  if (isLoading) {
-    return 'Loading....'
-  }
-
-  if (!guildData) {
-    return 'Loading...'
-  }
   return (
-    <DashboardPage>
-      <Aside />
-      <DashboardView>
-        <SelectedServerInformation />
-      </DashboardView>
-    </DashboardPage>
+    <GuildDataLayout params={params}>
+      <DashboardPage>
+        <Aside />
+        <DashboardView>
+          <SelectedServerInformation />
+        </DashboardView>
+      </DashboardPage>
+    </GuildDataLayout>
   )
 }
 

@@ -3,7 +3,7 @@ import { GetGuildPremiumApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
 import { FlexColumn } from '~/layouts/Flex'
 import { fetchApi } from '~/utils/fetchApi'
-import { SkeletonBox } from '../../components/Skeletons'
+import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
 import { AlreadyPremium } from './components/AlreadyPremium'
@@ -27,12 +27,13 @@ const page = ({ params }: Props) => {
       },
     })
 
-  if (isGuildLoading || isGuildPremiumLoading) {
-    return <SkeletonBox />
-  }
-
-  if (!guildData || !guildPremium) {
-    return null
+  if (
+    isGuildLoading ||
+    isGuildPremiumLoading ||
+    !guildData ||
+    !isGuildPremiumLoading
+  ) {
+    return <LoadingModule />
   }
 
   return (

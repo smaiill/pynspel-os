@@ -13,3 +13,5 @@ export type HomeTranslationBase = {
     amount: number
   }
 }
+
+export type HomeTranslationBaseNavigation = HomeTranslationBase['nav']

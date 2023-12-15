@@ -52,6 +52,7 @@ export const tokens = defineTokens({
       },
       borders: {
         grey: { value: '#262626' },
+        tertiary: { value: '#2E2E2E' },
       },
       backgrounds: {
         primary: {
@@ -72,6 +73,7 @@ export const tokens = defineTokens({
     },
     news: {
       grey: { value: '1px solid {colors.news.borders.grey}' },
+      tertiary: { value: '1px solid {colors.news.borders.tertiary}' },
     },
   },
 

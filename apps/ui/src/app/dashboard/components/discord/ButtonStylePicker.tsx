@@ -48,7 +48,6 @@ export const ButtonStylePicker = (props: ButtonStylePickerProps) => {
             width: 30,
             height: 30,
             backgroundColor: color.color,
-            borderRadius: 10,
             cursor: 'pointer',
             transition: '.1s',
             position: 'relative',
@@ -65,7 +64,6 @@ export const ButtonStylePicker = (props: ButtonStylePickerProps) => {
               backgroundColor: 'white',
               width: '15px',
               height: '15px',
-              borderRadius: 5,
               transition: '.2s',
               ...(selected === color.style ? { opacity: 1 } : { opacity: 0 }),
             }}

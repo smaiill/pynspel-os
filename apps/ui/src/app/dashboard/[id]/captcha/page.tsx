@@ -21,20 +21,12 @@ const page = ({ params }: Props) => {
     id
   )
 
-  if (isGuildLoading || isModuleLoading) {
+  if (isGuildLoading || isModuleLoading || !guildData || !moduleData) {
     return <LoadingModule />
   }
 
-  if (!guildData) {
-    return <h1>Loading guild...</h1>
-  }
-
-  if (!moduleData) {
-    return <h1>Loading module data...</h1>
-  }
-
   return (
-    <ModuleLayout params={params}>
+    <ModuleLayout>
       <FlexColumn style={{ gap: 10 }}>
         <CaptchaForm data={moduleData} />
       </FlexColumn>

@@ -3,8 +3,8 @@ import { SCHEMA_UPDATE_INTERACTION } from '@pynspel/common'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
-import { BsEmojiWink } from 'react-icons/bs'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
+import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEmojiPicker'
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
@@ -21,7 +21,7 @@ import {
 } from '../../../../../../../styled-system/css'
 import { CreateInteraction } from './CreateInteraction'
 import {
-  UpdateInteractionPayload,
+  CreateOrUpdateInteractionPayload,
   useInteractionMutations,
 } from './hooks/useInteractionMutations'
 
@@ -174,7 +174,7 @@ const Interaction = (props: any) => {
     })
   }, [parentId])
 
-  const handleUpdateInteraction = (data: UpdateInteractionPayload) => {
+  const handleUpdateInteraction = (data: CreateOrUpdateInteractionPayload) => {
     updateInteraction
       .mutateAsync({ id: interaction.id, payload: data })
       .then(() => {
@@ -195,7 +195,7 @@ const Interaction = (props: any) => {
           />
           <ButtonDanger
             onClick={() => deleteInteraction.mutate(interaction.id)}
-            style={{ borderRadius: '10px', fontSize: '15px' }}
+            style={{ fontSize: '15px' }}
           >
             <AiOutlineDelete />
           </ButtonDanger>
@@ -216,14 +216,9 @@ const Interaction = (props: any) => {
             default={getValues('style')}
             onChange={handleStyleChange}
           />
-          <div
-            onClick={() => setEmojis((prevV) => !prevV)}
-            className={emojiPickerStyle}
-          >
-            <span style={{ fontSize: '25px' }}>
-              {watchedEmoji ?? <BsEmojiWink />}
-            </span>
-          </div>
+          <DiscordEmojiPicker onClick={() => setEmojis((prevV) => !prevV)}>
+            {watchedEmoji}
+          </DiscordEmojiPicker>
 
           {emojis ? <EmojiPicker onEmojiClick={handleEmojiClick} /> : null}
           {isDirty ? (
