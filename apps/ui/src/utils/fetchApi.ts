@@ -4,6 +4,7 @@ export const fetchApi = async <T = unknown>(
   uri: string,
   options?: RequestInit
 ) => {
+  return
   const res = await fetch(`${API_URL}${uri}`, {
     ...options,
     credentials: 'include',

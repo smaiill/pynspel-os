@@ -18,8 +18,10 @@ import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
 
 type Props = {
-  data: InferModuleConfigType<'captcha'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
+
+const MODULE_NAME = 'captcha'
 
 const CaptchaForm = (props: Props) => {
   const { data } = props
@@ -32,7 +34,7 @@ const CaptchaForm = (props: Props) => {
     setValue,
     reset,
     formState: { errors: formErrors, isDirty },
-  } = useForm<InferModuleConfigType<'captcha'>>({
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       has_numbers: data.has_numbers,
       case_sensitive: data.case_sensitive,
@@ -43,7 +45,7 @@ const CaptchaForm = (props: Props) => {
       verification_channel: data.verification_channel,
     },
 
-    resolver: zodResolver(getModuleSchema('captcha')),
+    resolver: zodResolver(getModuleSchema(MODULE_NAME)),
   })
   const { t } = useTranslation()
 
@@ -53,11 +55,11 @@ const CaptchaForm = (props: Props) => {
     getValues('verification_channel')
   )
 
-  const mutation = useMutateModule('captcha')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = async (data: InferModuleConfigType<'captcha'>) => {
-    // Ask for the embed builder the data of the embed.
-
+  const handleSubmitForm = async (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     mutation.mutate(data)
   }
 
@@ -168,7 +170,11 @@ const CaptchaForm = (props: Props) => {
         control={control}
         render={({ field }) => {
           return (
-            <Checkbox {...field}>
+            <Checkbox
+              onChange={field.onChange}
+              checked={field.value}
+              ref={field.ref}
+            >
               {t('modules.captcha.include_numbers')}
             </Checkbox>
           )
@@ -181,7 +187,13 @@ const CaptchaForm = (props: Props) => {
         name="case_sensitive"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>{t('modules.captcha.case_sensitive')}</Checkbox>
+          <Checkbox
+            onChange={field.onChange}
+            checked={field.value}
+            ref={field.ref}
+          >
+            {t('modules.captcha.case_sensitive')}
+          </Checkbox>
         )}
       />
       {formErrors.case_sensitive ? (

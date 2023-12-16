@@ -7,14 +7,16 @@ import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
 
+const MODULE_NAME = 'bot'
+
 type LogginFormProps = {
-  data: InferModuleConfigType<'bot'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 const BotForm = (props: LogginFormProps) => {
   const { data } = props
 
   const { handleSubmit, getValues, setError, register } = useForm<
-    InferModuleConfigType<'bot'>
+    InferModuleConfigType<typeof MODULE_NAME>
   >({
     defaultValues: {
       language: data.language,
@@ -23,18 +25,23 @@ const BotForm = (props: LogginFormProps) => {
     },
   })
   const [status, setStatus] = useState(getValues('status'))
-  const mutation = useMutateModule('bot')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = (data: InferModuleConfigType<'bot'>) => {
+  const handleSubmitForm = (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     const groupedData = { ...data, status }
-    const parsedSchema = validateModuleConfig('bot', groupedData)
+    const parsedSchema = validateModuleConfig(MODULE_NAME, groupedData)
 
     if (!parsedSchema.success) {
       const errors = parsedSchema.error
       for (const err of errors) {
-        setError(err.path[0] as keyof InferModuleConfigType<'bot'>, {
-          message: err.message,
-        })
+        setError(
+          err.path[0] as keyof InferModuleConfigType<typeof MODULE_NAME>,
+          {
+            message: err.message,
+          }
+        )
       }
 
       return

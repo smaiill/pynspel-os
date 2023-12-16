@@ -15,8 +15,10 @@ import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { InputSelect } from '~/ui/input/InputSelect'
 
+const MODULE_NAME = 'logging'
+
 type LogginFormProps = {
-  data: InferModuleConfigType<'logging'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 const LoggingForm = (props: LogginFormProps) => {
   const { data } = props
@@ -28,13 +30,13 @@ const LoggingForm = (props: LogginFormProps) => {
     reset,
     formState: { isDirty, errors },
     getValues,
-  } = useForm<InferModuleConfigType<'logging'>>({
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       user_join: data.user_join,
       user_left: data.user_left,
       channel: data.channel,
     },
-    resolver: zodResolver(getModuleSchema('logging')),
+    resolver: zodResolver(getModuleSchema(MODULE_NAME)),
   })
   const { t } = useTranslation()
   const [verificationChannel, setVerificationChannel] = useState(
@@ -43,9 +45,11 @@ const LoggingForm = (props: LogginFormProps) => {
 
   const currentGuild = useCurrentGuildValue()
 
-  const mutation = useMutateModule('logging')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = (data: InferModuleConfigType<'logging'>) => {
+  const handleSubmitForm = (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     mutation.mutate(data)
   }
 
@@ -87,7 +91,13 @@ const LoggingForm = (props: LogginFormProps) => {
         control={control}
         render={({ field }) => {
           return (
-            <Checkbox {...field}>{t('modules.logging.user_join')}</Checkbox>
+            <Checkbox
+              onChange={field.onChange}
+              checked={field.value}
+              ref={field.ref}
+            >
+              {t('modules.logging.user_join')}
+            </Checkbox>
           )
         }}
       />
@@ -99,7 +109,13 @@ const LoggingForm = (props: LogginFormProps) => {
         name="user_left"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>{t('modules.logging.user_leave')}</Checkbox>
+          <Checkbox
+            onChange={field.onChange}
+            checked={field.value}
+            ref={field.ref}
+          >
+            {t('modules.logging.user_leave')}
+          </Checkbox>
         )}
       />
       {errors.user_left ? (

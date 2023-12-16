@@ -16,15 +16,16 @@ import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
 import { InputSelectType } from '~/ui/input/InputSelectType'
 import { Typography } from '~/ui/typography/Typography'
+const MODULE_NAME = 'scanner'
 
 type LogginFormProps = {
-  data: InferModuleConfigType<'scanner'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 const ScannerForm = (props: LogginFormProps) => {
   const { data } = props
 
   const { handleSubmit, setError, control, getValues, register } = useForm<
-    InferModuleConfigType<'scanner'>
+    InferModuleConfigType<typeof MODULE_NAME>
   >({
     defaultValues: {
       words: data.words,
@@ -54,9 +55,11 @@ const ScannerForm = (props: LogginFormProps) => {
 
   const currentGuild = useCurrentGuildValue()
 
-  const mutation = useMutateModule('scanner')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = (data: InferModuleConfigType<'scanner'>) => {
+  const handleSubmitForm = (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     const completeData = {
       ...data,
       words: {
@@ -75,14 +78,17 @@ const ScannerForm = (props: LogginFormProps) => {
         mute_unit: muteUnitLinks,
       },
     }
-    const parsedSchema = validateModuleConfig('scanner', completeData)
+    const parsedSchema = validateModuleConfig(MODULE_NAME, completeData)
 
     if (!parsedSchema.success) {
       const errors = parsedSchema.error
       for (const err of errors) {
-        setError(err.path[0] as keyof InferModuleConfigType<'scanner'>, {
-          message: err.message,
-        })
+        setError(
+          err.path[0] as keyof InferModuleConfigType<typeof MODULE_NAME>,
+          {
+            message: err.message,
+          }
+        )
       }
 
       return
@@ -119,7 +125,13 @@ const ScannerForm = (props: LogginFormProps) => {
             name="words.scan"
             control={control}
             render={({ field }) => {
-              return <Checkbox {...field} />
+              return (
+                <Checkbox
+                  onChange={field.onChange}
+                  checked={field.value}
+                  ref={field.ref}
+                />
+              )
             }}
           />
         </Flex>
@@ -200,7 +212,13 @@ const ScannerForm = (props: LogginFormProps) => {
             name="links.scan"
             control={control}
             render={({ field }) => {
-              return <Checkbox {...field} />
+              return (
+                <Checkbox
+                  onChange={field.onChange}
+                  checked={field.value}
+                  ref={field.ref}
+                />
+              )
             }}
           />
         </Flex>

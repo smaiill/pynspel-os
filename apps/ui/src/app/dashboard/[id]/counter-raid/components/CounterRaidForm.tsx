@@ -13,8 +13,10 @@ import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
 import { css } from '../../../../../../styled-system/css'
 
+const MODULE_NAME = 'counterRaid'
+
 type LogginFormProps = {
-  data: InferModuleConfigType<'counterRaid'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 
 const CounterRaidForum = (props: LogginFormProps) => {
@@ -29,7 +31,7 @@ const CounterRaidForum = (props: LogginFormProps) => {
     setValue,
     reset,
     watch,
-  } = useForm<InferModuleConfigType<'counterRaid'>>({
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       action: data.action,
       action_reason: data.action_reason,
@@ -39,16 +41,18 @@ const CounterRaidForum = (props: LogginFormProps) => {
       mute_unit: data.mute_unit,
       raid_channel_lockdown: data.raid_channel_lockdown,
     },
-    resolver: zodResolver(getModuleSchema('counterRaid')),
+    resolver: zodResolver(getModuleSchema(MODULE_NAME)),
   })
   const { t } = useTranslation()
   const [action, setAction] = useState(getValues('action'))
   const [muteUnit, setMuteUnit] = useState(getValues('mute_unit'))
   const currentGuild = useCurrentGuildValue()
 
-  const mutation = useMutateModule('counterRaid', 'counter-raid')
+  const mutation = useMutateModule(MODULE_NAME, 'counter-raid')
 
-  const handleSubmitForm = <M extends InferModuleConfigType<'counterRaid'>>(
+  const handleSubmitForm = <
+    M extends InferModuleConfigType<typeof MODULE_NAME>
+  >(
     data: M
   ) => {
     mutation.mutateAsync(data).then(() => {
@@ -129,7 +133,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
           return (
             <Checkbox
               styles={{ label: css({ color: 'red.400 !important' }) }}
-              {...field}
+              onChange={field.onChange}
+              checked={field.value}
+              ref={field.ref}
             >
               {t('modules.counter_raid.lock_channels')}
             </Checkbox>

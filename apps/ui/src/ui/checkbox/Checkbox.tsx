@@ -79,16 +79,26 @@ const wrapperStyle = css({
 const Checkbox = forwardRef(
   (props: PropsWithChildren<Props>, ref: ForwardedRef<HTMLInputElement>) => {
     const { children, value, styles, size = 1, ...rest } = props
-    const sizes = { wrapperWidth: `${ 55 * size}px`, wrapperHeight: `${ 25 * size}px`, beforeSize: `${18 * size}px`  }
+    const sizes = {
+      wrapperWidth: `${55 * size}px`,
+      wrapperHeight: `${25 * size}px`,
+      beforeSize: `${18 * size}px`,
+    }
 
     return (
       <FlexColumn className={checkboxWrapper}>
         <label className={styles?.label} htmlFor="checkbox">
           {children}
         </label>
-        <div style={{ width: sizes.wrapperWidth, height: sizes.wrapperHeight }} className={wrapperStyle}>
+        <div
+          style={{ width: sizes.wrapperWidth, height: sizes.wrapperHeight }}
+          className={wrapperStyle}
+        >
           <input type="checkbox" ref={ref} {...rest} checked={value} />
-          <span style={{ '--checkbox-before-width': sizes.beforeSize }} className='__checkbox_before'  />
+          <span
+            style={{ '--checkbox-before-width': sizes.beforeSize }}
+            className="__checkbox_before"
+          />
         </div>
       </FlexColumn>
     )

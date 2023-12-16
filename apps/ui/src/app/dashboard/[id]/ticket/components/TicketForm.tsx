@@ -8,8 +8,10 @@ import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 
+const MODULE_NAME = 'ticket'
+
 type LogginFormProps = {
-  data: InferModuleConfigType<'ticket'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 
 const TicketForm = (props: LogginFormProps) => {
@@ -19,7 +21,7 @@ const TicketForm = (props: LogginFormProps) => {
     handleSubmit,
     formState: { isDirty, errors },
     register,
-  } = useForm<InferModuleConfigType<'ticket'>>({
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       max_each_user: data.max_each_user,
     },
@@ -27,9 +29,11 @@ const TicketForm = (props: LogginFormProps) => {
   const currentGuild = useCurrentGuildValue()
   const { t } = useTranslation()
 
-  const mutation = useMutateModule('ticket')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = (data: InferModuleConfigType<'ticket'>) => {
+  const handleSubmitForm = (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     mutation.mutate(data)
   }
 

@@ -8,8 +8,10 @@ import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 
+const MODULE_NAME = 'command'
+
 type LogginFormProps = {
-  data: InferModuleConfigType<'command'>
+  data: InferModuleConfigType<typeof MODULE_NAME>
 }
 const CommandForm = (props: LogginFormProps) => {
   const { data } = props
@@ -20,17 +22,19 @@ const CommandForm = (props: LogginFormProps) => {
     formState: { isDirty, errors: formErrors },
     reset,
     getValues,
-  } = useForm<InferModuleConfigType<'command'>>({
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       ban: data.ban,
       kick: data.kick,
     },
-    resolver: zodResolver(getModuleSchema('command')),
+    resolver: zodResolver(getModuleSchema(MODULE_NAME)),
   })
   const { t } = useTranslation()
-  const mutation = useMutateModule('command')
+  const mutation = useMutateModule(MODULE_NAME)
 
-  const handleSubmitForm = (data: InferModuleConfigType<'command'>) => {
+  const handleSubmitForm = (
+    data: InferModuleConfigType<typeof MODULE_NAME>
+  ) => {
     mutation.mutateAsync(data).then(() => reset(getValues()))
   }
 
@@ -40,7 +44,11 @@ const CommandForm = (props: LogginFormProps) => {
         name="ban"
         control={control}
         render={({ field }) => {
-          return <Checkbox {...field}>{t('modules.command.ban')}</Checkbox>
+          return (
+            <Checkbox onChange={field.onChange} checked={field.value}>
+              {t('modules.command.ban')}
+            </Checkbox>
+          )
         }}
       />
       {formErrors.ban ? <FieldError message={formErrors.ban.message} /> : null}
@@ -49,7 +57,13 @@ const CommandForm = (props: LogginFormProps) => {
         name="kick"
         control={control}
         render={({ field }) => (
-          <Checkbox {...field}>{t('modules.command.kick')}</Checkbox>
+          <Checkbox
+            onChange={field.onChange}
+            checked={field.value}
+            ref={field.ref}
+          >
+            {t('modules.command.kick')}
+          </Checkbox>
         )}
       />
       {formErrors?.kick ? (

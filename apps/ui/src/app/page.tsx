@@ -1,5 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 import { useGuildService } from '~/hooks/useGuildService'
 import { Flex } from '~/layouts/Flex'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
@@ -48,6 +49,7 @@ const page = () => {
 
   const { t } = useTranslation()
 
+  const a = useForm()
   return (
     <HeaderAndFooterLayout>
       <main className={cx(main, '__decoration')}>

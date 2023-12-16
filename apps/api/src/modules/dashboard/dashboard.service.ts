@@ -24,6 +24,7 @@ class _DashboardService {
   ): Promise<FetchUserGuilds> {
     const userCachedGuilds = await redis.user.getGuilds(userId)
 
+    console.log({ userCachedGuilds })
     if (!userCachedGuilds) {
       const response = await fetch(DiscordRoutes.USERS_GUILDS, {
         headers: {
@@ -51,6 +52,7 @@ class _DashboardService {
   ): Promise<DiscordGuild[]> {
     const { cache, guilds } = await this.fetchUserGuilds(accessToken, userId)
 
+    console.log({ cache, guilds })
     if (cache) {
       const guildsWithData = [] as DiscordGuild[]
 

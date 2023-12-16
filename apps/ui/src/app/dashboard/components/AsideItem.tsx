@@ -158,7 +158,7 @@ const AsideItem = <Type extends AsideItemTypes>(
       {isModuleAndGlobalDisabled ? (
         <Chip visual="danger">Temporarly disabled</Chip>
       ) : type === 'module' ? (
-        <Checkbox size={0.8} value={isActive} onClick={handleToggleModule} />
+        <Checkbox size={0.8} checked={isActive} onClick={handleToggleModule} />
       ) : null}
     </div>
   )
