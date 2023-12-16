@@ -1,3 +1,4 @@
+import { LocaleSelector } from '~/components/locale/LocaleSelector'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
 import { Flex } from '~/layouts/Flex'
 import { css } from '../../../../styled-system/css'
@@ -15,6 +16,7 @@ const styles = css({
 const DashboardHeader = () => {
   return (
     <Flex className={styles}>
+      <LocaleSelector />
       <UserConnectedHeader />
     </Flex>
   )

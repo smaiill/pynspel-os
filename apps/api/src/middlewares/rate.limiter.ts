@@ -5,7 +5,7 @@ import { HttpException } from 'utils/error'
 import { redis } from 'utils/redis'
 
 const RATE_LIMITER_OPTIONS = {
-  REQUESTS: 30,
+  REQUESTS: 100,
   TIME: 5,
   KEY_PREFIX: '__rateLimiter',
 } as const

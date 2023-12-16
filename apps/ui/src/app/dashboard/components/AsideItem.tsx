@@ -126,7 +126,7 @@ const AsideItem = <Type extends AsideItemTypes>(
     >
       {type === 'module' && isModalOpen ? (
         isActive ? (
-          <Modal visual='danger'>
+          <Modal visual="normal">
             <Modal.Header
               description="Tes paramètres ne seront pas perdus, mais tu ne pourras pas utiliser le module tant que tu ne l'auras pas réactivé."
               title={`Are you sure to disable module ${props.label}`}
@@ -137,8 +137,11 @@ const AsideItem = <Type extends AsideItemTypes>(
             </Modal.Footer>
           </Modal>
         ) : (
-          <Modal>
-            <Modal.Header title={`Activer le module ? ${props.label}`} />
+          <Modal visual="normal">
+            <Modal.Header
+              title={`Activer ${props.label}`}
+              description="En activant le module toute les fonctionnalité seront réactiver"
+            />
             <Modal.Footer>
               <ButtonOutline onClick={handleCancel}>Cancel</ButtonOutline>
               <ButtonPrimary onClick={handleAction}>Activer</ButtonPrimary>

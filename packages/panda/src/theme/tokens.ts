@@ -29,7 +29,7 @@ export const tokens = defineTokens({
     inactive: { value: '#1f1f1f' },
     hover: {
       special: {
-        value: '#4849B9',
+        value: '#CE7B1A',
       },
     },
     fonts: {

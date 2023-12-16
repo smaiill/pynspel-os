@@ -101,11 +101,13 @@ const MainHeader = () => {
                   width: '90%',
                   background: 'var(--colors-news-backgrounds-tertiary)',
                   borderRight: 'var(--borders-news-tertiary)',
+                  zIndex: '99999999999999999',
                 }
               : {
                   transition: '.3s, width .3s .3s, background .3s .3s',
                   width: '0px',
                   height: '100px',
+                  zIndex: -1,
                 }
           }
         >
@@ -131,7 +133,7 @@ const MainHeader = () => {
               })}
             >
               {navigationLinks.map((navLink, idx) => (
-                <CustomLink key={idx} href="/">
+                <CustomLink key={idx} href={navLink.href}>
                   {t(navLink.locale)}
                 </CustomLink>
               ))}

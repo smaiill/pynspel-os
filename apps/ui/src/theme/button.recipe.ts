@@ -7,16 +7,16 @@ export const buttonRecipe = cva({
     pos: 'relative',
     transition: '0.3s',
     fontSize: '13px',
-    _before: {
-      content: '""',
-      pos: 'absolute',
-      bottom: '0',
-      left: '0',
-      width: '100%',
-      bg: 'rgba(0, 0, 0, 0.5)',
-      height: '5px',
-      transition: '.1s',
-    },
+    // _before: {
+    //   content: '""',
+    //   pos: 'absolute',
+    //   bottom: '0',
+    //   left: '0',
+    //   width: '100%',
+    //   bg: 'rgba(0, 0, 0, 0.5)',
+    //   height: '5px',
+    //   transition: '.1s',
+    // },
     _active: {
       _enabled: {
         scale: '0.95',
@@ -37,10 +37,10 @@ export const buttonRecipe = cva({
   variants: {
     visual: {
       outline: {
-        border: '1px solid rgb(77, 76, 76)',
+        border: 'news.tertiary',
 
         _hover: {
-          bg: 'rgb(77, 76, 76)',
+          bg: 'news.borders.tertiary',
         },
       },
 
@@ -56,7 +56,7 @@ export const buttonRecipe = cva({
         bg: '#007bff',
         _hover: {
           _enabled: {
-            bg: '#0046FF',
+            bg: '#0260C6',
           },
         },
       },
@@ -64,7 +64,7 @@ export const buttonRecipe = cva({
         bg: '#dc3545',
         _hover: {
           _enabled: {
-            bg: '#741C24',
+            bg: '#B72633',
           },
         },
       },
@@ -80,7 +80,7 @@ export const buttonRecipe = cva({
         bg: '#B98D0A',
         _hover: {
           _enabled: {
-            bg: '#86670A',
+            bg: '#A98109',
           },
         },
       },

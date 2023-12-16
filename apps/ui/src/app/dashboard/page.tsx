@@ -15,7 +15,7 @@ const page = () => {
         style={{
           flex: 1,
           height: '100vh',
-          padding: 60,
+          padding: 20,
         }}
       >
         <Flex

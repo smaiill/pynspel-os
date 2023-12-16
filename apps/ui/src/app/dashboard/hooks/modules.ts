@@ -79,6 +79,12 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
           return [...updatedData]
         }
       )
+
+      pxToast('success', 'Module updated')
+    },
+
+    onError() {
+      pxToast('error', 'Error while updating module.')
     },
   })
 }

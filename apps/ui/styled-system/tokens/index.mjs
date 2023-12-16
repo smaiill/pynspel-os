@@ -472,7 +472,7 @@ const tokens = {
     "variable": "var(--colors-inactive)"
   },
   "colors.hover.special": {
-    "value": "#4849B9",
+    "value": "#CE7B1A",
     "variable": "var(--colors-hover-special)"
   },
   "colors.fonts.primary": {

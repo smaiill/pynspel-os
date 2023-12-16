@@ -1,4 +1,3 @@
-import { X } from 'lucide-react'
 import { HTMLAttributes, PropsWithChildren } from 'react'
 import { createPortal } from 'react-dom'
 import { Flex, FlexColumn } from '~/layouts/Flex'
@@ -9,16 +8,12 @@ const modalRecipe = cva({
   base: {
     padding: '15px',
     maxW: '500px',
+    border: 'news.grey',
+    bg: 'news.backgrounds.secondary',
   },
   variants: {
     visual: {
-      danger: {
-        border: '1px solid red.200',
-      },
-      normal: {
-        border: '1px solid rgb(77, 76, 76)',
-        bg: '#333131',
-      },
+      normal: {},
     },
   },
 })
@@ -53,7 +48,8 @@ export const Modal = (props: PropsWithChildren<ModalProps>) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        bg: 'rgba(0, 0, 0, .3)',
+        bg: 'rgba(0, 0, 0, .5)',
+        zIndex: '999999999999999999999999',
       })}
     >
       <FlexColumn className={modalRecipe({ visual })}>{children}</FlexColumn>
@@ -65,22 +61,20 @@ export const Modal = (props: PropsWithChildren<ModalProps>) => {
 type HeaderProps = {
   title?: string
   description?: string
-  closable?: boolean
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, description, closable } = props
+  const { title, description } = props
   return (
     <header>
       <FlexColumn>
         {title && <Typography as="h5">{title}</Typography>}
         {description && (
           <Typography className={css({ mt: '5px' })} color="secondary" as="p">
-            {description}{' '}
+            {description}
           </Typography>
         )}
       </FlexColumn>
-      {closable && <X />}
     </header>
   )
 }

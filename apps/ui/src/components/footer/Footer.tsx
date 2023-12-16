@@ -197,7 +197,7 @@ const ExploreOurProduct = () => {
           bg: 'news.backgrounds.secondary',
           pos: 'absolute',
           top: '0',
-          right: '7%',
+          right: '110px',
           zIndex: 99,
         },
 
@@ -208,7 +208,7 @@ const ExploreOurProduct = () => {
           bg: 'news.backgrounds.secondary',
           pos: 'absolute',
           bottom: '0',
-          right: '7%',
+          right: '110px',
           zIndex: 99,
         },
       })}

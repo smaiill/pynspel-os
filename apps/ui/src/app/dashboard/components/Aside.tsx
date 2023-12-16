@@ -1,4 +1,5 @@
-import { Home } from 'lucide-react'
+import { Home, Menu } from 'lucide-react'
+import { useState } from 'react'
 import { Logo } from '~/components/branding/Logo'
 import { asideItemsData } from '~/data/aside.items'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
@@ -14,9 +15,44 @@ const styles = css({
   maxHeight: '100vh',
   padding: '20px',
   borderRight: 'news.grey',
-  display: 'none',
-  lg: {
-    display: 'block',
+  zIndex: 999999,
+  // display: 'none',
+  // lg: {
+  //   display: 'block',
+  // },
+
+  mdDown: {
+    height: '80px',
+    borderBottom: 'news.grey',
+    width: '75px',
+    position: 'fixed',
+
+    '& header svg:nth-child(2)': {
+      display: 'block',
+      mt: '10px',
+    },
+
+    '& header svg:nth-child(1)': {
+      display: 'none',
+    },
+
+    '& nav': {
+      display: 'none',
+    },
+
+    '&.opened': {
+      width: '90%',
+      height: '100vh',
+      transition: '.3s, border-right 0s, height .3s ease-in-out .3s',
+
+      '& nav': {
+        display: 'block',
+      },
+    },
+
+    '&.closed': {
+      transition: '.3s, width .3s .3s, background .3s .3s',
+    },
   },
 
   '&::-webkit-scrollbar': {
@@ -27,6 +63,10 @@ const styles = css({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+
+    '& svg:nth-child(2)': {
+      display: 'none',
+    },
   },
 
   '& nav': {
@@ -37,6 +77,7 @@ const styles = css({
 })
 
 const Aside = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const guild = useCurrentGuildValue()
   const { data: globalModules, isLoading: isGlobalModulesLoading } =
     useGlobalModules()
@@ -67,9 +108,14 @@ const Aside = () => {
   }
 
   return (
-    <aside className={styles}>
+    <aside className={`${styles} ${isOpen ? 'opened' : 'closed'}`}>
       <header>
         <Logo />
+        <Menu
+          onClick={() => setIsOpen((prevV) => !prevV)}
+          color="white"
+          className={css({ cursor: 'pointer' })}
+        />
       </header>
       <nav>
         <AsideItem

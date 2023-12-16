@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { useUserService } from '~/hooks/useUserService'
 import { css } from '../../styled-system/css'
@@ -33,9 +34,16 @@ const UserConnectedHeader = () => {
   const [open, setOpen] = useState(false)
   const { handleLogout } = useUserService()
   const containerRef = useRef(null)
+  const router = useRouter()
 
   const toggleVisibility = () => {
     setOpen((prevV) => !prevV)
+  }
+
+  const logout = async () => {
+    await handleLogout()
+
+    router.push('/')
   }
 
   return (
@@ -54,7 +62,7 @@ const UserConnectedHeader = () => {
       {open ? (
         <Dropdown parentRef={containerRef} askClose={() => setOpen(false)}>
           <Dropdown.Item
-            onClick={handleLogout}
+            onClick={logout}
             className={css({ color: 'red.600 !important' })}
           >
             Se déconnecter
