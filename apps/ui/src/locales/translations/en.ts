@@ -12,6 +12,9 @@ export const en: Translation<TranslationBase> = {
       title: '1 year subscription',
       value: 'Annualy',
     },
+    finish_end_date:
+      'Your subscription expires on {{ date }}, and you can renew it by clicking the button down.',
+    active: 'Active',
   },
   actions: {
     add: 'Add',

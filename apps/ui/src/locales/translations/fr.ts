@@ -12,6 +12,9 @@ export const fr: Translation<TranslationBase> = {
       title: 'Abonnement de 1 an',
       value: 'Annuel',
     },
+    finish_end_date:
+      'Votre abonnement prend fin le {{ date }}, vous pouvez le reprendre en cliquant sur le bouton ci dessus.',
+    active: 'Actif',
   },
   actions: {
     add: 'Ajouter',

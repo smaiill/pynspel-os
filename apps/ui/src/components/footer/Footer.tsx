@@ -16,6 +16,47 @@ const SocialLinks = [
   },
 ]
 
+const footerItems: {
+  title: string
+  items: { href: string; label: string }[]
+}[] = [
+  {
+    title: 'Pynspel',
+    items: [
+      {
+        label: 'Home',
+        href: '/',
+      },
+      {
+        label: 'Dashboard',
+        href: '/dashboard',
+      },
+    ],
+  },
+  {
+    title: 'Legals',
+    items: [
+      {
+        label: 'Privacy',
+        href: '/privacy',
+      },
+      {
+        label: 'Terms',
+        href: '/terms',
+      },
+    ],
+  },
+  {
+    title: 'Autres',
+    items: [
+      {
+        label: 'top.gg',
+        href: '/',
+      },
+    ],
+  },
+]
+
 const Footer = () => {
   return (
     <footer
@@ -37,17 +78,8 @@ const Footer = () => {
           rowGap: '20px',
         })}
       >
-        {[1, 1, 1, 1].map((value, idx) => (
-          <FooterSection
-            key={idx}
-            title="Product"
-            items={[
-              { href: '#', label: 'Gallery' },
-              { href: '#', label: 'School' },
-              { href: '#', label: 'Contact' },
-              { href: '#', label: 'Home' },
-            ]}
-          />
+        {footerItems.map((value, idx) => (
+          <FooterSection key={idx} title={value.title} items={value.items} />
         ))}
       </Flex>
 

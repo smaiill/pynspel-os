@@ -1,9 +1,9 @@
 import { CreatePortalApi } from '@pynspel/types'
 import { useStripe } from '@stripe/react-stripe-js'
-import Image from 'next/image'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
+import { Tag } from '~/ui/Tag'
 import { Typography } from '~/ui/typography/Typography'
 import { fetchApi } from '~/utils/fetchApi'
 import { css } from '../../../../../../styled-system/css'
@@ -41,11 +41,11 @@ export const AlreadyPremium = ({
 
   return (
     <FlexColumn className={css({ alignItems: 'center', gap: '5px' })}>
-      <Image src="/icons/crown.svg" width={100} height={100} alt="crown" />
-      <Typography as="h3">Vous avez dèja le premium</Typography>
       <Typography as="h3">
         Status:{' '}
-        {guildPremium.subscription ? guildPremium.status : 'No subscription'}
+        <Tag className={css({ display: 'inline', color: 'green.500' })}>
+          {t('subscription.active')}
+        </Tag>
       </Typography>
       <ButtonPrimary
         onClick={handleCreatePanel}

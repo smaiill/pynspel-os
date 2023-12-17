@@ -14,7 +14,7 @@ import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { css, cx } from '../../../styled-system/css'
 
-type Option = PropertyKey | null
+type Option = PropertyKey | null | PropertyKey[]
 type InputSelectTypes = 'role' | 'channel' | 'default'
 
 export interface InputSelectProps<Value, Multi, Type>
@@ -22,14 +22,14 @@ export interface InputSelectProps<Value, Multi, Type>
   options: Type extends 'role' ? ItemRole[] : Item[]
   value: Value
   multi?: Multi
-  setValue: Multi extends never | false
-    ? Dispatch<SetStateAction<Value>>
-    : Dispatch<SetStateAction<string[]>>
+  setValue: Multi extends true
+    ? Dispatch<SetStateAction<string[]>>
+    : Dispatch<SetStateAction<Value>>
 
   onChange?: (
-    value: Multi extends never | false
-      ? Dispatch<SetStateAction<Value>>
-      : Dispatch<SetStateAction<string[]>>
+    value: Multi extends true
+      ? Dispatch<SetStateAction<string[]>>
+      : Dispatch<SetStateAction<Value>>
   ) => void
   type?: Type
   className?: string
@@ -161,7 +161,6 @@ const InputSelect = <
     setValue,
     multi,
     type = 'default',
-    onChange,
     className,
   } = props
   const ulRef = useRef<HTMLUListElement>(null)
@@ -177,7 +176,10 @@ const InputSelect = <
     setIsOpen(false)
 
     if (!multi) {
-      return setValue(item.value)
+      return setValue(
+        item.value as unknown as SetStateAction<string[]> &
+          SetStateAction<Value>
+      )
     }
 
     setValue((prevV) => {

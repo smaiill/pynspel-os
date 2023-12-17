@@ -1,4 +1,5 @@
 'use client'
+import { useMemo, useState } from 'react'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
 import { useUserGuildsSnapshot } from '~/proxys/user'
@@ -8,6 +9,17 @@ import { ServerCard } from './components/ServerCard'
 
 const page = () => {
   const userGuildsSnapshot = useUserGuildsSnapshot()
+  const [filter, setFilter] = useState('')
+
+  const filteredGuilds = useMemo(() => {
+    if (filter.trim() === '') {
+      return userGuildsSnapshot.guilds
+    }
+
+    return userGuildsSnapshot.guilds.filter((guild) =>
+      guild.name.toLowerCase().includes(filter.trim().toLowerCase())
+    )
+  }, [filter, userGuildsSnapshot.guilds])
 
   return (
     <HeaderAndFooterLayout>
@@ -28,6 +40,7 @@ const page = () => {
           <Input
             placeholder="Filter guilds..."
             classNameWrapper={css({ maxW: '400px' })}
+            onChange={(e) => setFilter(e.target.value.trim())}
           />
         </Flex>
 
@@ -38,7 +51,7 @@ const page = () => {
             flexWrap: 'wrap',
           }}
         >
-          {userGuildsSnapshot.guilds.map((_guild) => (
+          {filteredGuilds.map((_guild) => (
             <ServerCard key={_guild.id} {..._guild} />
           ))}
         </Flex>

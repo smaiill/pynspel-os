@@ -167,9 +167,9 @@ const ScannerForm = (props: LogginFormProps) => {
           {t('modules.common.action_to_take')}
         </InputSelect>
         <InputSelect
+          value={ignoredChannels}
           multi
           options={formatedChannels}
-          value={ignoredChannels}
           setValue={setIgnoredChannels}
           type="channel"
         >

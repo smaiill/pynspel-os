@@ -66,6 +66,7 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
     )
 
     if (shouldUpdateGuild) {
+      // TODO: Disable the recurring payment for the guild, and cancel it at period.
       await this._db.updateGuild({
         guild_id: newGuild.id,
         avatar: newGuild.icon,

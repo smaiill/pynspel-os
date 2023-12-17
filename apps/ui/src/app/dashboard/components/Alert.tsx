@@ -1,6 +1,6 @@
-import { PropsWithChildren } from 'react'
+import { HTMLAttributes, PropsWithChildren } from 'react'
 import { Flex } from '~/layouts/Flex'
-import { cva, RecipeVariantProps } from '../../../../styled-system/css'
+import { cva, cx, RecipeVariantProps } from '../../../../styled-system/css'
 
 const alertRecipe = cva({
   base: {
@@ -8,10 +8,10 @@ const alertRecipe = cva({
     py: '10px',
     bgColor: 'white',
     width: '100%',
-    rounded: '10px',
     gap: 10,
+    textAlign: 'start',
     alignItems: 'center',
-
+    color: 'white',
     '& svg': {
       minW: '50px',
     },
@@ -20,14 +20,19 @@ const alertRecipe = cva({
   variants: {
     visual: {
       danger: {
-        bgColor: 'rgba(255, 0, 0, .1)',
-        color: 'rgb(244, 199, 199)',
-        border: '1px solid rgba(244, 199, 199, .2)',
+        bg: 'rgba(255, 0, 0, .06)',
+        border: '1px solid rgba(255, 0, 0, .1)',
+        color: 'red.200',
       },
       info: {
-        bgColor: '#678BD850',
-        color: '#98A8CC',
-        border: '1px solid #98A8CC20',
+        bg: 'rgba(26, 206, 186, .06)',
+        border: '1px solid rgba(26, 206, 186, .1)',
+        color: 'blue.200',
+      },
+      warn: {
+        bg: 'rgba(206, 152, 26, .06)',
+        border: '1px solid rgba(206, 152, 26, .1)',
+        color: 'orange.200',
       },
     },
   },
@@ -46,18 +51,22 @@ type VisualKeys = Exclude<
 
 type Props = {
   visual: VisualKeys
-}
+} & HTMLAttributes<HTMLDivElement>
 
 export const Alert = (props: PropsWithChildren<Props>) => {
-  const { visual, children } = props
+  const { visual, children, className, ...rest } = props
 
   return (
     <Flex
-      className={alertRecipe({
-        visual,
-      })}
+      {...rest}
+      className={cx(
+        alertRecipe({
+          visual,
+        }),
+        className
+      )}
     >
-      <span>{children}</span>
+      {children}
     </Flex>
   )
 }

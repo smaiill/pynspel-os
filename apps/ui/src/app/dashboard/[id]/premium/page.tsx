@@ -7,6 +7,7 @@ import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
 import { AlreadyPremium } from './components/AlreadyPremium'
+import { CancelAtPeriodEnd } from './components/CancelAtPeriodEnd'
 import { PremiumChoices } from './components/PremiumChoices'
 
 type Props = {
@@ -27,12 +28,7 @@ const page = ({ params }: Props) => {
       },
     })
 
-  if (
-    isGuildLoading ||
-    isGuildPremiumLoading ||
-    !guildData ||
-    !isGuildPremiumLoading
-  ) {
+  if (isGuildLoading || isGuildPremiumLoading || !guildData || !guildPremium) {
     return <LoadingModule />
   }
 
@@ -46,11 +42,16 @@ const page = ({ params }: Props) => {
           textAlign: 'center',
         }}
       >
-        {guildPremium.subscription ? (
-          <AlreadyPremium
-            guildPremium={guildPremium}
-            guildId={guildData.guild_id}
-          />
+        {guildPremium.subscription && guildPremium.status === 'active' ? (
+          <>
+            {guildPremium.cancel_at_period_end && (
+              <CancelAtPeriodEnd endDate={new Date(guildPremium.end_date)} />
+            )}
+            <AlreadyPremium
+              guildPremium={guildPremium}
+              guildId={guildData.guild_id}
+            />
+          </>
         ) : (
           <PremiumChoices />
         )}

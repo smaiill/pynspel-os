@@ -5,6 +5,7 @@ import 'express-async-errors'
 import session from 'express-session'
 import { writeFile } from 'fs'
 import helmet from 'helmet'
+import { db } from 'modules/db'
 import morgan from 'morgan'
 import path from 'path'
 import { IS_DEV } from '../constants'
@@ -89,10 +90,16 @@ app.listen(env.PORT, async () => {
     .then(() => lg.info('[REDIS] Started.'))
     .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-  setInterval(async () => {
-    console.log(await redis._client.ttl('UserGuilds::504227742678646784'))
-  }, 1000)
-
+  await db.exec('SELECT NOW()')
+  // await db.exec('DELETE FROM guilds_subscriptions')
+  // await db.exec('UPDATE guilds SET plan = $1', ['free'])
+  // const stripeMailing = new MailingService()
+  // await stripeMailing.sendMail({
+  //   from: MAILS_FROM.ME,
+  //   to: MAILS_FROM.ME,
+  //   subject: 'Payment failure',
+  //   text: generatePaymentFailureTemplate(),
+  // })
   if (IS_DEV) {
     lg.info('Generating endpoints.')
     app._router.stack.forEach(handleGenerateRoutes.bind(null, []))

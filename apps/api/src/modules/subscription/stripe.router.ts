@@ -2,6 +2,9 @@ import { Errors, HttpStatus, SavedGuild } from '@pynspel/types'
 import { Request, Response, Router } from 'express'
 import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
+import { MailingService } from 'modules/mailing/mailing.service'
+import { MAILS_FROM } from 'modules/mailing/mailing.transporter'
+import { generatePaymentFailureTemplate } from 'modules/mailing/templates/payment.failure.t'
 import { Stripe } from 'stripe'
 import { env } from 'utils/env'
 import {
@@ -9,12 +12,15 @@ import {
   HttpException,
   HttpZodValidationError,
 } from 'utils/error'
+import { lg } from 'utils/logger'
 import { z } from 'zod'
 import { customerService } from './customer.service'
 import { stripeInstance } from './stripe'
 
 const subscriptionRoutes = Router()
 const GUILD_ID_SCHEMA = z.string().trim()
+
+const stripeMailing = new MailingService()
 
 const createSubscriptionSchema = z.object({
   priceId: z.union([
@@ -94,14 +100,10 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
   )
 
   switch (parsedWebhook.type) {
-    case StripeWebhooks.InvoicePaid:
-      {
-        // TODO: Send an email to the user.
-      }
-      break
-
     case StripeWebhooks.InvoicePaymentFailed:
       {
+        console.log('InvoicePaymentFailed')
+
         const sessionData = parsedWebhook.data.object as Stripe.Invoice
 
         if (!sessionData.subscription) {
@@ -113,7 +115,7 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
             ? sessionData.subscription
             : sessionData.subscription.id
 
-        const [subscriptionDb] = await db.exec(
+        const [subscriptionDb] = await db.exec<{ guild_id: string }>(
           'SELECT guild_id FROM guilds_subscriptions WHERE subscription_id = $1',
           [subscriptionID]
         )
@@ -122,11 +124,29 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
           return
         }
 
-        // TODO: Send an email to the user.
+        const [userDb] = await db.exec<{ email: string }>(
+          'SELECT email FROM users WHERE discord_id = (SELECT owner FROM guilds WHERE guild_id = $1)',
+          [subscriptionDb.guild_id]
+        )
+
+        if (!userDb) {
+          lg.error(
+            `User not found to send reccuring payment failure guildId ${subscriptionDb.guild_id}`
+          )
+        }
+
+        await stripeMailing.sendMail({
+          from: MAILS_FROM.ME,
+          to: userDb.email,
+          subject: 'Payment failure',
+          text: generatePaymentFailureTemplate(),
+        })
       }
       break
     case StripeWebhooks.CheckoutSessionCompleted:
       {
+        console.log('CheckoutSessionCompleted')
+
         const sessionData = parsedWebhook.data
           .object as StripeCheckoutSessionCompleted
 
@@ -171,6 +191,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
 
     case StripeWebhooks.SubscriptionDeleted:
       {
+        console.log('SubscriptionDeleted')
+
         const subscriptionData = parsedWebhook.data
           .object as Stripe.Subscription
 
@@ -199,6 +221,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
 
     case StripeWebhooks.SubscriptionUpdated:
       {
+        console.log('SubscriptionUpdated')
+
         const subscriptionData = parsedWebhook.data
           .object as Stripe.Subscription
 

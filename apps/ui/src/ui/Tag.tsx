@@ -9,7 +9,7 @@ export const Tag = (
     <div
       className={cx(
         css({
-          p: '0 6px',
+          p: '2px 8px',
           border: 'news.grey',
           bg: 'news.backgrounds.tertiary',
         }),

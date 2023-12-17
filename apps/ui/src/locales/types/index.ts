@@ -23,5 +23,9 @@ export type TranslationBase = {
       title: {}
       value: {}
     }
+    finish_end_date: {
+      date: string
+    }
+    active: {}
   }
 }

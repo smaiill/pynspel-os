@@ -39,7 +39,6 @@ body {
   }
 }
 
-
 .__checkbox_before::before {
-  width: var(--checkbox-before-width)
+  width: var(--checkbox-before-width);
 }

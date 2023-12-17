@@ -1,14 +1,20 @@
 # All
+
 - Docker.
 
 # API
-- Review Stripe
+
+- Send mails.
+- View twitter favs and make sure that everything is correct
+- Refresh token when expire.
 
 # Front
-- Redesign.
+
 - Error Handling.
-- Pages.
+- Terms
+- Privacy
 
 # Bot
+
 - Setup Shards.
 - Check All.

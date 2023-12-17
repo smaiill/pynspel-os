@@ -78,7 +78,7 @@ const wrapperStyle = css({
 
 const Checkbox = forwardRef(
   (props: PropsWithChildren<Props>, ref: ForwardedRef<HTMLInputElement>) => {
-    const { children, value, styles, size = 1, ...rest } = props
+    const { children, styles, size = 1, ...rest } = props
     const sizes = {
       wrapperWidth: `${55 * size}px`,
       wrapperHeight: `${25 * size}px`,
@@ -94,7 +94,7 @@ const Checkbox = forwardRef(
           style={{ width: sizes.wrapperWidth, height: sizes.wrapperHeight }}
           className={wrapperStyle}
         >
-          <input type="checkbox" ref={ref} {...rest} checked={value} />
+          <input type="checkbox" ref={ref} {...rest} />
           <span
             style={{ '--checkbox-before-width': sizes.beforeSize }}
             className="__checkbox_before"
