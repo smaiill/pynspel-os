@@ -9,6 +9,7 @@ type InputSelectTypeProps = {
   onChange(words: string[]): void
   empty?: string
   placeholder?: string
+  error?: string
 }
 
 const wordStyle = css({
@@ -39,7 +40,7 @@ const wordStyle = css({
 })
 
 const InputSelectType = (props: PropsWithChildren<InputSelectTypeProps>) => {
-  const { words, onChange, children, empty, placeholder } = props
+  const { words, onChange, children, empty, placeholder, error } = props
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') {
@@ -82,7 +83,11 @@ const InputSelectType = (props: PropsWithChildren<InputSelectTypeProps>) => {
           {children}
         </label>
       )}
-      <Input onKeyDown={handleKeyDown} placeholder={placeholder} />
+      <Input
+        error={error}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+      />
       <Flex style={{ gap: 5, flexWrap: 'wrap' }}>
         {words.length > 0 ? (
           words.map((word) => (

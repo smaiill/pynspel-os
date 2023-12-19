@@ -6,10 +6,7 @@ import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import {
-  useCurrentGuildChannels,
-  useCurrentGuildValue,
-} from '~/proxys/dashboard'
+import { useCurrentGuildChannels } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
@@ -24,9 +21,14 @@ type LogginFormProps = {
 const ScannerForm = (props: LogginFormProps) => {
   const { data } = props
 
-  const { handleSubmit, setError, control, getValues, register } = useForm<
-    InferModuleConfigType<typeof MODULE_NAME>
-  >({
+  const {
+    handleSubmit,
+    setError,
+    control,
+    getValues,
+    register,
+    formState: { errors },
+  } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
     defaultValues: {
       words: data.words,
       links: data.links,
@@ -53,8 +55,6 @@ const ScannerForm = (props: LogginFormProps) => {
     getValues('links.mute_unit')
   )
 
-  const currentGuild = useCurrentGuildValue()
-
   const mutation = useMutateModule(MODULE_NAME)
 
   const handleSubmitForm = (
@@ -72,10 +72,10 @@ const ScannerForm = (props: LogginFormProps) => {
       },
       links: {
         ...data.links,
-        action: actionLinks,
         allowed_domains: allowedDomains,
         ignored_channels: ignoredChannelsLinks,
         mute_unit: muteUnitLinks,
+        action: actionLinks,
       },
     }
     const parsedSchema = validateModuleConfig(MODULE_NAME, completeData)
@@ -97,10 +97,6 @@ const ScannerForm = (props: LogginFormProps) => {
     mutation.mutate(parsedSchema.data)
   }
 
-  if (!currentGuild) {
-    return 'Invalid guild.'
-  }
-
   const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
     (channel) => {
       return { label: channel.name, value: channel.id }
@@ -109,6 +105,7 @@ const ScannerForm = (props: LogginFormProps) => {
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
+      <span>{JSON.stringify(errors)}</span>
       <DashboardCard
         style={{
           display: 'flex',
@@ -138,7 +135,8 @@ const ScannerForm = (props: LogginFormProps) => {
         <InputSelectType
           words={bannedWords}
           onChange={(words) => setBannedWords(words)}
-          placeholder="Chien..."
+          placeholder="Words..."
+          error={errors.words?.banned?.message}
         >
           {t('modules.scanner.words.to_ban', {
             exact: false,
@@ -148,7 +146,8 @@ const ScannerForm = (props: LogginFormProps) => {
         <InputSelectType
           words={bannedExactWords}
           onChange={(words) => setBannedExactWords(words)}
-          placeholder="Mots a bannir..."
+          placeholder="Words..."
+          error={errors.words?.banned_exact?.message}
         >
           {t('modules.scanner.words.to_ban', {
             exact: true,
@@ -163,17 +162,9 @@ const ScannerForm = (props: LogginFormProps) => {
           ]}
           value={action}
           setValue={setAction}
+          error={errors.words?.action?.message}
         >
           {t('modules.common.action_to_take')}
-        </InputSelect>
-        <InputSelect
-          value={ignoredChannels}
-          multi
-          options={formatedChannels}
-          setValue={setIgnoredChannels}
-          type="channel"
-        >
-          {t('modules.common.channels_ignore')}
         </InputSelect>
         {action === 'mute' ? (
           <>
@@ -184,6 +175,7 @@ const ScannerForm = (props: LogginFormProps) => {
               ]}
               value={muteUnit}
               setValue={setMuteUnit}
+              error={errors?.words?.mute_unit?.message}
             >
               {t('modules.common.mute_unit')}
             </InputSelect>
@@ -192,9 +184,20 @@ const ScannerForm = (props: LogginFormProps) => {
                 setValueAs: (value) => parseInt(value),
               })}
               label={t('modules.common.mute_time')}
+              error={errors.words?.mute_timeout?.message}
             />
           </>
         ) : null}
+        <InputSelect
+          value={ignoredChannels}
+          multi
+          options={formatedChannels}
+          setValue={setIgnoredChannels}
+          type="channel"
+          error={errors.words?.ignored_channels?.message}
+        >
+          {t('modules.common.channels_ignore')}
+        </InputSelect>
       </DashboardCard>
       <DashboardCard
         style={{
@@ -226,6 +229,7 @@ const ScannerForm = (props: LogginFormProps) => {
           words={allowedDomains}
           onChange={(domains) => setAllowedDomains(domains)}
           placeholder="pynspel.com"
+          error={errors?.links?.allowed_domains?.message}
         >
           {t('modules.scanner.links.authorized_domains')}
         </InputSelectType>
@@ -238,16 +242,9 @@ const ScannerForm = (props: LogginFormProps) => {
           ]}
           value={actionLinks}
           setValue={setActionLinks}
+          error={errors?.links?.action?.message}
         >
           {t('modules.common.action_to_take')}
-        </InputSelect>
-        <InputSelect
-          multi
-          options={formatedChannels}
-          value={ignoredChannelsLinks}
-          setValue={setIgnoredChannelsLinks}
-        >
-          {t('modules.common.channels_ignore')}
         </InputSelect>
         {actionLinks === 'mute' ? (
           <>
@@ -258,6 +255,7 @@ const ScannerForm = (props: LogginFormProps) => {
               ]}
               value={muteUnitLinks}
               setValue={setMuteUnitLinks}
+              error={errors?.links?.mute_unit?.message}
             >
               {t('modules.common.mute_unit')}
             </InputSelect>
@@ -266,9 +264,19 @@ const ScannerForm = (props: LogginFormProps) => {
                 setValueAs: (value) => parseInt(value),
               })}
               label={t('modules.common.mute_time')}
+              error={errors.links?.mute_timeout?.message}
             />
           </>
         ) : null}
+        <InputSelect
+          multi
+          options={formatedChannels}
+          value={ignoredChannelsLinks}
+          setValue={setIgnoredChannelsLinks}
+          error={errors?.links?.ignored_channels?.message}
+        >
+          {t('modules.common.channels_ignore')}
+        </InputSelect>
       </DashboardCard>
       <ButtonPrimary
         onClick={handleSubmit(handleSubmitForm)}

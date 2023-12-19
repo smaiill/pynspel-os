@@ -4,6 +4,7 @@ import { proxy, useSnapshot } from 'valtio'
 export const userProxy = proxy<{
   isAuthenticated: boolean
   user: SavedUser | null
+  id?: string
 }>({
   isAuthenticated: false,
   user: null,

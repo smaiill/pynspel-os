@@ -18,7 +18,14 @@ import {
 } from './hooks/useInteractionMutations'
 
 export const CreateInteraction = () => {
-  const { register, setValue, getValues, watch, handleSubmit } = useForm({
+  const {
+    register,
+    setValue,
+    getValues,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: null,
       style: 1,
@@ -58,6 +65,7 @@ export const CreateInteraction = () => {
       <Input
         {...register('name')}
         label={t('modules.ticket.panel.interactions.button_label')}
+        error={errors.name?.message}
       />
       <InputSelect
         value={parentId}

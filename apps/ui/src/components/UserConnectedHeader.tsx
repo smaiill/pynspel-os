@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { useUserService } from '~/hooks/useUserService'
+import { useUserSnapshot } from '~/proxys/user'
 import { css } from '../../styled-system/css'
 import { Dropdown } from './dropdown/Dropdown'
 
@@ -35,8 +36,12 @@ const UserConnectedHeader = () => {
   const { handleLogout } = useUserService()
   const containerRef = useRef(null)
   const router = useRouter()
+  const userSnap = useUserSnapshot()
 
   const toggleVisibility = () => {
+    console.log(userSnap.user)
+    console.log(userSnap.id)
+
     setOpen((prevV) => !prevV)
   }
 

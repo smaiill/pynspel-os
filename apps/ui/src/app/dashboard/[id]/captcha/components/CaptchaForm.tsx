@@ -110,22 +110,17 @@ const CaptchaForm = (props: Props) => {
         label={t('modules.captcha.length', {
           choices: '(4, 6, 8)',
         })}
-        error={!!formErrors.length}
+        error={formErrors.length?.message}
       />
-      {formErrors.length ? (
-        <FieldError message={formErrors.length.message} />
-      ) : null}
 
       <Input
         {...register('max_retries', {
           setValueAs: (value) => parseInt(value),
         })}
         label={t('modules.captcha.max_tries')}
-        error={!!formErrors.max_retries}
+        error={formErrors.max_retries?.message}
       />
-      {formErrors.max_retries ? (
-        <FieldError message={formErrors.max_retries.message} />
-      ) : null}
+
       <InputSelect
         options={formatedRoles}
         value={verificationRole}

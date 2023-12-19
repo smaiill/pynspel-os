@@ -16,7 +16,7 @@ export const fetchApi = async <T = unknown>(
   const _json = await res.json()
 
   if (!res.ok) {
-    throw new Error(_json.error)
+    throw new Error(_json.code)
   }
 
   return _json as T

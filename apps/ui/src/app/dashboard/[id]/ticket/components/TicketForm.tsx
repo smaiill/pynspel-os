@@ -1,6 +1,5 @@
 import { InferModuleConfigType, TICKET_MAX_PER_USER } from '@pynspel/common'
 import { useForm } from 'react-hook-form'
-import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
@@ -50,11 +49,8 @@ const TicketForm = (props: LogginFormProps) => {
         label={t('modules.ticket.max_tickets', {
           amount: TICKET_MAX_PER_USER,
         })}
-        error={!!errors.max_each_user}
+        error={errors.max_each_user?.message}
       />
-      {errors.max_each_user ? (
-        <FieldError message={errors.max_each_user.message} />
-      ) : null}
 
       {isDirty ? (
         <ButtonPrimary

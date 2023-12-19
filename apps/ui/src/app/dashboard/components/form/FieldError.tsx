@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react'
 import { css } from '../../../../../styled-system/css'
 
 type Props = {
@@ -9,12 +10,16 @@ const errorCss = css({
   marginTop: '5px',
 })
 
-const FieldError = (props: Props) => {
-  const { message } = props
+const FieldError = (props: PropsWithChildren<Props>) => {
+  const { message, children } = props
 
   return (
     <div className={errorCss}>
-      {message ? message : "Une erreur s'est produite ici"}
+      {message
+        ? message
+        : children
+        ? children
+        : "Une erreur s'est produite a ce niveau"}
     </div>
   )
 }

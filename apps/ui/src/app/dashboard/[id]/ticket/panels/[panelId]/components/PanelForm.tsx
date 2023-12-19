@@ -23,7 +23,12 @@ export const PanelForm = (props: Props) => {
   const { data } = props
   const currentGuild = useCurrentGuildValue()
 
-  const { register, handleSubmit, getValues } = useForm({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: data.name,
       message: data.message,
@@ -69,10 +74,12 @@ export const PanelForm = (props: Props) => {
       <Input
         {...register('name')}
         label={t('modules.ticket.create_panel_name')}
+        error={errors.name?.message}
       />
       <Input
         {...register('message')}
         label={t('modules.ticket.panel.message')}
+        error={errors.message?.message}
       />
       <InputSelect
         options={formatedChannels}

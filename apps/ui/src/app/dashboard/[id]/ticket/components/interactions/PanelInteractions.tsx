@@ -133,7 +133,7 @@ const Interaction = (props: any) => {
     watch,
     handleSubmit,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
       emoji: interaction.emoji,

@@ -1,58 +1,53 @@
+import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
+import { useCurrentGuildValue } from '~/proxys/dashboard'
+import { ButtonPremium } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
+import { usePremiumMutations } from '../hooks/usePremiumMutations'
+import { PremiumTable } from './PremiumTable'
 
 export const PremiumChoices = () => {
+  const { t } = useTranslation()
+  const currentGuild = useCurrentGuildValue()
+  const { createCheckoutSession } = usePremiumMutations()
+
+  const handleClick = async (priceId: string, guildId: string) => {
+    try {
+      const res = await createCheckoutSession.mutateAsync({ priceId, guildId })
+      window.open(res.session, '_self')
+    } catch (error) {
+      pxToast('error', "Une erreur s'est produite durant le process, retry.")
+    }
+  }
+
+  if (!currentGuild?.guild_id) {
+    return null
+  }
+
   return (
-    <FlexColumn>
+    <FlexColumn className={css({ w: '95%', overflowX: 'auto' })}>
       <Typography className={css({ mt: '20px' })} as="h3">
         Emmenez Pynspel dans une nouvelle aventure
       </Typography>
 
-      <Typography as="span" color="secondary" className={css({ mt: '10px' })}>
+      <Typography
+        as="span"
+        color="secondary"
+        className={css({ mt: '10px', mb: '20px' })}
+      >
         Imaginez votre serveur Discord actuel, juste 10 fois clair et plus
         facile pour les membres d'interagir, de socialiser et de jouer.
       </Typography>
 
-      <h1 className={css({ color: 'white', fontSize: '30px' })}>
-        Reproduce this{' '}
-        <a href="https://app.favikon.com/pricing/">
-          https://app.favikon.com/pricing/
-        </a>
-      </h1>
-      <table
-        className={css({
-          borderCollapse: 'collapse',
+      <PremiumTable />
 
-          '& td': {
-            border: '1px solid #dddddd',
-            padding: '8px',
-          },
-          '& th': {
-            border: '1px solid #dddddd',
-            padding: '8px',
-            bg: '#f2f2f2',
-          },
-
-          '& tr': {
-            _hover: {
-              bg: '#f5f5f5',
-            },
-          },
-        })}
+      <ButtonPremium
+        className={css({ alignSelf: 'right', width: 'fit-content', mt: '8px' })}
       >
-        <thead>
-          <tr>
-            <th colSpan={2}>The table header</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>The table body</td>
-            <td>with two columns</td>
-          </tr>
-        </tbody>
-      </table>
+        Acheter
+      </ButtonPremium>
     </FlexColumn>
   )
 }

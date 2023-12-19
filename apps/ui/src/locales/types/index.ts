@@ -28,4 +28,7 @@ export type TranslationBase = {
     }
     active: {}
   }
+  common: {
+    empty: {}
+  }
 }

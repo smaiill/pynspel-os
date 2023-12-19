@@ -13,7 +13,7 @@ const CreatePanel = () => {
   const {
     register,
     handleSubmit,
-    formState: { isDirty },
+    formState: { isDirty, errors },
     reset,
   } = useForm({
     defaultValues: {
@@ -34,6 +34,7 @@ const CreatePanel = () => {
       <Input
         {...register('name')}
         label={t('modules.ticket.create_panel_name')}
+        error={errors.name?.message}
       />
 
       <ButtonPrimary

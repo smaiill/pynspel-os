@@ -10,58 +10,53 @@ import {
   useState,
 } from 'react'
 import { BsChevronDown, BsPlus } from 'react-icons/bs'
-import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
-import { useTranslation } from '~/locales/Provider'
 import { css, cx } from '../../../styled-system/css'
 
-type Option = PropertyKey | null | PropertyKey[]
-type InputSelectTypes = 'role' | 'channel' | 'default'
+type CustomPropertyKey = string | number
 
-export interface InputSelectProps<Value, Multi, Type>
-  extends PropsWithChildren {
-  options: Type extends 'role' ? ItemRole[] : Item[]
-  value: Value
-  multi?: Multi
-  setValue: Multi extends true
-    ? Dispatch<SetStateAction<string[]>>
-    : Dispatch<SetStateAction<Value>>
+type PossibleCases =
+  | {
+      multi: false
+      setValue: Dispatch<SetStateAction<CustomPropertyKey | null>>
+      value: CustomPropertyKey | null
+    }
+  | {
+      multi: true
+      setValue: Dispatch<SetStateAction<CustomPropertyKey[] | null>>
+      value: CustomPropertyKey[] | null
+    }
 
-  onChange?: (
-    value: Multi extends true
-      ? Dispatch<SetStateAction<string[]>>
-      : Dispatch<SetStateAction<Value>>
-  ) => void
-  type?: Type
-  className?: string
-  error?: string
-}
+type PossibleOptions =
+  | { type: 'role'; options: ItemRole[] }
+  | { type: 'default'; options: Item[] }
+  | { type: 'channel'; options: Item[] }
 
 type Item = {
-  value: PropertyKey
-  label: PropertyKey
+  value: CustomPropertyKey
+  label: CustomPropertyKey
 }
 
 type ItemRole = {
   value: string
   label: string
-  color: string
+  color: number
 }
 
 const styles = css({
+  gap: '5px',
   width: '100%',
   position: 'relative',
   userSelect: 'none',
 
   '& label': {
-    color: 'news.fonts.label',
+    color: 'grey',
     fontSize: '13px',
     marginLeft: '5px',
   },
 
   '& .wrapper': {
-    mt: '5px',
     pos: 'relative',
   },
 })
@@ -150,12 +145,10 @@ const multiWordStyle = css({
   },
 })
 
-const InputSelect = <
-  Value extends Option,
-  Multi extends boolean,
-  Type extends InputSelectTypes = 'default'
->(
-  props: InputSelectProps<Value, Multi, Type>
+const InputSelect = (
+  props: PropsWithChildren<
+    PossibleCases & PossibleOptions & { className?: string }
+  >
 ) => {
   const {
     children,
@@ -165,11 +158,9 @@ const InputSelect = <
     multi,
     type = 'default',
     className,
-    error,
   } = props
   const ulRef = useRef<HTMLUListElement>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const { t } = useTranslation()
 
   const handleClick = () => {
     setIsOpen((prevV) => !prevV)
@@ -181,10 +172,7 @@ const InputSelect = <
     setIsOpen(false)
 
     if (!multi) {
-      return setValue(
-        item.value as unknown as SetStateAction<string[]> &
-          SetStateAction<Value>
-      )
+      return setValue(item.value)
     }
 
     setValue((prevV) => {
@@ -200,26 +188,29 @@ const InputSelect = <
     })
   }
 
-  const getItemLabelByValue = (value: string) => {
+  const getItemLabelByValue = (value: PropertyKey | null) => {
     const item = options.find((el) => el.value === value)
     return item ? item.label : null
   }
 
   const handleRemoveItem = (
     e: MouseEvent<HTMLButtonElement>,
-    value: string
+    value: CustomPropertyKey
   ) => {
     if (!multi) return
 
     e.stopPropagation()
 
     setValue((prevValues) => {
+      if (!prevValues) {
+        return []
+      }
       return prevValues.filter((prevV) => prevV !== value)
     })
   }
 
-  const isSelected = (itemValue: string) =>
-    Boolean(multi ? value?.includes(itemValue) : itemValue === value)
+  const isSelected = (itemValue: CustomPropertyKey) =>
+    multi ? value?.includes(itemValue) : itemValue === value
 
   useEffect(() => {
     if (!multi) {
@@ -233,7 +224,7 @@ const InputSelect = <
 
   return (
     <FlexColumn className={styles}>
-      <label className={css({ color: 'news.fonts.label' })}>{children}</label>
+      <label>{children}</label>
       <div onClick={handleClick} className="wrapper">
         <div
           style={isOpen ? { border: '1px solid rgb(77, 76, 76)' } : {}}
@@ -250,15 +241,15 @@ const InputSelect = <
                 }}
               >
                 <Hashtag />
-                {getItemLabelByValue(value as string)}
+                {getItemLabelByValue(value)}
               </Flex>
             ) : (
-              getItemLabelByValue(value as string)
+              getItemLabelByValue(value)
             )
           ) : Array.isArray(value) ? (
             value.length > 0 ? (
               value.map((value) => (
-                <Flex className={multiWordStyle} style={{ gap: 5 }}>
+                <Flex key={value} className={multiWordStyle} style={{ gap: 5 }}>
                   <button onClick={(e) => handleRemoveItem(e, value)}>
                     <BsPlus />
                   </button>
@@ -266,7 +257,7 @@ const InputSelect = <
                 </Flex>
               ))
             ) : (
-              `${t('common.empty')}...`
+              'Vide...'
             )
           ) : null}
         </div>
@@ -282,7 +273,7 @@ const InputSelect = <
 
       {isOpen ? (
         <ul ref={ulRef} className={ulStyles}>
-          {options.map((item, idx) => {
+          {options.map((item) => {
             const _selected = isSelected(item.value)
 
             const classx = clsx(_selected && 'selected')
@@ -296,9 +287,11 @@ const InputSelect = <
                   ...(type === 'role'
                     ? {
                         color:
-                          item.color === 0
+                          (item as unknown as ItemRole).color === 0
                             ? 'grey'
-                            : `#${item.color.toString(16)}`,
+                            : `#${(item as unknown as ItemRole).color.toString(
+                                16
+                              )}`,
                       }
                     : {}),
                 }}
@@ -322,8 +315,6 @@ const InputSelect = <
           })}
         </ul>
       ) : null}
-
-      {error && <FieldError>Salut les amis</FieldError>}
     </FlexColumn>
   )
 }

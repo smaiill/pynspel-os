@@ -112,4 +112,7 @@ export const en: Translation<TranslationBase> = {
       },
     },
   },
+  common: {
+    empty: 'Empty',
+  },
 }

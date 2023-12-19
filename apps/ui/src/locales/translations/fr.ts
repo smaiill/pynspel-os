@@ -114,4 +114,7 @@ export const fr: Translation<TranslationBase> = {
       },
     },
   },
+  common: {
+    empty: 'Vide',
+  },
 }

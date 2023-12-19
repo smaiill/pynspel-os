@@ -2,11 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { getModuleSchema, InferModuleConfigType } from '@pynspel/common'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { Input } from '~/ui/input/Input'
@@ -46,7 +44,6 @@ const CounterRaidForum = (props: LogginFormProps) => {
   const { t } = useTranslation()
   const [action, setAction] = useState(getValues('action'))
   const [muteUnit, setMuteUnit] = useState(getValues('mute_unit'))
-  const currentGuild = useCurrentGuildValue()
 
   const mutation = useMutateModule(MODULE_NAME, 'counter-raid')
 
@@ -72,10 +69,6 @@ const CounterRaidForum = (props: LogginFormProps) => {
     })
   }, [muteUnit])
 
-  if (!currentGuild) {
-    return 'Invalid guild.'
-  }
-
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
       <Input
@@ -85,11 +78,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
         label={t('modules.counter_raid.threshold', {
           time: watch('interval'),
         })}
-        error={!!errors.member_threshold}
+        error={errors.interval?.message}
+        type="number"
       />
-      {errors.member_threshold?.message ? (
-        <FieldError message={errors.member_threshold.message} />
-      ) : null}
       <Input
         {...register('interval', {
           setValueAs: (value) => parseInt(value),
@@ -97,11 +88,9 @@ const CounterRaidForum = (props: LogginFormProps) => {
         label={t('modules.counter_raid.interval_to_activate', {
           members: watch('member_threshold'),
         })}
-        error={!!errors.member_threshold}
+        error={errors.member_threshold?.message}
+        type="number"
       />
-      {errors.interval?.message ? (
-        <FieldError message={errors.interval.message} />
-      ) : null}
       <InputSelect
         options={[
           { label: 'Aucune', value: 'none' },
@@ -111,19 +100,38 @@ const CounterRaidForum = (props: LogginFormProps) => {
         ]}
         value={action}
         setValue={setAction}
+        error={errors.action?.message}
       >
         {t('modules.common.action_to_take')}
       </InputSelect>
-      {errors.action?.message ? (
-        <FieldError message={errors.action.message} />
-      ) : null}
+
       <Input
-        error={!!errors.action_reason}
         {...register('action_reason')}
         label={t('modules.counter_raid.action_raison')}
+        error={errors.action_reason?.message}
       />
-      {errors.action_reason?.message ? (
-        <FieldError message={errors.action_reason.message} />
+
+      {action === 'mute' ? (
+        <>
+          <InputSelect
+            options={[
+              { label: 'Minutes', value: 'minute' },
+              { label: 'Jours', value: 'day' },
+            ]}
+            value={muteUnit}
+            setValue={setMuteUnit}
+            error={errors.mute_unit?.message}
+          >
+            {t('modules.common.mute_unit')}
+          </InputSelect>
+          <Input
+            {...register('mute_timeout', {
+              setValueAs: (value) => parseInt(value),
+            })}
+            label={t('modules.common.mute_time')}
+            error={errors.mute_timeout?.message}
+          />
+        </>
       ) : null}
 
       <Controller
@@ -142,31 +150,6 @@ const CounterRaidForum = (props: LogginFormProps) => {
           )
         }}
       />
-
-      {action === 'mute' ? (
-        <>
-          <InputSelect
-            options={[
-              { label: 'Minutes', value: 'minute' },
-              { label: 'Jours', value: 'day' },
-            ]}
-            value={muteUnit}
-            setValue={setMuteUnit}
-          >
-            {t('modules.common.mute_unit')}
-          </InputSelect>
-          <Input
-            {...register('mute_timeout', {
-              setValueAs: (value) => parseInt(value),
-            })}
-            label={t('modules.common.mute_time')}
-            error={!!errors.mute_timeout}
-          />
-          {errors.mute_timeout?.message ? (
-            <FieldError message={errors.mute_timeout.message} />
-          ) : null}
-        </>
-      ) : null}
 
       {isDirty ? (
         <ButtonPrimary

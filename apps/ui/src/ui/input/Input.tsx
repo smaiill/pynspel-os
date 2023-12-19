@@ -1,4 +1,5 @@
 import { ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { css, cx } from '../../../styled-system/css'
 
 const wrapper = css({
@@ -8,7 +9,7 @@ const wrapper = css({
   width: '100%',
 
   '& label': {
-    color: 'grey',
+    color: 'news.fonts.label',
     fontSize: '13px',
     marginLeft: '5px',
   },
@@ -22,7 +23,7 @@ const body = css({
   justifyContent: 'space-between',
   transition: '0.3s',
   backgroundColor: 'news.backgrounds.tertiary',
-  border: 'news.grey',
+  border: 'news.tertiary',
 
   '&:has(input:focus)': {
     transition: '0',
@@ -42,6 +43,14 @@ const body = css({
     border: 'none',
     flex: '1',
 
+    '&::placeholder': {
+      color: 'news.fonts.label',
+    },
+
+    '&[type=number]::-webkit-inner-spin-button': {
+      WebkitAppearance: 'none',
+    },
+
     '&:focus': {
       outline: 'none',
     },
@@ -54,7 +63,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onIconClick?: () => void
   _prefix?: ReactNode
   _suffix?: ReactNode
-  error?: boolean
+  error?: string
   classNameWrapper?: string
 }
 
@@ -71,19 +80,27 @@ const Input = forwardRef(
     } = props
 
     return (
-      <div className={cx(wrapper, classNameWrapper)}>
-        {label && <label htmlFor="input">{label}</label>}
-        <div style={error ? { border: '1px solid red' } : {}} className={body}>
-          <input
-            className={className}
-            spellCheck="false"
-            ref={ref}
-            placeholder={label}
-            {...rest}
-          />
+      <div
+        className={css({ display: 'flex', flexDir: 'column', width: '100%' })}
+      >
+        <div className={cx(wrapper, classNameWrapper)}>
+          {label && <label htmlFor="input">{label}</label>}
+          <div
+            style={error ? { border: '1px solid red' } : {}}
+            className={body}
+          >
+            <input
+              className={cx(className)}
+              spellCheck="false"
+              ref={ref}
+              placeholder={label}
+              {...rest}
+            />
 
-          {icon && <div onClick={onIconClick}>{icon}</div>}
+            {icon && <div onClick={onIconClick}>{icon}</div>}
+          </div>
         </div>
+        {error ? <FieldError message={error} /> : null}
       </div>
     )
   }
