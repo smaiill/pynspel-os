@@ -74,6 +74,8 @@ export const tokens = defineTokens({
     news: {
       grey: { value: '1px solid {colors.news.borders.grey}' },
       tertiary: { value: '1px solid {colors.news.borders.tertiary}' },
+      greyDashed: { value: '1px dashed {colors.news.borders.grey}' },
+      tertiaryDashed: { value: '1px dashed {colors.news.borders.tertiary}' },
     },
   },
 

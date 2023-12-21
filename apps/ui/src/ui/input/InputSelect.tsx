@@ -1,7 +1,8 @@
 import clsx from 'clsx'
-import { Check } from 'lucide-react'
+import { Check, Plus, X } from 'lucide-react'
 import {
   Dispatch,
+  HTMLAttributes,
   MouseEvent,
   PropsWithChildren,
   SetStateAction,
@@ -15,6 +16,7 @@ import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { css, cx } from '../../../styled-system/css'
+import { Label } from '../Label'
 
 type Option = PropertyKey | null | PropertyKey[]
 type InputSelectTypes = 'role' | 'channel' | 'default'
@@ -36,6 +38,8 @@ export interface InputSelectProps<Value, Multi, Type>
   type?: Type
   className?: string
   error?: string
+  clearable?: boolean
+  required?: boolean
 }
 
 type Item = {
@@ -54,15 +58,9 @@ const styles = css({
   position: 'relative',
   userSelect: 'none',
 
-  '& label': {
-    color: 'news.fonts.label',
-    fontSize: '13px',
-    marginLeft: '5px',
-  },
-
   '& .wrapper': {
-    mt: '5px',
     pos: 'relative',
+    w: '100%',
   },
 })
 
@@ -87,6 +85,7 @@ const pickerStyles = css({
   flexWrap: 'wrap',
   cursor: 'pointer',
   minW: '75px',
+  border: 'news.tertiary',
 })
 
 const ulStyles = css({
@@ -95,7 +94,6 @@ const ulStyles = css({
   color: 'white',
   transition: '0.3s',
   position: 'absolute',
-  top: '80px',
   zIndex: 999999999999999,
   width: '100%',
   border: '1px solid rgb(77, 76, 76)',
@@ -150,6 +148,32 @@ const multiWordStyle = css({
   },
 })
 
+const AddPlaceholder = ({
+  className,
+  ...rest
+}: HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      className={cx(
+        css({
+          color: 'black',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '30px',
+          width: '30px',
+          border: 'news.tertiary',
+          bg: 'rgba(255, 255, 255, .02)',
+        }),
+        className
+      )}
+      {...rest}
+    >
+      <Plus className={css({ color: 'white' })} size={15} />
+    </div>
+  )
+}
+
 const InputSelect = <
   Value extends Option,
   Multi extends boolean,
@@ -166,6 +190,8 @@ const InputSelect = <
     type = 'default',
     className,
     error,
+    clearable,
+    required,
   } = props
   const ulRef = useRef<HTMLUListElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -233,55 +259,91 @@ const InputSelect = <
 
   return (
     <FlexColumn className={styles}>
-      <label className={css({ color: 'news.fonts.label' })}>{children}</label>
-      <div onClick={handleClick} className="wrapper">
-        <div
-          style={isOpen ? { border: '1px solid rgb(77, 76, 76)' } : {}}
-          className={cx(pickerStyles, className)}
-        >
-          {value === null ? (
-            'Select...'
-          ) : !multi ? (
-            type === 'channel' ? (
-              <Flex
-                style={{
-                  alignItems: 'center',
-                  gap: 5,
-                }}
-              >
-                <Hashtag />
-                {getItemLabelByValue(value as string)}
-              </Flex>
-            ) : (
-              getItemLabelByValue(value as string)
-            )
-          ) : Array.isArray(value) ? (
-            value.length > 0 ? (
-              value.map((value) => (
-                <Flex className={multiWordStyle} style={{ gap: 5 }}>
-                  <button onClick={(e) => handleRemoveItem(e, value)}>
-                    <BsPlus />
-                  </button>
-                  <span key={value}>{getItemLabelByValue(value)}</span>
+      <Label required={required} className={css({ color: 'news.fonts.label' })}>
+        {children}
+      </Label>
+      <Flex className={css({ w: '100%', gap: '5px', mt: '3px' })}>
+        <div onClick={handleClick} className="wrapper">
+          <div
+            style={isOpen ? { border: '1px solid rgb(77, 76, 76)' } : {}}
+            className={cx(pickerStyles, className)}
+          >
+            {value === null ? (
+              <Label className={css({ fontSize: 'medium !important' })}>
+                {t('common.empty')}
+              </Label>
+            ) : !multi ? (
+              type === 'channel' ? (
+                <Flex
+                  style={{
+                    alignItems: 'center',
+                    gap: 5,
+                  }}
+                >
+                  <Hashtag />
+                  {getItemLabelByValue(value as string)}
                 </Flex>
-              ))
-            ) : (
-              `${t('common.empty')}...`
-            )
-          ) : null}
+              ) : (
+                getItemLabelByValue(value as string)
+              )
+            ) : Array.isArray(value) ? (
+              value.length > 0 ? (
+                value.map((_value, idx) => (
+                  <>
+                    <Flex className={multiWordStyle} style={{ gap: 5 }}>
+                      <button onClick={(e) => handleRemoveItem(e, _value)}>
+                        <BsPlus />
+                      </button>
+                      <span key={_value}>{getItemLabelByValue(_value)}</span>
+                    </Flex>
+                    {idx + 1 === value.length ? <AddPlaceholder /> : null}
+                  </>
+                ))
+              ) : (
+                <AddPlaceholder />
+              )
+            ) : null}
+          </div>
+          <BsChevronDown
+            className={svgDropDownStyle}
+            style={
+              isOpen
+                ? { transform: 'rotate(180deg)', color: 'grey' }
+                : { color: 'grey' }
+            }
+          />
         </div>
-        <BsChevronDown
-          className={svgDropDownStyle}
-          style={
-            isOpen
-              ? { transform: 'rotate(180deg)', color: 'grey' }
-              : { color: 'grey' }
-          }
-        />
-      </div>
+        {value !== null && value?.length !== 0 && clearable ? (
+          <div
+            className={css({
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              p: '10px 15px',
+              border: '1px solid red',
+              bg: 'rgba(255, 0, 0, .1)',
+              cursor: 'pointer',
+              transition: '.3s',
+
+              _hover: {
+                bg: 'rgba(255, 0, 0, .3)',
+              },
+            })}
+          >
+            <X
+              onClick={() => (multi ? setValue([]) : setValue(null))}
+              className={css({ color: 'red.500' })}
+            />
+          </div>
+        ) : null}
+      </Flex>
 
       {isOpen ? (
-        <ul ref={ulRef} className={ulStyles}>
+        <ul
+          ref={ulRef}
+          className={ulStyles}
+          style={children ? { top: '80px' } : { top: '60px' }}
+        >
           {options.map((item, idx) => {
             const _selected = isSelected(item.value)
 

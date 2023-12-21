@@ -197,7 +197,7 @@ type PropertyValueTypes  = {
 	stroke: Tokens["colors"];
 	srOnly: boolean;
 	debug: boolean;
-	colorPalette: "gray" | "neutral" | "red" | "orange" | "yellow" | "blue" | "blackAlpha" | "whiteAlpha" | "green" | "hover" | "fonts" | "news" | "news.fonts" | "news.borders" | "news.backgrounds";
+	colorPalette: "gray" | "neutral" | "red" | "orange" | "yellow" | "blue" | "blackAlpha" | "whiteAlpha" | "green" | "_primary" | "_secondary" | "_tertiary" | "hover" | "fonts" | "news" | "news.fonts" | "news.borders" | "news.backgrounds";
 }
 
 

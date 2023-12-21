@@ -29,6 +29,9 @@ export const fr: Translation<TranslationBase> = {
         success: 'Module mis à jour avec succès.',
       },
     },
+    confirm: 'Confirmer',
+    cancel: 'Annuler',
+    select_channel: 'Selectionne un channel',
   },
   pages: {
     dashboard: {
@@ -109,12 +112,16 @@ export const fr: Translation<TranslationBase> = {
           title: 'Interactions',
           category: 'La catégorie dans laquel ouvrir le ticket',
         },
-        message:
-          'Message qui sera envoyé avec le panneau (laisser vide si aucun message)',
+        message: 'Message qui sera envoyé avec le panneau',
+        send_to_channel: 'Envoyer dans le channel',
       },
+      sure_to_delete: 'Vous etes sure de vouloir supprimer ?',
     },
   },
   common: {
     empty: 'Vide',
+  },
+  errors: {
+    E_V_NAME_OR_EMOJI: 'Vous devez au moins avoir un nom ou un emoji',
   },
 }

@@ -1,9 +1,11 @@
+import { DiscordGuild } from '@pynspel/types'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
+import { getGuildIcon } from '~/utils/discord'
 import { css } from '../../../../styled-system/css'
 
 const styles = css({
@@ -27,7 +29,7 @@ const styles = css({
   },
 })
 
-const ServerCard = (props: any) => {
+const ServerCard = (props: DiscordGuild) => {
   const router = useRouter()
   const { t } = useTranslation()
 
@@ -36,7 +38,7 @@ const ServerCard = (props: any) => {
   }
 
   const serverIcon = props.icon
-    ? `https://cdn.discordapp.com/icons/${props.id}/${props.icon}.png`
+    ? getGuildIcon(props.id, props.icon)
     : '/icons/discord.svg'
 
   return (

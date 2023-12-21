@@ -1,8 +1,8 @@
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { useUserService } from '~/hooks/useUserService'
-import { useUserSnapshot } from '~/proxys/user'
+import { useUserValue } from '~/proxys/user'
+import { getDefaultAvatar, getUserAvatar } from '~/utils/discord'
 import { css } from '../../styled-system/css'
 import { Dropdown } from './dropdown/Dropdown'
 
@@ -36,12 +36,9 @@ const UserConnectedHeader = () => {
   const { handleLogout } = useUserService()
   const containerRef = useRef(null)
   const router = useRouter()
-  const userSnap = useUserSnapshot()
+  const user = useUserValue()
 
   const toggleVisibility = () => {
-    console.log(userSnap.user)
-    console.log(userSnap.id)
-
     setOpen((prevV) => !prevV)
   }
 
@@ -53,17 +50,14 @@ const UserConnectedHeader = () => {
 
   return (
     <div ref={containerRef} className={styles}>
-      <Image
+      <img
         onClick={toggleVisibility}
-        src={
-          'https://cdn.discordapp.com/avatars/504227742678646784/dd5bf03cf11d79ecbe51088cfde42940.png?size=1024'
-        }
+        src={user ? getUserAvatar(user.id, user.avatar) : getDefaultAvatar(1)}
         alt="profile-image"
         height={45}
         width={45}
         className={css({ cursor: 'pointer' })}
       />
-
       {open ? (
         <Dropdown parentRef={containerRef} askClose={() => setOpen(false)}>
           <Dropdown.Item

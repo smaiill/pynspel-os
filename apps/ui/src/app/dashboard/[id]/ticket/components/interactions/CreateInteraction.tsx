@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SCHEMA_CREATE_INTERACTION } from '@pynspel/common'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
 import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEmojiPicker'
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildCategorys } from '~/proxys/dashboard'
@@ -46,6 +47,9 @@ export const CreateInteraction = () => {
   const [emojis, setEmojis] = useState(false)
   const watchedEmoji = watch('emoji')
 
+  useEffect(() => {
+    setValue('parent_id', parentId)
+  }, [parentId])
   const handleCreateInteraction = (data: CreateOrUpdateInteractionPayload) => {
     createInteraction.mutate(data)
   }
@@ -84,11 +88,14 @@ export const CreateInteraction = () => {
       {emojis ? (
         <EmojiPicker onEmojiClick={(e) => setValue('emoji', e.emoji)} />
       ) : null}
+      {errors?.atLeastOne ? (
+        <FieldError>{t('errors.E_V_NAME_OR_EMOJI')}</FieldError>
+      ) : null}
       <ButtonSpecial
         disabled={createInteraction.isLoading}
         onClick={handleSubmit(handleCreateInteraction)}
       >
-        Crée
+        {t('actions.add')}
       </ButtonSpecial>
     </DashboardCard>
   )

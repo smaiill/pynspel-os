@@ -6,6 +6,7 @@ import {
 } from 'react'
 import { FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../styled-system/css'
+import { Label } from '../Label'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   styles?: {
@@ -17,10 +18,6 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 const checkboxWrapper = css({
   alignItems: 'flex-start',
   gap: 5,
-  '& label': {
-    color: 'grey',
-    fontSize: '13px',
-  },
 })
 
 const wrapperStyle = css({
@@ -78,7 +75,7 @@ const wrapperStyle = css({
 
 const Checkbox = forwardRef(
   (props: PropsWithChildren<Props>, ref: ForwardedRef<HTMLInputElement>) => {
-    const { children, styles, size = 1, ...rest } = props
+    const { children, styles, size = 1, required, ...rest } = props
     const sizes = {
       wrapperWidth: `${55 * size}px`,
       wrapperHeight: `${25 * size}px`,
@@ -87,9 +84,9 @@ const Checkbox = forwardRef(
 
     return (
       <FlexColumn className={checkboxWrapper}>
-        <label className={styles?.label} htmlFor="checkbox">
+        <Label required={required} className={styles?.label}>
           {children}
-        </label>
+        </Label>
         <div
           style={{ width: sizes.wrapperWidth, height: sizes.wrapperHeight }}
           className={wrapperStyle}

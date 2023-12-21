@@ -1,18 +1,20 @@
 import { DiscordGuild, SavedUser } from '@pynspel/types'
-import { proxy, useSnapshot } from 'valtio'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-export const userProxy = proxy<{
-  isAuthenticated: boolean
-  user: SavedUser | null
-  id?: string
-}>({
-  isAuthenticated: false,
-  user: null,
+const userGuildsAtom = atom<DiscordGuild[]>({
+  key: 'USER_GUILDS',
+  default: [],
 })
 
-export const userGuildsProxy = proxy<{ guilds: DiscordGuild[] }>({
-  guilds: [],
+export const useUserGuildsValue = () => useRecoilValue(userGuildsAtom)
+export const useSetUserGuildsValue = () => useSetRecoilState(userGuildsAtom)
+export const useUserGuildsState = () => useRecoilState(userGuildsAtom)
+
+const userAtom = atom<SavedUser | null>({
+  key: 'USER',
+  default: null,
 })
 
-export const useUserSnapshot = () => useSnapshot(userProxy)
-export const useUserGuildsSnapshot = () => useSnapshot(userGuildsProxy)
+export const useUserValue = () => useRecoilValue(userAtom)
+export const useSetUserState = () => useSetRecoilState(userAtom)
+export const useUserState = () => useRecoilState(userAtom)

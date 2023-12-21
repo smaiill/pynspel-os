@@ -1,14 +1,9 @@
 'use client'
-import { SavedUser } from '@pynspel/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { RecoilRoot } from 'recoil'
-import { useGuildService } from '~/hooks/useGuildService'
-import { userGuildsProxy, userProxy } from '~/proxys/user'
-import { fetchApi } from '~/utils/fetchApi'
 import { AppProvider } from './AppProvider'
 import './fonts.css'
 import './global.css'
@@ -33,23 +28,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { getMutualGuilds } = useGuildService()
-
-  useEffect(() => {
-    const handleFetchUser = async () => {
-      const res = await fetchApi<SavedUser>(`/api/users/me`)
-
-      userProxy.isAuthenticated = true
-      userProxy.user = res
-
-      const mutualGuilds = await getMutualGuilds()
-
-      userGuildsProxy.guilds = mutualGuilds
-    }
-
-    handleFetchUser()
-  }, [])
-
   return (
     <html lang="fr">
       <body>

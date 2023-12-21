@@ -1,11 +1,4 @@
-import { ChevronDown } from 'lucide-react'
-import {
-  HTMLAttributes,
-  PropsWithChildren,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { HTMLAttributes, PropsWithChildren, useRef } from 'react'
 import DashboardHeader from '~/app/dashboard/components/DashboardHeader'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../styled-system/css'
@@ -47,27 +40,15 @@ const DashboardPage = (props: PropsWithChildren<DashboardPageProps>) => {
 }
 
 type DashboardCardProps = {
-  openable?: boolean
   title?: string
 } & HTMLAttributes<HTMLDivElement>
 
 const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
-  const { children, style, openable = false, title, ...rest } = props
-  const [isOpen, setIsOpen] = useState(false)
-  const [openHeight, setOpenHeight] = useState('55px')
+  const { children, style, title, ...rest } = props
   const cardRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (cardRef.current) {
-      setOpenHeight(`${cardRef.current.scrollHeight}px`)
-    }
-  }, [cardRef])
 
   return (
     <div
-      style={{
-        ...(openable ? { maxHeight: isOpen ? openHeight : '55px' } : {}),
-      }}
       className={css({
         padding: 15,
         color: 'white',
@@ -80,7 +61,6 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
         border: 'news.grey',
       })}
       ref={cardRef}
-      onClick={() => setIsOpen((prevV) => !prevV)}
       {...rest}
     >
       <header
@@ -88,7 +68,6 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          ...(!title && openable ? { justifyContent: 'flex-end' } : {}),
         }}
       >
         {title ? (
@@ -96,13 +75,8 @@ const DashboardCard = (props: PropsWithChildren<DashboardCardProps>) => {
             {title}
           </Typography>
         ) : null}
-        {openable ? <ChevronDown /> : null}
       </header>
-      <div
-        style={
-          !title && openable && !isOpen ? { marginTop: '5px', ...style } : style
-        }
-      >
+      <div style={!title ? { marginTop: '5px', ...style } : style}>
         {children}
       </div>
     </div>

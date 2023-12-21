@@ -17,7 +17,7 @@ class _UserController {
       discordId
     )
 
-    res.json({ user })
+    res.json(user)
   }
 }
 

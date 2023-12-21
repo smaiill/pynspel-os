@@ -44,7 +44,6 @@ const LoggingForm = (props: LogginFormProps) => {
   )
 
   const currentGuild = useCurrentGuildValue()
-
   const mutation = useMutateModule(MODULE_NAME)
 
   const handleSubmitForm = (
@@ -82,6 +81,7 @@ const LoggingForm = (props: LogginFormProps) => {
         setValue={setVerificationChannel}
         options={formatedChannels}
         type="channel"
+        required
       >
         {t('modules.logging.channel')}
       </InputSelect>

@@ -1,7 +1,8 @@
-import { userProxy } from '~/proxys/user'
+import { useSetUserState } from '~/proxys/user'
 import { fetchApi } from '~/utils/fetchApi'
 
 export const useUserService = () => {
+  const setUser = useSetUserState()
   const getDiscordUser = async () => {
     return await fetchApi<unknown>('/api/users/me')
   }
@@ -10,8 +11,7 @@ export const useUserService = () => {
     try {
       await fetchApi('/api/auth/revoke')
 
-      userProxy.isAuthenticated = false
-      userProxy.user = null
+      setUser(null)
     } catch (error) {
       //
     }

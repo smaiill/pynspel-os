@@ -1,7 +1,9 @@
+import { Typography } from '~/ui/typography/Typography'
+
 const PanelsEmpty = () => {
   return (
     <div>
-      <h1>Panels empty create one</h1>
+      <Typography as="h4">Panels empty create one</Typography>
     </div>
   )
 }

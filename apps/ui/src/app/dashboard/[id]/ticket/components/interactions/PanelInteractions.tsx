@@ -1,19 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SCHEMA_UPDATE_INTERACTION } from '@pynspel/common'
-import { useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
 import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEmojiPicker'
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
+import { FieldError } from '~/app/dashboard/components/form/FieldError'
+import { Modal } from '~/app/dashboard/components/modals/Modal'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildCategorys } from '~/proxys/dashboard'
-import { ButtonDanger, ButtonPrimary } from '~/ui/button/Button'
+import { ButtonDanger, ButtonOutline, ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { Typography } from '~/ui/typography/Typography'
 import {
   css,
   cva,
@@ -100,9 +101,6 @@ const PanelInteractions = (props: Props) => {
 
   return (
     <FlexColumn style={{ gap: 10 }}>
-      <Typography as="span">
-        {t('modules.ticket.panel.interactions.title')}
-      </Typography>
       <CreateInteraction />
       {interactions?.map((interaction) => (
         <Interaction key={interaction.id} interaction={interaction} />
@@ -124,8 +122,6 @@ const emojiPickerStyle = css({
 const Interaction = (props: any) => {
   const { interaction } = props
 
-  console.log(interaction)
-
   const {
     register,
     setValue,
@@ -143,6 +139,7 @@ const Interaction = (props: any) => {
     },
     resolver: zodResolver(SCHEMA_UPDATE_INTERACTION),
   })
+  const [open, setIsOpen] = useState(false)
   const [emojis, setEmojis] = useState(false)
   const [parentId, setParentId] = useState(getValues('parent_id'))
   const watchedEmoji = watch('emoji')
@@ -182,6 +179,17 @@ const Interaction = (props: any) => {
       })
   }
 
+  const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    setIsOpen(false)
+  }
+
+  const handleAction = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    deleteInteraction.mutate(interaction.id)
+    setIsOpen(false)
+  }
+
   return (
     <DashboardCard>
       <FlexColumn style={{ gap: 10 }}>
@@ -194,7 +202,7 @@ const Interaction = (props: any) => {
             }}
           />
           <ButtonDanger
-            onClick={() => deleteInteraction.mutate(interaction.id)}
+            onClick={() => setIsOpen(true)}
             style={{ fontSize: '15px' }}
           >
             <AiOutlineDelete />
@@ -221,6 +229,9 @@ const Interaction = (props: any) => {
           </DiscordEmojiPicker>
 
           {emojis ? <EmojiPicker onEmojiClick={handleEmojiClick} /> : null}
+          {errors?.atLeastOne ? (
+            <FieldError>{t('errors.E_V_NAME_OR_EMOJI')}</FieldError>
+          ) : null}
           {isDirty ? (
             <ButtonPrimary onClick={handleSubmit(handleUpdateInteraction)}>
               {t('actions.save')}
@@ -228,6 +239,22 @@ const Interaction = (props: any) => {
           ) : null}
         </FlexColumn>
       </FlexColumn>
+      {open ? (
+        <Modal>
+          <Modal.Header
+            title={t('modules.ticket.sure_to_delete')}
+            description={t('modules.ticket.sure_to_delete')}
+          />
+          <Modal.Footer>
+            <ButtonOutline onClick={handleCancel}>
+              {t('actions.cancel')}
+            </ButtonOutline>
+            <ButtonDanger onClick={handleAction}>
+              {t('actions.delete')}
+            </ButtonDanger>
+          </Modal.Footer>
+        </Modal>
+      ) : null}
     </DashboardCard>
   )
 }

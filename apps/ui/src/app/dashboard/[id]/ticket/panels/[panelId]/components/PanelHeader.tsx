@@ -1,6 +1,6 @@
 import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
 import { useTranslation } from '~/locales/Provider'
-import { ButtonSpecial } from '~/ui/button/Button'
+import { ButtonSuccess } from '~/ui/button/Button'
 import { usePanelMutations } from '../../hooks/usePanelMutations'
 
 type PanelHeaderProps = {
@@ -25,9 +25,9 @@ export const PanelHeader = (props: PanelHeaderProps) => {
 
   return (
     <header>
-      <ButtonSpecial onClick={handleSubmit} style={{ float: 'right' }}>
-        {t('modules.ticket.panel.interactions.create')}
-      </ButtonSpecial>
+      <ButtonSuccess onClick={handleSubmit} style={{ float: 'right' }}>
+        {t('modules.ticket.panel.send_to_channel')}
+      </ButtonSuccess>
     </header>
   )
 }

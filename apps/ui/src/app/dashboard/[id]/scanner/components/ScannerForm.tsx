@@ -105,7 +105,6 @@ const ScannerForm = (props: LogginFormProps) => {
 
   return (
     <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>
-      <span>{JSON.stringify(errors)}</span>
       <DashboardCard
         style={{
           display: 'flex',
@@ -274,6 +273,7 @@ const ScannerForm = (props: LogginFormProps) => {
           value={ignoredChannelsLinks}
           setValue={setIgnoredChannelsLinks}
           error={errors?.links?.ignored_channels?.message}
+          clearable
         >
           {t('modules.common.channels_ignore')}
         </InputSelect>

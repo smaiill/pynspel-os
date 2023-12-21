@@ -6,7 +6,7 @@ import { LocaleSelector } from '~/components/locale/LocaleSelector'
 import UserConnectedHeader from '~/components/UserConnectedHeader'
 import { Flex } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import { useUserSnapshot } from '~/proxys/user'
+import { useUserValue } from '~/proxys/user'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { css } from '../../../../styled-system/css'
 import { Logo } from '../../branding/Logo'
@@ -52,7 +52,7 @@ const navigationLinks = [
 ] as const
 
 const MainHeader = () => {
-  const userSnap = useUserSnapshot()
+  const user = useUserValue()
 
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
@@ -144,7 +144,7 @@ const MainHeader = () => {
 
       <Flex style={{ alignItems: 'center', gap: 20 }}>
         <LocaleSelector />
-        {userSnap.isAuthenticated ? (
+        {user !== null ? (
           <UserConnectedHeader />
         ) : (
           <ButtonPrimary href="https://discord.com/api/oauth2/authorize?client_id=1107603401207984128&redirect_uri=http%3A%2F%2Flocalhost%3A3005%2Fapi%2Fauth%2Fcallback&response_type=code&scope=identify%20email%20guilds">

@@ -17,11 +17,11 @@ export const SCHEMA_CREATE_INTERACTION = z
     emoji: z.string().emoji().nullable().default(null),
   })
   .refine((obj) => obj.name !== null || obj.emoji !== null, {
-    message: "Either 'name' or 'emoji' must have a valid value",
-    path: ['name', 'emoji'],
+    message: 'E_V_NAME_OR_EMOJI',
+    path: ['atLeastOne'],
   })
 
-const TICKET_PANEL_NAME = z.string().trim().min(1).max(50)
+export const TICKET_PANEL_NAME = z.string().trim().min(1).max(50)
 
 export const SCHEMA_CREATE_PANEL = z.object({
   name: TICKET_PANEL_NAME,

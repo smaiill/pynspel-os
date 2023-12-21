@@ -87,10 +87,6 @@ const CaptchaForm = (props: Props) => {
     }
   }, [mutation.isSuccess])
 
-  if (!currentGuild) {
-    return <h1>Invalid guild.</h1>
-  }
-
   const formatedRoles = useCurrentGuildRoles().map((role) => {
     return { label: role.name, value: role.id, color: role.color }
   })

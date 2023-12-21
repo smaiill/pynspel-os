@@ -31,4 +31,7 @@ export type TranslationBase = {
   common: {
     empty: {}
   }
+  errors: {
+    E_V_NAME_OR_EMOJI: {}
+  }
 }

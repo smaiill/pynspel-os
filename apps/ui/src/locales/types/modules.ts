@@ -37,7 +37,9 @@ export type ModulesTranslationBase = {
         button_label: {}
         category: {}
       }
+      send_to_channel: {}
     }
+    sure_to_delete: {}
   }
   command: {
     ban: {}

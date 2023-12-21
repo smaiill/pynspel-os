@@ -2,24 +2,24 @@
 import { useMemo, useState } from 'react'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
-import { useUserGuildsSnapshot } from '~/proxys/user'
+import { useUserGuildsValue } from '~/proxys/user'
 import { Input } from '~/ui/input/Input'
 import { css } from '../../../styled-system/css'
 import { ServerCard } from './components/ServerCard'
 
 const page = () => {
-  const userGuildsSnapshot = useUserGuildsSnapshot()
+  const userGuilds = useUserGuildsValue()
   const [filter, setFilter] = useState('')
 
   const filteredGuilds = useMemo(() => {
     if (filter.trim() === '') {
-      return userGuildsSnapshot.guilds
+      return userGuilds
     }
 
-    return userGuildsSnapshot.guilds.filter((guild) =>
+    return userGuilds.filter((guild) =>
       guild.name.toLowerCase().includes(filter.trim().toLowerCase())
     )
-  }, [filter, userGuildsSnapshot.guilds])
+  }, [filter, userGuilds])
 
   return (
     <HeaderAndFooterLayout>

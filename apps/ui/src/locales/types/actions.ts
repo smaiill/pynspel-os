@@ -7,10 +7,14 @@ export type ActionsTranslationBase = {
   send: {}
   save: {}
   claim: {}
+  cancel: {}
+  confirm: {}
   modules: {
     updated: {
       success: {}
       fail: {}
     }
   }
+
+  select_channel: {}
 }

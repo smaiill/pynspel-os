@@ -6,8 +6,10 @@ type Props = {
 }
 
 const errorCss = css({
-  color: '#ef4444',
+  color: 'red.500',
   marginTop: '5px',
+  fontSize: 'sm',
+  fontWeight: 300,
 })
 
 const FieldError = (props: PropsWithChildren<Props>) => {

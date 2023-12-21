@@ -1,7 +1,6 @@
 import { DashboardCard } from '~/layouts/Dashboard'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { useFetchPanels } from '../hooks/useFetchPanels'
-import { PanelsEmpty } from '../panels/[panelId]/components/PanelsEmpty'
 import CreatePanel from './CreatePanel'
 import { TicketPanel } from './TicketPanel'
 
@@ -17,11 +16,9 @@ export const TicketPanels = () => {
   return (
     <DashboardCard title="Panels" style={{ gap: 5 }}>
       <CreatePanel />
-      {data && data.length > 0 ? (
-        data.map((panel) => <TicketPanel key={panel.id} panel={panel} />)
-      ) : (
-        <PanelsEmpty />
-      )}
+      {data && data.length > 0
+        ? data.map((panel) => <TicketPanel key={panel.id} panel={panel} />)
+        : null}
     </DashboardCard>
   )
 }

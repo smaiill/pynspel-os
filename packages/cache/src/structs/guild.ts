@@ -9,8 +9,8 @@ const GuildCacheKeys = {
   Guilds: 'Guilds',
 } as const
 
-const CHANNELS_TTL = 300
-const ROLES_TTL = 300
+const CHANNELS_TTL = 600
+const ROLES_TTL = 600
 
 export class GuildCache {
   public _client: RedisClientType | null = null

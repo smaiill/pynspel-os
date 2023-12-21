@@ -6,6 +6,7 @@ import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { css } from '../../../../styled-system/css'
 import { useGlobalModules, useGuildModulesState } from '../hooks/modules'
 import AsideItem from './AsideItem'
+import { ServerSelector } from './ServerSelector'
 import { SkeletonBox } from './Skeletons'
 
 const styles = css({
@@ -70,7 +71,7 @@ const styles = css({
   },
 
   '& nav': {
-    marginTop: '20px',
+    marginTop: '5px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -110,13 +111,14 @@ const Aside = () => {
   return (
     <aside className={`${styles} ${isOpen ? 'opened' : 'closed'}`}>
       <header>
-        <Logo />
+        <Logo box={{ className: css({ mb: '10px' }) }} />
         <Menu
           onClick={() => setIsOpen((prevV) => !prevV)}
           color="white"
           className={css({ cursor: 'pointer' })}
         />
       </header>
+      <ServerSelector />
       <nav>
         <AsideItem
           type="normal"

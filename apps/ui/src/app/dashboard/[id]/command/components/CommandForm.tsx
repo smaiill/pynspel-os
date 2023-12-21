@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getModuleSchema, InferModuleConfigType } from '@pynspel/common'
 import { Controller, useForm } from 'react-hook-form'
-import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
@@ -19,7 +18,7 @@ const CommandForm = (props: LogginFormProps) => {
   const {
     handleSubmit,
     control,
-    formState: { isDirty, errors: formErrors },
+    formState: { isDirty },
     reset,
     getValues,
   } = useForm<InferModuleConfigType<typeof MODULE_NAME>>({
@@ -51,7 +50,6 @@ const CommandForm = (props: LogginFormProps) => {
           )
         }}
       />
-      {formErrors.ban ? <FieldError message={formErrors.ban.message} /> : null}
 
       <Controller
         name="kick"
@@ -66,9 +64,6 @@ const CommandForm = (props: LogginFormProps) => {
           </Checkbox>
         )}
       />
-      {formErrors?.kick ? (
-        <FieldError message={formErrors.kick.message} />
-      ) : null}
 
       {isDirty ? (
         <ButtonPrimary

@@ -61,20 +61,13 @@ export const PanelForm = (props: Props) => {
     })
   }
 
-  if (!data) {
-    return 'No data...'
-  }
-
-  if (!currentGuild) {
-    return <h1>Loading guild....</h1>
-  }
-
   return (
     <FlexColumn style={{ gap: 5, alignItems: 'flex-start' }}>
       <Input
         {...register('name')}
         label={t('modules.ticket.create_panel_name')}
         error={errors.name?.message}
+        required
       />
       <Input
         {...register('message')}

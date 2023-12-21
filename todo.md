@@ -20,3 +20,7 @@
 
 - Setup Shards.
 - Check All.
+
+# Features
+
+- [x] Import / Export module / guild settings

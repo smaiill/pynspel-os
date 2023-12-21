@@ -10,6 +10,7 @@ type InputSelectTypeProps = {
   empty?: string
   placeholder?: string
   error?: string
+  clearable?: boolean
 }
 
 const wordStyle = css({
