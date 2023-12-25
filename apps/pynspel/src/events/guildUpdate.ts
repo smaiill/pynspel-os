@@ -71,7 +71,7 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
         guild_id: newGuild.id,
         avatar: newGuild.icon,
         name: newGuild.name,
-        ownerId: newGuild.ownerId,
+        owner: newGuild.ownerId,
       })
     }
 

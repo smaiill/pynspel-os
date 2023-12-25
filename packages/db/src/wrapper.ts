@@ -78,11 +78,11 @@ export class _DbWrapper {
     guild_id,
     avatar,
     name,
-    ownerId,
+    owner,
   }: Omit<Guild, 'bot'>) {
     const query =
       'UPDATE guilds SET avatar = $1, name = $2, bot = $3, owner = $4 WHERE guild_id = $5'
-    const values = [avatar, name, true, ownerId, guild_id]
+    const values = [avatar, name, true, owner, guild_id]
 
     await this.exec(query, values)
 
@@ -93,15 +93,15 @@ export class _DbWrapper {
     guild_id,
     avatar,
     name,
-    ownerId,
+    owner,
   }: Omit<Guild, 'bot'>) {
     const query =
       'INSERT INTO guilds (guild_id, avatar, name, bot, owner) VALUES ($1, $2, $3, $4, $5)'
-    const values = [guild_id, avatar, name, true, ownerId]
+    const values = [guild_id, avatar, name, true, owner]
 
     await this.exec(query, values)
 
-    return { guild_id, avatar, name, bot: true, ownerId }
+    return { guild_id, avatar, name, bot: true, owner }
   }
 
   public async deleteGuild(guildId: string) {
@@ -117,7 +117,7 @@ export class _DbWrapper {
     guild_id,
     avatar,
     name,
-    ownerId,
+    owner,
   }: Omit<Guild, 'bot'>) {
     const [exists] = await this.exec(
       'SELECT guild_id FROM guilds WHERE guild_id = $1',
@@ -128,12 +128,12 @@ export class _DbWrapper {
     console.log({ guildExists })
 
     if (!guildExists) {
-      await this.createGuild({ guild_id, avatar, name, ownerId })
-      return { guild_id, name, avatar, bot: true, ownerId }
+      await this.createGuild({ guild_id, avatar, name, owner })
+      return { guild_id, name, avatar, bot: true, owner }
     }
 
-    await this.updateGuild({ guild_id, avatar, name, ownerId })
-    return { guild_id, name, avatar, bot: true, ownerId }
+    await this.updateGuild({ guild_id, avatar, name, owner })
+    return { guild_id, name, avatar, bot: true, owner }
   }
 
   public async getModuleConfigForGuild<
@@ -178,7 +178,7 @@ export class _DbWrapper {
     const res = await this.getModuleConfigForGuild(guildId, moduleName)
 
     if (!res) {
-      return await this.createModuleConfigForGuild(guildId, moduleName)
+      return this.createModuleConfigForGuild(guildId, moduleName)
     }
 
     return res
@@ -205,7 +205,7 @@ export class _DbWrapper {
       'UPDATE tickets SET status = $1 WHERE channel_id = $2 AND guild_id = $3'
     const values = [TicketStatus.Closed, channelId, guildId]
 
-    return await this.exec(query, values)
+    return this.exec(query, values)
   }
 
   public async getTicketById(id: string, guildId: string) {

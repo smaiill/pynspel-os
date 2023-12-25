@@ -1,31 +1,25 @@
+import { MONTHLY_PRICE_ID } from '@pynspel/common'
 import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { ButtonPremium } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
 import { usePremiumMutations } from '../hooks/usePremiumMutations'
 import { PremiumTable } from './PremiumTable'
 
-export const PremiumChoices = () => {
-  const { t } = useTranslation()
-  const currentGuild = useCurrentGuildValue()
+export const PremiumChoices = ({ guildId }: { guildId: string }) => {
   const { createCheckoutSession } = usePremiumMutations()
+  const { t } = useTranslation()
 
   const handleClick = async (priceId: string, guildId: string) => {
     try {
       const res = await createCheckoutSession.mutateAsync({ priceId, guildId })
       window.open(res.session, '_self')
     } catch (error) {
-      pxToast('error', "Une erreur s'est produite durant le process, retry.")
+      pxToast('error', t('errors.E_GENERIC'))
     }
   }
-
-  if (!currentGuild?.guild_id) {
-    return null
-  }
-
   return (
     <FlexColumn className={css({ w: '95%', overflowX: 'auto' })}>
       <Typography className={css({ mt: '20px' })} as="h3">
@@ -44,6 +38,7 @@ export const PremiumChoices = () => {
       <PremiumTable />
 
       <ButtonPremium
+        onClick={() => handleClick(MONTHLY_PRICE_ID, guildId)}
         className={css({ alignSelf: 'right', width: 'fit-content', mt: '8px' })}
       >
         Acheter

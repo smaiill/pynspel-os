@@ -27,11 +27,13 @@ export type TranslationBase = {
       date: string
     }
     active: {}
+    no_advantage_for_now: {}
   }
   common: {
     empty: {}
   }
   errors: {
     E_V_NAME_OR_EMOJI: {}
+    E_GENERIC: {}
   }
 }

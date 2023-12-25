@@ -7,10 +7,7 @@ import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { useMutateModule } from '~/app/dashboard/hooks/modules'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import {
-  useCurrentGuildChannels,
-  useCurrentGuildValue,
-} from '~/proxys/dashboard'
+import { useCurrentGuildChannels } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
 import { InputSelect } from '~/ui/input/InputSelect'
@@ -43,7 +40,6 @@ const LoggingForm = (props: LogginFormProps) => {
     getValues('channel')
   )
 
-  const currentGuild = useCurrentGuildValue()
   const mutation = useMutateModule(MODULE_NAME)
 
   const handleSubmitForm = (
@@ -63,10 +59,6 @@ const LoggingForm = (props: LogginFormProps) => {
       reset(getValues())
     }
   }, [mutation.isSuccess])
-
-  if (!currentGuild) {
-    return 'Invalid guild.'
-  }
 
   const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(
     (channel) => {

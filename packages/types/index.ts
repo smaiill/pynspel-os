@@ -1,11 +1,11 @@
 import { Plans } from './stripe'
 
 export * from './dashboard'
+export * from './errors'
 export * from './modules/index'
 export * from './redis'
 export * from './stripe'
 export * from './websocket'
-export * from './errors'
 
 export enum HttpStatus {
   // Informational
@@ -136,7 +136,7 @@ export type Guild = {
   name: string
   avatar: string | null
   bot: boolean
-  ownerId: string
+  owner: string
 }
 
 export type SavedGuild = Guild & { id: number; plan: Plans }

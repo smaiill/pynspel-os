@@ -12,7 +12,7 @@ export const useFetchPanels = (guildId: string) => {
   return useQuery<TicketPanel[]>({
     queryKey: ['panels', guildId],
     queryFn: async () => {
-      return await fetchApi(`/api/dashboard/panels/guild/${guildId}`)
+      return fetchApi(`/api/dashboard/panels/guild/${guildId}`)
     },
   })
 }
@@ -21,7 +21,7 @@ export const useFetchPanel = (panelId: string) => {
   return useQuery<PanelApi>({
     queryKey: ['panel', panelId],
     queryFn: async () => {
-      return await fetchApi(`/api/dashboard/panels/${panelId}`)
+      return fetchApi(`/api/dashboard/panels/${panelId}`)
     },
 
     onSuccess() {

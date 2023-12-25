@@ -54,7 +54,7 @@ export class GuildMemberUpdate extends BaseEvent<'guildMemberUpdate'> {
       guildToUpdate.permissions = data.permissions
     }
 
-    return await redis.user.setGuilds(data.memberId, userGuilds)
+    return redis.user.setGuilds(data.memberId, userGuilds)
   }
 
   public async on(

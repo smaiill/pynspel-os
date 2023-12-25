@@ -6,7 +6,6 @@ import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { css } from '../../../../styled-system/css'
 import { useGlobalModules, useGuildModulesState } from '../hooks/modules'
 import AsideItem from './AsideItem'
-import { ServerSelector } from './ServerSelector'
 import { SkeletonBox } from './Skeletons'
 
 const styles = css({
@@ -30,7 +29,6 @@ const styles = css({
 
     '& header svg:nth-child(2)': {
       display: 'block',
-      mt: '10px',
     },
 
     '& header svg:nth-child(1)': {
@@ -80,6 +78,7 @@ const styles = css({
 const Aside = () => {
   const [isOpen, setIsOpen] = useState(false)
   const guild = useCurrentGuildValue()
+
   const { data: globalModules, isLoading: isGlobalModulesLoading } =
     useGlobalModules()
   const { data: guildModulesState, isLoading: isGuildModulesLoading } =
@@ -118,7 +117,6 @@ const Aside = () => {
           className={css({ cursor: 'pointer' })}
         />
       </header>
-      <ServerSelector />
       <nav>
         <AsideItem
           type="normal"

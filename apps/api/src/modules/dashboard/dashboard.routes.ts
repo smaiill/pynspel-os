@@ -45,9 +45,9 @@ dashboardRoutes.get(
 
     const userHasPermissions =
       await DashboardService.userHasPermissionsCachedOrFresh({
-        userId: req.user?.discordId,
+        userId: req.user?.discordId as string,
         guildId: id,
-        accessToken: _decrypt(req.user?.accessToken),
+        accessToken: _decrypt(req.user?.accessToken as string),
       })
 
     if (!userHasPermissions) {
@@ -92,9 +92,9 @@ dashboardRoutes.put(
 
     const userHasPermissions =
       await DashboardService.userHasPermissionsCachedOrFresh({
-        userId: req.user?.discordId,
+        userId: req.user?.discordId as string,
         guildId: id,
-        accessToken: _decrypt(req.user?.accessToken),
+        accessToken: _decrypt(req.user?.accessToken as string),
       })
 
     if (!userHasPermissions) {

@@ -6,10 +6,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import {
-  useCurrentGuildChannels,
-  useCurrentGuildValue,
-} from '~/proxys/dashboard'
+import { useCurrentGuildChannels } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
@@ -21,7 +18,6 @@ type Props = {
 
 export const PanelForm = (props: Props) => {
   const { data } = props
-  const currentGuild = useCurrentGuildValue()
 
   const {
     register,

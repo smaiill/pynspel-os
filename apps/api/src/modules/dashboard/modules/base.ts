@@ -4,7 +4,7 @@ import {
   ModulesTypes,
   validateModuleConfig,
 } from '@pynspel/common'
-import { HttpStatus } from '@pynspel/types'
+import { Errors, HttpStatus } from '@pynspel/types'
 import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
 import { db } from 'modules/db'
 import { ObjectKeysPath } from 'types/utils'
@@ -36,7 +36,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     const isClientInGuild = await this._db.isClientInGuild(guildId)
 
     if (!isClientInGuild) {
-      throw new HttpException(HttpStatus.BAD_GATEWAY, 'Client not in guild.')
+      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
     }
 
     const cache = await redis.getModule(guildId, this._name)
@@ -75,13 +75,25 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     if (!IS_CLIENT_AVAILABLE) {
       throw new HttpException(
         HttpStatus.SERVICE_UNAVAILABLE,
-        'Client is corrently unavailable'
+        Errors.E_SERVICE_UNAVAILABLE
       )
     }
     const isClientInGuild = await this._db.isClientInGuild(guildId)
 
     if (!isClientInGuild) {
-      throw new HttpException(HttpStatus.BAD_GATEWAY, 'Client not in guild.')
+      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
+    }
+
+    const [moduleStateDb] = await db.exec<{ active: boolean }>(
+      'SELECT active FROM modules WHERE name = $1',
+      [this._name]
+    )
+
+    if (!moduleStateDb?.active) {
+      throw new HttpException(
+        HttpStatus.BAD_REQUEST,
+        Errors.E_SERVICE_UNAVAILABLE
+      )
     }
 
     const query = `
@@ -157,7 +169,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
       })
 
       if (!areRolesValid) {
-        throw new HttpException(HttpStatus.BAD_REQUEST, 'E_UNKNOWN_ROLE')
+        throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_ROLE)
       }
     }
 
@@ -173,7 +185,10 @@ export abstract class ModuleBase<M extends ModulesTypes> {
       })
 
       if (!areChannelsValid) {
-        throw new HttpException(HttpStatus.BAD_REQUEST, 'E_UNKNOWN_CHANNEL')
+        throw new HttpException(
+          HttpStatus.BAD_REQUEST,
+          Errors.E_UNKNOWN_CHANNEL
+        )
       }
     }
   }

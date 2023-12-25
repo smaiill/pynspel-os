@@ -8,6 +8,7 @@ import { _decrypt } from 'utils/crypto'
 import { env } from 'utils/env'
 import { HttpCantAccesGuildException, HttpException } from 'utils/error'
 import { lg } from 'utils/logger'
+import { isChannelIdInArray } from '../../utils'
 
 const createInteractions = (interactions: Interaction[]) => {
   const returnedInteractions = []
@@ -41,7 +42,7 @@ class _PanelController {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
     }
 
-    const [panelWithInteractionsDb] = await db.exec(
+    const [panelWithInteractionsDb] = await db.exec<{ guild_id: string }>(
       `
       SELECT
       p.*,
@@ -179,12 +180,11 @@ class _PanelController {
     }
 
     if (channel_id) {
-      // TODO: Check if the channel is valid in fresh.
       const validChannels = await DashboardService.getCachedChannelsOrFresh(
         panelGuildId
       )
 
-      if (!validChannels.includes(channel_id)) {
+      if (isChannelIdInArray(validChannels, channel_id)) {
         throw new HttpException(
           HttpStatus.BAD_REQUEST,
           Errors.E_UNKNOWN_CHANNEL
@@ -212,7 +212,7 @@ class _PanelController {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
     }
 
-    const [panelGuildDb] = await db.exec(
+    const [panelGuildDb] = await db.exec<{ guild_id: string }>(
       'SELECT guild_id FROM panels WHERE id = $1',
       [panelId]
     )
@@ -254,7 +254,7 @@ class _PanelController {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
     }
 
-    const [panelGuildDb] = await db.exec(
+    const [panelGuildDb] = await db.exec<{ guild_id: string }>(
       'SELECT guild_id FROM panels WHERE id = $1',
       [panelId]
     )
@@ -296,7 +296,7 @@ class _PanelController {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_PANEL_ID)
     }
 
-    const [panelGuildDb] = await db.exec(
+    const [panelGuildDb] = await db.exec<{ guild_id: string }>(
       'SELECT guild_id FROM panels WHERE id = $1',
       [panelId]
     )
@@ -494,8 +494,13 @@ class _PanelController {
 
     const interactions = createInteractions(panelDb.interactions)
 
-    // TODO: Check if the channel is valid.
+    const validChannels = await DashboardService.getCachedChannelsOrFresh(
+      panelDb.channel_id
+    )
 
+    if (isChannelIdInArray(validChannels, panelDb.channel_id)) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_CHANNEL)
+    }
     try {
       const message = await fetch(
         `${DISCORD_BASE_API}/channels/${panelDb.channel_id}/messages`,

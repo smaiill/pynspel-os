@@ -1,50 +1,72 @@
 import { Check, X } from 'lucide-react'
+import { useTranslation } from '~/locales/Provider'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../../../styled-system/css'
 
-type PremiumTableDataType = {
-  title: string
-  label?: string
-  free: {
-    enabled: boolean
-    title?: string
-    label?: string
-  }
-  premium: {
-    enabled: boolean
-    title?: string
-    label?: string
-  }
-}
-const premiumTableData: PremiumTableDataType[] = [
+const premiumTableData = [
   {
-    title: 'Classements dynamiques (pays, réseaux sociaux et catégories)',
-    label:
-      'Accédez aux classements acclamés de Favikon mis à jour en temps réel',
+    title: 'modules.informations.bot.title',
+    label: 'modules.informations.bot.description',
     free: {
-      enabled: false,
-      title: '1 suivi de créateur inclus',
-      label: "Jusqu'à 50 créateurs/liste de suivi",
+      enabled: true,
     },
     premium: {
       enabled: true,
     },
   },
   {
-    title: 'Ajout et personnalisation de créateur',
-    label:
-      "Ajoutez instantanément n'importe quel créateur sur la plateforme et faites des suggestions d'édition à la demande !",
+    title: 'modules.informations.captcha.title',
+    label: 'modules.informations.captcha.description',
     free: {
-      enabled: false,
+      enabled: true,
     },
     premium: {
       enabled: true,
     },
   },
   {
-    title: "Suivi des créateurs grâce à l'IA",
-    label:
-      "Utilisez la puissance de l'IA pour obtenir des rapports hebdomadaires sur les réseaux sociaux de votre secteur ou de vos propres créateurs.",
+    title: 'modules.informations.command.title',
+    label: 'modules.informations.command.description',
+    free: {
+      enabled: true,
+    },
+    premium: {
+      enabled: true,
+    },
+  },
+  {
+    title: 'modules.informations.counterRaid.title',
+    label: 'modules.informations.counterRaid.description',
+    free: {
+      enabled: true,
+    },
+    premium: {
+      enabled: true,
+    },
+  },
+  {
+    title: 'modules.informations.logging.title',
+    label: 'modules.informations.logging.description',
+    free: {
+      enabled: true,
+    },
+    premium: {
+      enabled: true,
+    },
+  },
+  {
+    title: 'modules.informations.scanner.title',
+    label: 'modules.informations.scanner.description',
+    free: {
+      enabled: true,
+    },
+    premium: {
+      enabled: true,
+    },
+  },
+  {
+    title: 'modules.informations.ticket.title',
+    label: 'modules.informations.ticket.description',
     free: {
       enabled: true,
     },
@@ -59,6 +81,8 @@ export const PremiumTable = () => {
     enabled: <Check className={css({ color: 'green.500' })} />,
     disabled: <X className={css({ color: 'red.500' })} />,
   }
+
+  const { t } = useTranslation()
 
   const tdStyles = css({
     display: 'flex',
@@ -131,7 +155,7 @@ export const PremiumTable = () => {
               >
                 {data.title && (
                   <Typography as="span" className={css({ color: 'white' })}>
-                    {data.title}
+                    {t(data.title)}
                   </Typography>
                 )}
 
@@ -143,7 +167,7 @@ export const PremiumTable = () => {
                       fontSize: 'sm',
                     })}
                   >
-                    {data.label}
+                    {t(data.label)}
                   </Typography>
                 )}
               </div>
@@ -151,43 +175,11 @@ export const PremiumTable = () => {
             <td>
               <div className={tdStyles}>
                 {data.free.enabled ? icons.enabled : icons.disabled}
-                {data.free.title && (
-                  <Typography as="span" className={css({ color: 'white' })}>
-                    {data.free.title}
-                  </Typography>
-                )}
-                {data.free.label && (
-                  <Typography
-                    as="p"
-                    className={css({
-                      color: 'news.fonts.label',
-                      fontSize: 'sm',
-                    })}
-                  >
-                    {data.free.label}
-                  </Typography>
-                )}
               </div>
             </td>
             <td>
               <div className={tdStyles}>
                 {data.premium.enabled ? icons.enabled : icons.disabled}
-                {data.premium.title && (
-                  <Typography as="span" className={css({ color: 'white' })}>
-                    {data.free.title}
-                  </Typography>
-                )}
-                {data.premium.label && (
-                  <Typography
-                    as="p"
-                    className={css({
-                      color: 'news.fonts.label',
-                      fontSize: 'sm',
-                    })}
-                  >
-                    {data.premium.label}
-                  </Typography>
-                )}
               </div>
             </td>
           </tr>

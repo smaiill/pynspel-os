@@ -10,7 +10,6 @@ import { useTranslation } from '~/locales/Provider'
 import {
   useCurrentGuildChannels,
   useCurrentGuildRoles,
-  useCurrentGuildValue,
 } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Checkbox } from '~/ui/checkbox/Checkbox'
@@ -25,7 +24,6 @@ const MODULE_NAME = 'captcha'
 
 const CaptchaForm = (props: Props) => {
   const { data } = props
-  const currentGuild = useCurrentGuildValue()
   const {
     register,
     handleSubmit,

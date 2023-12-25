@@ -50,7 +50,6 @@ export const errorHandler = (
   } else {
     lg.error({ message: err.message, name: err.name, cause: err.cause })
     res.status(HttpStatus.SERVER_ERROR).json({
-      code: Errors.E_SERVICE_UNAVAILABLE,
       message: 'Internal server error',
     })
   }

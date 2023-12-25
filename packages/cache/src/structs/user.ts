@@ -1,44 +1,19 @@
-import { RedisUserGuild } from '@pynspel/types'
+import { OAuth2User, RedisUserGuild } from '@pynspel/types'
+import { CACHE_OPTIONS } from 'consts'
 import { RedisClientType } from 'redis'
+import { CacheBase } from './base'
 
-const UserCacheKeys = {
-  UserGuilds: 'UserGuilds',
-} as const
-
-const USER_GUILDS_TTL = 300
-
-export class UserCache {
-  constructor(private _client: RedisClientType) {}
+export class UserCache extends CacheBase {
+  constructor(private client: RedisClientType) {
+    super(client)
+  }
 
   private getKeyName(userId: string) {
-    return `${UserCacheKeys.UserGuilds}::${userId}`
-  }
-
-  public async hSetObject(
-    type: string,
-    id: string,
-    hKey: string,
-    value: object
-  ) {
-    return await this._client.hSet(`${type}:${id}`, hKey, JSON.stringify(value))
-  }
-
-  public async hGetObject(type: string, id: string, hKey: string) {
-    const object = await this._client.hGet(`${type}:${id}`, hKey)
-
-    if (!object) {
-      return null
-    }
-
-    return JSON.parse(object)
-  }
-
-  public async hInvalidate(type: string, id: string, hKey: string) {
-    return await this._client.hDel(`${type}:${id}`, hKey)
+    return `${CACHE_OPTIONS.keys.USER_GUILDS}::${userId}`
   }
 
   public async getGuilds(userId: string) {
-    const userGuilds = await this._client.get(this.getKeyName(userId))
+    const userGuilds = await this.client.get(this.getKeyName(userId))
 
     if (!userGuilds) {
       return null
@@ -49,9 +24,9 @@ export class UserCache {
 
   public async setGuilds(userId: string, guilds: RedisUserGuild[]) {
     try {
-      return await this._client.setEx(
+      return await this.client.setEx(
         this.getKeyName(userId),
-        USER_GUILDS_TTL,
+        CACHE_OPTIONS.ttl.USER_GUILDS,
         JSON.stringify(guilds)
       )
     } catch (error) {
@@ -60,11 +35,25 @@ export class UserCache {
     }
   }
 
-  private isAdmin(permissions: string) {
-    return (parseInt(permissions) & 0x8) === 0x8
+  public async invalidateGuilds(userId: string) {
+    return this.client.del(this.getKeyName(userId))
   }
 
-  public async invalidateGuilds(userId: string) {
-    return await this._client.del(this.getKeyName(userId))
+  public async setUser(userId: string, user: OAuth2User) {
+    return this.client.setEx(
+      `${CACHE_OPTIONS.keys.USER}_${userId}`,
+      CACHE_OPTIONS.ttl.USER,
+      JSON.stringify(user)
+    )
+  }
+
+  public async getUser(userId: string) {
+    const user = await this.client.get(`${CACHE_OPTIONS.keys.USER}_${userId}`)
+
+    if (!user) {
+      return null
+    }
+
+    return JSON.parse(user) as OAuth2User
   }
 }

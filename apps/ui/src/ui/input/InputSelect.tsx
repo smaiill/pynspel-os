@@ -15,41 +15,57 @@ import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
+import { getDefaultAvatar, getGuildIcon } from '~/utils/discord'
 import { css, cx } from '../../../styled-system/css'
 import { Label } from '../Label'
 
-type Option = PropertyKey | null | PropertyKey[]
-type InputSelectTypes = 'role' | 'channel' | 'default'
+type InputSelectTypes = 'role' | 'channel' | 'server' | 'default'
+type CustomPropertyKey = string | number
 
-export interface InputSelectProps<Value, Multi, Type>
-  extends PropsWithChildren {
-  options: Type extends 'role' ? ItemRole[] : Item[]
-  value: Value
-  multi?: Multi
-  setValue: Multi extends true
-    ? Dispatch<SetStateAction<string[]>>
-    : Dispatch<SetStateAction<Value>>
+type InputSelectBase = PropsWithChildren<
+  {
+    className?: string
+    error?: string
+    clearable?: string
+    required?: string
+  } & OptionsType
+>
 
-  onChange?: (
-    value: Multi extends true
-      ? Dispatch<SetStateAction<string[]>>
-      : Dispatch<SetStateAction<Value>>
-  ) => void
-  type?: Type
-  className?: string
-  error?: string
-  clearable?: boolean
-  required?: boolean
+type InputSelectDefault = {
+  type: 'default' | 'channel'
+  options: Item[]
 }
+
+type InputSelectRole = {
+  type: 'role'
+  options: ItemRole[]
+}
+
+type InputSelectServer = {
+  type: 'server'
+  options: {
+    icon: string
+    value: CustomPropertyKey
+    label: CustomPropertyKey
+  }[]
+}
+
+type InputSelectMulti<V> =
+  | {
+      multi: true
+      setValue: Dispatch<SetStateAction<string[]>>
+      value: string[]
+    }
+  | { multi?: false; setValue: Dispatch<SetStateAction<V>>; value: V }
+
+type OptionsType = InputSelectDefault | InputSelectRole | InputSelectServer
 
 type Item = {
-  value: PropertyKey
-  label: PropertyKey
+  value: CustomPropertyKey
+  label: CustomPropertyKey
 }
 
-type ItemRole = {
-  value: string
-  label: string
+type ItemRole = Item & {
   color: string
 }
 
@@ -174,12 +190,8 @@ const AddPlaceholder = ({
   )
 }
 
-const InputSelect = <
-  Value extends Option,
-  Multi extends boolean,
-  Type extends InputSelectTypes = 'default'
->(
-  props: InputSelectProps<Value, Multi, Type>
+const InputSelect = <V extends any>(
+  props: InputSelectMulti<V> & InputSelectBase
 ) => {
   const {
     children,
@@ -207,10 +219,7 @@ const InputSelect = <
     setIsOpen(false)
 
     if (!multi) {
-      return setValue(
-        item.value as unknown as SetStateAction<string[]> &
-          SetStateAction<Value>
-      )
+      return setValue(item.value)
     }
 
     setValue((prevV) => {
@@ -229,6 +238,11 @@ const InputSelect = <
   const getItemLabelByValue = (value: string) => {
     const item = options.find((el) => el.value === value)
     return item ? item.label : null
+  }
+
+  const getItemByValue = (value: string) => {
+    const item = options.find((el) => el.value === value)
+    return item ? item : null
   }
 
   const handleRemoveItem = (
@@ -281,6 +295,18 @@ const InputSelect = <
                   }}
                 >
                   <Hashtag />
+                  {getItemLabelByValue(value as string)}
+                </Flex>
+              ) : type === 'server' ? (
+                <Flex className={css({ alignItems: 'center', gap: '5px' })}>
+                  <img
+                    className={css({ w: '30px', h: '30px' })}
+                    src={
+                      getItemByValue(value)?.icon === null
+                        ? getDefaultAvatar(2)
+                        : getGuildIcon(value, getItemByValue(value)?.icon)
+                    }
+                  />
                   {getItemLabelByValue(value as string)}
                 </Flex>
               ) : (
@@ -373,6 +399,24 @@ const InputSelect = <
                     }}
                   >
                     <Hashtag />
+                    {item.label}
+                  </Flex>
+                ) : type === 'server' ? (
+                  <Flex
+                    style={{
+                      alignItems: 'center',
+                      gap: 5,
+                    }}
+                  >
+                    <img
+                      className={css({ w: '30px', h: '30px' })}
+                      src={
+                        item.icon === null
+                          ? getDefaultAvatar(2)
+                          : getGuildIcon(item.value, item.icon)
+                      }
+                      alt={`${item.label}-icon`}
+                    />
                     {item.label}
                   </Flex>
                 ) : (

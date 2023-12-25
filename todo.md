@@ -20,6 +20,7 @@
 
 - Setup Shards.
 - Check All.
+- Remove some operations for bots. such as captcha.
 
 # Features
 

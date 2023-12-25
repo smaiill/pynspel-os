@@ -9,9 +9,7 @@ export const useFetchGuild = (guildId: string) => {
 
   return useQuery({
     queryKey: ['guild', guildId],
-    queryFn: async () => {
-      return await getGuild({ guildId })
-    },
+    queryFn: () => getGuild({ guildId }),
     onSuccess(guild) {
       setCurrentGuild(guild)
     },

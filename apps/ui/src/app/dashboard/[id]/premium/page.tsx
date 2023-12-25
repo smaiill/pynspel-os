@@ -2,7 +2,9 @@
 import { GetGuildPremiumApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
 import { FlexColumn } from '~/layouts/Flex'
+import { useTranslation } from '~/locales/Provider'
 import { fetchApi } from '~/utils/fetchApi'
+import { Alert } from '../../components/Alert'
 import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
 import { ModuleLayout } from '../../layouts/ModuleLayout'
@@ -24,9 +26,11 @@ const page = ({ params }: Props) => {
     useQuery<GetGuildPremiumApi>({
       queryKey: ['premium', params.id],
       queryFn: async () => {
-        return await fetchApi(`/api/subscriptions/${params.id}`)
+        return fetchApi(`/api/subscriptions/${params.id}`)
       },
     })
+
+  const { t } = useTranslation()
 
   if (isGuildLoading || isGuildPremiumLoading || !guildData || !guildPremium) {
     return <LoadingModule />
@@ -34,6 +38,8 @@ const page = ({ params }: Props) => {
 
   return (
     <ModuleLayout>
+      <Alert visual="info">{t('subscription.no_advantage_for_now')}</Alert>
+
       <FlexColumn
         style={{
           gap: 10,
@@ -53,7 +59,7 @@ const page = ({ params }: Props) => {
             />
           </>
         ) : (
-          <PremiumChoices />
+          <PremiumChoices guildId={guildData.guild_id} />
         )}
       </FlexColumn>
     </ModuleLayout>

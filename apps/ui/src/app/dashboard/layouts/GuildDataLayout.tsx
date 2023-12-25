@@ -1,5 +1,4 @@
-import { PropsWithChildren, useEffect } from 'react'
-import { useSetCurrentGuild } from '~/proxys/dashboard'
+import { PropsWithChildren } from 'react'
 import { LoadingModule } from '../components/LoadingModule'
 import { useFetchGuild } from '../hooks/useFetchGuild'
 
@@ -12,15 +11,6 @@ export const GuildDataLayout = ({
   }
 }>) => {
   const { data: guildData, isLoading } = useFetchGuild(params.id)
-
-  const setCurrentGuild = useSetCurrentGuild()
-
-  console.log({ guildData })
-  useEffect(() => {
-    if (guildData) {
-      setCurrentGuild(guildData)
-    }
-  }, [guildData])
 
   if (isLoading) {
     return <LoadingModule />

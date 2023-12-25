@@ -9,7 +9,8 @@
     "clean": "rimraf dist",
     "dev": "tsup --config scripts/tsup.dev.js",
     "build": "tsup --config scripts/tsup.build.js",
-    "clean:all": "rimraf dist && rimraf node_modules"
+    "clean:all": "rimraf dist && rimraf node_modules",
+    "tsc": "tsc"
   },
   "license": "ISC",
   "dependencies": {

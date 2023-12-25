@@ -38,12 +38,12 @@ class CustomerService {
     customerDto: CreateCustomer
   ) {
     if (!customerId) {
-      return await this.createCustomer(customerDto)
+      return this.createCustomer(customerDto)
     }
     const customer = await this.getCustomer(customerId)
 
     if (!customer) {
-      return await this.createCustomer(customerDto)
+      return this.createCustomer(customerDto)
     }
 
     return customer

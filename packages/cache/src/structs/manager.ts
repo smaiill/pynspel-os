@@ -5,12 +5,12 @@ import { UserCache } from './user'
 const MAX_CONNECTION_RETRY = 10
 const MIN_CONNECTION_DELAY = 100
 const MAX_CONNECTION_DELAY = 60000
-export class CacheManager extends GuildCache {
+export class CacheManager {
   public _client: RedisClientType
   public user: UserCache
+  public guild: GuildCache
 
   constructor(url: string) {
-    super()
     this._client = createClient({
       url,
       socket: {
@@ -30,16 +30,16 @@ export class CacheManager extends GuildCache {
         },
       },
     })
-    this.__setClientGuild(this._client)
     this.user = new UserCache(this._client)
+    this.guild = new GuildCache(this._client)
     this.init()
   }
 
   private async init() {
-    return await this._client.connect()
+    return this._client.connect()
   }
 
   public async ping() {
-    return await this._client.ping()
+    return this._client.ping()
   }
 }

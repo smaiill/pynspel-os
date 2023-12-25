@@ -15,6 +15,8 @@ export const fr: Translation<TranslationBase> = {
     finish_end_date:
       'Votre abonnement prend fin le {{ date }}, vous pouvez le reprendre en cliquant sur le bouton ci dessus.',
     active: 'Actif',
+    no_advantage_for_now:
+      "Actuellement, vous n'aurez aucun avantage à acheter le premium. Au fur et à mesure que le projet avance, il y aura des avantages.",
   },
   actions: {
     add: 'Ajouter',
@@ -117,11 +119,47 @@ export const fr: Translation<TranslationBase> = {
       },
       sure_to_delete: 'Vous etes sure de vouloir supprimer ?',
     },
+    informations: {
+      bot: {
+        title: 'Bot',
+        description:
+          'Configure les paramètres fondamentaux du bot, y compris son nom, son statut...',
+      },
+      captcha: {
+        title: 'Captcha',
+        description:
+          'Gère les paramètres liés à la vérification captcha, tels que la longueur du captcha, le canal de vérification...',
+      },
+      command: {
+        title: 'Commandes',
+        description: 'Active ou désactive des commandes spécifiques...',
+      },
+      counterRaid: {
+        title: 'Counter Raid',
+        description:
+          "Implémente des fonctionnalités pour détecter et contrer d'éventuelles attaques, comprenant le seuil de membres, l'intervalle de détection...",
+      },
+      logging: {
+        title: 'Logging',
+        description:
+          'Gère les configurations de journalisation, permettant la personnalisation du canal de journalisation...',
+      },
+      scanner: {
+        title: 'Logging',
+        description:
+          'Configure les paramètres de balayage de mots et de liens...',
+      },
+      ticket: {
+        title: 'Logging',
+        description: 'Contrôle les paramètres liés aux tickets, les panels...',
+      },
+    },
   },
   common: {
     empty: 'Vide',
   },
   errors: {
     E_V_NAME_OR_EMOJI: 'Vous devez au moins avoir un nom ou un emoji',
+    E_GENERIC: "Une erreur s'est produite réssayer d'un un instant",
   },
 }

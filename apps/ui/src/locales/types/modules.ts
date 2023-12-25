@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import { ModulesTypes } from '@pynspel/common'
+
 export type ModulesTranslationBase = {
   common: {
     action_to_take: {}
@@ -69,5 +71,11 @@ export type ModulesTranslationBase = {
     }
     action_raison: {}
     lock_channels: {}
+  }
+  informations: {
+    [K in ModulesTypes]: {
+      title: {}
+      description: {}
+    }
   }
 }

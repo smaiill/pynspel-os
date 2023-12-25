@@ -1,3 +1,4 @@
+import { MONTHLY_PRICE_ID } from '@pynspel/common'
 import { Errors, HttpStatus, SavedGuild } from '@pynspel/types'
 import { Request, Response, Router } from 'express'
 import { DashboardService } from 'modules/dashboard/dashboard.service'
@@ -23,19 +24,20 @@ const GUILD_ID_SCHEMA = z.string().trim()
 const stripeMailing = new MailingService()
 
 const createSubscriptionSchema = z.object({
-  priceId: z.union([
-    z.literal('price_1NfgB1FtvhXI74aJOQ1B5O8J'),
-    z.literal('price_1NfgBYFtvhXI74aJxub8vhdZ'),
-  ]),
+  priceId: z.literal(MONTHLY_PRICE_ID),
   guildId: GUILD_ID_SCHEMA,
 })
 
 subscriptionRoutes.get('/success', (req: Request, res: Response) => {
-  res.json({ ok: true })
+  const { guildId } = req.params
+
+  res.redirect(`${env.FRONT_URL}/dashboard/${guildId}/premium`)
 })
 
 subscriptionRoutes.get('/cancel', (req: Request, res: Response) => {
-  res.json({ ok: false })
+  const { guildId } = req.params
+
+  res.redirect(`${env.FRONT_URL}/dashboard/${guildId}/premium`)
 })
 
 subscriptionRoutes.get('/:guildId', async (req: Request, res: Response) => {
@@ -92,7 +94,7 @@ type StripeCheckoutSessionCompleted = Stripe.Checkout.Session & {
 
 subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
   const signature = req.headers['stripe-signature'] ?? ''
-  const rawBody = req.rawBody as Request & { rawBody: Buffer }
+  const rawBody = (req as Request & { rawBody: Buffer }).rawBody
   const parsedWebhook = stripeInstance.webhooks.constructEvent(
     rawBody,
     signature,
@@ -356,8 +358,8 @@ subscriptionRoutes.post('/:guildId', async (req: Request, res: Response) => {
   const session = await stripeInstance.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
-    success_url: `http://localhost:3005/subscription/success?id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `http://localhost:3005/subscription/cancel`,
+    success_url: `http://localhost:3005/subscription/success?guildId=${guildId}`,
+    cancel_url: `http://localhost:3005/subscription/cancel?guildId=${guildId}`,
     customer: id,
     line_items: [
       {

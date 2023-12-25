@@ -15,7 +15,7 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
       name: guild.name,
       guild_id: guild.id,
       avatar: guild.icon,
-      ownerId: guild.ownerId,
+      owner: guild.ownerId,
     })
   }
 

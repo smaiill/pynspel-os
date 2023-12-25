@@ -1,11 +1,10 @@
+import { ModulesTypes } from '@pynspel/common'
+import { Errors, HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response, Router } from 'express'
 import { db } from 'modules/db'
 import { _decrypt } from 'utils/crypto'
-import { HttpException } from 'utils/error'
+import { HttpCantAccesGuildException, HttpException } from 'utils/error'
 import { DashboardService } from '../dashboard.service'
-import { Errors, HttpStatus } from '@pynspel/types'
-import { ModuleBase } from './base'
-import { ModulesTypes } from '@pynspel/common'
 
 type ModuleRouterCreate<M extends ModulesTypes> = {
   get: (req: Request, res: Response, next: NextFunction) => Promise<void>
@@ -59,9 +58,9 @@ export class ModuleRouter<M extends ModulesTypes> {
 
     const userHasPermissions =
       await DashboardService.userHasPermissionsCachedOrFresh({
-        userId: req.user?.discordId,
+        userId: req.user?.discordId as string,
         guildId,
-        accessToken: _decrypt(req.user?.accessToken),
+        accessToken: _decrypt(req.user?.accessToken as string),
       })
 
     if (!userHasPermissions) {

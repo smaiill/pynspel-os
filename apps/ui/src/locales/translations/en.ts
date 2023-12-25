@@ -15,6 +15,8 @@ export const en: Translation<TranslationBase> = {
     finish_end_date:
       'Your subscription expires on {{ date }}, and you can renew it by clicking the button down.',
     active: 'Active',
+    no_advantage_for_now:
+      'Currently, you will have no benefit in purchasing the premium. As the project progresses, there will be advantages.',
   },
   actions: {
     add: 'Add',
@@ -115,11 +117,47 @@ export const en: Translation<TranslationBase> = {
       },
       sure_to_delete: 'Are you sure you want to delete ?',
     },
+    informations: {
+      bot: {
+        title: 'Bot',
+        description:
+          'Configures fundamental settings for the bot, including its name, status...',
+      },
+      captcha: {
+        title: 'Captcha',
+        description:
+          'Manages settings related to captcha verification, such as captcha length, verification channel...',
+      },
+      command: {
+        title: 'Commands',
+        description: 'Enables or disables specific commands...',
+      },
+      counterRaid: {
+        title: 'Counter Raid',
+        description:
+          'Implements features to detect and counter potential attacks, including member threshold, detection interval...',
+      },
+      logging: {
+        title: 'Logging',
+        description:
+          'Manages logging configurations, allowing customization of the logging channel...',
+      },
+      scanner: {
+        title: 'Logging',
+        description: 'Configures word and link scanning settings...',
+      },
+      ticket: {
+        title: 'Logging',
+        description:
+          'Controls settings related to tickets, including panels...',
+      },
+    },
   },
   common: {
     empty: 'Empty',
   },
   errors: {
     E_V_NAME_OR_EMOJI: 'You need to at least have an emoji or a name',
+    E_GENERIC: 'An error occurred. Please retry in a moment.',
   },
 }

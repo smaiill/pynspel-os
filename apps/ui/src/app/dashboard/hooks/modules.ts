@@ -25,12 +25,12 @@ export const useFetchModule = <M extends ModulesTypes>(
 
 export const useGuildModulesState = (guildId: string) => {
   // TODO: This makes to many requests when the id is undefined
-  const stringGuildId = String(guildId)
   return useQuery<{ name: string; is_active: boolean }[]>({
-    queryKey: ['modules', stringGuildId],
+    queryKey: ['modules', guildId],
     queryFn: async () => {
-      return await fetchApi(`/api/dashboard/guilds/${stringGuildId}/modules`)
+      return fetchApi(`/api/dashboard/guilds/${guildId}/modules`)
     },
+    enabled: !!guildId,
   })
 }
 
@@ -41,7 +41,7 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
 
   return useMutation({
     mutationFn: async (newValue: boolean) => {
-      return await fetchApi(
+      return fetchApi(
         `/api/dashboard/guilds/${currentGuild?.guild_id}/modules/${module}`,
         {
           method: 'PUT',
@@ -125,9 +125,7 @@ export const useGlobalModules = () => {
 
   return useQuery<ModuleStateApi[]>({
     queryKey: ['modules'],
-    queryFn: async () => {
-      return await fetchApi('/api/modules')
-    },
+    queryFn: () => fetchApi('/api/modules'),
 
     onSuccess(data) {
       setModules(data)

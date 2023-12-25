@@ -4,8 +4,9 @@ import { useUserValue } from '~/proxys/user'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../../styled-system/css'
 import Aside from '../components/Aside'
+import { LoadingModule } from '../components/LoadingModule'
 import { SelectedServerInformation } from '../components/SelectedServerInformation'
-import { GuildDataLayout } from '../layouts/GuildDataLayout'
+import { useFetchGuild } from '../hooks/useFetchGuild'
 
 export interface Props {
   params: {
@@ -15,19 +16,22 @@ export interface Props {
 
 const page = ({ params }: Props) => {
   const user = useUserValue()
+  const { data: guildData, isLoading } = useFetchGuild(params.id)
+
+  if (isLoading || !guildData) {
+    return <LoadingModule />
+  }
 
   return (
-    <GuildDataLayout params={params}>
-      <DashboardPage>
-        <Aside />
-        <DashboardView>
-          <Typography className={css({ mb: '6px' })} as="h2">
-            Welcome, {String(user?.username)} 👋
-          </Typography>
-          <SelectedServerInformation />
-        </DashboardView>
-      </DashboardPage>
-    </GuildDataLayout>
+    <DashboardPage>
+      <Aside />
+      <DashboardView>
+        <Typography className={css({ mb: '6px' })} as="h2">
+          Welcome, {String(user?.username)} 👋
+        </Typography>
+        <SelectedServerInformation />
+      </DashboardView>
+    </DashboardPage>
   )
 }
 

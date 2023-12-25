@@ -4,7 +4,7 @@ import { fetchApi } from '~/utils/fetchApi'
 export const useUserService = () => {
   const setUser = useSetUserState()
   const getDiscordUser = async () => {
-    return await fetchApi<unknown>('/api/users/me')
+    return fetchApi<unknown>('/api/users/me')
   }
 
   const handleLogout = async () => {

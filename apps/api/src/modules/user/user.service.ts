@@ -1,17 +1,18 @@
 import { OAuth2User, SavedUser } from '@pynspel/types'
 import { db } from 'modules/db'
-import { Caches, usersCache } from 'utils/cache'
 import { DiscordRoutes } from 'utils/constants'
+import { redis } from 'utils/redis'
 
+// TODO: Move this to redis cache.
 class _UserService {
   public async getDiscordUser(
     accessToken: string,
     userId?: string
   ): Promise<OAuth2User> {
     if (userId) {
-      if (usersCache.has(`${Caches.Users}-${userId}`)) {
-        console.log('Sending cache data')
-        return usersCache.get(`${Caches.Users}-${userId}`)
+      const userData = await redis.user.getUser(userId)
+      if (userData) {
+        return userData
       }
     }
 
@@ -28,7 +29,7 @@ class _UserService {
     const jsonRes = await response.json()
 
     if (userId) {
-      usersCache.set(`${Caches.Users}-${userId}`, jsonRes, 120)
+      redis.user.setUser(userId, jsonRes)
     }
 
     return jsonRes
