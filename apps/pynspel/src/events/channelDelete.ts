@@ -26,17 +26,15 @@ export class ChannelDelete extends BaseEvent<'channelDelete'> {
     const guildId = channel.guild.id
 
     try {
-      await redis.deleteChannel(guildId, channel.id)
+      await redis.guild.deleteChannel(guildId, channel.id)
     } catch (error) {
       logger.error(error)
-      await redis.invalidateChannels(guildId)
+      await redis.guild.invalidateChannels(guildId)
     }
   }
 
-  public async on(client: Client, channel: Channel) {
-    await this.manageCache(channel).catch((err) =>
-      logger.error(`CACHE_ERROR: ${err}`)
-    )
+  public async on(_: Client, channel: Channel) {
+    await this.manageCache(channel)
 
     if (channel.type === ChannelType.GuildText) {
       await this._db.closeTicket(channel.id, channel.guild.id)

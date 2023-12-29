@@ -25,7 +25,7 @@ export class GuildMemberRemove extends BaseEvent<'guildMemberRemove'> {
     await redis.user.setGuilds(userId, filteredGuilds)
   }
 
-  public async on(client: Client, member: MemberRemove) {
+  public async on(_: Client, member: MemberRemove) {
     this.loggingService.guildMemberRemove(member)
 
     await this.removeGuildForUser(member.id, member.guild.id)

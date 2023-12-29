@@ -10,7 +10,7 @@ export class RoleCreate extends BaseEvent<'roleCreate'> {
   }
 
   private async manageCache(role: Role) {
-    await redis.createRole(role.guild.id, {
+    await redis.guild.createRole(role.guild.id, {
       color: role.color,
       id: role.id,
       name: role.name,
@@ -18,7 +18,7 @@ export class RoleCreate extends BaseEvent<'roleCreate'> {
     })
   }
 
-  public async on(client: Client, role: Role) {
+  public async on(_: Client, role: Role) {
     await this.manageCache(role)
   }
 }

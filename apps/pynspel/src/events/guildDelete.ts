@@ -9,7 +9,7 @@ export class GuildDelete extends BaseEvent<'guildDelete'> {
     super('guildDelete')
   }
 
-  public async on(client: Client, guild: Guild) {
+  public async on(_: Client, guild: Guild) {
     try {
       await this._db.deleteGuild(guild.id)
     } catch (error) {

@@ -10,10 +10,10 @@ export class RoleDelete extends BaseEvent<'roleDelete'> {
   }
 
   private async manageCache(role: Role) {
-    await redis.deleteRole(role.guild.id, role.id)
+    await redis.guild.deleteRole(role.guild.id, role.id)
   }
 
-  public async on(client: Client, role: Role) {
+  public async on(_: Client, role: Role) {
     await this.manageCache(role)
   }
 }

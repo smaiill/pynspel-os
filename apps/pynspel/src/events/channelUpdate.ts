@@ -38,15 +38,15 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
 
     if (shouldRemoveCache) {
       try {
-        await redis.updateChannel(newChannel.guild.id)
+        await redis.guild.updateChannel(newChannel.guild.id)
       } catch (error) {
         logger.error(error)
-        await redis.invalidateChannels(newChannel.guildId)
+        await redis.guild.invalidateChannels(newChannel.guildId)
       }
     }
   }
 
-  public async on(client: Client, oldChannel: Channel, newChannel: Channel) {
+  public async on(_: Client, oldChannel: Channel, newChannel: Channel) {
     this.manageCache(oldChannel, newChannel)
   }
 }

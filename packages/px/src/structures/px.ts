@@ -7,6 +7,8 @@ export interface PxOptions extends ClientOptions {
   events?: EventClass[]
   commands?: CommandClass[]
   syncCommands?: boolean
+  onCommandError?: (error: Error) => void
+  onEventError?: (error: Error) => void
 }
 
 const COLORS = {
@@ -29,12 +31,16 @@ export class Px extends Client {
   private _commands = new Map<string, OnCommand>()
   private _syncCommands: boolean
   private _commandsArray: any[] = []
+  private _onCommandError?: (error: Error) => void
+  private _onEventError?: (error: Error) => void
   private readonly discordBaseUrl = 'https://discord.com/api/v10'
   constructor({
     token,
     events = [],
     commands = [],
     syncCommands = false,
+    onCommandError,
+    onEventError,
     ...rest
   }: PxOptions) {
     super({
@@ -43,6 +49,8 @@ export class Px extends Client {
     this._token = token
     this._events = events
     this._syncCommands = syncCommands
+    this._onCommandError = onCommandError
+    this._onEventError = onEventError
     this.__validateOptions()
     this.__setupEvents()
     this.__setupCommands(commands)
@@ -74,10 +82,7 @@ export class Px extends Client {
       try {
         await handledCommand(interaction)
       } catch (error) {
-        console.error(
-          `Error while executing command [${interaction.commandName}]`,
-          error
-        )
+        this._onCommandError?.(error as Error)
       }
     })
   }
@@ -88,10 +93,7 @@ export class Px extends Client {
         try {
           await event.on(this, ...args)
         } catch (error) {
-          console.error(
-            `Error while executing the event [${event._eventName}]`,
-            error
-          )
+          this._onEventError?.(error as Error)
         }
       })
     }

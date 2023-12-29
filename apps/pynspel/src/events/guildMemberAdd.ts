@@ -52,9 +52,13 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
         return
       }
 
+      if (member.user.bot) {
+        return
+      }
+
       await captchaService.handleMember(client, member)
     } catch (error) {
-      logger.error(`Error while handling new member: ${JSON.stringify(error)}`)
+      logger.error(error)
     }
   }
 }

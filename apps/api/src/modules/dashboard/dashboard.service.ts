@@ -94,7 +94,7 @@ class _DashboardService {
   }
 
   public async getCachedChannelsOrFresh(guildId: string) {
-    const cachedChannels = await redis.getChannels(guildId)
+    const cachedChannels = await redis.guild.getChannels(guildId)
 
     if (cachedChannels) {
       return cachedChannels
@@ -119,13 +119,13 @@ class _DashboardService {
         }
       })
 
-    await redis.setChannels(guildId, formatedChannels)
+    await redis.guild.setChannels(guildId, formatedChannels)
 
     return formatedChannels
   }
 
   public async getCachedRolesOrFresh(guildId: string) {
-    const cachedRoles = await redis.getRoles(guildId)
+    const cachedRoles = await redis.guild.getRoles(guildId)
 
     if (cachedRoles) {
       return cachedRoles
@@ -142,7 +142,7 @@ class _DashboardService {
       }
     })
 
-    await redis.setRoles(guildId, formatedRoles)
+    await redis.guild.setRoles(guildId, formatedRoles)
 
     return formatedRoles
   }

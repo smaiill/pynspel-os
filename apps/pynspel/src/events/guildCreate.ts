@@ -3,6 +3,7 @@ import { Guild as PynspelGuild } from '@pynspel/types'
 import { db } from 'db'
 import { Client, Guild } from 'discord.js'
 import { env } from 'utils/env'
+import { logger } from 'utils/logger'
 
 export class GuildCreate extends BaseEvent<'guildCreate'> {
   _db = db
@@ -35,6 +36,7 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
         )
       }
 
+      logger.error(error)
       const _guild = await client.guilds.fetch(guild.guild_id)
       await _guild.leave()
     }

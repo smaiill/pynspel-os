@@ -8,11 +8,11 @@ export class MessageCreate extends BaseEvent<'messageCreate'> {
     super('messageCreate')
   }
 
-  public async on(client: Client, message: Message) {
+  public async on(_: Client, message: Message) {
     const { passed } = await this._scannerService.handleNewMessage(message)
 
     if (!passed) {
-      return
+      await message.delete()
     }
   }
 }

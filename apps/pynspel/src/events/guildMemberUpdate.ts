@@ -57,11 +57,7 @@ export class GuildMemberUpdate extends BaseEvent<'guildMemberUpdate'> {
     return redis.user.setGuilds(data.memberId, userGuilds)
   }
 
-  public async on(
-    client: Client,
-    oldMember: GuildMember,
-    newMember: GuildMember
-  ) {
+  public async on(_: Client, oldMember: GuildMember, newMember: GuildMember) {
     console.log({
       old: oldMember.guild.ownerId === oldMember.id,
       new: newMember.guild.ownerId === newMember.id,

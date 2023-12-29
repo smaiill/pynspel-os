@@ -221,6 +221,19 @@ export class _DbWrapper {
 
     return channel as Ticket
   }
+
+  public async isModuleActiveForGuild(
+    guildId: string,
+    moduleName: ModulesTypes
+  ) {
+    const query =
+      'SELECT is_active FROM guild_modules WHERE module_id = (SELECT module_id FROM modules WHERE name = $1 AND active = $2) AND guild_id = $3'
+    const values = [moduleName, true, guildId]
+
+    const [moduleData] = await this.exec<{ is_active?: boolean }>(query, values)
+
+    return Boolean(moduleData?.is_active)
+  }
 }
 
 class DbError extends Error {

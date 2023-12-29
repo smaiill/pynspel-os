@@ -24,7 +24,7 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
     }
 
     try {
-      await redis.createChannel(channel.guild.id, {
+      await redis.guild.createChannel(channel.guild.id, {
         guild_id: channel.guild.id,
         id: channel.id,
         name: channel.name,
@@ -32,7 +32,7 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
       })
     } catch (error) {
       logger.error(error)
-      await redis.invalidateChannels(channel.guildId)
+      await redis.guild.invalidateChannels(channel.guildId)
     }
   }
 

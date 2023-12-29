@@ -27,11 +27,11 @@ export class RoleUpdate extends BaseEvent<'roleUpdate'> {
     )
 
     if (shouldRemoveCache) {
-      await redis.updateRole(newRole.guild.id)
+      await redis.guild.updateRole(newRole.guild.id)
     }
   }
 
-  public async on(client: Client, oldRole: Role, newRole: Role) {
+  public async on(_: Client, oldRole: Role, newRole: Role) {
     await this.manageCache(oldRole, newRole)
   }
 }

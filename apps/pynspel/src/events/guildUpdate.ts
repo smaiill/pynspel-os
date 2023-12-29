@@ -59,7 +59,7 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
     ])
   }
 
-  public async on(client: Client, oldGuild: Guild, newGuild: Guild) {
+  public async on(_: Client, oldGuild: Guild, newGuild: Guild) {
     const shouldUpdateGuild = this.shouldUpdateGuild(
       { avatar: oldGuild.icon, name: oldGuild.name, ownerId: oldGuild.ownerId },
       { avatar: newGuild.icon, name: newGuild.name, ownerId: newGuild.ownerId }
