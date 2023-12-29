@@ -568,7 +568,7 @@ const tokens = {
     "variable": "var(--colors-warn)"
   },
   "colors.special": {
-    "value": "#f7931e",
+    "value": "#1e776d",
     "variable": "var(--colors-special)"
   },
   "colors.specialBg": {
@@ -580,7 +580,7 @@ const tokens = {
     "variable": "var(--colors-inactive)"
   },
   "colors.hover.special": {
-    "value": "#CE7B1A",
+    "value": "#17534C",
     "variable": "var(--colors-hover-special)"
   },
   "colors.fonts.primary": {
@@ -600,7 +600,7 @@ const tokens = {
     "variable": "var(--colors-fonts-danger-hover)"
   },
   "colors.fonts.special": {
-    "value": "#f7931e",
+    "value": "#1e776d",
     "variable": "var(--colors-fonts-special)"
   },
   "colors.fonts.warn": {
@@ -608,7 +608,7 @@ const tokens = {
     "variable": "var(--colors-fonts-warn)"
   },
   "colors.news.special": {
-    "value": "#f7931e",
+    "value": "#195F57",
     "variable": "var(--colors-news-special)"
   },
   "colors.news.fonts.label": {
@@ -644,7 +644,7 @@ const tokens = {
     "variable": "var(--colors-news-backgrounds-tertiary)"
   },
   "borders.specialDashed": {
-    "value": "1px dashed #f7931e",
+    "value": "1px dashed #1e776d",
     "variable": "var(--borders-special-dashed)"
   },
   "borders.news.grey": {

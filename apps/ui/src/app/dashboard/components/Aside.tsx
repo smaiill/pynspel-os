@@ -88,7 +88,7 @@ const Aside = () => {
     return (
       <aside className={styles}>
         <header>
-          <Logo />
+          <Logo href="/" />
         </header>
         <nav>
           <SkeletonBox />
@@ -110,7 +110,7 @@ const Aside = () => {
   return (
     <aside className={`${styles} ${isOpen ? 'opened' : 'closed'}`}>
       <header>
-        <Logo box={{ className: css({ mb: '10px' }) }} />
+        <Logo href="/" box={{ className: css({ mb: '10px' }) }} />
         <Menu
           onClick={() => setIsOpen((prevV) => !prevV)}
           color="white"

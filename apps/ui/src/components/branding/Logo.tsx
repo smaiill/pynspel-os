@@ -1,18 +1,26 @@
+import { useRouter } from 'next/navigation'
 import { HTMLAttributes } from 'react'
 
 const Logo = ({
-  color = '#f7931e',
+  color = '#1e776d',
   width = 50,
   height = 50,
   box,
+  href,
 }: {
   color?: string
   width?: number
   height?: number
   box?: HTMLAttributes<HTMLDivElement>
+  href?: string
 }) => {
+  const router = useRouter()
+
+  const goto = () => {
+    href && router.push(href)
+  }
   return (
-    <div {...box}>
+    <div {...box} style={href ? { cursor: 'pointer' } : {}} onClick={goto}>
       <svg
         width={width}
         height={height}

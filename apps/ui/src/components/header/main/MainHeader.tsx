@@ -60,7 +60,7 @@ const MainHeader = () => {
   return (
     <header className={styles}>
       <div className={css({ smDown: { display: 'none' } })}>
-        <Logo />
+        <Logo href="/" />
       </div>
 
       <nav className={css({ smDown: { display: 'none' } })}>

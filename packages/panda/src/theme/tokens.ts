@@ -21,7 +21,7 @@ export const tokens = defineTokens({
     success: { value: '#3d8b2e' },
     warn: { value: '#e5871a' },
     special: {
-      value: '#f7931e',
+      value: '#1e776d',
     },
     specialBg: {
       value: '#5D5FEF30',
@@ -29,7 +29,7 @@ export const tokens = defineTokens({
     inactive: { value: '#1f1f1f' },
     hover: {
       special: {
-        value: '#CE7B1A',
+        value: '#17534C',
       },
     },
     fonts: {
@@ -42,7 +42,7 @@ export const tokens = defineTokens({
     },
 
     news: {
-      special: { value: '#f7931e' },
+      special: { value: '#195F57' },
       fonts: {
         label: { value: '#606260' },
         primary: { value: '#CFD0C8' },

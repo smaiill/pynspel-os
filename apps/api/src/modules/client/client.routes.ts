@@ -23,7 +23,7 @@ const getServingGuilds = async () => {
     return cacheGuildsLength
   }
 
-  const query = 'SELECT COUNT(*) FROM guilds WHERE bot = $1'
+  const query = 'SELECT COUNT(*) FROM guilds WHERE bot = $1 LIMIT 10000'
 
   const [_res] = await db.exec<{ count: number }>(query, [true])
   const amount = Number(_res.count)

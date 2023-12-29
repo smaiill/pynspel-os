@@ -39,7 +39,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
       throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
     }
 
-    const cache = await redis.getModule(guildId, this._name)
+    const cache = await redis.guild.getModule(guildId, this._name)
 
     if (cache) {
       return cache
@@ -49,7 +49,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
 
     if (!res) {
       await this._db.createModuleConfigForGuild(guildId, this._name)
-      await redis.setModule(
+      await redis.guild.setModule(
         guildId,
         this._name,
         this._defaultConfig as unknown as InferModuleConfigType<M>
@@ -60,7 +60,7 @@ export abstract class ModuleBase<M extends ModulesTypes> {
 
     const config = { ...this._defaultConfig, ...res }
 
-    await redis.setModule(guildId, this._name, config)
+    await redis.guild.setModule(guildId, this._name, config)
 
     return config
   }
@@ -146,9 +146,9 @@ export abstract class ModuleBase<M extends ModulesTypes> {
     }>(query, values)
 
     try {
-      await redis.setModule(guildId, this._name, validatedData)
+      await redis.guild.setModule(guildId, this._name, validatedData)
     } catch (error) {
-      await redis.invalidateModule(guildId, this._name)
+      await redis.guild.invalidateModule(guildId, this._name)
     }
 
     return validatedData

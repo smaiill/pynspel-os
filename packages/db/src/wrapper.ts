@@ -148,7 +148,7 @@ export class _DbWrapper {
       moduleName,
     ])
 
-    return res.config
+    return res?.config
   }
 
   public async createModuleConfigForGuild<

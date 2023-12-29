@@ -15,6 +15,7 @@
 - Move all to recoil.
 - Terms
 - Privacy
+- 404 page.
 
 # Bot
 

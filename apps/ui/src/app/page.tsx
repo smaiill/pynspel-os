@@ -1,5 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { useGuildService } from '~/hooks/useGuildService'
 import { Flex } from '~/layouts/Flex'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
@@ -38,6 +39,7 @@ const main = css({
 
 const page = () => {
   const { getServingGuilds } = useGuildService()
+  const router = useRouter()
 
   const { data } = useQuery<{
     count: number
@@ -70,8 +72,19 @@ const page = () => {
           {t('pages.home.description')}
         </Typography>
         <Flex className={css({ gap: 10, mt: 30, zIndex: 2 })}>
-          <ButtonPrimary>{t('pages.home.add_pynspel')}</ButtonPrimary>
-          <ButtonSpecial>{t('pages.home.go_to_dashboard')}</ButtonSpecial>
+          <ButtonPrimary
+            onClick={() => {
+              window.open(
+                'https://discord.com/api/oauth2/authorize?client_id=1107603401207984128&permissions=8&scope=bot',
+                '_blank'
+              )
+            }}
+          >
+            {t('pages.home.add_pynspel')}
+          </ButtonPrimary>
+          <ButtonSpecial onClick={() => router.push('/dashboard')}>
+            {t('pages.home.go_to_dashboard')}
+          </ButtonSpecial>
         </Flex>
         <Typography color="secondary" as="p" className={serversStyles}>
           {t('pages.home.serving_servers', {
