@@ -1,6 +1,7 @@
 # All
 
 - Docker.
+- Create a global Snowflake and transform all ids to string in DB and more.
 
 # API
 

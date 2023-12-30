@@ -36,7 +36,7 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
     }
   }
 
-  public async on(client: Client, channel: Channel) {
+  public async on(_: Client, channel: Channel) {
     await this.manageCache(channel)
   }
 }

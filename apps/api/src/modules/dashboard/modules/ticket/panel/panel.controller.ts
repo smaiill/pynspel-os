@@ -1,11 +1,11 @@
 import { ButtonBuilder } from '@discordjs/builders'
 import { Errors, HttpStatus, Interaction, PanelApi } from '@pynspel/types'
+import { Routes } from 'discord-api-types/v10'
 import { Request, Response } from 'express'
 import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
-import { DISCORD_BASE_API } from 'utils/constants'
 import { _decrypt } from 'utils/crypto'
-import { env } from 'utils/env'
+import { discordApi } from 'utils/discord'
 import { HttpCantAccesGuildException, HttpException } from 'utils/error'
 import { lg } from 'utils/logger'
 import { isChannelIdInArray } from '../../utils'
@@ -184,7 +184,7 @@ class _PanelController {
         panelGuildId
       )
 
-      if (isChannelIdInArray(validChannels, channel_id)) {
+      if (!isChannelIdInArray(validChannels, channel_id)) {
         throw new HttpException(
           HttpStatus.BAD_REQUEST,
           Errors.E_UNKNOWN_CHANNEL
@@ -481,49 +481,46 @@ class _PanelController {
       [panelId]
     )
 
+    console.log('1')
+    console.log({ panelGuilId })
+
     if (panelDb.interactions.length <= 0) {
       throw new HttpException(
         HttpStatus.BAD_REQUEST,
         Errors.E_EMPTY_INTERACTIONS
       )
     }
-
     if (!panelDb.channel_id) {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_CHANNEL)
     }
-
     const interactions = createInteractions(panelDb.interactions)
-
     const validChannels = await DashboardService.getCachedChannelsOrFresh(
-      panelDb.channel_id
+      panelGuilId
     )
 
-    if (isChannelIdInArray(validChannels, panelDb.channel_id)) {
+    if (!isChannelIdInArray(validChannels, panelDb.channel_id)) {
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_CHANNEL)
     }
-    try {
-      const message = await fetch(
-        `${DISCORD_BASE_API}/channels/${panelDb.channel_id}/messages`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bot ${env.CLIENT_TOKEN}`,
-          },
-          body: JSON.stringify({
-            content: panelDb.message,
-            components: [
-              {
-                type: 1,
-                components: interactions,
-              },
-            ],
-          }),
-        }
-      )
-      const json = await message.json()
 
-      res.json({ id: json.id })
+    try {
+      const response = await discordApi({
+        uri: Routes.channelMessages(panelDb.channel_id),
+        method: 'POST',
+        origin: {
+          type: 'bot',
+        },
+        body: JSON.stringify({
+          content: panelDb.message,
+          components: [
+            {
+              type: 1,
+              components: interactions,
+            },
+          ],
+        }),
+      })
+
+      res.json({ id: response.id })
     } catch (error) {
       const err = error as Error
       lg.error(err.message)

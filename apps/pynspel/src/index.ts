@@ -13,6 +13,7 @@ import { MessageCreate } from 'events/messageCreate'
 import { RoleCreate } from 'events/roleCreate'
 import { RoleDelete } from 'events/roleDelete'
 import { RoleUpdate } from 'events/roleUpdate'
+import { _CommandService } from 'modules/command/command.service'
 import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
@@ -34,7 +35,7 @@ if (env.NODE_ENV === 'production') {
 const client = new Px({
   token: env.CLIENT_TOKEN,
   intents: 3276799,
-  commands: [new KickCommand(), new BanCommand()],
+  commands: [new KickCommand(new _CommandService()), new BanCommand()],
   // syncCommands: true,
   events: [
     new ChannelCreate(),
@@ -52,6 +53,18 @@ const client = new Px({
     new RoleUpdate(),
     new GuildUpdate(),
   ],
+  onCommandError(error) {
+    logger.error(error)
+    if (env.NODE_ENV === 'developement') {
+      console.error(error)
+    }
+  },
+  onEventError(error) {
+    logger.error(error)
+    if (env.NODE_ENV === 'developement') {
+      console.error(error)
+    }
+  },
 })
 
 client.exe()

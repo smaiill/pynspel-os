@@ -1,7 +1,7 @@
 import { Commands, InferModuleConfigType, Modules } from '@pynspel/common'
 import { ModuleServiceBase } from 'modules/module.service.base'
 
-class _CommandService extends ModuleServiceBase<'command'> {
+export class _CommandService extends ModuleServiceBase<'command'> {
   constructor() {
     super(Modules.command)
   }

@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import Aside from '~/app/dashboard/components/Aside'
 import { useFetchGuild } from '~/app/dashboard/hooks/useFetchGuild'
+import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
 import { useSetCurrentPanel } from '~/proxys/ticket'
@@ -21,6 +22,7 @@ const page = (props: Props) => {
   const {
     params: { panelId, id },
   } = props
+  useProtectedRoute()
   const { data: guildData } = useFetchGuild(id)
   const { isLoading, data } = useFetchPanel(panelId)
   const setCurrentPanel = useSetCurrentPanel()

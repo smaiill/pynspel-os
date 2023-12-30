@@ -48,6 +48,8 @@ app.use(
 app.use(express.urlencoded({ extended: false }))
 app.use(helmet())
 
+app.use('/static', express.static(path.join(process.cwd(), 'src/public')))
+
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -69,8 +71,6 @@ app.use(
     },
   })
 )
-
-app.use('/static', express.static(path.join(process.cwd(), 'src/public')))
 
 app.use(deserializeSession)
 app.use(rateLimiter)

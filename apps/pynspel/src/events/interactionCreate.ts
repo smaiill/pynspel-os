@@ -141,7 +141,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     await interaction.message.delete()
   }
-  private handleButton(interaction: ButtonInteraction) {
+  private async handleButton(interaction: ButtonInteraction) {
     const parsedButton = this.parseButtonAction(interaction.customId)
 
     if (!parsedButton?.action) {
@@ -150,21 +150,21 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     switch (parsedButton.action) {
       case ButtonAction.TranspileTicket:
-        this.handleTranspileTicket(parsedButton.third, interaction)
+        await this.handleTranspileTicket(parsedButton.third, interaction)
         break
       case ButtonAction.CreateTicket:
-        this.handleCreateTicket(parsedButton.third, interaction)
+        await this.handleCreateTicket(parsedButton.third, interaction)
         break
       case ButtonAction.CloseTicket:
         switch (parsedButton.third) {
           case 'channel':
-            this.handleCloseTicket(interaction)
+            await this.handleCloseTicket(interaction)
             break
           case 'confirm':
-            this.handleConfirmCloseTicket(interaction)
+            await this.handleConfirmCloseTicket(interaction)
             break
           case 'cancel':
-            this.handleCancelTicketClose(interaction)
+            await this.handleCancelTicketClose(interaction)
             break
           default:
             break
@@ -357,7 +357,9 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     return actionRowBuilder
   }
 
-  public async on(client: Client, interaction: Interaction) {
-    interaction.isButton() && this.handleButton(interaction)
+  public async on(_: Client, interaction: Interaction) {
+    if (interaction.isButton()) {
+      await this.handleButton(interaction)
+    }
   }
 }

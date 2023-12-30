@@ -1,9 +1,8 @@
 import { OAuth2User, SavedUser } from '@pynspel/types'
+import { Routes } from 'discord-api-types/v10'
 import { db } from 'modules/db'
-import { DiscordRoutes } from 'utils/constants'
+import { discordApi } from 'utils/discord'
 import { redis } from 'utils/redis'
-
-// TODO: Move this to redis cache.
 class _UserService {
   public async getDiscordUser(
     accessToken: string,
@@ -16,23 +15,20 @@ class _UserService {
       }
     }
 
-    const response = await fetch(DiscordRoutes.USERS_ME, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const response = await discordApi({
+      uri: Routes.user(),
+      origin: {
+        type: 'user',
+        token: accessToken,
       },
+      method: 'GET',
     })
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch Discord user')
-    }
-
-    const jsonRes = await response.json()
-
     if (userId) {
-      redis.user.setUser(userId, jsonRes)
+      redis.user.setUser(userId, response)
     }
 
-    return jsonRes
+    return response
   }
 
   async getUserByDiscordId(discordId: string) {

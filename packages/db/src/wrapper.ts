@@ -125,7 +125,6 @@ export class _DbWrapper {
     )
 
     const guildExists = !!exists
-    console.log({ guildExists })
 
     if (!guildExists) {
       await this.createGuild({ guild_id, avatar, name, owner })

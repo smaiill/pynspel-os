@@ -1,5 +1,5 @@
 import { Client, ClientOptions, Events, Interaction } from 'discord.js'
-import { CommandClass, OnCommand } from './command'
+import { CommandClass } from './command'
 import { EventClass } from './event'
 
 export interface PxOptions extends ClientOptions {
@@ -28,7 +28,6 @@ const _customLog = (color: ColorValue, content: unknown) =>
 export class Px extends Client {
   private _token: string
   private _events: EventClass[]
-  private _commands = new Map<string, OnCommand>()
   private _syncCommands: boolean
   private _commandsArray: any[] = []
   private _onCommandError?: (error: Error) => void
@@ -65,7 +64,6 @@ export class Px extends Client {
   private __setupCommands(commands: CommandClass[]) {
     for (const command of commands) {
       this._commandsArray.push(command as unknown as never)
-      this._commands.set(command.name, command.on)
     }
 
     this.on(Events.InteractionCreate, async (interaction: Interaction) => {
@@ -73,14 +71,16 @@ export class Px extends Client {
         return
       }
 
-      const handledCommand = this._commands.get(interaction.commandName)
+      const command = this._commandsArray.find(
+        (_command) => _command.name === interaction.commandName
+      )
 
-      if (!handledCommand) {
+      if (!command) {
         return
       }
 
       try {
-        await handledCommand(interaction)
+        await command.on(interaction)
       } catch (error) {
         this._onCommandError?.(error as Error)
       }

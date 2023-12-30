@@ -11,7 +11,7 @@ class LoggingSevice extends ModuleServiceBase<'logging'> {
   public async guildMemberAdd(member: GuildMember) {
     const config = await this.getFreshConfigOrCached(member.guild.id)
 
-    if (!config || !config.user_join || !config.channel) {
+    if (!config.user_join || !config.channel) {
       return
     }
 
@@ -29,7 +29,7 @@ class LoggingSevice extends ModuleServiceBase<'logging'> {
   public async guildMemberRemove(member: MemberRemove) {
     const config = await this.getFreshConfigOrCached(member.guild.id)
 
-    if (!config || !config.user_left || !config.channel) {
+    if (!config.user_left || !config.channel) {
       return
     }
 

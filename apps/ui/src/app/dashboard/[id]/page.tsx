@@ -1,4 +1,5 @@
 'use client'
+import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { useUserValue } from '~/proxys/user'
 import { Typography } from '~/ui/typography/Typography'
@@ -15,6 +16,7 @@ export interface Props {
 }
 
 const page = ({ params }: Props) => {
+  useProtectedRoute()
   const user = useUserValue()
   const { data: guildData, isLoading } = useFetchGuild(params.id)
 

@@ -2,6 +2,7 @@ import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import { Client, GuildMember, PartialGuildMember } from 'discord.js'
 import { loggingService } from 'modules/logging/logging.service'
+import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 
 export type MemberRemove = GuildMember | PartialGuildMember
@@ -26,7 +27,7 @@ export class GuildMemberRemove extends BaseEvent<'guildMemberRemove'> {
   }
 
   public async on(_: Client, member: MemberRemove) {
-    this.loggingService.guildMemberRemove(member)
+    this.loggingService.guildMemberRemove(member).catch(logger.error)
 
     await this.removeGuildForUser(member.id, member.guild.id)
   }

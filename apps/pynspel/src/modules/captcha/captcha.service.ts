@@ -14,13 +14,14 @@ class CaptchaService extends ModuleServiceBase<'captcha'> {
     const res = await this.getFreshConfigOrCached(guildId)
 
     if (!res.verification_channel) {
-      return console.log('Guild has no verification channel')
+      return
     }
 
     const channel = await client.channels.fetch(res.verification_channel)
 
     if (!channel || channel.type !== ChannelType.GuildText) {
-      return console.log('Invalid channel')
+      // TODO: Set channel = null in db.
+      return
     }
 
     const captcha = new CaptchaManager({ ...res })

@@ -1,11 +1,11 @@
 import { BaseCommand } from '@pynspel/px'
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js'
 import { env } from 'utils/env'
-import { commandService } from '../command.service'
+import { logger } from 'utils/logger'
+import { _CommandService } from '../command.service'
 
 export class KickCommand extends BaseCommand {
-  private commandService = commandService
-  constructor() {
+  constructor(private service: _CommandService) {
     super()
     this.setName('kick')
       .setDescription('Kick a member of your server')
@@ -31,45 +31,63 @@ export class KickCommand extends BaseCommand {
       'No reason specified'
 
     if (!interaction.guild) {
-      await interaction.reply('Invalid guild')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Unknown guild.',
+      })
       return
     }
 
-    const isCommandActive = this.commandService.isCommandActive(
+    const isCommandActive = await this.service.isCommandActive(
       interaction.guild.id,
       'kick'
     )
 
     if (!isCommandActive) {
-      await interaction.reply('Command is not active')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Command is not active',
+      })
       return
     }
 
     if (!user) {
-      await interaction.reply('Invalid user')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Invalid user',
+      })
       return
     }
 
     const member = await interaction.guild.members.fetch(user.id)
 
     if (!member.kickable) {
-      await interaction.reply('I cant kick the user')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'I cant kick the user',
+      })
       return
     }
 
     try {
       if (env.NODE_ENV === 'developement') {
-        console.log(`Should kick the member ${member.id} in production`)
+        await interaction.reply(
+          `Should kick the member ${member.id} in production`
+        )
         return
       }
 
       await member.kick(reason)
-      await interaction.reply(
-        `${member.displayName} has been kicked from the server`
-      )
+      await interaction.reply({
+        content: `${member.displayName} has been kicked from the server`,
+        ephemeral: true,
+      })
     } catch (error) {
-      console.error(error)
-      await interaction.reply('An error occurred while kicking the user')
+      logger.error(error)
+      await interaction.reply({
+        content: 'An error occurred while kicking the user',
+        ephemeral: true,
+      })
     }
   }
 }

@@ -4,11 +4,11 @@ import {
   RedisUserGuild,
   SavedGuild,
 } from '@pynspel/types'
-import { ChannelType } from 'discord-api-types/v10'
+import { ChannelType, Routes } from 'discord-api-types/v10'
 import { clientService } from 'modules/client/client.service'
 import { db } from 'modules/db'
 import { guildService } from 'modules/services/guild.service'
-import { DiscordRoutes } from 'utils/constants'
+import { discordApi } from 'utils/discord'
 import { redis } from 'utils/redis'
 
 export type FetchUserGuilds =
@@ -23,15 +23,16 @@ class _DashboardService {
     userId: string
   ): Promise<FetchUserGuilds> {
     const userCachedGuilds = await redis.user.getGuilds(userId)
-    console.log({ userCachedGuilds })
-    if (!userCachedGuilds) {
-      const response = await fetch(DiscordRoutes.USERS_GUILDS, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
 
-      const userGuilds = await response.json()
+    if (!userCachedGuilds) {
+      const userGuilds = await discordApi({
+        uri: Routes.userGuilds(),
+        origin: {
+          type: 'user',
+          token: accessToken,
+        },
+        method: 'GET',
+      })
 
       redis.user.setGuilds(userId, userGuilds)
 
@@ -51,11 +52,11 @@ class _DashboardService {
   ): Promise<DiscordGuild[]> {
     const { cache, guilds } = await this.fetchUserGuilds(accessToken, userId)
 
-    console.log({ cache, guilds })
     if (cache) {
       const guildsWithData = [] as DiscordGuild[]
 
       for (const cachedGuild of guilds) {
+        // TODO: Refactor this in the future to store all in the cache
         const isAdminOrOwner = this.isAdmin(cachedGuild.permissions)
 
         if (isAdminOrOwner) {
@@ -101,7 +102,7 @@ class _DashboardService {
     }
 
     const channels = await this._guildService.fetchChannels(guildId)
-
+    console.log({ channels })
     const formatedChannels = channels
       .filter((channel) =>
         [

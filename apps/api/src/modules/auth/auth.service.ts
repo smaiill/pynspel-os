@@ -1,11 +1,12 @@
 import { HttpStatus, OAuth2TokenResponse } from '@pynspel/types'
+import { Routes } from 'discord-api-types/v10'
 import { Request } from 'express'
 import { db } from 'modules/db'
 import { UserDB } from 'modules/user/user.db'
 import { UserService } from 'modules/user/user.service'
 import { URLSearchParams } from 'url'
-import { DiscordRoutes } from 'utils/constants'
 import { _encrypt } from 'utils/crypto'
+import { discordApi } from 'utils/discord'
 import { env } from 'utils/env'
 import { HttpException } from 'utils/error'
 import { serializeSession } from 'utils/session'
@@ -25,15 +26,16 @@ class _AuthService {
       code: code.toString(),
     }).toString()
 
-    const res = await fetch(DiscordRoutes.OAUTH2_TOKEN, {
-      method: 'POST',
+    const response = await discordApi({
+      uri: Routes.oauth2TokenExchange(),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body,
+      method: 'POST',
     })
 
-    return await res.json()
+    return response
   }
 
   private async deleteSessionInDb(sessionId: string) {
@@ -55,12 +57,13 @@ class _AuthService {
       token: accessToken,
     }).toString()
 
-    await fetch(DiscordRoutes.OAUTH2_REVOKE, {
-      method: 'POST',
+    await discordApi({
+      uri: Routes.oauth2TokenRevocation(),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body,
+      method: 'POST',
     })
 
     await this.deleteSessionInDb(sessionId)

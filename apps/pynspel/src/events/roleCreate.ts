@@ -14,7 +14,7 @@ export class RoleCreate extends BaseEvent<'roleCreate'> {
       color: role.color,
       id: role.id,
       name: role.name,
-      permissions: String(role.permissions.bitfield),
+      permissions: role.permissions.bitfield.toString(),
     })
   }
 

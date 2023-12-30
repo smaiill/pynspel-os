@@ -21,10 +21,6 @@ export class GuildMemberUpdate extends BaseEvent<'guildMemberUpdate'> {
     super('guildMemberUpdate')
   }
 
-  private hasAdminPermissions(bitfield: number) {
-    return (bitfield & 0x8) === 0x8
-  }
-
   private shouldUpdateUserGuildInCache(
     oldMember: ShouldUpdateUserGuildInCache,
     newMember: ShouldUpdateUserGuildInCache
@@ -58,11 +54,6 @@ export class GuildMemberUpdate extends BaseEvent<'guildMemberUpdate'> {
   }
 
   public async on(_: Client, oldMember: GuildMember, newMember: GuildMember) {
-    console.log({
-      old: oldMember.guild.ownerId === oldMember.id,
-      new: newMember.guild.ownerId === newMember.id,
-    })
-
     const shouldUpdateCache = this.shouldUpdateUserGuildInCache(
       {
         permissions: oldMember.permissions.bitfield.toString(),

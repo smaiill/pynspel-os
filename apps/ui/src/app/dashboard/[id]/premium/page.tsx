@@ -1,6 +1,7 @@
 'use client'
 import { GetGuildPremiumApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
+import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { fetchApi } from '~/utils/fetchApi'
@@ -19,6 +20,8 @@ type Props = {
 }
 
 const page = ({ params }: Props) => {
+  useProtectedRoute()
+
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(
     params.id
   )

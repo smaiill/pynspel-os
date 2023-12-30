@@ -15,13 +15,13 @@ export class RoleUpdate extends BaseEvent<'roleUpdate'> {
       {
         id: oldRole.id,
         name: oldRole.name,
-        permissions: String(oldRole.permissions.bitfield),
+        permissions: oldRole.permissions.bitfield.toString(),
         color: oldRole.color,
       },
       {
         id: newRole.id,
         name: newRole.name,
-        permissions: String(newRole.permissions.bitfield),
+        permissions: newRole.permissions.bitfield.toString(),
         color: newRole.color,
       }
     )

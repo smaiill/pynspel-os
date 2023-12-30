@@ -1,6 +1,7 @@
 import { BaseCommand } from '@pynspel/px'
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js'
 import { env } from 'utils/env'
+import { logger } from 'utils/logger'
 import { commandService } from '../command.service'
 
 export class BanCommand extends BaseCommand {
@@ -31,47 +32,65 @@ export class BanCommand extends BaseCommand {
       'No reason specified'
 
     if (!interaction.guild) {
-      await interaction.reply('Invalid guild')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Unknown guild.',
+      })
       return
     }
 
-    const isCommandActive = this.commandService.isCommandActive(
+    const isCommandActive = await this.commandService.isCommandActive(
       interaction.guild.id,
       'ban'
     )
 
     if (!isCommandActive) {
-      await interaction.reply('Command is not active')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Command is not active',
+      })
       return
     }
 
     if (!user) {
-      await interaction.reply('Invalid user')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'Invalid user',
+      })
       return
     }
 
     const member = await interaction.guild.members.fetch(user.id)
 
     if (!member.bannable) {
-      await interaction.reply('I cant ban the user')
+      await interaction.reply({
+        ephemeral: true,
+        content: 'I cant ban the user',
+      })
       return
     }
 
     try {
       if (env.NODE_ENV === 'developement') {
-        console.log(`Should ban the member ${member.id} in production`)
+        await interaction.reply(
+          `Should ban the member ${member.id} in production`
+        )
         return
       }
 
       await member.ban({
         reason,
       })
-      await interaction.reply(
-        `${member.displayName} has been banned from the server`
-      )
+      await interaction.reply({
+        content: `${member.displayName} has been banned from the server`,
+        ephemeral: true,
+      })
     } catch (error) {
-      console.error(error)
-      await interaction.reply('An error occurred while banning the user')
+      logger.error(error)
+      await interaction.reply({
+        content: 'An error occurred while banning the user',
+        ephemeral: true,
+      })
     }
   }
 }

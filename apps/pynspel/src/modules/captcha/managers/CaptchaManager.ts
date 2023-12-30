@@ -1,6 +1,7 @@
 import { InferModuleConfigType, Modules } from '@pynspel/common'
 import { createCanvas } from 'canvas'
 import { GuildMember, Message, TextChannel } from 'discord.js'
+import { logger } from 'utils/logger'
 import { captchaEmbeds } from '../captcha.embeds'
 
 export type CaptchaConstructor = {
@@ -209,7 +210,7 @@ export class CaptchaManager {
         }
       })
       .catch(async (err) => {
-        console.error(err)
+        logger.error(err)
         await member
           .kick('Reached max retries of the captcha.')
           .catch(console.error)

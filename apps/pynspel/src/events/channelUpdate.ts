@@ -47,7 +47,7 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
   }
 
   public async on(_: Client, oldChannel: Channel, newChannel: Channel) {
-    this.manageCache(oldChannel, newChannel)
+    await this.manageCache(oldChannel, newChannel)
   }
 }
 

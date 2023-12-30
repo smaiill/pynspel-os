@@ -1,5 +1,6 @@
 'use client'
 import { Modules } from '@pynspel/common'
+import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { FlexColumn } from '~/layouts/Flex'
 import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchModule } from '../../hooks/modules'
@@ -15,6 +16,7 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
+  useProtectedRoute()
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
   const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
     Modules.captcha,

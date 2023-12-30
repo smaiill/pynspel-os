@@ -20,7 +20,7 @@ export const useCurrentGuildChannels = (type?: ChannelType) => {
     return []
   }
 
-  if (!type) {
+  if (type === undefined) {
     return guild.channels
   }
 

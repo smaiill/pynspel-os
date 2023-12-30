@@ -73,18 +73,12 @@ class _TicketService extends ModuleServiceBase<'ticket'> {
     return html
   }
 
-  private async generateHTML(
+  private generateHTML(
     messages: TranspileMessage[],
     metadata: TranspileMetadata
   ) {
-    const cssLink =
-      env.NODE_ENV === 'developement'
-        ? 'http://localhost:3005/static/transpile/index.min.css'
-        : ''
-    const jsLink =
-      env.NODE_ENV === 'developement'
-        ? 'http://localhost:3005/static/transpile/index.min.js'
-        : ''
+    const cssLink = `${env.API}/static/transpile/index.min.css`
+    const jsLink = `${env.API}/static/transpile/index.min.js`
     return `
     <!DOCTYPE html>
     <html lang="en">

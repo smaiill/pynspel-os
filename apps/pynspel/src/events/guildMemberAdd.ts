@@ -36,29 +36,22 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
     ])
   }
   public async on(client: Client, member: GuildMember) {
-    try {
-      this.addUserGuildCache({
-        guildId: member.guild.id,
-        permissions: member.permissions.bitfield.toString(),
-        userId: member.id,
-      })
-      this.loggingService.guildMemberAdd(member)
+    this.addUserGuildCache({
+      guildId: member.guild.id,
+      permissions: member.permissions.bitfield.toString(),
+      userId: member.id,
+    }).catch(logger.error)
 
-      const passedRaidCounter = await this.raidCounterService.handleMember(
-        member
-      )
+    this.loggingService.guildMemberAdd(member).catch(logger.error)
 
-      if (!passedRaidCounter) {
-        return
-      }
+    const passedRaidCounter = await this.raidCounterService.handleMember(member)
 
-      if (member.user.bot) {
-        return
-      }
-
-      await captchaService.handleMember(client, member)
-    } catch (error) {
-      logger.error(error)
+    if (!passedRaidCounter) {
+      return
     }
+    if (member.user.bot) {
+      return
+    }
+    await captchaService.handleMember(client, member)
   }
 }
