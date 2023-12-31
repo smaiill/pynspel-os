@@ -129,6 +129,8 @@ const Aside = () => {
           type="normal"
           href={`/premium`}
           icon={<Home strokeWidth={1.5} size={20} />}
+          disabled={!guild?.isOwner}
+          reason="Not owner"
         >
           Premium
         </AsideItem>

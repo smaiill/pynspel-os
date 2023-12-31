@@ -1,6 +1,8 @@
 'use client'
 import { GetGuildPremiumApi } from '@pynspel/types'
 import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
@@ -25,6 +27,7 @@ const page = ({ params }: Props) => {
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(
     params.id
   )
+  const router = useRouter()
   const { data: guildPremium, isLoading: isGuildPremiumLoading } =
     useQuery<GetGuildPremiumApi>({
       queryKey: ['premium', params.id],
@@ -35,13 +38,25 @@ const page = ({ params }: Props) => {
 
   const { t } = useTranslation()
 
-  if (isGuildLoading || isGuildPremiumLoading || !guildData || !guildPremium) {
+  useEffect(() => {
+    if (guildData && !guildData?.isOwner) {
+      return router.push(`/dashboard/${guildData.guild_id}`)
+    }
+  }, [guildData])
+
+  if (isGuildLoading || !guildData) {
+    return <LoadingModule />
+  }
+
+  if (isGuildPremiumLoading || !guildPremium) {
     return <LoadingModule />
   }
 
   return (
     <ModuleLayout>
-      <Alert visual="info">{t('subscription.no_advantage_for_now')}</Alert>
+      {!guildPremium.subscription || guildPremium.status !== 'active' ? (
+        <Alert visual="info">{t('subscription.no_advantage_for_now')}</Alert>
+      ) : null}
 
       <FlexColumn
         style={{

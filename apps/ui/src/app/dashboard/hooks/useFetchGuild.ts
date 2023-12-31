@@ -11,6 +11,7 @@ export const useFetchGuild = (guildId: string) => {
     queryKey: ['guild', guildId],
     queryFn: () => getGuild({ guildId }),
     onSuccess(guild) {
+      console.log(guild)
       setCurrentGuild(guild)
     },
   })

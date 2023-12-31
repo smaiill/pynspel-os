@@ -44,7 +44,11 @@ class _DashboardController {
 
     const guild = await this._dashboardService.getGuildConfiguration(id)
 
-    res.json(guild)
+    res.json({
+      ...guild,
+      isOwner: guild.owner === req.user?.discordId,
+      owner: '',
+    })
   }
 }
 

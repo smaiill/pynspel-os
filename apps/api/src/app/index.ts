@@ -48,7 +48,7 @@ app.use(
 app.use(express.urlencoded({ extended: false }))
 app.use(helmet())
 
-app.use('/static', express.static(path.join(process.cwd(), 'src/public')))
+app.use('/static', cors(), express.static(path.join(process.cwd(), 'public')))
 
 app.use(
   cors({

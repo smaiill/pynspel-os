@@ -85,14 +85,14 @@ class _TicketService extends ModuleServiceBase<'ticket'> {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="${cssLink}">
+        <link crossorigin="anonymous" rel="stylesheet" href="${cssLink}">
     </head>
     <body>
       <div id="metadata"></div>
       <div id="messages"></div>
 
       
-    <script src="${jsLink}"></script>
+    <script crossorigin="anonymous" src="${jsLink}"></script>
     <script>
       load(${JSON.stringify(messages)}, ${JSON.stringify(metadata)})
     </script>

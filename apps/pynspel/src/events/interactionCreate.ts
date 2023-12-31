@@ -102,15 +102,12 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const row = this.getChannelClosedResponse()
 
     await channel.send({
-      content: 'Channel closed',
+      content: 'This channel was closed',
       components: [row],
     })
   }
 
-  private async handleTranspileTicket(
-    thirdAction: string,
-    inetraction: ButtonInteraction
-  ) {
+  private async handleTranspileTicket(inetraction: ButtonInteraction) {
     const channel = inetraction.channel
 
     if (!channel || channel.type !== ChannelType.GuildText) {
@@ -150,7 +147,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     switch (parsedButton.action) {
       case ButtonAction.TranspileTicket:
-        await this.handleTranspileTicket(parsedButton.third, interaction)
+        await this.handleTranspileTicket(interaction)
         break
       case ButtonAction.CreateTicket:
         await this.handleCreateTicket(parsedButton.third, interaction)
@@ -218,7 +215,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const buttons = this.areUSureToClose()
     await interaction.channel
       .send({
-        content: 'Are you sure ?',
+        content: 'Are you sure to close the ticket ?',
         components: [buttons],
       })
       .catch((err) => {
@@ -252,7 +249,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     interaction: ButtonInteraction
   ) {
     if (!interaction.guild) {
-      return console.log('Invalid guild !')
+      return
     }
 
     const [interactionDB] = await db.exec<{
@@ -273,7 +270,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     if (!interactionDB) {
       return interaction.reply({
-        content: `Invalid interaction`,
+        content: `This interaction is not valid`,
         ephemeral: true,
       })
     }
@@ -299,7 +296,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       interactionDB.parent_id
     )
 
-    if (parentCategory && parentCategory.type !== ChannelType.GuildCategory) {
+    if (!parentCategory || parentCategory.type !== ChannelType.GuildCategory) {
       return interaction.reply({
         content:
           "Couldn't open a ticket, contact the server support `INVALID_GUILD_CATEGORY`",

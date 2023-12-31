@@ -1,6 +1,6 @@
 'use client'
-import { CustomLink } from '~/components/Link'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
+import { ButtonPrimary } from '~/ui/button/Button'
 import { css } from '../../styled-system/css'
 
 const NotFound = () => {
@@ -21,7 +21,9 @@ const NotFound = () => {
           alt="404"
         />
 
-        <CustomLink href="/">Go home</CustomLink>
+        <ButtonPrimary onClick={() => (window.location = '/')}>
+          Go home
+        </ButtonPrimary>
       </div>
     </HeaderAndFooterLayout>
   )

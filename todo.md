@@ -9,6 +9,7 @@
 - View twitter favs and make sure that everything is correct
 - Refresh token when expire.
 - only keep the 9.99 product
+- tickets not loading js and css files.
 
 # Front
 
@@ -17,6 +18,7 @@
 - Terms
 - Privacy
 - 404 page.
+- Create "Teams" page and put all roles on me, "front end enginer", "backend enginner", etc...
 
 # Bot
 

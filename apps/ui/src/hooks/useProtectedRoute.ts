@@ -10,5 +10,5 @@ export const useProtectedRoute = () => {
     if (!user?.id) {
       return router.push(`/?error=E_UNAUTHORIZED`)
     }
-  }, [])
+  }, [user])
 }

@@ -61,7 +61,10 @@ type AsideItemModule = {
   label: string
 } & AsideItemBase<'module'>
 
-type AsideItemNormal = AsideItemBase<'normal'>
+type AsideItemNormal = AsideItemBase<'normal'> & {
+  disabled?: boolean
+  reason?: string
+}
 
 type AsideItemProps<T extends AsideItemTypes> = T extends 'module'
   ? AsideItemModule
@@ -81,7 +84,10 @@ const AsideItem = <Type extends AsideItemTypes>(
   const { mutate } = useMutateModuleState(props.name)
 
   const handleClick = () => {
-    if (type === 'module' && (!props.globalActive || !props.isActiveForGuild)) {
+    if (
+      (type === 'module' && (!props.globalActive || !props.isActiveForGuild)) ||
+      (type === 'normal' && props.disabled)
+    ) {
       return
     }
 
@@ -90,6 +96,8 @@ const AsideItem = <Type extends AsideItemTypes>(
 
   const isModuleAndGlobalDisabled = type === 'module' && !props.globalActive
   const isActive = props?.isActiveForGuild
+
+  const isDisabled = type === 'normal' && props.disabled
 
   const handleToggleModule = (e: MouseEvent<HTMLInputElement>) => {
     e.stopPropagation()
@@ -116,7 +124,8 @@ const AsideItem = <Type extends AsideItemTypes>(
       className={cx(styles, isModuleAndGlobalDisabled && globalInactive)}
       data-disabled={
         isModuleAndGlobalDisabled ||
-        (type === 'module' && !props.isActiveForGuild)
+        (type === 'module' && !props.isActiveForGuild) ||
+        (type === 'normal' && isDisabled)
       }
       style={
         pathName === props.href.slice(1, props.href.length)
@@ -160,6 +169,7 @@ const AsideItem = <Type extends AsideItemTypes>(
       ) : type === 'module' ? (
         <Checkbox size={0.8} checked={isActive} onClick={handleToggleModule} />
       ) : null}
+      {isDisabled ? <Chip visual="warn">{props.reason}</Chip> : null}
     </div>
   )
 }

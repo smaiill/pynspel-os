@@ -1,6 +1,7 @@
 import { BaseEvent } from '@pynspel/px'
 import { db } from 'db'
 import { Client, Guild } from 'discord.js'
+import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 
 type ShouldUpdateGuild = {
@@ -53,10 +54,14 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
       newGuildToEdit.owner = true
     }
 
-    await Promise.allSettled([
+    await Promise.all([
       redis.user.setGuilds(oldOwner.userId, oldOwnerGuilds),
       redis.user.setGuilds(newOwner.userId, newOwnerGuilds),
-    ])
+    ]).catch(async (e) => {
+      logger.error(e)
+      await redis.user.invalidateGuilds(oldOwner.userId)
+      await redis.user.invalidateGuilds(newOwner.userId)
+    })
   }
 
   public async on(_: Client, oldGuild: Guild, newGuild: Guild) {
@@ -66,7 +71,6 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
     )
 
     if (shouldUpdateGuild) {
-      // TODO: Disable the recurring payment for the guild, and cancel it at period.
       await this._db.updateGuild({
         guild_id: newGuild.id,
         avatar: newGuild.icon,
@@ -76,11 +80,24 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
     }
 
     if (oldGuild.ownerId !== newGuild.ownerId) {
-      await this.swapOwnershipInCache(
-        { userId: oldGuild.ownerId },
-        { userId: newGuild.ownerId },
-        newGuild.id
-      )
+      // TODO: Disable the recurring payment for the guild, and cancel it at period.
+      await this._db
+        .exec(
+          'UPDATE guilds_subscriptions SET cancel_at_period_end = $1 WHERE guild_id = $2',
+          [true, newGuild.id]
+        )
+        .catch(logger.error)
+
+      try {
+        await this.swapOwnershipInCache(
+          { userId: oldGuild.ownerId },
+          { userId: newGuild.ownerId },
+          newGuild.id
+        )
+      } catch (error) {
+        await redis.user.invalidateGuilds(oldGuild.ownerId)
+        await redis.user.invalidateGuilds(newGuild.ownerId)
+      }
     }
   }
 }

@@ -150,7 +150,7 @@ class _DashboardService {
 
   public async getGuildConfiguration(guildId: string): Promise<ApiGuild> {
     const query =
-      'SELECT id, guild_id, name, avatar, bot, plan FROM guilds WHERE guild_id = $1'
+      'SELECT id, guild_id, name, avatar, bot, plan, owner FROM guilds WHERE guild_id = $1'
     const values = [guildId]
 
     const channels = await this.getCachedChannelsOrFresh(guildId)
