@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import clsx from 'clsx'
-import { Check, Plus, X } from 'lucide-react'
+import { Check, Plus, Trash } from 'lucide-react'
 import {
   Dispatch,
   HTMLAttributes,
@@ -348,19 +348,22 @@ const InputSelect = <V extends any>(
               justifyContent: 'space-between',
               alignItems: 'center',
               p: '10px 15px',
-              border: '1px solid red',
-              bg: 'rgba(255, 0, 0, .1)',
               cursor: 'pointer',
               transition: '.3s',
+              bg: 'rgba(255, 0, 0, .05)',
+              border: '1px solid rgba(255, 0, 0, .1)',
 
               _hover: {
-                bg: 'rgba(255, 0, 0, .3)',
+                bg: 'rgba(255, 0, 0, .15)',
+                border: '1px solid rgba(255, 0, 0, .3)',
               },
             })}
+            onClick={() => (multi ? setValue([]) : setValue(null))}
           >
-            <X
-              onClick={() => (multi ? setValue([]) : setValue(null))}
-              className={css({ color: 'red.500' })}
+            <Trash
+              className={css({
+                color: 'red.500',
+              })}
             />
           </div>
         ) : null}

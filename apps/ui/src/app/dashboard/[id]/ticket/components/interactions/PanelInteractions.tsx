@@ -16,7 +16,12 @@ import { useCurrentGuildCategorys } from '~/proxys/dashboard'
 import { ButtonDanger, ButtonOutline, ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import { cva, RecipeVariantProps } from '../../../../../../../styled-system/css'
+import { Label } from '~/ui/Label'
+import {
+  css,
+  cva,
+  RecipeVariantProps,
+} from '../../../../../../../styled-system/css'
 import { CreateInteraction } from './CreateInteraction'
 import {
   CreateOrUpdateInteractionPayload,
@@ -33,6 +38,7 @@ interface DiscordButtonProps {
     emoji?: string
     name?: string
   }
+  live?: boolean
 }
 
 const discordButtonRecipe = cva({
@@ -179,13 +185,20 @@ const Interaction = (props: any) => {
   return (
     <DashboardCard>
       <FlexColumn style={{ gap: 10 }}>
-        <Flex style={{ gap: 5, justifyContent: 'space-between' }}>
+        <Flex
+          style={{
+            gap: 5,
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
           <DiscordButton
             button={{
               style: watchedStyle,
               name: watchedName,
               emoji: watchedEmoji,
             }}
+            live
           />
           <ButtonDanger
             onClick={() => setIsOpen(true)}
@@ -206,13 +219,21 @@ const Interaction = (props: any) => {
           >
             {t('modules.ticket.panel.interactions.category')}
           </InputSelect>
-          <ButtonStylePicker
-            default={getValues('style')}
-            onChange={handleStyleChange}
-          />
-          <DiscordEmojiPicker onClick={() => setEmojis((prevV) => !prevV)}>
-            {watchedEmoji}
-          </DiscordEmojiPicker>
+          <FlexColumn className={css({ gap: '5px' })}>
+            <Label>Button color</Label>
+            <ButtonStylePicker
+              default={getValues('style')}
+              onChange={handleStyleChange}
+            />
+          </FlexColumn>
+
+          <FlexColumn className={css({ gap: '5px' })}>
+            <Label>Button emoji</Label>
+
+            <DiscordEmojiPicker onClick={() => setEmojis((prevV) => !prevV)}>
+              {watchedEmoji}
+            </DiscordEmojiPicker>
+          </FlexColumn>
 
           {emojis ? <EmojiPicker onEmojiClick={handleEmojiClick} /> : null}
           {(errors as { atLeastOne?: string })?.atLeastOne ? (

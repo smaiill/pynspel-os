@@ -76,6 +76,7 @@ export const fr: Translation<TranslationBase> = {
       mute_time: 'Durée du mute',
       mute_unit: 'Unité du mute',
       channels_ignore: 'Les salons à ignorer',
+      updated: 'Module mis a jour',
     },
     counter_raid: {
       interval_to_activate:
@@ -160,6 +161,6 @@ export const fr: Translation<TranslationBase> = {
   },
   errors: {
     E_V_NAME_OR_EMOJI: 'Vous devez au moins avoir un nom ou un emoji',
-    E_GENERIC: "Une erreur s'est produite réssayer d'un un instant",
+    E_GENERIC: "Une erreur s'est produite réssayer",
   },
 }

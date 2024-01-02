@@ -19,9 +19,11 @@ const typo = cva({
       },
       h2: {
         fontSize: '1.8rem',
+        fontWeight: 400,
       },
       h3: {
         fontSize: '1.6rem',
+        fontWeight: 600,
       },
       h4: {
         fontSize: '1.4rem',

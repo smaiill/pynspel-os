@@ -75,7 +75,7 @@ const page = () => {
           <ButtonPrimary
             onClick={() => {
               window.open(
-                'https://discord.com/api/oauth2/authorize?client_id=1107603401207984128&permissions=8&scope=bot',
+                `https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&permissions=8&scope=bot`,
                 '_blank'
               )
             }}

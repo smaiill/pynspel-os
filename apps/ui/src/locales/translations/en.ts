@@ -75,6 +75,7 @@ export const en: Translation<TranslationBase> = {
       mute_time: 'Mute Duration',
       mute_unit: 'Mute Unit',
       channels_ignore: 'Channels to Ignore',
+      updated: 'Module updated',
     },
     counter_raid: {
       interval_to_activate:

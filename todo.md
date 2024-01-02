@@ -2,14 +2,15 @@
 
 - Docker.
 - Create a global Snowflake and transform all ids to string in DB and more.
-- Reduce price to 5€
+  -- Reduce price to 5€
 - Prendre un domaine + hebergement
   -- Disable les paiments
 
 # API
 
-- Send mails.
-  -- View twitter favs and make sure that everything is correct
+-- Send mails.
+-- View twitter favs and make sure that everything is correct
+
 - Refresh token when expire.
   -- only keep the 9.99 product
   -- tickets not loading js and css files.
@@ -29,9 +30,9 @@
 
 # Bot
 
-- Setup Shards.
-  -- Check All.
-  -- Remove some operations for bots. such as captcha.
+-- Setup Shards.
+-- Check All.
+-- Remove some operations for bots. such as captcha.
 
 # Features
 

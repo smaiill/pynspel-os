@@ -8,6 +8,7 @@ export type ModulesTranslationBase = {
     mute_time: {}
     mute_unit: {}
     channels_ignore: {}
+    updated: {}
   }
   captcha: {
     length: {

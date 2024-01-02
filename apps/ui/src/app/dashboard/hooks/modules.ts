@@ -1,6 +1,7 @@
 import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
 import { ModuleStateApi } from '@pynspel/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { useGlobalModulesState, useSetGlobalModules } from '~/proxys/modules'
 import { fetchApi } from '~/utils/fetchApi'
@@ -44,6 +45,7 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
   const queryClient = useQueryClient()
   const currentGuild = useCurrentGuildValue()
   const [globalModules] = useGlobalModulesState()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: async (newValue: boolean) => {
@@ -90,11 +92,11 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
         }
       )
 
-      pxToast('success', 'Module updated')
+      pxToast('success', t('modules.common.updated'))
     },
 
     onError() {
-      pxToast('error', 'Error while updating module.')
+      pxToast('error', t('errors.E_GENERIC'))
     },
   })
 }
@@ -105,6 +107,7 @@ export const useMutateModule = <M extends ModulesTypes>(
 ) => {
   const queryClient = useQueryClient()
   const currentGuild = useCurrentGuildValue()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: (moduleData: InferModuleConfigType<M>) =>
@@ -118,14 +121,14 @@ export const useMutateModule = <M extends ModulesTypes>(
         }
       ),
     onSuccess(data) {
-      pxToast('success', 'Module updated !')
+      pxToast('success', t('modules.common.updated'))
       queryClient.setQueryData(
         [`module_${module}`, currentGuild?.guild_id],
         data
       )
     },
     onError() {
-      pxToast('error', 'Error, retry again.')
+      pxToast('error', t('errors.E_GENERIC'))
     },
   })
 }

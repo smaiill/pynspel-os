@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { APIEmbed, APIEmbedField } from 'discord-api-types/v10'
-import { GanttChart, Image, Plus, Trash } from 'lucide-react'
+import { GanttChart, Plus, Trash } from 'lucide-react'
 import React from 'react'
 import {
   Controller,
@@ -47,7 +47,7 @@ const imgPlaceHolderStyle = css({
 const ImagePlaceHolder = ({ size }: { size: number }) => {
   return (
     <div style={{ padding: `${2 * size}px` }} className={imgPlaceHolderStyle}>
-      <Image strokeWidth={1} color="grey" size={2 * (size / 0.6)} />
+      <img strokeWidth={1} color="grey" size={2 * (size / 0.6)} />
     </div>
   )
 }

@@ -61,15 +61,17 @@ const TicketPanel = ({ panel }: TicketPanelProps) => {
       })}
     >
       <Typography as="span">{panel.name}</Typography>
-      <Trash
-        strokeWidth={1}
-        onClick={(e) => {
-          e.stopPropagation()
-          setIsOpen(true)
-        }}
-        color="red"
-        size={20}
-      />
+      <Flex className={css({ gap: '10px' })}>
+        <Trash
+          strokeWidth={1}
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsOpen(true)
+          }}
+          size={20}
+          className={css({ color: 'red.500' })}
+        />
+      </Flex>
 
       {open ? (
         <Modal>
