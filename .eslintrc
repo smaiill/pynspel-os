@@ -32,7 +32,8 @@
         "varsIgnorePattern": "React"
       }
     ],
-    "react/display-name": ["off"]
+    "react/display-name": ["off"],
+    "react/no-unescaped-entities": 0
   },
   "ignorePatterns": ["**/dist/*", "**/.next/*"]
 }

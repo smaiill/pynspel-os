@@ -1,9 +1,9 @@
 import { WebSocketBody, WebSocketOperations } from '@pynspel/types'
+import { Server } from 'ws'
 import { env } from '../utils/env'
 import { lg } from '../utils/logger'
-import { Server } from 'ws'
 
-const wss = new Server({ port: 4053 })
+const wss = new Server({ port: env.WS_PORT })
 
 let lastHeartbeatReceived = Date.now()
 export let IS_CLIENT_AVAILABLE = true

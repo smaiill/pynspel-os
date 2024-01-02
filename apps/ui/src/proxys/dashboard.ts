@@ -1,10 +1,8 @@
-import { SavedGuild } from '@pynspel/types'
+import { ApiGuild } from '@pynspel/types'
 import { ChannelType } from 'discord-api-types/v10'
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-const currentGuildAtom = atom<
-  (SavedGuild & { roles: any[]; channels: any[]; isOwner: boolean }) | null
->({
+const currentGuildAtom = atom<ApiGuild | null>({
   key: 'CURRENT_GUILD',
   default: null,
 })

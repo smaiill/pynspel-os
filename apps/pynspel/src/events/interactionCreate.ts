@@ -103,6 +103,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     await channel.send({
       content: 'This channel was closed',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       components: [row],
     })
   }
@@ -216,6 +218,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     await interaction.channel
       .send({
         content: 'Are you sure to close the ticket ?',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         components: [buttons],
       })
       .catch((err) => {
@@ -333,6 +337,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     await channel.send({
       content: interactionDB.message ?? undefined,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       components: [closeMessage],
     })
 

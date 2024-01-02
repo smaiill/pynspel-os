@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from 'recoil'
+import { atom, useRecoilState, useSetRecoilState } from 'recoil'
 
 const globalModules = atom<any>({
   key: 'GLOBAL_MODULES',
@@ -6,3 +6,4 @@ const globalModules = atom<any>({
 })
 
 export const useGlobalModulesState = () => useRecoilState(globalModules)
+export const useSetGlobalModules = () => useSetRecoilState(globalModules)

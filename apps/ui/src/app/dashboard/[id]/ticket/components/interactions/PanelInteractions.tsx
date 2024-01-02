@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SCHEMA_UPDATE_INTERACTION } from '@pynspel/common'
+import { EmojiClickData } from 'emoji-picker-react'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -15,11 +16,7 @@ import { useCurrentGuildCategorys } from '~/proxys/dashboard'
 import { ButtonDanger, ButtonOutline, ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
-import {
-  css,
-  cva,
-  RecipeVariantProps,
-} from '../../../../../../../styled-system/css'
+import { cva, RecipeVariantProps } from '../../../../../../../styled-system/css'
 import { CreateInteraction } from './CreateInteraction'
 import {
   CreateOrUpdateInteractionPayload,
@@ -32,7 +29,7 @@ type Props = {
 
 interface DiscordButtonProps {
   button: {
-    style: number
+    style: 1 | 2 | 3 | 4
     emoji?: string
     name?: string
   }
@@ -97,7 +94,6 @@ export const DiscordButton = ({
 
 const PanelInteractions = (props: Props) => {
   const { interactions } = props
-  const { t } = useTranslation()
 
   return (
     <FlexColumn style={{ gap: 10 }}>
@@ -108,16 +104,6 @@ const PanelInteractions = (props: Props) => {
     </FlexColumn>
   )
 }
-
-const emojiPickerStyle = css({
-  bg: '#2B2929',
-  width: '75px',
-  height: '75px',
-  rounded: '10px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-})
 
 const Interaction = (props: any) => {
   const { interaction } = props
@@ -153,7 +139,7 @@ const Interaction = (props: any) => {
     })
   }
 
-  const handleEmojiClick = (e) => {
+  const handleEmojiClick = (e: EmojiClickData) => {
     setValue('emoji', e.emoji, {
       shouldDirty: true,
     })
@@ -229,7 +215,7 @@ const Interaction = (props: any) => {
           </DiscordEmojiPicker>
 
           {emojis ? <EmojiPicker onEmojiClick={handleEmojiClick} /> : null}
-          {errors?.atLeastOne ? (
+          {(errors as { atLeastOne?: string })?.atLeastOne ? (
             <FieldError>{t('errors.E_V_NAME_OR_EMOJI')}</FieldError>
           ) : null}
           {isDirty ? (

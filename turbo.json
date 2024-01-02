@@ -9,6 +9,9 @@
       "cache": false
     },
     "clean": {},
-    "clean:all": {}
+    "clean:all": {},
+    "type:check": {
+      "cache": false
+    }
   }
 }

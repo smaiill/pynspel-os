@@ -1,4 +1,4 @@
-import { Home, Menu } from 'lucide-react'
+import { BadgeDollarSign, Home, Menu } from 'lucide-react'
 import { useState } from 'react'
 import { Logo } from '~/components/branding/Logo'
 import { asideItemsData } from '~/data/aside.items'
@@ -82,7 +82,7 @@ const Aside = () => {
   const { data: globalModules, isLoading: isGlobalModulesLoading } =
     useGlobalModules()
   const { data: guildModulesState, isLoading: isGuildModulesLoading } =
-    useGuildModulesState(guild?.guild_id)
+    useGuildModulesState(guild?.guild_id as string)
 
   if (isGlobalModulesLoading || isGuildModulesLoading) {
     return (
@@ -128,9 +128,9 @@ const Aside = () => {
         <AsideItem
           type="normal"
           href={`/premium`}
-          icon={<Home strokeWidth={1.5} size={20} />}
-          disabled={!guild?.isOwner}
-          reason="Not owner"
+          icon={<BadgeDollarSign strokeWidth={1.5} size={20} />}
+          disabled={true}
+          reason="soon..."
         >
           Premium
         </AsideItem>

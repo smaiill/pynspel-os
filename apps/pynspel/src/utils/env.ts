@@ -12,6 +12,7 @@ const envSchema = z.object({
     .union([z.literal('production'), z.literal('developement')])
     .default('developement'),
   API: z.string().url(),
+  WS: z.string(),
 })
 
 export const env = envSchema.parse(process.env)

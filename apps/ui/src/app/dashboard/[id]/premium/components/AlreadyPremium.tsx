@@ -18,10 +18,7 @@ type AlreadyPremiumProps = {
   }
 }
 
-export const AlreadyPremium = ({
-  guildId,
-  guildPremium,
-}: AlreadyPremiumProps) => {
+export const AlreadyPremium = ({ guildId }: AlreadyPremiumProps) => {
   const { t } = useTranslation()
   const stripe = useStripe()
 

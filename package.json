@@ -16,7 +16,8 @@
     "build": "turbo run build",
     "clean": "turbo run clean",
     "clean:all": "turbo run clean:all && rimraf node_modules",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "type:check": "turbo run type:check"
   },
   "dependencies": {
     "rimraf": "^5.0.1",

@@ -8,7 +8,7 @@
     "build": "tsup --config scripts/tsup.build.js",
     "clean": "rimraf dist",
     "clean:all": "rimraf dist && rimraf node_modules",
-    "tsc": "tsc",
+    "type:check": "tsc",
     "test": "vitest"
   },
   "dependencies": {

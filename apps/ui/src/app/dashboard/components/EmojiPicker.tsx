@@ -1,5 +1,5 @@
-import Picker from 'emoji-picker-react'
+import Picker, { Props } from 'emoji-picker-react'
 
-export const EmojiPicker = (props: any) => {
+export const EmojiPicker = (props: Props) => {
   return <Picker {...props} />
 }

@@ -1,19 +1,16 @@
 import { ChannelType } from 'discord-api-types/v10'
-import Image from 'next/image'
 import { DashboardCard } from '~/layouts/Dashboard'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
 import { Tag } from '~/ui/Tag'
 import { Typography } from '~/ui/typography/Typography'
+import { getGuildIcon } from '~/utils/discord'
 import { css } from '../../../../styled-system/css'
 import { SkeletonBox } from './Skeletons'
 
 const topStyle = css({
   gap: '10px',
   alignItems: 'center',
-  '& img': {
-    rounded: '10px',
-  },
 })
 
 const SelectedServerInformation = () => {
@@ -27,7 +24,12 @@ const SelectedServerInformation = () => {
     <DashboardCard style={{ marginTop: 10, padding: 20 }}>
       <FlexColumn style={{ gap: 20 }}>
         <Flex className={topStyle}>
-          <Image src="/pubg.png" width={100} height={100} alt="server-logo" />
+          <img
+            src={getGuildIcon(currentGuild.guild_id, currentGuild.avatar)}
+            width={100}
+            height={100}
+            alt="server-logo"
+          />
           <FlexColumn>
             <Typography color="secondary" as="h3">
               {currentGuild.name}

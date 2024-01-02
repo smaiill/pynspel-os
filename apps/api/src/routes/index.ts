@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express'
+import { disabled } from 'middlewares/disabled'
 import authRoutes from 'modules/auth/auth.routes'
 import { clientRoutes } from 'modules/client/client.routes'
 import { dashboardRoutes } from 'modules/dashboard/dashboard.routes'
@@ -13,8 +14,8 @@ router.use('/auth', authRoutes)
 router.use('/users', userRoutes.router)
 router.use('/dashboard', dashboardRoutes.router)
 router.use('/client', clientRoutes)
-router.use('/subscriptions', subscriptionRoutes)
-router.get('/modules', async (req: Request, res: Response) => {
+router.use('/subscriptions', disabled, subscriptionRoutes)
+router.get('/modules', async (_: Request, res: Response) => {
   const cachedModules = await redis._client.get('modules')
 
   if (!cachedModules) {

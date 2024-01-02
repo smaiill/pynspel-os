@@ -1,4 +1,4 @@
-import { DiscordGuild, SavedGuild } from '@pynspel/types'
+import { ApiGuild, DiscordGuild } from '@pynspel/types'
 import { fetchApi } from '~/utils/fetchApi'
 
 export const useGuildService = () => {
@@ -7,9 +7,7 @@ export const useGuildService = () => {
   }
 
   const getGuild = async ({ guildId }: { guildId: string }) => {
-    return fetchApi<SavedGuild & { isOwner: boolean }>(
-      `/api/dashboard/guilds/${guildId}`
-    )
+    return fetchApi<ApiGuild>(`/api/dashboard/guilds/${guildId}`)
   }
 
   const getServingGuilds = async () => {

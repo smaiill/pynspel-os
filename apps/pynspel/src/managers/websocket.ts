@@ -46,8 +46,8 @@ const sendHeartbeat = (ws: WebSocket) => {
   }
 }
 
-const startWs = () => {
-  const ws = new WebSocket('ws://localhost:4053', {
+export const startWs = () => {
+  const ws = new WebSocket(env.WS, {
     headers: {
       Authorization: `Bot ${env.CLIENT_TOKEN}`,
     },
@@ -63,5 +63,3 @@ const startWs = () => {
   )
   interval = createdInterval
 }
-
-startWs()

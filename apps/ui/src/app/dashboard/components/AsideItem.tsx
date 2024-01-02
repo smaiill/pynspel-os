@@ -81,6 +81,8 @@ const AsideItem = <Type extends AsideItemTypes>(
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const { mutate } = useMutateModuleState(props.name)
 
   const handleClick = () => {
@@ -95,9 +97,11 @@ const AsideItem = <Type extends AsideItemTypes>(
   }
 
   const isModuleAndGlobalDisabled = type === 'module' && !props.globalActive
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const isActive = props?.isActiveForGuild
 
-  const isDisabled = type === 'normal' && props.disabled
+  const isDisabled = type === 'normal' && props.disabled === true
 
   const handleToggleModule = (e: MouseEvent<HTMLInputElement>) => {
     e.stopPropagation()
@@ -117,6 +121,10 @@ const AsideItem = <Type extends AsideItemTypes>(
   }
 
   const pathName = usePathname().split('/')[3] ?? ''
+
+  if (isModuleAndGlobalDisabled) {
+    return null
+  }
 
   return (
     <div
@@ -164,9 +172,7 @@ const AsideItem = <Type extends AsideItemTypes>(
           {children}
         </Typography>
       </Flex>
-      {isModuleAndGlobalDisabled ? (
-        <Chip visual="danger">Temporarly disabled</Chip>
-      ) : type === 'module' ? (
+      {type === 'module' ? (
         <Checkbox size={0.8} checked={isActive} onClick={handleToggleModule} />
       ) : null}
       {isDisabled ? <Chip visual="warn">{props.reason}</Chip> : null}

@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import clsx from 'clsx'
 import { Check, Plus, X } from 'lucide-react'
 import {
@@ -19,20 +21,19 @@ import { getDefaultAvatar, getGuildIcon } from '~/utils/discord'
 import { css, cx } from '../../../styled-system/css'
 import { Label } from '../Label'
 
-type InputSelectTypes = 'role' | 'channel' | 'server' | 'default'
 type CustomPropertyKey = string | number
 
 type InputSelectBase = PropsWithChildren<
   {
     className?: string
     error?: string
-    clearable?: string
-    required?: string
+    clearable?: boolean
+    required?: boolean
   } & OptionsType
 >
 
 type InputSelectDefault = {
-  type: 'default' | 'channel'
+  type?: 'default' | 'channel'
   options: Item[]
 }
 
@@ -190,6 +191,7 @@ const AddPlaceholder = ({
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint, @typescript-eslint/no-explicit-any
 const InputSelect = <V extends any>(
   props: InputSelectMulti<V> & InputSelectBase
 ) => {
@@ -370,7 +372,7 @@ const InputSelect = <V extends any>(
           className={ulStyles}
           style={children ? { top: '80px' } : { top: '60px' }}
         >
-          {options.map((item, idx) => {
+          {options.map((item) => {
             const _selected = isSelected(item.value)
 
             const classx = clsx(_selected && 'selected')

@@ -21,7 +21,7 @@ const NotFound = () => {
           alt="404"
         />
 
-        <ButtonPrimary onClick={() => (window.location = '/')}>
+        <ButtonPrimary onClick={() => (window.location.href = '/')}>
           Go home
         </ButtonPrimary>
       </div>

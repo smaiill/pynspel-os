@@ -18,6 +18,7 @@ import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
 import './managers/websocket'
+import { startWs } from './managers/websocket'
 import { KickCommand } from './modules/command/handlers/kick'
 
 if (env.NODE_ENV === 'production') {
@@ -65,6 +66,10 @@ const client = new Px({
       console.error(error)
     }
   },
+
+  shards: 'auto',
 })
 
-client.exe()
+client.exe().then(() => {
+  startWs()
+})

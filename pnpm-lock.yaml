@@ -306,6 +306,9 @@ importers:
       '@pynspel/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@types/gtag.js':
+        specifier: ^0.0.18
+        version: 0.0.18
       '@types/react':
         specifier: ^18.2.8
         version: 18.2.8
@@ -2461,6 +2464,10 @@ packages:
       '@types/express-serve-static-core': 4.17.35
       '@types/qs': 6.9.7
       '@types/serve-static': 1.15.1
+    dev: true
+
+  /@types/gtag.js@0.0.18:
+    resolution: {integrity: sha512-GJxnIvuXuVhKaHfsOdzGipoOoXq72y3mdcncc9h6i6E7nlz89zBEj2wrLM7bqO5Xk9Lm2B94MwdQsSwRlaPSWw==}
     dev: true
 
   /@types/hast@2.3.4:

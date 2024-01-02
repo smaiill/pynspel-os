@@ -86,7 +86,7 @@ const CaptchaForm = (props: Props) => {
   }, [mutation.isSuccess])
 
   const formatedRoles = useCurrentGuildRoles().map((role) => {
-    return { label: role.name, value: role.id, color: role.color }
+    return { label: role.name, value: role.id, color: String(role.color) }
   })
 
   const formatedChannels = useCurrentGuildChannels(ChannelType.GuildText).map(

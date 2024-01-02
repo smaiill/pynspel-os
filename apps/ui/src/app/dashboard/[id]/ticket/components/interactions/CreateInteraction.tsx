@@ -26,7 +26,12 @@ export const CreateInteraction = () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<{
+    emoji: string | null
+    name: null | string
+    style: number
+    parent_id: null | string
+  }>({
     defaultValues: {
       name: null,
       style: 1,
@@ -86,9 +91,11 @@ export const CreateInteraction = () => {
         {watchedEmoji}
       </DiscordEmojiPicker>
       {emojis ? (
-        <EmojiPicker onEmojiClick={(e) => setValue('emoji', e.emoji)} />
+        <EmojiPicker
+          onEmojiClick={(e) => setValue('emoji', e.emoji as string)}
+        />
       ) : null}
-      {errors?.atLeastOne ? (
+      {(errors as { atLeastOne?: string })?.atLeastOne ? (
         <FieldError>{t('errors.E_V_NAME_OR_EMOJI')}</FieldError>
       ) : null}
       <ButtonSpecial

@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   ForwardedRef,
   forwardRef,
   InputHTMLAttributes,
@@ -93,7 +94,11 @@ const Checkbox = forwardRef(
         >
           <input type="checkbox" ref={ref} {...rest} />
           <span
-            style={{ '--checkbox-before-width': sizes.beforeSize }}
+            style={
+              {
+                '--checkbox-before-width': sizes.beforeSize,
+              } as CSSProperties
+            }
             className="__checkbox_before"
           />
         </div>

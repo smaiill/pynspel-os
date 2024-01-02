@@ -14,7 +14,7 @@ export const usePanelMutations = () => {
       })
     },
     onSuccess(res: any, { panelId }) {
-      queryClient.setQueryData(['panel', panelId], (previous) => {
+      queryClient.setQueryData(['panel', panelId], (previous: any) => {
         return {
           ...previous,
           name: res.name,
@@ -24,8 +24,8 @@ export const usePanelMutations = () => {
       })
       queryClient.setQueryData(
         ['panels', currentGuild?.guild_id],
-        (previous) => {
-          const updatedData = previous.map((panel) => {
+        (previous: any) => {
+          const updatedData = previous.map((panel: any) => {
             if (panel.id === res.panel_id) {
               return {
                 ...panel,
@@ -53,7 +53,7 @@ export const usePanelMutations = () => {
       queryClient.setQueryData(
         ['panels', currentGuild?.guild_id],
         (previous: any) => {
-          return previous.filter((panel) => panel.id !== panelId)
+          return previous.filter((panel: any) => panel.id !== panelId)
         }
       )
 

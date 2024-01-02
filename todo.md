@@ -2,29 +2,36 @@
 
 - Docker.
 - Create a global Snowflake and transform all ids to string in DB and more.
+- Reduce price to 5€
+- Prendre un domaine + hebergement
+  -- Disable les paiments
 
 # API
 
 - Send mails.
-- View twitter favs and make sure that everything is correct
+  -- View twitter favs and make sure that everything is correct
 - Refresh token when expire.
-- only keep the 9.99 product
-- tickets not loading js and css files.
+  -- only keep the 9.99 product
+  -- tickets not loading js and css files.
 
 # Front
 
-- Error Handling.
-- Move all to recoil.
-- Terms
-- Privacy
-- 404 page.
+-- Error Handling.
+
+-- Move all to recoil.
+
+- Passer les pages sur 'use server'
+  -- Terms
+  -- Privacy
+  -- 404 page.
 - Create "Teams" page and put all roles on me, "front end enginer", "backend enginner", etc...
+  -- cookie consent
 
 # Bot
 
 - Setup Shards.
-- Check All.
-- Remove some operations for bots. such as captcha.
+  -- Check All.
+  -- Remove some operations for bots. such as captcha.
 
 # Features
 

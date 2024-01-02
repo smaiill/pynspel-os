@@ -2,9 +2,15 @@ import { InferModuleConfigType, Modules, ModulesTypes } from '@pynspel/common'
 import { ModuleStateApi } from '@pynspel/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCurrentGuildValue } from '~/proxys/dashboard'
-import { useGlobalModulesState } from '~/proxys/modules'
+import { useGlobalModulesState, useSetGlobalModules } from '~/proxys/modules'
 import { fetchApi } from '~/utils/fetchApi'
 import { pxToast } from '../components/toast/toast-handler'
+
+type GuildModule = {
+  name: ModulesTypes
+  is_active: boolean
+  module_id: string
+}
 
 export const useFetchModule = <M extends ModulesTypes>(
   module: M,
@@ -50,23 +56,27 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
       )
     },
     onSuccess(_, value) {
-      queryClient.setQueryData(
+      queryClient.setQueryData<GuildModule[]>(
         ['modules', currentGuild?.guild_id],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         (previous) => {
-          const hasModule = previous.find((element) => element.name === module)
+          if (!previous) {
+            return []
+          }
+          const hasModule = previous?.find((element) => element.name === module)
 
           if (!hasModule) {
             const moduleId = globalModules.find(
-              (module) => module.name === module
+              (_module: ModuleStateApi) => _module.name === module
             )?.module_id
-            console.log(globalModules)
 
             return [
-              ...previous,
+              ...[...(previous ?? [])],
               { name: module, id: moduleId, is_active: value },
             ]
           }
-          const updatedData = previous.map((_module) => {
+          const updatedData = previous?.map((_module) => {
             if (_module.name === module) {
               return {
                 ..._module,
@@ -76,7 +86,7 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
 
             return _module
           })
-          return [...updatedData]
+          return [...(updatedData ?? [])]
         }
       )
 
@@ -100,7 +110,7 @@ export const useMutateModule = <M extends ModulesTypes>(
     mutationFn: (moduleData: InferModuleConfigType<M>) =>
       fetchApi<InferModuleConfigType<M>>(
         `/api/dashboard/${moduleApiResource ?? module}/${
-          currentGuild.guild_id
+          currentGuild?.guild_id
         }`,
         {
           method: 'PUT',
@@ -110,7 +120,7 @@ export const useMutateModule = <M extends ModulesTypes>(
     onSuccess(data) {
       pxToast('success', 'Module updated !')
       queryClient.setQueryData(
-        [`module_${module}`, currentGuild.guild_id],
+        [`module_${module}`, currentGuild?.guild_id],
         data
       )
     },
@@ -121,7 +131,7 @@ export const useMutateModule = <M extends ModulesTypes>(
 }
 
 export const useGlobalModules = () => {
-  const [_, setModules] = useGlobalModulesState()
+  const setModules = useSetGlobalModules()
 
   return useQuery<ModuleStateApi[]>({
     queryKey: ['modules'],

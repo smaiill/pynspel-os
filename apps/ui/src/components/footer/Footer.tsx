@@ -38,20 +38,11 @@ const footerItems: {
     items: [
       {
         label: 'Privacy',
-        href: '/privacy',
+        href: '/legal/privacy',
       },
       {
-        label: 'Terms',
-        href: '/terms',
-      },
-    ],
-  },
-  {
-    title: 'Autres',
-    items: [
-      {
-        label: 'top.gg',
-        href: '/',
+        label: 'CGU',
+        href: '/legal/cgu',
       },
     ],
   },
@@ -95,17 +86,6 @@ const Footer = () => {
       >
         <Logo />
 
-        <Flex
-          className={css({
-            gap: '10px',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          })}
-        >
-          <CustomLink href="/">Terms</CustomLink>
-          <CustomLink href="/">Privacy</CustomLink>
-        </Flex>
-
         <Flex>
           {SocialLinks.map((socialLink, idx) => {
             return (
@@ -117,7 +97,7 @@ const Footer = () => {
         </Flex>
       </Flex>
 
-      <ExploreOurProduct />
+      {/* <ExploreOurProduct /> */}
     </footer>
   )
 }
@@ -184,14 +164,15 @@ const FooterSection = ({
 const TIME = 0
 const W_TO_ADD = 0.2
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ExploreOurProduct = () => {
   const [width, setWidth] = useState(0)
-  const [isPressing, setIsPressing] = useState(false)
-  const intervalRef = useRef(0)
-  const downIntervalRef = useRef(0)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const downIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const onMouseDown = () => {
-    clearInterval(downIntervalRef.current)
-    setIsPressing(true)
+    if (downIntervalRef.current) {
+      clearInterval(downIntervalRef.current)
+    }
     const intervalId = setInterval(() => {
       setWidth((prevV) => (prevV + W_TO_ADD >= 100 ? 100 : prevV + W_TO_ADD))
     }, TIME)
@@ -200,8 +181,9 @@ const ExploreOurProduct = () => {
   }
 
   const onMouseUp = () => {
-    clearInterval(intervalRef.current)
-    setIsPressing(false)
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
     const intervalId = setInterval(() => {
       setWidth((prevV) => (prevV - W_TO_ADD <= 0 ? 0 : prevV - W_TO_ADD))
     }, TIME)
@@ -244,7 +226,7 @@ const ExploreOurProduct = () => {
           zIndex: 99,
         },
       })}
-      style={!isPressing ? {} : { animation: 'animateThis 0.1s infinite' }}
+      style={{ scale: width * 0.0001 + 1 }}
     >
       <div
         className={css({

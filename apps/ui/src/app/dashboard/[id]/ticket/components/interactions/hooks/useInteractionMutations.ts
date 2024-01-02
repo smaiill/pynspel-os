@@ -1,3 +1,4 @@
+import { Interaction } from '@pynspel/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCurrentPanelValue } from '~/proxys/ticket'
 import { fetchApi } from '~/utils/fetchApi'
@@ -23,7 +24,7 @@ export const useInteractionMutations = () => {
         return {
           ...previous,
           interactions: previous.interactions.filter(
-            (interaction) => interaction.id !== id
+            (interaction: Interaction) => interaction.id !== id
           ),
         }
       })
@@ -49,15 +50,15 @@ export const useInteractionMutations = () => {
 
     onSuccess(_, { id, payload }) {
       queryClient.setQueryData(queryKey, (previous: any) => {
-        const updatedInteractions = previous.interactions.map((interaction) => {
-          if (interaction.id === id) {
-            // If this is the interaction we're updating, merge the payload with the existing fields.
-            return { ...interaction, ...payload }
-          } else {
-            // Otherwise return the existing interaction as-is.
-            return interaction
+        const updatedInteractions = previous.interactions.map(
+          (interaction: Interaction) => {
+            if (interaction.id === id) {
+              return { ...interaction, ...payload }
+            } else {
+              return interaction
+            }
           }
-        })
+        )
 
         return {
           ...previous,
