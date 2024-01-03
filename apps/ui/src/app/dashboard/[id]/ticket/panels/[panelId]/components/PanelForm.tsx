@@ -4,6 +4,7 @@ import { PanelApi } from '@pynspel/types'
 import { ChannelType } from 'discord-api-types/v10'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildChannels } from '~/proxys/dashboard'
@@ -47,7 +48,9 @@ export const PanelForm = (props: Props) => {
 
   const { updatePanel } = usePanelMutations()
 
-  const handleUpdatePanel = (parsedData: any) => {
+  const handleUpdatePanel = (
+    parsedData: z.infer<typeof SCHEMA_UPDATE_PANEL>
+  ) => {
     updatePanel.mutate({
       data: {
         ...parsedData,

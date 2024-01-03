@@ -1,5 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SCHEMA_UPDATE_INTERACTION } from '@pynspel/common'
+import {
+  DiscordButtonStyle,
+  Interaction,
+  Interaction as InteractionType,
+} from '@pynspel/types'
 import { EmojiClickData } from 'emoji-picker-react'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,15 +34,11 @@ import {
 } from './hooks/useInteractionMutations'
 
 type Props = {
-  interactions: any[]
+  interactions: InteractionType[]
 }
 
 interface DiscordButtonProps {
-  button: {
-    style: 1 | 2 | 3 | 4
-    emoji?: string
-    name?: string
-  }
+  button: Pick<Interaction, 'style' | 'emoji' | 'name'>
   live?: boolean
 }
 
@@ -111,7 +112,7 @@ const PanelInteractions = (props: Props) => {
   )
 }
 
-const Interaction = (props: any) => {
+const Interaction = (props: { interaction: InteractionType }) => {
   const { interaction } = props
 
   const {
@@ -139,7 +140,7 @@ const Interaction = (props: any) => {
   const watchedStyle = watch('style')
   const { t } = useTranslation()
 
-  const handleStyleChange = ({ style }: { style: number }) => {
+  const handleStyleChange = ({ style }: { style: DiscordButtonStyle }) => {
     setValue('style', style, {
       shouldDirty: true,
     })

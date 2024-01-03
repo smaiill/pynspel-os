@@ -5,6 +5,8 @@
   -- Reduce price to 5€
 - Prendre un domaine + hebergement
   -- Disable les paiments
+- Re check les ws
+- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
 
 # API
 
@@ -14,6 +16,7 @@
 - Refresh token when expire.
   -- only keep the 9.99 product
   -- tickets not loading js and css files.
+  - Debug routes
 
 # Front
 

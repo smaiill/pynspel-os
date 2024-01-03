@@ -1,4 +1,4 @@
-type DiscordButtonStyle = 1 | 2 | 3 | 4
+export type DiscordButtonStyle = 1 | 2 | 3 | 4
 
 export type Interaction = {
   emoji: null | string

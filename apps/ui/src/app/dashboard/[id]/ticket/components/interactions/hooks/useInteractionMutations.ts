@@ -1,4 +1,4 @@
-import { Interaction } from '@pynspel/types'
+import { Interaction, PanelApi } from '@pynspel/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCurrentPanelValue } from '~/proxys/ticket'
 import { fetchApi } from '~/utils/fetchApi'
@@ -20,10 +20,10 @@ export const useInteractionMutations = () => {
         method: 'DELETE',
       }),
     onSuccess(_, id) {
-      queryClient.setQueryData(queryKey, (previous: any) => {
+      queryClient.setQueryData(queryKey, (previous: PanelApi | undefined) => {
         return {
-          ...previous,
-          interactions: previous.interactions.filter(
+          ...(previous as PanelApi),
+          interactions: [...(previous?.interactions ?? [])].filter(
             (interaction: Interaction) => interaction.id !== id
           ),
         }
@@ -49,8 +49,8 @@ export const useInteractionMutations = () => {
     },
 
     onSuccess(_, { id, payload }) {
-      queryClient.setQueryData(queryKey, (previous: any) => {
-        const updatedInteractions = previous.interactions.map(
+      queryClient.setQueryData(queryKey, (previous: PanelApi | undefined) => {
+        const updatedInteractions = [...(previous?.interactions ?? [])].map(
           (interaction: Interaction) => {
             if (interaction.id === id) {
               return { ...interaction, ...payload }
@@ -61,8 +61,8 @@ export const useInteractionMutations = () => {
         )
 
         return {
-          ...previous,
-          interactions: updatedInteractions,
+          ...(previous as PanelApi),
+          interactions: updatedInteractions as Interaction[],
         }
       })
     },
@@ -79,10 +79,13 @@ export const useInteractionMutations = () => {
       )
     },
     onSuccess(data) {
-      queryClient.setQueryData(queryKey, (previous: any) => {
+      queryClient.setQueryData(queryKey, (previous: PanelApi | undefined) => {
         return {
-          ...previous,
-          interactions: [...previous.interactions, data],
+          ...(previous as PanelApi),
+          interactions: [
+            ...[previous?.interactions ?? []],
+            data,
+          ] as Interaction[],
         }
       })
     },

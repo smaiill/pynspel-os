@@ -3,6 +3,7 @@ import {
   ButtonHTMLAttributes,
   ForwardedRef,
   forwardRef,
+  MouseEvent,
   PropsWithChildren,
 } from 'react'
 import { buttonRecipe, ButtonVariants } from '~/theme/button.recipe'
@@ -25,7 +26,7 @@ export const Button = forwardRef(
   ) => {
     const { children, variants, href, onClick, className, ...rest } = props
 
-    const handleClick = (e: any) => {
+    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
       href && window.open(href)
       onClick && onClick(e)
     }
@@ -37,7 +38,7 @@ export const Button = forwardRef(
         className={cx(
           buttonRecipe({
             visual: variants?.visual,
-            format: variants?.format
+            format: variants?.format,
           }),
           className
         )}

@@ -1,3 +1,4 @@
+import { DiscordButtonStyle } from '@pynspel/types'
 import { useState } from 'react'
 import { Flex } from '~/layouts/Flex'
 
@@ -21,13 +22,13 @@ const COLORS = [
 ] as const
 
 type ButtonStylePicker = {
-  style: number
+  style: DiscordButtonStyle
   color: string
 }
 
 type ButtonStylePickerProps = {
   onChange: ({ color, style }: ButtonStylePicker) => void
-  default?: number
+  default?: DiscordButtonStyle
 }
 
 export const ButtonStylePicker = (props: ButtonStylePickerProps) => {
