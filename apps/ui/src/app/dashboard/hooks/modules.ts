@@ -24,9 +24,6 @@ export const useFetchModule = <M extends ModulesTypes>(
       await fetchApi<InferModuleConfigType<(typeof Modules)[M]>>(
         `/api/dashboard/${databaseResource ?? module}/${guildId}`
       ),
-    onSuccess(data) {
-      console.log(data)
-    },
   })
 }
 

@@ -4,9 +4,6 @@ const nextConfig = {
   compiler: {
     forceSwcTransforms: true,
   },
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'src/app')],
-  },
   images: {
     remotePatterns: [
       {
@@ -17,9 +14,6 @@ const nextConfig = {
       },
     ],
   },
-  productionBrowserSourceMaps: false,
-  optimizeFonts: false,
-  minify: false,
 }
 
 module.exports = nextConfig

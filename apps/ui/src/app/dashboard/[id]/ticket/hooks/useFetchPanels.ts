@@ -23,9 +23,5 @@ export const useFetchPanel = (panelId: string) => {
     queryFn: async () => {
       return fetchApi(`/api/dashboard/panels/${panelId}`)
     },
-
-    onSuccess() {
-      console.log('Zizi')
-    },
   })
 }

@@ -6,9 +6,9 @@ import {
   Interaction as InteractionType,
 } from '@pynspel/types'
 import { EmojiClickData } from 'emoji-picker-react'
+import { Trash } from 'lucide-react'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { AiOutlineDelete } from 'react-icons/ai'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
 import { DiscordEmojiPicker } from '~/app/dashboard/components/discord/DiscordEmojiPicker'
 import { EmojiPicker } from '~/app/dashboard/components/EmojiPicker'
@@ -205,7 +205,7 @@ const Interaction = (props: { interaction: InteractionType }) => {
             onClick={() => setIsOpen(true)}
             style={{ fontSize: '15px' }}
           >
-            <AiOutlineDelete />
+            <Trash />
           </ButtonDanger>
         </Flex>
         <FlexColumn style={{ gap: 10, alignItems: 'flex-start' }}>

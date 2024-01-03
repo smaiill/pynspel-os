@@ -102,7 +102,6 @@ class _DashboardService {
     }
 
     const channels = await this._guildService.fetchChannels(guildId)
-    console.log({ channels })
     const formatedChannels = channels
       .filter((channel) =>
         [

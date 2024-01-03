@@ -1,10 +1,8 @@
-import { API_URL } from '~/constants'
-
 export const fetchApi = async <T = unknown>(
   uri: string,
   options?: RequestInit
 ) => {
-  const res = await fetch(`${API_URL}${uri}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${uri}`, {
     ...options,
     credentials: 'include',
     headers: {

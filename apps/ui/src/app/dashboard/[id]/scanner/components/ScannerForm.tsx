@@ -194,6 +194,7 @@ const ScannerForm = (props: LogginFormProps) => {
           setValue={setIgnoredChannels}
           type="channel"
           error={errors.words?.ignored_channels?.message}
+          clearable
         >
           {t('modules.common.channels_ignore')}
         </InputSelect>

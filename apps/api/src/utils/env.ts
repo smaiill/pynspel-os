@@ -1,15 +1,13 @@
 import dotenv from 'dotenv'
+import dotenvExpand from 'dotenv-expand'
 import z from 'zod'
 
-dotenv.config()
+const _env = dotenv.config()
+dotenvExpand.expand(_env)
 
 const envSchema = z.object({
   PORT: z.string().transform(Number),
-  DB_USERNAME: z.string(),
-  DB_PASSWORD: z.string(),
-  DB_DATABASE: z.string(),
-  DB_HOSTNAME: z.string(),
-  DB_PORT: z.string().transform(Number),
+  API_URL: z.string().url(),
   DISCORD_OAUTH_CLIENT_ID: z.string(),
   DISCORD_OAUTH_SECRET: z.string(),
   DISCORD_REDIRECT_URL: z.string(),

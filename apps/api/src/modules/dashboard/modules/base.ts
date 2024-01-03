@@ -78,12 +78,6 @@ export abstract class ModuleBase<M extends ModulesTypes> {
         Errors.E_SERVICE_UNAVAILABLE
       )
     }
-    const isClientInGuild = await this._db.isClientInGuild(guildId)
-
-    if (!isClientInGuild) {
-      throw new HttpException(HttpStatus.FORBIDDEN, Errors.E_INVALID_GUILD_ID)
-    }
-
     const [moduleStateDb] = await db.exec<{ active: boolean }>(
       'SELECT active FROM modules WHERE name = $1',
       [this._name]

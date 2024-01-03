@@ -5,8 +5,9 @@
   -- Reduce price to 5€
 - Prendre un domaine + hebergement
   -- Disable les paiments
-- Re check les ws
-- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
+  -- Re check les ws
+  -- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
+  - Revoir la DB
 
 # API
 

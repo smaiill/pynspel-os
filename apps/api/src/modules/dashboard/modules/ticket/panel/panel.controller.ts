@@ -481,9 +481,6 @@ class _PanelController {
       [panelId]
     )
 
-    console.log('1')
-    console.log({ panelGuilId })
-
     if (panelDb.interactions.length <= 0) {
       throw new HttpException(
         HttpStatus.BAD_REQUEST,

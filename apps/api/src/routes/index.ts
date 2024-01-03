@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { disabled } from 'middlewares/disabled'
+import { rateLimiter } from 'middlewares/rate.limiter'
 import authRoutes from 'modules/auth/auth.routes'
 import { clientRoutes } from 'modules/client/client.routes'
 import { dashboardRoutes } from 'modules/dashboard/dashboard.routes'
@@ -11,10 +12,10 @@ import { redis } from 'utils/redis'
 const router = Router()
 
 router.use('/auth', authRoutes)
-router.use('/users', userRoutes.router)
-router.use('/dashboard', dashboardRoutes.router)
+router.use('/users', rateLimiter, userRoutes.router)
+router.use('/dashboard', rateLimiter, dashboardRoutes.router)
 router.use('/client', clientRoutes)
-router.use('/subscriptions', disabled, subscriptionRoutes)
+router.use('/subscriptions', disabled, rateLimiter, subscriptionRoutes)
 router.get('/modules', async (_: Request, res: Response) => {
   const cachedModules = await redis._client.get('modules')
 

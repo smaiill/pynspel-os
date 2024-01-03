@@ -15,7 +15,6 @@ export const validate = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const schemaRes = schema.safeParse(req.body)
 
-    console.log({ schemaRes })
     if (!schemaRes.success) {
       throw new HttpZodValidationError(schemaRes.error.issues ?? [])
     }

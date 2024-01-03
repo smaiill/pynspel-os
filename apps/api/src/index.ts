@@ -1,1 +1,3 @@
-import './app'
+import { createApp } from './app'
+
+createApp()

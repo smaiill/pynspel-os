@@ -24,7 +24,6 @@ export class CacheManager {
               MIN_CONNECTION_DELAY * Math.pow(2, retries),
               MAX_CONNECTION_DELAY
             )
-            console.log('waiting', wait, 'milliseconds')
             return wait
           }
         },

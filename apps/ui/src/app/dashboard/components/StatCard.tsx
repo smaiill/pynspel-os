@@ -1,4 +1,3 @@
-import { BiUser } from 'react-icons/bi'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { css } from '../../../../styled-system/css'
 
@@ -20,9 +19,6 @@ const StatCard = () => {
         <p>Users</p>
         <span>10</span>
       </FlexColumn>
-      <Flex>
-        <BiUser />
-      </Flex>
     </Flex>
   )
 }

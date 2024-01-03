@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import clsx from 'clsx'
-import { Check, Plus, Trash } from 'lucide-react'
+import { Check, ChevronDown, Plus, Trash } from 'lucide-react'
 import {
   Dispatch,
   HTMLAttributes,
@@ -12,7 +12,6 @@ import {
   useRef,
   useState,
 } from 'react'
-import { BsChevronDown, BsPlus } from 'react-icons/bs'
 import { FieldError } from '~/app/dashboard/components/form/FieldError'
 import { Hashtag } from '~/icons/Hashtag'
 import { Flex, FlexColumn } from '~/layouts/Flex'
@@ -320,7 +319,7 @@ const InputSelect = <V extends any>(
                   <>
                     <Flex className={multiWordStyle} style={{ gap: 5 }}>
                       <button onClick={(e) => handleRemoveItem(e, _value)}>
-                        <BsPlus />
+                        <Plus />
                       </button>
                       <span key={_value}>{getItemLabelByValue(_value)}</span>
                     </Flex>
@@ -332,7 +331,7 @@ const InputSelect = <V extends any>(
               )
             ) : null}
           </div>
-          <BsChevronDown
+          <ChevronDown
             className={svgDropDownStyle}
             style={
               isOpen

@@ -104,8 +104,6 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
   switch (parsedWebhook.type) {
     case StripeWebhooks.InvoicePaymentFailed:
       {
-        console.log('InvoicePaymentFailed')
-
         const sessionData = parsedWebhook.data.object as Stripe.Invoice
 
         if (!sessionData.subscription) {
@@ -147,8 +145,6 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
       break
     case StripeWebhooks.CheckoutSessionCompleted:
       {
-        console.log('CheckoutSessionCompleted')
-
         const sessionData = parsedWebhook.data
           .object as StripeCheckoutSessionCompleted
 
@@ -193,8 +189,6 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
 
     case StripeWebhooks.SubscriptionDeleted:
       {
-        console.log('SubscriptionDeleted')
-
         const subscriptionData = parsedWebhook.data
           .object as Stripe.Subscription
 
@@ -223,8 +217,6 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
 
     case StripeWebhooks.SubscriptionUpdated:
       {
-        console.log('SubscriptionUpdated')
-
         const subscriptionData = parsedWebhook.data
           .object as Stripe.Subscription
 
@@ -358,8 +350,8 @@ subscriptionRoutes.post('/:guildId', async (req: Request, res: Response) => {
   const session = await stripeInstance.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
-    success_url: `http://localhost:3005/subscription/success?guildId=${guildId}`,
-    cancel_url: `http://localhost:3005/subscription/cancel?guildId=${guildId}`,
+    success_url: `${env.API_URL}/subscription/success?guildId=${guildId}`,
+    cancel_url: `${env.API_URL}/subscription/cancel?guildId=${guildId}`,
     customer: id,
     line_items: [
       {

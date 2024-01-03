@@ -1,5 +1,5 @@
+import { Plus } from 'lucide-react'
 import { KeyboardEvent, PropsWithChildren } from 'react'
-import { BsPlus } from 'react-icons/bs'
 import { Flex, FlexColumn } from '~/layouts/Flex'
 import { Input } from '~/ui/input/Input'
 import { css } from '../../../styled-system/css'
@@ -94,7 +94,7 @@ const InputSelectType = (props: PropsWithChildren<InputSelectTypeProps>) => {
           words.map((word) => (
             <Flex key={word} className={wordStyle}>
               <button onClick={() => handleRemoveWord(word)}>
-                <BsPlus />
+                <Plus />
               </button>
               <span>{word}</span>
             </Flex>

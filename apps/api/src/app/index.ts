@@ -10,7 +10,6 @@ import morgan from 'morgan'
 import path from 'path'
 import { IS_DEV } from '../constants'
 import '../managers/websocket'
-import { rateLimiter } from '../middlewares/rate.limiter'
 import routes from '../routes'
 import { API_ENDPOINT } from '../utils/constants'
 import { customHeaders } from '../utils/custom.headers'
@@ -73,7 +72,6 @@ app.use(
 )
 
 app.use(deserializeSession)
-app.use(rateLimiter)
 
 app.get('/', (_, res: Response) => {
   res.json({ uptime: process.uptime() })
@@ -82,35 +80,35 @@ app.get('/', (_, res: Response) => {
 app.use(API_ENDPOINT, routes)
 app.use(errorHandler)
 
-app.listen(env.PORT, async () => {
-  lg.info(`[API] Started at port: ${env.PORT}.`)
+export const createApp = () => {
+  return app.listen(env.PORT, async () => {
+    lg.info(`[API] Started at port: ${env.PORT}.`)
 
-  await redis
-    .ping()
-    .then(() => lg.info('[REDIS] Started.'))
-    .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
+    await redis
+      .ping()
+      .then(() => lg.info('[REDIS] Started.'))
+      .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-  await db.exec('SELECT NOW()')
-  // await db.exec('DELETE FROM guilds_subscriptions')
-  // await db.exec('UPDATE guilds SET plan = $1', ['free'])
-  // const stripeMailing = new MailingService()
-  // await stripeMailing.sendMail({
-  //   from: MAILS_FROM.ME,
-  //   to: MAILS_FROM.ME,
-  //   subject: 'Payment failure',
-  //   text: generatePaymentFailureTemplate(),
-  // })
-  if (IS_DEV) {
-    lg.info('Generating endpoints.')
-    app._router.stack.forEach(handleGenerateRoutes.bind(null, []))
-    writeFile(
-      path.join(process.cwd(), './src/app/utils/routes.json'),
-      JSON.stringify(generatedRoutes, null, 2),
-      (err) => {
-        err ? console.log(err) : null
-      }
-    )
-  }
-})
-
-export default app
+    await db.exec('SELECT NOW()')
+    // await db.exec('DELETE FROM guilds_subscriptions')
+    // await db.exec('UPDATE guilds SET plan = $1', ['free'])
+    // const stripeMailing = new MailingService()
+    // await stripeMailing.sendMail({
+    //   from: MAILS_FROM.ME,
+    //   to: MAILS_FROM.ME,
+    //   subject: 'Payment failure',
+    //   text: generatePaymentFailureTemplate(),
+    // })
+    if (IS_DEV) {
+      lg.info('Generating endpoints.')
+      app._router.stack.forEach(handleGenerateRoutes.bind(null, []))
+      writeFile(
+        path.join(process.cwd(), './src/app/utils/routes.json'),
+        JSON.stringify(generatedRoutes, null, 2),
+        (err) => {
+          err ? console.error(err) : null
+        }
+      )
+    }
+  })
+}

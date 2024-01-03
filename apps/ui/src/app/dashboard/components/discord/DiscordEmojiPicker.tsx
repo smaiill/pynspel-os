@@ -1,5 +1,5 @@
+import { Smile } from 'lucide-react'
 import { HTMLAttributes, PropsWithChildren } from 'react'
-import { BsEmojiWink } from 'react-icons/bs'
 import { css } from '../../../../../styled-system/css'
 const emojiPickerStyle = css({
   bg: 'news.backgrounds.tertiary',
@@ -16,7 +16,7 @@ export const DiscordEmojiPicker = (
   const { children } = props
   return (
     <div className={emojiPickerStyle} {...props}>
-      <span style={{ fontSize: '25px' }}>{children ?? <BsEmojiWink />}</span>
+      <span style={{ fontSize: '25px' }}>{children ?? <Smile />}</span>
     </div>
   )
 }

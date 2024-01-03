@@ -30,7 +30,6 @@ export class UserCache extends CacheBase {
         JSON.stringify(guilds)
       )
     } catch (error) {
-      console.log('Error while updating the user guilds', error)
       this.invalidateGuilds(userId)
     }
   }
