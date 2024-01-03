@@ -158,6 +158,10 @@ export const fr: Translation<TranslationBase> = {
   },
   common: {
     empty: 'Vide',
+    operation: {
+      success: 'Opération réussi',
+    },
+    back: 'Retour',
   },
   errors: {
     E_V_NAME_OR_EMOJI: 'Vous devez au moins avoir un nom ou un emoji',

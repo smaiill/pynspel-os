@@ -1,5 +1,4 @@
 'use client'
-import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import Aside from '../components/Aside'
 import { LoadingModule } from '../components/LoadingModule'
@@ -13,7 +12,6 @@ export interface Props {
 }
 
 const page = ({ params }: Props) => {
-  useProtectedRoute()
   const { data: guildData, isLoading } = useFetchGuild(params.id)
 
   if (isLoading || !guildData) {

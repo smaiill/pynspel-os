@@ -8,15 +8,18 @@ const emojiPickerStyle = css({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  cursor: 'pointer',
 })
 
 export const DiscordEmojiPicker = (
   props: PropsWithChildren<HTMLAttributes<HTMLElement>>
 ) => {
-  const { children } = props
+  const { children, ...rest } = props
   return (
-    <div className={emojiPickerStyle} {...props}>
-      <span style={{ fontSize: '25px' }}>{children ?? <Smile />}</span>
+    <div className={emojiPickerStyle} {...rest}>
+      <span style={{ fontSize: '25px' }}>
+        {children ?? <Smile className={css({ color: 'whiteAlpha.300' })} />}
+      </span>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 'use client'
-import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { Tag } from '~/ui/Tag'
 import { Typography } from '~/ui/typography/Typography'
 import { LoadingModule } from '../../components/LoadingModule'
@@ -13,8 +12,6 @@ type Props = {
 }
 
 const page = ({ params }: Props) => {
-  useProtectedRoute()
-
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(
     params.id
   )

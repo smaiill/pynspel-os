@@ -156,6 +156,10 @@ export const en: Translation<TranslationBase> = {
   },
   common: {
     empty: 'Empty',
+    operation: {
+      success: 'Operation success',
+    },
+    back: 'Back',
   },
   errors: {
     E_V_NAME_OR_EMOJI: 'You need to at least have an emoji or a name',

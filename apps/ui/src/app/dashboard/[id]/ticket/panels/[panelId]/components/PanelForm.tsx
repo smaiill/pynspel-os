@@ -5,12 +5,13 @@ import { ChannelType } from 'discord-api-types/v10'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { FlexColumn } from '~/layouts/Flex'
+import { DashboardCard } from '~/layouts/Dashboard'
 import { useTranslation } from '~/locales/Provider'
 import { useCurrentGuildChannels } from '~/proxys/dashboard'
 import { ButtonPrimary } from '~/ui/button/Button'
 import { Input } from '~/ui/input/Input'
 import { InputSelect } from '~/ui/input/InputSelect'
+import { css } from '../../../../../../../../styled-system/css'
 import { usePanelMutations } from '../../hooks/usePanelMutations'
 
 type Props = {
@@ -24,7 +25,7 @@ export const PanelForm = (props: Props) => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
       name: data.name,
@@ -61,7 +62,14 @@ export const PanelForm = (props: Props) => {
   }
 
   return (
-    <FlexColumn style={{ gap: 5, alignItems: 'flex-start' }}>
+    <DashboardCard
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '5px',
+        alignItems: 'flex-start',
+      }}
+    >
       <Input
         {...register('name')}
         label={t('modules.ticket.create_panel_name')}
@@ -77,6 +85,7 @@ export const PanelForm = (props: Props) => {
         options={formatedChannels}
         value={selectedChannel}
         setValue={setSelectedChannel}
+        required
       >
         {t('modules.ticket.panel.channel')}
       </InputSelect>
@@ -85,9 +94,10 @@ export const PanelForm = (props: Props) => {
         onClick={handleSubmit(handleUpdatePanel)}
         disabled={updatePanel.isLoading}
         type="submit"
+        className={css({ mt: '5px' })}
       >
         {t('actions.save')}
       </ButtonPrimary>
-    </FlexColumn>
+    </DashboardCard>
   )
 }

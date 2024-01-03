@@ -1,11 +1,12 @@
 'use client'
 import { useEffect } from 'react'
 import Aside from '~/app/dashboard/components/Aside'
+import { LoadingModule } from '~/app/dashboard/components/LoadingModule'
 import { useFetchGuild } from '~/app/dashboard/hooks/useFetchGuild'
-import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { DashboardPage, DashboardView } from '~/layouts/Dashboard'
 import { FlexColumn } from '~/layouts/Flex'
 import { useSetCurrentPanel } from '~/proxys/ticket'
+import { Tabs } from '~/ui/tabs/Tabs'
 import { PanelInteractions } from '../../components/interactions/PanelInteractions'
 import { useFetchPanel } from '../../hooks/useFetchPanels'
 import { PanelForm } from './components/PanelForm'
@@ -22,7 +23,6 @@ const page = (props: Props) => {
   const {
     params: { panelId, id },
   } = props
-  useProtectedRoute()
   const { data: guildData } = useFetchGuild(id)
   const { isLoading, data } = useFetchPanel(panelId)
   const setCurrentPanel = useSetCurrentPanel()
@@ -31,11 +31,11 @@ const page = (props: Props) => {
   }, [data])
 
   if (isLoading) {
-    return <h1>Loading panel...;</h1>
+    return <LoadingModule />
   }
 
   if (!data || !guildData) {
-    return <h1>No data found...</h1>
+    return <LoadingModule />
   }
 
   return (
@@ -43,9 +43,15 @@ const page = (props: Props) => {
       <Aside />
       <DashboardView>
         <FlexColumn style={{ gap: 10 }}>
-          <PanelHeader panelId={panelId} />
-          <PanelForm data={data} />
-          <PanelInteractions interactions={data.interactions} />
+          <PanelHeader guildId={guildData.guild_id} panelId={panelId} />
+          <Tabs>
+            <Tabs.Tab label={`Edit panel`}>
+              <PanelForm data={data} />
+            </Tabs.Tab>
+            <Tabs.Tab label="Interactions">
+              <PanelInteractions interactions={data.interactions} />
+            </Tabs.Tab>
+          </Tabs>
         </FlexColumn>
       </DashboardView>
     </DashboardPage>

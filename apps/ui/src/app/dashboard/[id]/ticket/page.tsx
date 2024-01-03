@@ -1,7 +1,7 @@
 'use client'
 import { Modules } from '@pynspel/common'
-import { useProtectedRoute } from '~/hooks/useProtectedRoute'
 import { FlexColumn } from '~/layouts/Flex'
+import { Tabs } from '~/ui/tabs/Tabs'
 import { LoadingModule } from '../../components/LoadingModule'
 import { useFetchModule } from '../../hooks/modules'
 import { useFetchGuild } from '../../hooks/useFetchGuild'
@@ -17,7 +17,6 @@ type Props = {
 
 const page = ({ params }: Props) => {
   const { id } = params
-  useProtectedRoute()
   const { data: guildData, isLoading: isGuildLoading } = useFetchGuild(id)
   const { data: moduleData, isLoading: isModuleLoading } = useFetchModule(
     Modules.ticket,
@@ -31,8 +30,14 @@ const page = ({ params }: Props) => {
   return (
     <ModuleLayout>
       <FlexColumn style={{ gap: 10 }}>
-        <TicketForm data={moduleData} />
-        <TicketPanels />
+        <Tabs>
+          <Tabs.Tab label="Settings">
+            <TicketForm data={moduleData} />
+          </Tabs.Tab>
+          <Tabs.Tab label="Panels">
+            <TicketPanels />
+          </Tabs.Tab>
+        </Tabs>
       </FlexColumn>
     </ModuleLayout>
   )

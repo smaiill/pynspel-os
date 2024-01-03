@@ -69,7 +69,7 @@ export const CreateInteraction = () => {
       }}
     >
       <Typography color="secondary" as="span">
-        {t('modules.ticket.panel.interactions.title')}
+        Create {t('modules.ticket.panel.interactions.title')}
       </Typography>
       <Input
         {...register('name')}
