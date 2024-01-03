@@ -8,13 +8,15 @@ import {
   ButtonStyle,
   ChannelType,
   Client,
+  Colors,
+  EmbedBuilder,
   Guild,
   Interaction,
   InteractionReplyOptions,
   PermissionFlagsBits,
 } from 'discord.js'
 import { TicketService } from 'modules/ticket/ticket.service'
-import { mentionChannel } from 'utils/mentions'
+import { mentionChannel, mentionUser } from 'utils/mentions'
 
 enum ButtonAction {
   CreateTicket = 1,
@@ -63,8 +65,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const row = new ActionRowBuilder()
     const transpileButton = new ButtonBuilder()
       .setCustomId('ticket.transpile.channel')
-      .setLabel('Transpile')
-      .setStyle(ButtonStyle.Primary)
+      .setStyle(ButtonStyle.Success)
+      .setEmoji('📃')
 
     row.addComponents(transpileButton)
     return row
@@ -79,7 +81,18 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       !interactionGuild ||
       channel.type !== ChannelType.GuildText
     ) {
-      return
+      return interaction.deferUpdate()
+    }
+
+    const [isAlreadyClosed] = await db.exec<{
+      status?: string
+    }>('SELECT status FROM tickets WHERE channel_id = $1 AND guild_id = $2', [
+      interaction.channelId,
+      interaction.guildId,
+    ])
+
+    if (!isAlreadyClosed || isAlreadyClosed.status === 'close') {
+      return interaction.deferUpdate()
     }
 
     const channelDb = await this._db.getTicketById(
@@ -88,7 +101,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     )
 
     if (!channelDb || channelDb.status !== TicketStatus.Open) {
-      return
+      return interaction.deferUpdate()
     }
 
     const authorId = channelDb.author_id
@@ -102,11 +115,31 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const row = this.getChannelClosedResponse()
 
     await channel.send({
-      content: 'This channel was closed',
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       components: [row],
+      embeds: [
+        new EmbedBuilder()
+          .setDescription(
+            `This channel was closed by ${mentionUser(
+              interaction.member?.user.id ?? ''
+            )}`
+          )
+          .setFields([
+            { name: 'Author', value: mentionUser(authorId) },
+            {
+              name: 'Opened at',
+              value: new Date(channel.createdAt).toLocaleString(),
+            },
+          ])
+          .setColor(Colors.Green),
+      ],
     })
+
+    await interaction.deferUpdate()
+    if (interaction.message.deletable) {
+      await interaction.message.delete()
+    }
   }
 
   private async handleTranspileTicket(inetraction: ButtonInteraction) {
@@ -135,7 +168,7 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const deletable = interaction.message.deletable
 
     if (!deletable) {
-      return
+      return interaction.deferUpdate()
     }
 
     await interaction.message.delete()
@@ -196,13 +229,13 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const actionRowBuilder = new ActionRowBuilder().addComponents(
       new ButtonBuilder({
         customId: 'ticket.close.confirm',
-        label: 'Confirm',
-        style: ButtonStyle.Primary,
+        style: ButtonStyle.Success,
+        emoji: '✔️',
       }),
       new ButtonBuilder({
         customId: 'ticket.close.cancel',
-        label: 'Cancel',
-        style: ButtonStyle.Primary,
+        style: ButtonStyle.Secondary,
+        emoji: '✖️',
       })
     )
 
@@ -210,21 +243,37 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
   }
 
   private async handleCloseTicket(interaction: ButtonInteraction) {
-    if (!interaction.channel) {
-      return
+    if (!interaction.channel || !interaction.guildId) {
+      return interaction.deferUpdate()
+    }
+    const [isAlreadyClosed] = await db.exec<{
+      status?: string
+    }>('SELECT status FROM tickets WHERE channel_id = $1 AND guild_id = $2', [
+      interaction.channelId,
+      interaction.guildId,
+    ])
+
+    if (!isAlreadyClosed || isAlreadyClosed.status === 'close') {
+      return interaction.deferUpdate()
     }
 
     const buttons = this.areUSureToClose()
     await interaction.channel
       .send({
-        content: 'Are you sure to close the ticket ?',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         components: [buttons],
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(
+              `Are you sure to close the ticket ? ${mentionChannel(
+                interaction.channelId
+              )}\n\n⚠️ There is no revert back`
+            )
+            .setColor(Colors.Orange),
+        ],
       })
-      .catch((err) => {
-        console.log(JSON.stringify(err, null, 2))
-      })
+      .finally(() => interaction.deferUpdate())
   }
 
   private async getMemberTicketsForGuild(memberId: string, guildId: string) {
@@ -335,11 +384,19 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
 
     const closeMessage = this.closeTicketMessage()
 
+    const embedClose = new EmbedBuilder()
+      .setDescription(
+        `Welcome on your ticket ${mentionUser(
+          userId
+        )}\n\nTo close your please click on the \`🔒\` button`
+      )
+      .setColor(Colors.Green)
+
     await channel.send({
-      content: interactionDB.message ?? undefined,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       components: [closeMessage],
+      embeds: [embedClose],
     })
 
     return this.replyOrEditReplyForInteraction(interaction, {
@@ -352,8 +409,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     const actionRowBuilder = new ActionRowBuilder().addComponents(
       new ButtonBuilder({
         customId: 'ticket.close.channel',
-        label: 'Close',
-        style: ButtonStyle.Primary,
+        style: ButtonStyle.Danger,
+        emoji: '🔒',
       })
     )
 
