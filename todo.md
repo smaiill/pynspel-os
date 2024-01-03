@@ -3,11 +3,12 @@
 - Docker.
 - Create a global Snowflake and transform all ids to string in DB and more.
   -- Reduce price to 5€
-- Prendre un domaine + hebergement
+  -- Prendre un domaine + hebergement
   -- Disable les paiments
   -- Re check les ws
   -- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
-  - Revoir la DB
+  -- Revoir la DB
+  - Deploy le projet
 
 # API
 
@@ -17,7 +18,7 @@
 - Refresh token when expire.
   -- only keep the 9.99 product
   -- tickets not loading js and css files.
-  - Debug routes
+  -- Debug routes
 
 # Front
 
@@ -25,12 +26,12 @@
 
 -- Move all to recoil.
 
-- Passer les pages sur 'use server'
-  -- Terms
-  -- Privacy
-  -- 404 page.
-- Create "Teams" page and put all roles on me, "front end enginer", "backend enginner", etc...
-  -- cookie consent
+-- Passer les pages sur 'use server'
+-- Terms
+-- Privacy
+-- 404 page.
+-- Create "Teams" page and put all roles on me, "front end enginer", "backend enginner", etc...
+-- cookie consent
 
 # Bot
 
