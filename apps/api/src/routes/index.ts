@@ -8,14 +8,26 @@ import { db } from 'modules/db'
 import { subscriptionRoutes } from 'modules/subscription/stripe.router'
 import { userRoutes } from 'modules/user/user.routes'
 import { redis } from 'utils/redis'
+import { deserializeSession } from 'utils/session'
 
 const router = Router()
 
 router.use('/auth', authRoutes)
-router.use('/users', rateLimiter, userRoutes.router)
-router.use('/dashboard', rateLimiter, dashboardRoutes.router)
+router.use('/users', rateLimiter, deserializeSession, userRoutes.router)
+router.use(
+  '/dashboard',
+  rateLimiter,
+  deserializeSession,
+  dashboardRoutes.router
+)
 router.use('/client', clientRoutes)
-router.use('/subscriptions', disabled, rateLimiter, subscriptionRoutes)
+router.use(
+  '/subscriptions',
+  disabled,
+  rateLimiter,
+  deserializeSession,
+  subscriptionRoutes
+)
 router.get('/modules', async (_: Request, res: Response) => {
   const cachedModules = await redis._client.get('modules')
 

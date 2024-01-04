@@ -5,7 +5,6 @@ import 'express-async-errors'
 import session from 'express-session'
 import { writeFile } from 'fs'
 import helmet from 'helmet'
-import { db } from 'modules/db'
 import morgan from 'morgan'
 import path from 'path'
 import { IS_DEV } from '../constants'
@@ -17,7 +16,6 @@ import { env } from '../utils/env'
 import { errorHandler } from '../utils/error'
 import { lg } from '../utils/logger'
 import { redis } from '../utils/redis'
-import { deserializeSession } from '../utils/session'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 
 const app = express()
@@ -54,6 +52,7 @@ app.use(
     origin: process.env.CORS_ORIGIN,
     methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
     credentials: true,
+    allowedHeaders: ['Content-Type'],
   })
 )
 app.use(customHeaders)
@@ -71,8 +70,6 @@ app.use(
   })
 )
 
-app.use(deserializeSession)
-
 app.get('/', (_, res: Response) => {
   res.json({ uptime: process.uptime() })
 })
@@ -89,7 +86,6 @@ export const createApp = () => {
       .then(() => lg.info('[REDIS] Started.'))
       .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
 
-    await db.exec('SELECT NOW()')
     // await db.exec('DELETE FROM guilds_subscriptions')
     // await db.exec('UPDATE guilds SET plan = $1', ['free'])
     // const stripeMailing = new MailingService()

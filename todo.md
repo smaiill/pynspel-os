@@ -15,6 +15,8 @@
 -- Send mails.
 -- View twitter favs and make sure that everything is correct
 
+-Passer en JWT
+
 - Refresh token when expire.
   -- only keep the 9.99 product
   -- tickets not loading js and css files.
