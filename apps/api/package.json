@@ -9,7 +9,8 @@
     "clean": "rimraf dist",
     "clean:all": "rimraf dist && rimraf node_modules",
     "type:check": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@discordjs/builders": "^1.6.3",
