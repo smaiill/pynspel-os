@@ -1,6 +1,6 @@
 import { generateRandomNumberBetween } from './random'
 
-export const getUserAvatar = (userId: number, avatarId: string) => {
+export const getUserAvatar = (userId: string, avatarId: string) => {
   return `https://cdn.discordapp.com/avatars/${userId}/${avatarId}.png?size=128`
 }
 

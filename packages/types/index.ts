@@ -139,9 +139,9 @@ export type Guild = {
   owner: string
 }
 
-export type SavedGuild = Guild & { id: number; plan: Plans }
+export type SavedGuild = Guild & { id: string; plan: Plans }
 
-export type SavedUser = User & { id: number }
+export type SavedUser = User & { id: string }
 
 export type Tokens = {
   accessToken: string
