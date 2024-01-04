@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SCHEMA_CREATE_INTERACTION } from '@pynspel/common'
+import { DiscordButtonStyle } from '@pynspel/types'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ButtonStylePicker } from '~/app/dashboard/components/discord/ButtonStylePicker'
@@ -29,7 +30,7 @@ export const CreateInteraction = () => {
   } = useForm<{
     emoji: string | null
     name: null | string
-    style: number
+    style: DiscordButtonStyle
     parent_id: null | string
   }>({
     defaultValues: {
