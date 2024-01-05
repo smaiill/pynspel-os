@@ -5,6 +5,7 @@ import { lg } from '../utils/logger'
 
 const wss = new Server({ port: env.WS_PORT })
 
+console.log(wss)
 let lastHeartbeatReceived = Date.now()
 export let IS_CLIENT_AVAILABLE = true
 
