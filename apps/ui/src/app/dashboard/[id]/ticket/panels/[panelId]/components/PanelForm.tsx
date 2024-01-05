@@ -25,7 +25,7 @@ export const PanelForm = (props: Props) => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       name: data.name,
