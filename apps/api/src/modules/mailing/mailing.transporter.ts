@@ -1,14 +1,15 @@
 import { createTransport } from 'nodemailer'
+import { env } from 'utils/env'
 
 export const MAILS_FROM = {
   ME: 'smailaberkaoui@gmail.com',
 }
 
 export const mailTransporter = createTransport({
-  host: 'smtp-relay.brevo.com',
+  host: env.SMTP_HOST,
   port: 587,
   auth: {
-    user: 'smailaberkaoui@gmail.com',
-    pass: 'XvUGJAjsWBKPDacN',
+    user: env.SMTP_USER,
+    pass: env.SMTP_PASS,
   },
 })
