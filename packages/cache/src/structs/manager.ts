@@ -31,14 +31,5 @@ export class CacheManager {
     })
     this.user = new UserCache(this._client)
     this.guild = new GuildCache(this._client)
-    this.init()
-  }
-
-  private async init() {
-    return this._client.connect()
-  }
-
-  public async ping() {
-    return this._client.ping()
   }
 }

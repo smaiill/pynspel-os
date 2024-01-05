@@ -7,6 +7,7 @@ import { writeFile } from 'fs'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
+import { redis } from 'utils/redis'
 import { IS_DEV } from '../constants'
 import '../managers/websocket'
 import routes from '../routes'
@@ -15,7 +16,6 @@ import { customHeaders } from '../utils/custom.headers'
 import { env } from '../utils/env'
 import { errorHandler } from '../utils/error'
 import { lg } from '../utils/logger'
-import { redis } from '../utils/redis'
 import { generatedRoutes, handleGenerateRoutes } from './utils/generateRoutes'
 
 const app = express()
@@ -81,20 +81,16 @@ export const createApp = () => {
   return app.listen(env.PORT, async () => {
     lg.info(`[API] Started at port: ${env.PORT}.`)
 
-    await redis
+    await redis._client.connect()
+
+    await redis._client
       .ping()
       .then(() => lg.info('[REDIS] Started.'))
-      .catch((err) => lg.error('[REDIS] Error starting the redis client', err))
+      .catch((err) => {
+        lg.error('[REDIS] Error starting the redis client', err)
+        process.exit(1)
+      })
 
-    // await db.exec('DELETE FROM guilds_subscriptions')
-    // await db.exec('UPDATE guilds SET plan = $1', ['free'])
-    // const stripeMailing = new MailingService()
-    // await stripeMailing.sendMail({
-    //   from: MAILS_FROM.ME,
-    //   to: MAILS_FROM.ME,
-    //   subject: 'Payment failure',
-    //   text: generatePaymentFailureTemplate(),
-    // })
     if (IS_DEV) {
       lg.info('Generating endpoints.')
       app._router.stack.forEach(handleGenerateRoutes.bind(null, []))

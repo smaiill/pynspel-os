@@ -6,8 +6,7 @@
       "outputs": ["dist/**", ".next/**"]
     },
     "dev": {
-      "cache": false,
-      "dependsOn": ["^dev"]
+      "cache": false
     },
     "clean": {},
     "clean:all": {},
