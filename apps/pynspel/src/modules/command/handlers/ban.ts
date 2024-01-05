@@ -2,11 +2,10 @@ import { BaseCommand } from '@pynspel/px'
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
-import { commandService } from '../command.service'
+import { _CommandService } from '../command.service'
 
 export class BanCommand extends BaseCommand {
-  private commandService = commandService
-  constructor() {
+  constructor(private commandService: _CommandService) {
     super()
     this.setName('ban')
       .setDescription('Ban a member of your server')
