@@ -37,7 +37,7 @@ const client = new Px({
   token: env.CLIENT_TOKEN,
   intents: 3276799,
   commands: [new KickCommand(new _CommandService()), new BanCommand()],
-  // syncCommands: true,
+  syncCommands: env.NODE_ENV === 'production',
   events: [
     new ChannelCreate(),
     new ChannelDelete(),
