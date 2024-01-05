@@ -27,6 +27,7 @@ export class CacheManager {
             return wait
           }
         },
+        connectTimeout: 50000,
       },
     })
     this.user = new UserCache(this._client)
