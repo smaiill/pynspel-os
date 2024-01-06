@@ -26,6 +26,8 @@ class _AuthService {
       code: code.toString(),
     }).toString()
 
+    console.log(JSON.stringify(body))
+
     const response = await discordApi({
       uri: Routes.oauth2TokenExchange(),
       headers: {
@@ -80,6 +82,7 @@ class _AuthService {
       code as unknown as string
     )
 
+    console.log({ access_token, refresh_token })
     console.log('5')
     const user = await this._userService.getDiscordUser(access_token)
 

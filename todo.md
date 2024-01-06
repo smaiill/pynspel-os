@@ -10,6 +10,7 @@
   -- Revoir la DB
   - Deploy le projet
   - Logs and error handling, example websockets when someone try to connect to it
+  - improve websocket re connect
 
 # API
 
