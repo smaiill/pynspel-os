@@ -84,6 +84,7 @@ class _AuthService {
     const user = await this._userService.getDiscordUser(access_token)
 
     console.log('6')
+    console.log(user)
     const newUser = await this._userDB.createOrUpdate({
       discordId: user.id,
       username: user.username,
