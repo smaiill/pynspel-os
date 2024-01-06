@@ -9,6 +9,7 @@
   -- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
   -- Revoir la DB
   - Deploy le projet
+  - Logs and error handling, example websockets when someone try to connect to it
 
 # API
 

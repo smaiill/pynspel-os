@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express, { Response } from 'express'
+import express, { Request, Response } from 'express'
 import 'express-async-errors'
 import session from 'express-session'
 import { writeFile } from 'fs'
@@ -10,6 +10,7 @@ import path from 'path'
 import { redis } from 'utils/redis'
 import { IS_DEV } from '../constants'
 import '../managers/websocket'
+import { websockets } from '../managers/websocket'
 import routes from '../routes'
 import { API_ENDPOINT } from '../utils/constants'
 import { customHeaders } from '../utils/custom.headers'
@@ -70,7 +71,7 @@ app.use(
   })
 )
 
-app.get('/', (_, res: Response) => {
+app.get('/', (request: Request, res: Response) => {
   res.json({ uptime: process.uptime() })
 })
 
@@ -78,7 +79,7 @@ app.use(API_ENDPOINT, routes)
 app.use(errorHandler)
 
 export const createApp = () => {
-  return app.listen(env.PORT, async () => {
+  const server = app.listen(env.PORT, async () => {
     lg.info(`[API] Started at port: ${env.PORT}.`)
 
     await redis._client.connect()
@@ -103,4 +104,8 @@ export const createApp = () => {
       )
     }
   })
+
+  websockets(server)
+
+  return server
 }

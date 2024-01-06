@@ -3,9 +3,6 @@ import { Server } from 'ws'
 import { env } from '../utils/env'
 import { lg } from '../utils/logger'
 
-const wss = new Server({ port: env.WS_PORT })
-
-console.log(wss)
 let lastHeartbeatReceived = Date.now()
 export let IS_CLIENT_AVAILABLE = true
 
@@ -13,46 +10,51 @@ const TIME_CONCIDER_CLIENT_UNAVAILABLE = 5000
 
 const extractTokenFromHeader = (header?: string) => {
   if (!header) {
-    return null
+    return false
   }
 
   const [source, value] = header.split(' ')
 
   if (source !== 'Bot' || value !== env.CLIENT_TOKEN) {
-    return null
+    return false
   }
 
-  return value
+  return true
 }
 
-wss.on('connection', (ws, req) => {
-  lg.info('WebSocket connected')
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const websockets = (server: any) => {
+  const wss = new Server({ server, path: '/ws' })
 
-  const isAuthorized = extractTokenFromHeader(req.headers.authorization)
+  wss.on('connection', (ws, req) => {
+    lg.info('WebSocket connected')
 
-  if (!isAuthorized) {
-    ws.close(1000, 'Unauthorized')
-  }
+    const isAuthorized = extractTokenFromHeader(req.headers.authorization)
 
-  lastHeartbeatReceived = Date.now()
-
-  ws.on('message', (message: string) => {
-    const data = JSON.parse(message) as WebSocketBody
-
-    switch (data.o) {
-      case WebSocketOperations.Heartbeat:
-        lastHeartbeatReceived = Date.now()
-        break
-
-      default:
-        break
+    if (!isAuthorized) {
+      ws.close(1000, 'Unauthorized')
     }
-  })
 
-  ws.on('close', () => {
-    lg.info('Websocket connection closed.')
+    lastHeartbeatReceived = Date.now()
+
+    ws.on('message', (message: string) => {
+      const data = JSON.parse(message) as WebSocketBody
+
+      switch (data.o) {
+        case WebSocketOperations.Heartbeat:
+          lastHeartbeatReceived = Date.now()
+          break
+
+        default:
+          break
+      }
+    })
+
+    ws.on('close', () => {
+      lg.info('Websocket connection closed.')
+    })
   })
-})
+}
 
 setInterval(async () => {
   // TODO: Instead of invalidating all the cache, just set a setTimeout and
