@@ -1,25 +1,27 @@
 # All
 
-- Docker.
-- Create a global Snowflake and transform all ids to string in DB and more.
-  -- Reduce price to 5€
-  -- Prendre un domaine + hebergement
-  -- Disable les paiments
-  -- Re check les ws
-  -- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
-  -- Revoir la DB
-  - Deploy le projet
-  - Logs and error handling, example websockets when someone try to connect to it
-  - improve websocket re connect
+-- Docker.
+
+-- Create a global Snowflake and transform all ids to string in DB and more.
+-- Reduce price to 5€
+-- Prendre un domaine + hebergement
+-- Disable les paiments
+-- Re check les ws
+-- Disable the rate limit for the following routes: /ap/user/me, api/client/serving-guilds
+-- Revoir la DB
+
+-- Deploy le projet
+
+- Logs and error handling, example websockets when someone try to connect to it
+- improve websocket re connect
 
 # API
 
 -- Send mails.
 -- View twitter favs and make sure that everything is correct
 
--Passer en JWT
-
-- Refresh token when expire.
+- Created At and Updated At
+  -- Refresh token when expire.
   -- only keep the 9.99 product
   -- tickets not loading js and css files.
   -- Debug routes

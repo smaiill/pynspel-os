@@ -36,8 +36,22 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20.x]
+
     steps:
       - uses: actions/checkout@v3
+
+      - name: Using node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Installing PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install Railway
         run: pnpm i -g @railway/cli
