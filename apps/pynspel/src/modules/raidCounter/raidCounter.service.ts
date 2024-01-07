@@ -65,7 +65,6 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
       })
       return newValue
     } catch (error) {
-      console.error('Error in updateGuildMemberThreshold:', error)
       return newValue
     }
   }
@@ -106,9 +105,7 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
           })
         }
       } catch (error) {
-        console.log(
-          `Error while locking the channel ${channel?.id} name: ${channel?.name}`
-        )
+        logger.error({ channel: channel?.id, guildId: guild.id, error })
       }
     })
   }

@@ -95,6 +95,7 @@ interface TypographyProps {
 }
 
 const Typography = forwardRef(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (props: PropsWithChildren<TypographyProps>, ref: ForwardedRef<any>) => {
     const {
       children,

@@ -1,4 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */
 // @ts-nocheck
 import { APIEmbed, APIEmbedField } from 'discord-api-types/v10'
 import { GanttChart, Plus, Trash } from 'lucide-react'

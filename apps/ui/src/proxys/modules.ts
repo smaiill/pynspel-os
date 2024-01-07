@@ -1,6 +1,7 @@
+import { ModuleStateApi } from '@pynspel/types'
 import { atom, useRecoilState, useSetRecoilState } from 'recoil'
 
-const globalModules = atom<any>({
+const globalModules = atom<ModuleStateApi[]>({
   key: 'GLOBAL_MODULES',
   default: [],
 })

@@ -24,8 +24,12 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
+  "settings": {
+    "react": {
+      "version": "18"
+    }
+  },
   "rules": {
-    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -33,7 +37,7 @@
       }
     ],
     "react/display-name": ["off"],
-    "react/no-unescaped-entities": 0
-  },
-  "ignorePatterns": ["**/dist/*", "**/.next/*"]
+    "react/no-unescaped-entities": 0,
+    "no-console": "error"
+  }
 }

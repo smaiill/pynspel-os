@@ -1,0 +1,4 @@
+**.min.**
+**/dist/**
+**/.next/**
+apps/api/src/app/utils/**

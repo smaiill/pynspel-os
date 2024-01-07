@@ -1,4 +1,3 @@
-import { ModulesTypes } from '@pynspel/common'
 import { Errors, HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response, Router } from 'express'
 import { db } from 'modules/db'
@@ -6,14 +5,14 @@ import { _decrypt } from 'utils/crypto'
 import { HttpCantAccesGuildException, HttpException } from 'utils/error'
 import { DashboardService } from '../dashboard.service'
 
-type ModuleRouterCreate<M extends ModulesTypes> = {
+type ModuleRouterCreate = {
   get: (req: Request, res: Response, next: NextFunction) => Promise<void>
   put: (req: Request, res: Response, next: NextFunction) => Promise<void>
 }
 
-export class ModuleRouter<M extends ModulesTypes> {
+export class ModuleRouter {
   private _router: Router
-  constructor({ get, put }: ModuleRouterCreate<M>) {
+  constructor({ get, put }: ModuleRouterCreate) {
     this._router = Router()
     this._router.get(
       '/:guildId',
@@ -70,6 +69,7 @@ export class ModuleRouter<M extends ModulesTypes> {
     next()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public use(...handlers: any) {
     this._router.use(...handlers)
   }

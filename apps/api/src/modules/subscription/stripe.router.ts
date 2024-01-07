@@ -336,6 +336,7 @@ subscriptionRoutes.post('/:guildId', async (req: Request, res: Response) => {
     )
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userDb] = await db.exec<any>(
     'SELECT * FROM users WHERE discord_id = $1',
     [req.user?.discordId]

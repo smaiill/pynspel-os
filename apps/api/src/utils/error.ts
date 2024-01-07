@@ -1,7 +1,6 @@
 import { Errors, HTTPCodes, HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response } from 'express'
 import { ZodIssue } from 'zod'
-import { IS_DEV } from '../constants'
 import { lg } from './logger'
 
 export type ErrorMessageType = string | { message: string }
@@ -37,10 +36,6 @@ export const errorHandler = (
   res: Response,
   __: NextFunction // eslint-disable-line
 ) => {
-  if (IS_DEV) {
-    console.log({ message: err.message, name: err.name, cause: err.cause })
-  }
-
   if (err instanceof HttpException) {
     res.status(err.code).json({ code: err.message })
   } else if (err instanceof HttpZodValidationError) {

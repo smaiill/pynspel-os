@@ -23,13 +23,13 @@ const app = express()
 
 if (env.NODE_ENV === 'production') {
   process.on('unhandledRejection', (reason, promise) => {
-    console.error(reason)
-    console.error(promise)
+    lg.error(reason)
+    lg.error(promise)
   })
 
   process.on('uncaughtException', (error, origin) => {
-    console.error(error)
-    console.error(origin)
+    lg.error(error)
+    lg.error(origin)
   })
 }
 
@@ -99,7 +99,9 @@ export const createApp = () => {
         path.join(process.cwd(), './src/app/utils/routes.json'),
         JSON.stringify(generatedRoutes, null, 2),
         (err) => {
-          err ? console.error(err) : null
+          if (err) {
+            throw err
+          }
         }
       )
     }

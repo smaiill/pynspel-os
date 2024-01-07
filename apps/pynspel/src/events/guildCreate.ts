@@ -30,7 +30,7 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
       return res
     } catch (error) {
       if (env.NODE_ENV === 'developement') {
-        return console.log(
+        return logger.info(
           `Should leave the guild in production ${guild.guild_id}`,
           error
         )

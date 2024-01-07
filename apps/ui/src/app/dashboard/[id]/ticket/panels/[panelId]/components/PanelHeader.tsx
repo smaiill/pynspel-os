@@ -21,8 +21,7 @@ export const PanelHeader = (props: PanelHeaderProps) => {
     sendPanel
       .mutateAsync(panelId)
       .then(() => pxToast('success', t('common.operation.success')))
-      .catch((err) => {
-        console.error(err)
+      .catch(() => {
         pxToast('error', t('errors.E_GENERIC'))
       })
   }
