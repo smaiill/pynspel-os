@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Pool } from 'pg'
 
 import {
@@ -44,7 +45,7 @@ export class _DbWrapper {
         connectionString: this._uri,
       })
     } catch (e) {
-      console.warn(`Error while creating db pool connection. ${e}`)
+      console.error(`Error while creating db pool connection. ${e}`)
     }
   }
 

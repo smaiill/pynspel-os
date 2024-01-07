@@ -1,0 +1,48 @@
+name: Node.js CI-CD
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Using node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Installing PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Installing packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Building packages
+        run: pnpm build
+
+      - name: Running CI
+        run: pnpm run ci
+  deploy:
+    needs: tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Railway
+        run: pnpm i -g @railway/cli
+
+      - name: Running CD
+        run: railway up --service ${{ secrets.SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_DEPLOY }}

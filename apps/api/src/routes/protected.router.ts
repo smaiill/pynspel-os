@@ -17,6 +17,7 @@ export class ProtectedRouter {
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public use(...handlers: any) {
     this._router.use(...handlers)
   }

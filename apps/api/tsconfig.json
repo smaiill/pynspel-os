@@ -10,10 +10,10 @@
     "noImplicitAny": true,
     "noEmit": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["@types/node"],
+    "types": [],
     "outDir": "dist",
     "baseUrl": "src",
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["./node_modules/*"]
 }

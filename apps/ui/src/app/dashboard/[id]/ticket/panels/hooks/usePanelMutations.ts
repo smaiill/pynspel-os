@@ -73,8 +73,10 @@ export const usePanelMutations = () => {
     onSuccess(_, panelId) {
       queryClient.setQueryData(
         ['panels', currentGuild?.guild_id],
-        (previous: any) => {
-          return previous.filter((panel: any) => panel.id !== panelId)
+        (previous: Omit<PanelApi, 'interactions'>[] | undefined) => {
+          return previous?.filter(
+            (panel: Omit<PanelApi, 'interactions'>) => panel.id !== panelId
+          )
         }
       )
 

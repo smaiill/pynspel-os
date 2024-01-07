@@ -10,10 +10,8 @@ class _AuthController {
   private authService = AuthService
 
   public async redirect(req: Request, res: Response) {
-    console.log('1')
     const { code } = req.query
 
-    console.log('2')
     await this.authService.authenticate({ code: code as string, req })
 
     res.status(HttpStatus.OK).redirect(env.CORS_ORIGIN)

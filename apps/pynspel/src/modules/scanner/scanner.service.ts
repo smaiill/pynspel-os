@@ -85,8 +85,6 @@ class _ScannerService extends ModuleServiceBase<'scanner'> {
       for (let i = extractedInvites.length - 1; i >= 0; i--) {
         const invite = extractedInvites[i].split('/')[1]
 
-        console.log({ invite })
-
         if (invites.has(invite)) {
           extractedInvites.splice(i, 1)
         }

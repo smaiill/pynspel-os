@@ -11,7 +11,9 @@
     "prepare": "panda codegen",
     "dev:phone": "next dev -H 192.168.1.20",
     "type:check": "tsc --pretty --noEmit",
-    "lint": "next lint"
+    "test:dev": "vitest",
+    "test": "vitest run",
+    "ci": "pnpm type:check && pnpm test"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -40,7 +42,6 @@
     "@pynspel/types": "workspace:*",
     "@types/gtag.js": "^0.0.18",
     "@types/react": "^18.2.8",
-    "@types/react-dom": "^18.2.4",
-    "typescript": "5.0.4"
+    "@types/react-dom": "^18.2.4"
   }
 }

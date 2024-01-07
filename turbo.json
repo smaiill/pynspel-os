@@ -12,6 +12,12 @@
     "clean:all": {},
     "type:check": {
       "cache": false
+    },
+    "test": {
+      "cache": false
+    },
+    "ci": {
+      "cache": false
     }
   }
 }

@@ -175,7 +175,7 @@ export class CaptchaManager {
         if (this._attempts >= this._options.max_retries) {
           const embed = captchaEmbeds.embedMaxRetries(member)
 
-          await member.send({ embeds: [embed] }).catch(console.log)
+          await member.send({ embeds: [embed] }).catch(logger.log)
           await member.kick('Reached max retries of the captcha.')
 
           return
@@ -213,7 +213,7 @@ export class CaptchaManager {
         logger.error(err)
         await member
           .kick('Reached max retries of the captcha.')
-          .catch(console.error)
+          .catch(logger.error)
       })
   }
 }

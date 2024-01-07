@@ -11,7 +11,10 @@
     "build": "tsup --config scripts/tsup.build.js",
     "clean:all": "rimraf dist && rimraf node_modules",
     "type:check": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test:dev": "vitest",
+    "test": "vitest run",
+    "ci": "pnpm type:check && pnpm test"
   },
   "license": "ISC",
   "dependencies": {

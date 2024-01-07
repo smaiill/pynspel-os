@@ -23,16 +23,16 @@ type ColorKey = keyof typeof COLORS
 type ColorValue = (typeof COLORS)[ColorKey]
 
 const _customLog = (color: ColorValue, content: unknown) =>
+  // eslint-disable-next-line no-console
   console.log(color, content, COLORS.ESCAPE)
 
 export class Px extends Client {
   private _token: string
   private _events: EventClass[]
   private _syncCommands: boolean
-  private _commandsArray: any[] = []
+  private _commandsArray: CommandClass[] = []
   private _onCommandError?: (error: Error) => void
   private _onEventError?: (error: Error) => void
-  private readonly discordBaseUrl = 'https://discord.com/api/v10'
   constructor({
     token,
     events = [],
@@ -106,11 +106,17 @@ export class Px extends Client {
       if (this._syncCommands) {
         for (const command of this._commandsArray) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { on, ...rest } = command
           this.application?.commands
-            .create(rest)
+            .create({
+              name: command.name,
+              default_member_permissions: command.default_member_permissions,
+              description: command.description,
+              dm_permission: command.dm_permission,
+              name_localizations: command.name_localizations,
+              nsfw: command.nsfw,
+            })
             .then(() =>
-              _customLog(COLORS.CYAN, `> Created command ${rest.name}`)
+              _customLog(COLORS.CYAN, `> Created command ${command.name}`)
             )
         }
       }

@@ -17,7 +17,6 @@ export const serializeSession = async (
   req.session.user = user
   req.user = user
 
-  console.log('8')
   const query = `
     INSERT INTO sessions (session_id, expires_at, data)
     VALUES ($1, $2, $3)
@@ -31,7 +30,6 @@ export const serializeSession = async (
   ]
 
   const [session] = await db.exec<SessionData>(query, values)
-  console.log('9')
   return session
 }
 

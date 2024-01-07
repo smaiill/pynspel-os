@@ -26,7 +26,6 @@ class _AuthService {
       code: code.toString(),
     }).toString()
 
-    console.log(JSON.stringify(body))
 
     const response = await discordApi({
       uri: Routes.oauth2TokenExchange(),
@@ -72,22 +71,16 @@ class _AuthService {
   }
 
   public async authenticate({ code, req }: { code: string; req: Request }) {
-    console.log('3')
     if (!code) {
       throw new HttpException(HttpStatus.BAD_REQUEST, 'Code undefined')
     }
-    console.log('4')
 
     const { access_token, refresh_token } = await this.getCredentialsUsingCode(
       code as unknown as string
     )
 
-    console.log({ access_token, refresh_token })
-    console.log('5')
     const user = await this._userService.getDiscordUser(access_token)
 
-    console.log('6')
-    console.log(user)
     const newUser = await this._userDB.createOrUpdate({
       discordId: user.id,
       username: user.username,
@@ -98,7 +91,6 @@ class _AuthService {
       email: user.email as string,
     })
 
-    console.log('7')
 
     await serializeSession(req, newUser)
   }

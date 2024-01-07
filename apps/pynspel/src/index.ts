@@ -59,15 +59,9 @@ const client = new Px({
   ],
   onCommandError(error) {
     logger.error(error)
-    if (env.NODE_ENV === 'developement') {
-      console.error(error)
-    }
   },
   onEventError(error) {
     logger.error(error)
-    if (env.NODE_ENV === 'developement') {
-      console.error(error)
-    }
   },
 
   shards: 'auto',

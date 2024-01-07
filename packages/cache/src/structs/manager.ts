@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createClient, RedisClientType } from 'redis'
 import { GuildCache } from './guild'
 import { UserCache } from './user'
@@ -16,8 +17,8 @@ export class CacheManager {
       socket: {
         reconnectStrategy: (retries) => {
           if (retries > MAX_CONNECTION_RETRY) {
-            console.log('Too many retries on REDIS. Connection Terminated')
-            console.log('Closing the API.')
+            console.error('Too many retries on REDIS. Connection Terminated')
+            console.error('Closing the API.')
             process.exit(1)
           } else {
             const wait = Math.min(
