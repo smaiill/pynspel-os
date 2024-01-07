@@ -26,6 +26,9 @@ jobs:
       - name: Installing packages
         run: pnpm install --frozen-lockfile
 
+      - name: Building packages
+        run: pnpm build
+
       - name: Running CI
         run: pnpm run ci
   deploy:
