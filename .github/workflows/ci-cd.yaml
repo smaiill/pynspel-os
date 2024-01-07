@@ -56,7 +56,17 @@ jobs:
       - name: Install Railway
         run: pnpm i -g @railway/cli
 
-      - name: Running CD
-        run: railway up --service ${{ secrets.SERVICE_ID }}
+      - name: CD Api
+        run: railway up --service ${{ secrets.API_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_DEPLOY }}
+
+      - name: CD Pynspel
+        run: railway up --service ${{ secrets.PYNSPEL_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_DEPLOY }}
+
+      - name: CD Ui
+        run: railway up --service ${{ secrets.UI_SERVICE_ID }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_DEPLOY }}
