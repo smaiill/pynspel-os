@@ -53,7 +53,7 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
 
       return Number(value)
     } catch (error) {
-      logger.error('Error in getGuildMemberThresholdOrCreate:', error)
+      logger.error(logger.error((error as Error).stack))
       return 0
     }
   }
@@ -105,7 +105,11 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
           })
         }
       } catch (error) {
-        logger.error({ channel: channel?.id, guildId: guild.id, error })
+        logger.error({
+          channel: channel?.id,
+          guildId: guild.id,
+          stack: (error as Error).stack,
+        })
       }
     })
   }
@@ -142,7 +146,7 @@ class _RaidCounterService extends ModuleServiceBase<'counterRaid'> {
 
       return true
     } catch (error) {
-      logger.error(error)
+      logger.error((error as Error).stack)
       return false
     }
   }

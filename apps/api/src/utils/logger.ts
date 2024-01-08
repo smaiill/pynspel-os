@@ -3,7 +3,7 @@ import { createLogger, format, transports } from 'winston'
 export const lg = createLogger({
   transports: [
     new transports.File({
-      filename: 'pynspel.error.log',
+      filename: 'logs/pynspel.error.log',
       level: 'error',
       format: format.combine(
         format.errors({ stack: true }),
@@ -12,7 +12,7 @@ export const lg = createLogger({
       ),
     }),
     new transports.File({
-      filename: 'pynspel.info.log',
+      filename: 'logs/pynspel.info.log',
       level: 'info',
       format: format.combine(format.timestamp(), format.json()),
     }),

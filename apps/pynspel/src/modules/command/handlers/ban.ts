@@ -85,7 +85,7 @@ export class BanCommand extends BaseCommand {
         ephemeral: true,
       })
     } catch (error) {
-      logger.error(error)
+      logger.error((error as Error).stack)
       await interaction.reply({
         content: 'An error occurred while banning the user',
         ephemeral: true,

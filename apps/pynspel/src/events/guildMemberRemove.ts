@@ -27,7 +27,9 @@ export class GuildMemberRemove extends BaseEvent<'guildMemberRemove'> {
   }
 
   public async on(_: Client, member: MemberRemove) {
-    this.loggingService.guildMemberRemove(member).catch(logger.error)
+    this.loggingService
+      .guildMemberRemove(member)
+      .catch((error) => logger.error((error as Error).stack))
 
     await this.removeGuildForUser(member.id, member.guild.id)
   }

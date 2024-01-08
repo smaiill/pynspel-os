@@ -22,14 +22,9 @@ import { startWs } from './managers/websocket'
 import { KickCommand } from './modules/command/handlers/kick'
 
 if (env.NODE_ENV === 'production') {
-  process.on('unhandledRejection', (reason, promise) => {
-    logger.error(reason)
-    logger.error(promise)
-  })
-
   process.on('uncaughtException', (error, origin) => {
-    logger.error(error)
-    logger.error(origin)
+    logger.error(error.stack)
+    logger.error(JSON.stringify(origin))
   })
 }
 
@@ -58,10 +53,10 @@ const client = new Px({
     new GuildUpdate(),
   ],
   onCommandError(error) {
-    logger.error(error)
+    logger.error(error.stack)
   },
   onEventError(error) {
-    logger.error(error)
+    logger.error(error.stack)
   },
 
   shards: 'auto',

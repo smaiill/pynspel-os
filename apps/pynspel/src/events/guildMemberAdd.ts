@@ -40,9 +40,11 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
       guildId: member.guild.id,
       permissions: member.permissions.bitfield.toString(),
       userId: member.id,
-    }).catch(logger.error)
+    }).catch((error) => logger.error((error as Error).stack))
 
-    this.loggingService.guildMemberAdd(member).catch(logger.error)
+    this.loggingService
+      .guildMemberAdd(member)
+      .catch((error) => logger.error((error as Error).stack))
 
     const passedRaidCounter = await this.raidCounterService.handleMember(member)
 

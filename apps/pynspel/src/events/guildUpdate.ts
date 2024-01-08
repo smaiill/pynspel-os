@@ -57,8 +57,8 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
     await Promise.all([
       redis.user.setGuilds(oldOwner.userId, oldOwnerGuilds),
       redis.user.setGuilds(newOwner.userId, newOwnerGuilds),
-    ]).catch(async (e) => {
-      logger.error(e)
+    ]).catch(async (error) => {
+      logger.error((error as Error).stack)
       await redis.user.invalidateGuilds(oldOwner.userId)
       await redis.user.invalidateGuilds(newOwner.userId)
     })
@@ -86,7 +86,7 @@ export class GuildUpdate extends BaseEvent<'guildUpdate'> {
           'UPDATE guilds_subscriptions SET cancel_at_period_end = $1 WHERE guild_id = $2',
           [true, newGuild.id]
         )
-        .catch(logger.error)
+        .catch((error) => logger.error((error as Error).stack))
 
       try {
         await this.swapOwnershipInCache(

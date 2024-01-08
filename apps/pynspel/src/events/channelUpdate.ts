@@ -40,7 +40,7 @@ export class ChannelUpdate extends BaseEvent<'channelUpdate'> {
       try {
         await redis.guild.updateChannel(newChannel.guild.id)
       } catch (error) {
-        logger.error(error)
+        logger.error((error as Error).stack)
         await redis.guild.invalidateChannels(newChannel.guildId)
       }
     }

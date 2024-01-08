@@ -28,7 +28,7 @@ export class ChannelDelete extends BaseEvent<'channelDelete'> {
     try {
       await redis.guild.deleteChannel(guildId, channel.id)
     } catch (error) {
-      logger.error(error)
+      logger.error((error as Error).stack)
       await redis.guild.invalidateChannels(guildId)
     }
   }

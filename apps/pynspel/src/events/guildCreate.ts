@@ -36,7 +36,7 @@ export class GuildCreate extends BaseEvent<'guildCreate'> {
         )
       }
 
-      logger.error(error)
+      logger.error((error as Error).stack)
       const _guild = await client.guilds.fetch(guild.guild_id)
       await _guild.leave()
     }

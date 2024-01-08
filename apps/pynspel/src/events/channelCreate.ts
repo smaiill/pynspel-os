@@ -31,7 +31,7 @@ export class ChannelCreate extends BaseEvent<'channelCreate'> {
         type: channel.type,
       })
     } catch (error) {
-      logger.error(error)
+      logger.error((error as Error).stack)
       await redis.guild.invalidateChannels(channel.guildId)
     }
   }

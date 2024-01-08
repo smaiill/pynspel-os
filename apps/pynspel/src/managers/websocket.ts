@@ -40,9 +40,8 @@ const sendHeartbeat = (ws: WebSocket) => {
       })
     )
   } catch (error) {
-    logger.error(
-      `Error sending heartbeat: ${(error as { message: string })?.message}`
-    )
+    logger.error(`Error sending heartbeat: ${(error as Error)?.message}`)
+    logger.error((error as Error).stack)
   }
 }
 

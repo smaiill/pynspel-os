@@ -209,11 +209,11 @@ export class CaptchaManager {
           }
         }
       })
-      .catch(async (err) => {
-        logger.error(err)
+      .catch(async (error) => {
+        logger.error((error as Error).stack)
         await member
           .kick('Reached max retries of the captcha.')
-          .catch(logger.error)
+          .catch(() => logger.error((error as Error).stack))
       })
   }
 }
