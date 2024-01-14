@@ -90,19 +90,21 @@ export const CustomLink = (
           color: 'news.fonts.primary',
           fontSize: '15px',
           fontWeight: 400,
+          zIndex: '500',
           _before: {
             pos: 'absolute',
             content: '""',
-            width: '0%',
-            height: '2px',
+            height: '0%',
             bg: 'news.special',
-            bottom: '-2.5px',
-            left: 0,
+            bottom: 0,
+            left: '-5%',
             transition: '.3s',
+            width: '110%',
+            zIndex: '-1',
           },
           _hover: {
             _before: {
-              width: '100%',
+              height: '110%',
             },
           },
         })

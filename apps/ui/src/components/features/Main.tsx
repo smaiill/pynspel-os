@@ -22,6 +22,7 @@ export const Features = () => {
           minW: '100%',
           minH: '100%',
           opacity: '.5',
+          zIndex: '-1',
         })}
       />
       <div
@@ -32,9 +33,25 @@ export const Features = () => {
           p: '80px 10px',
         })}
       >
-        <Typography as="h1">Features</Typography>
         <Typography
-          className={css({ maxW: '800px', textAlign: 'center', mt: '5px' })}
+          className={css({
+            fontFamily: 'Days one !important',
+            fontSize: '4rem !important',
+            fontWeight: '900',
+            letterSpacing: '3px',
+          })}
+          as="h1"
+        >
+          Features
+        </Typography>
+        <Typography
+          className={css({
+            maxW: '800px',
+            textAlign: 'center',
+            mt: '5px',
+            letterSpacing: '.2px',
+            fontSize: '.9rem !important',
+          })}
           as="span"
         >
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente,

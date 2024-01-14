@@ -22,7 +22,8 @@ const Log = ({
       className={cx(
         css({
           p: '20px',
-          border: '1px solid #ADADB610',
+          bg: 'rgba(0, 0, 0, .1)',
+          border: '1px solid rgba(255, 255, 255, .1)',
           backdropFilter: 'blur(5px)',
         }),
         className
@@ -31,9 +32,11 @@ const Log = ({
     >
       <DiscordUser
         content={
-          _type === 'error'
-            ? '😔 This user joined the server.'
-            : '🎊 This user joined the server.'
+          _type === 'error' ? (
+            <Typography as="span">😔 This user joined the server.</Typography>
+          ) : (
+            <Typography as="span">🎊 This user joined the server.</Typography>
+          )
         }
       />
       <div
@@ -41,7 +44,7 @@ const Log = ({
           display: 'flex',
           flexDir: 'column',
           mt: '20px',
-          borderLeft: '3px solid #343434',
+          borderLeft: '3px solid #34343430',
           p: '5px 30px',
           mb: '30px',
           gap: '3px',
@@ -73,20 +76,34 @@ const Log = ({
 
 export const Logs = () => {
   return (
-    <FeatureLayout className={css({ overflow: 'hidden', pos: 'relative' })}>
-      <Log
-        className={css({ pos: 'absolute', top: '-15%', w: '100%' })}
-        _type="error"
-      />
-      <Log
+    <FeatureLayout title="Logging" className={css({ p: '0 !important' })}>
+      <div
         className={css({
-          pos: 'absolute',
-          left: '35%',
-          top: '40%',
+          overflow: 'hidden',
+          pos: 'relative',
           w: '100%',
+          h: '100%',
         })}
-        _type="success"
-      />
+      >
+        <Log
+          className={css({
+            pos: 'absolute',
+            top: '-15%',
+            w: '100%',
+            left: '10%',
+          })}
+          _type="error"
+        />
+        <Log
+          className={css({
+            pos: 'absolute',
+            left: '35%',
+            top: '40%',
+            w: '100%',
+          })}
+          _type="success"
+        />
+      </div>
     </FeatureLayout>
   )
 }

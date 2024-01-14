@@ -1,8 +1,9 @@
+import { ReactNode } from 'react'
 import { Typography } from '~/ui/typography/Typography'
 import { css, cx } from '../../styled-system/css'
 import { Logo } from './branding/Logo'
 
-export const DiscordUser = ({ content }: { content?: string }) => {
+export const DiscordUser = ({ content }: { content?: ReactNode }) => {
   return (
     <div
       style={content ? { alignItems: 'center' } : {}}
@@ -19,7 +20,7 @@ export const DiscordUser = ({ content }: { content?: string }) => {
         >
           <Typography
             className={css({
-              color: 'special !important',
+              color: 'white !important',
               wordSpacing: '20px',
             })}
             as="span"
@@ -28,7 +29,7 @@ export const DiscordUser = ({ content }: { content?: string }) => {
           </Typography>
           <DiscordTimestamp />
         </div>
-        {content ? <Typography as="span">{content}</Typography> : null}
+        {content ? content : null}
       </div>
     </div>
   )
@@ -39,7 +40,7 @@ export const DiscordTimestamp = ({ className }: { className?: string }) => {
     <Typography
       className={cx(
         css({
-          color: '#72767D !important',
+          color: '#FFFFFF60 !important',
           fontSize: '12px !important',
         }),
         className

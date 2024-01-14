@@ -1,6 +1,8 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { Attach } from '~/components/Attach'
+import { Features } from '~/components/features/Main'
 import { useGuildService } from '~/hooks/useGuildService'
 import { Flex } from '~/layouts/Flex'
 import { HeaderAndFooterLayout } from '~/layouts/HeaderAndFooterLayout'
@@ -51,51 +53,54 @@ const page = () => {
   const { t } = useTranslation()
 
   return (
-    <HeaderAndFooterLayout>
-      <main className={cx(main, '__decoration')}>
-        <Typography
-          style={{
-            fontSize: 'clamp(2rem, 8vw, 4rem)',
-          }}
-          className="__days"
-          as="h1"
-        >
-          Pynspel <br /> Discord Bot
-        </Typography>
-        <Typography
-          style={{
-            marginTop: 10,
-          }}
-          color="secondary"
-          as="p"
-        >
-          {t('pages.home.description')}
-        </Typography>
-        <Flex className={css({ gap: 10, mt: 30, zIndex: 2 })}>
-          <ButtonPrimary
-            onClick={() => {
-              window.open(
-                `https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&permissions=1376805514262&scope=bot`,
-                '_blank'
-              )
+    <>
+      <Attach />
+      <HeaderAndFooterLayout>
+        <main className={cx(main, '__decoration')}>
+          <Typography
+            style={{
+              fontSize: 'clamp(2rem, 8vw, 4rem)',
             }}
+            className="__days"
+            as="h1"
           >
-            {t('pages.home.add_pynspel')}
-          </ButtonPrimary>
-          <ButtonSpecial onClick={() => router.push('/dashboard')}>
-            {t('pages.home.go_to_dashboard')}
-          </ButtonSpecial>
-        </Flex>
-        <Typography color="secondary" as="p" className={serversStyles}>
-          {t('pages.home.serving_servers', {
-            amount: data?.count ?? 0,
-          })}
-        </Typography>
-      </main>
+            Pynspel <br /> Discord Bot
+          </Typography>
+          <Typography
+            style={{
+              marginTop: 10,
+            }}
+            color="secondary"
+            as="p"
+          >
+            {t('pages.home.description')}
+          </Typography>
+          <Flex className={css({ gap: 10, mt: 30, zIndex: 2 })}>
+            <ButtonPrimary
+              onClick={() => {
+                window.open(
+                  `https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&permissions=1376805514262&scope=bot`,
+                  '_blank'
+                )
+              }}
+            >
+              {t('pages.home.add_pynspel')}
+            </ButtonPrimary>
+            <ButtonSpecial onClick={() => router.push('/dashboard')}>
+              {t('pages.home.go_to_dashboard')}
+            </ButtonSpecial>
+          </Flex>
+          <Typography color="secondary" as="p" className={serversStyles}>
+            {t('pages.home.serving_servers', {
+              amount: data?.count ?? 0,
+            })}
+          </Typography>
+        </main>
 
-      {/* <Features /> */}
-      {/* <ShowcaseDiscords /> */}
-    </HeaderAndFooterLayout>
+        <Features />
+        {/* <ShowcaseDiscords /> */}
+      </HeaderAndFooterLayout>
+    </>
   )
 }
 

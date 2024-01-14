@@ -6,9 +6,11 @@ const HIGHLIGHT_COLOR = '#444'
 export const SkeletonBox = ({
   height = 100,
   width = '100%',
+  inline = false,
 }: {
   height?: number
   width?: number | string
+  inline?: boolean
 }) => {
   return (
     <SkeletonTheme
@@ -16,6 +18,7 @@ export const SkeletonBox = ({
       baseColor={BASE_COLOR}
       highlightColor={HIGHLIGHT_COLOR}
       width={width}
+      inline={inline}
     >
       <Skeleton />
     </SkeletonTheme>

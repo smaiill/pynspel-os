@@ -51,9 +51,9 @@ const tokens = {
     "value": "#000",
     "variable": "var(--colors-black)"
   },
-  "colors.white": {
+  "colors.whiteChock": {
     "value": "#CFD0C8",
-    "variable": "var(--colors-white)"
+    "variable": "var(--colors-white-chock)"
   },
   "colors.gray.50": {
     "value": "#f9fafb",

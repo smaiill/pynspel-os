@@ -33,7 +33,7 @@ export default defineConfig({
           current: { value: 'currentColor' },
           dark: { value: '#111' },
           black: { value: '#000' },
-          white: { value: '#CFD0C8' },
+          whiteChock: { value: '#CFD0C8' },
 
           gray: {
             50: { value: '#f9fafb' },

@@ -4,9 +4,9 @@ import { DISCORD_LINK } from '~/constants'
 import { Flex } from '~/layouts/Flex'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../styled-system/css'
-import { Logo } from '../branding/Logo'
 import { CustomLink } from '../Link'
 import { SocialLink } from '../SocialLink'
+import { Logo } from '../branding/Logo'
 
 const SocialLinks = [
   {

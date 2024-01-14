@@ -7,7 +7,7 @@ import { Typography } from '~/ui/typography/Typography'
 import { getGuildIcon, getRandomDefaultAvatar } from '~/utils/discord'
 import { css } from '../../../../styled-system/css'
 
-const styles = css({
+export const serverCardStyles = css({
   backgroundColor: 'news.backgrounds.secondary',
   flex: '1 0 300px',
   gap: '20px',
@@ -40,7 +40,7 @@ const ServerCard = (props: DiscordGuild) => {
     : getRandomDefaultAvatar()
 
   return (
-    <FlexColumn className={styles}>
+    <FlexColumn className={serverCardStyles}>
       <img
         className={css({
           pos: 'absolute',
