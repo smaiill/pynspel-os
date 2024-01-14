@@ -16,9 +16,12 @@ export const useInteractionMutations = () => {
 
   const deleteInteraction = useMutation({
     mutationFn: async (id: string) =>
-      fetchApi(`/api/dashboard/panels/${currentPanel?.id}/interactions/${id}`, {
-        method: 'DELETE',
-      }),
+      fetchApi(
+        `/api/v1/dashboard/panels/${currentPanel?.id}/interactions/${id}`,
+        {
+          method: 'DELETE',
+        }
+      ),
     onSuccess(_, id) {
       queryClient.setQueryData(queryKey, (previous: PanelApi | undefined) => {
         return {
@@ -40,7 +43,7 @@ export const useInteractionMutations = () => {
       payload: CreateOrUpdateInteractionPayload
     }) => {
       return fetchApi(
-        `/api/dashboard/panels/${currentPanel?.id}/interactions/${id}`,
+        `/api/v1/dashboard/panels/${currentPanel?.id}/interactions/${id}`,
         {
           method: 'PUT',
           body: JSON.stringify(payload),
@@ -71,7 +74,7 @@ export const useInteractionMutations = () => {
   const createInteraction = useMutation({
     mutationFn: async (payload: CreateOrUpdateInteractionPayload) => {
       return fetchApi(
-        `/api/dashboard/panels/${currentPanel?.id}/interactions`,
+        `/api/v1/dashboard/panels/${currentPanel?.id}/interactions`,
         {
           method: 'POST',
           body: JSON.stringify(payload),

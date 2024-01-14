@@ -33,7 +33,7 @@ export const AppProvider = (props: PropsWithChildren) => {
 
   useEffect(() => {
     const handleFetchUser = async () => {
-      const res = await fetchApi<SavedUser>(`/api/users/me`)
+      const res = await fetchApi<SavedUser>(`/api/v1/users/me`)
 
       setUser(res)
 

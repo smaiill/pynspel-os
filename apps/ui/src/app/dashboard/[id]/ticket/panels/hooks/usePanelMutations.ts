@@ -24,7 +24,7 @@ export const usePanelMutations = () => {
       panelId: string
       data: z.infer<typeof SCHEMA_UPDATE_PANEL>
     }) => {
-      return fetchApi<PanelMutationApi>(`/api/dashboard/panels/${panelId}`, {
+      return fetchApi<PanelMutationApi>(`/api/v1/dashboard/panels/${panelId}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       })
@@ -66,7 +66,7 @@ export const usePanelMutations = () => {
 
   const deletePanel = useMutation({
     mutationFn: async (panelId: string) => {
-      return fetchApi(`/api/dashboard/panels/${panelId}`, {
+      return fetchApi(`/api/v1/dashboard/panels/${panelId}`, {
         method: 'DELETE',
       })
     },
@@ -109,7 +109,7 @@ export const usePanelMutations = () => {
 
   const sendPanel = useMutation({
     mutationFn: async (panelId: string) => {
-      return fetchApi(`/api/dashboard/panels/${panelId}/send`, {
+      return fetchApi(`/api/v1/dashboard/panels/${panelId}/send`, {
         method: 'POST',
       })
     },

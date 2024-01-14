@@ -1,4 +1,3 @@
-import { MONTHLY_PRICE_ID } from '@pynspel/common'
 import { pxToast } from '~/app/dashboard/components/toast/toast-handler'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
@@ -38,7 +37,9 @@ export const PremiumChoices = ({ guildId }: { guildId: string }) => {
       <PremiumTable />
 
       <ButtonPremium
-        onClick={() => handleClick(MONTHLY_PRICE_ID, guildId)}
+        onClick={() =>
+          handleClick(process.env.MONTHLY_PRICE_ID as string, guildId)
+        }
         className={css({ alignSelf: 'right', width: 'fit-content', mt: '8px' })}
       >
         Acheter

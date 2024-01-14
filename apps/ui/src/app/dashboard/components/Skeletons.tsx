@@ -3,12 +3,19 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 const BASE_COLOR = '#202020'
 const HIGHLIGHT_COLOR = '#444'
 
-export const SkeletonBox = () => {
+export const SkeletonBox = ({
+  height = 100,
+  width = '100%',
+}: {
+  height?: number
+  width?: number | string
+}) => {
   return (
     <SkeletonTheme
-      height={100}
+      height={height}
       baseColor={BASE_COLOR}
       highlightColor={HIGHLIGHT_COLOR}
+      width={width}
     >
       <Skeleton />
     </SkeletonTheme>

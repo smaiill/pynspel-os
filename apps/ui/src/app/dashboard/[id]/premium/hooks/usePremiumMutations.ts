@@ -12,7 +12,7 @@ export const usePremiumMutations = () => {
       guildId: string
     }) =>
       await fetchApi<CreateCheckoutSessionApi>(
-        `/api/subscriptions/${guildId}`,
+        `/api/v1/subscriptions/${guildId}`,
         {
           method: 'POST',
           body: JSON.stringify({

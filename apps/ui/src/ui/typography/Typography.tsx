@@ -78,7 +78,7 @@ type TypographyColors = Exclude<
   undefined
 >
 
-type TypographyElement = Exclude<
+export type TypographyElement = Exclude<
   TypographyVariants extends infer AV
     ? AV extends object
       ? AV[keyof AV & 'as']

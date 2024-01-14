@@ -1,10 +1,8 @@
-import { MONTHLY_PRICE_ID } from '@pynspel/common'
 import { Errors, HttpStatus, SavedGuild } from '@pynspel/types'
 import { Request, Response, Router } from 'express'
 import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
 import { MailingService } from 'modules/mailing/mailing.service'
-import { MAILS_FROM } from 'modules/mailing/mailing.transporter'
 import { generatePaymentFailureTemplate } from 'modules/mailing/templates/payment.failure.t'
 import { Stripe } from 'stripe'
 import { env } from 'utils/env'
@@ -24,7 +22,7 @@ const GUILD_ID_SCHEMA = z.string().trim()
 const stripeMailing = new MailingService()
 
 const createSubscriptionSchema = z.object({
-  priceId: z.literal(MONTHLY_PRICE_ID),
+  priceId: z.literal(env.MONTHLY_PRICE_ID),
   guildId: GUILD_ID_SCHEMA,
 })
 
@@ -124,8 +122,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
           return
         }
 
-        const [userDb] = await db.exec<{ email: string }>(
-          'SELECT email FROM users WHERE discord_id = (SELECT owner FROM guilds WHERE guild_id = $1)',
+        const [userDb] = await db.exec<{ email: string; username: string }>(
+          'SELECT email, username FROM users WHERE discord_id = (SELECT owner FROM guilds WHERE guild_id = $1)',
           [subscriptionDb.guild_id]
         )
 
@@ -136,10 +134,10 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
         }
 
         await stripeMailing.sendMail({
-          from: MAILS_FROM.ME,
+          from: env.SMTP_USER,
           to: userDb.email,
           subject: 'Payment failure',
-          text: generatePaymentFailureTemplate(),
+          html: generatePaymentFailureTemplate(userDb.username),
         })
       }
       break

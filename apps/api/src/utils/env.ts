@@ -27,6 +27,7 @@ const envSchema = z.object({
   SMTP_HOST: z.string(),
   SMTP_USER: z.string(),
   SMTP_PASS: z.string(),
+  MONTHLY_PRICE_ID: z.string(),
 })
 
 export const env = envSchema.parse(process.env)

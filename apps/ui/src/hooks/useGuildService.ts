@@ -3,15 +3,15 @@ import { fetchApi } from '~/utils/fetchApi'
 
 export const useGuildService = () => {
   const getMutualGuilds = async () => {
-    return fetchApi<DiscordGuild[]>('/api/dashboard/guilds')
+    return fetchApi<DiscordGuild[]>('/api/v1/dashboard/guilds')
   }
 
   const getGuild = async ({ guildId }: { guildId: string }) => {
-    return fetchApi<ApiGuild>(`/api/dashboard/guilds/${guildId}`)
+    return fetchApi<ApiGuild>(`/api/v1/dashboard/guilds/${guildId}`)
   }
 
   const getServingGuilds = async () => {
-    return fetchApi<{ count: number }>('/api/client/serving-guilds')
+    return fetchApi<{ count: number }>('/api/v1/client/serving-guilds')
   }
 
   return { getGuild, getMutualGuilds, getServingGuilds }

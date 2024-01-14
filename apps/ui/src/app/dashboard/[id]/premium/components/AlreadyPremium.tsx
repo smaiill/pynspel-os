@@ -2,8 +2,8 @@ import { CreatePortalApi } from '@pynspel/types'
 import { useStripe } from '@stripe/react-stripe-js'
 import { FlexColumn } from '~/layouts/Flex'
 import { useTranslation } from '~/locales/Provider'
-import { ButtonPrimary } from '~/ui/button/Button'
 import { Tag } from '~/ui/Tag'
+import { ButtonPrimary } from '~/ui/button/Button'
 import { Typography } from '~/ui/typography/Typography'
 import { fetchApi } from '~/utils/fetchApi'
 import { css } from '../../../../../../styled-system/css'
@@ -27,7 +27,7 @@ export const AlreadyPremium = ({ guildId }: AlreadyPremiumProps) => {
       throw new Error('Stripe error !')
     }
     const res = await fetchApi<CreatePortalApi>(
-      `/api/subscriptions/portal/${guildId}`,
+      `/api/v1/subscriptions/portal/${guildId}`,
       {
         method: 'GET',
       }

@@ -93,6 +93,7 @@ const page = () => {
         </Typography>
       </main>
 
+      {/* <Features /> */}
       {/* <ShowcaseDiscords /> */}
     </HeaderAndFooterLayout>
   )

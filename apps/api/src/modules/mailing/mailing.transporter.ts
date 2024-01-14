@@ -1,10 +1,6 @@
 import { createTransport } from 'nodemailer'
 import { env } from 'utils/env'
 
-export const MAILS_FROM = {
-  ME: 'smailaberkaoui@gmail.com',
-}
-
 export const mailTransporter = createTransport({
   host: env.SMTP_HOST,
   port: 587,

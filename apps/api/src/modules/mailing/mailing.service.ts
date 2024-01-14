@@ -5,7 +5,7 @@ type SendMailOptions = {
   from: string
   to: string
   subject: string
-  text: string
+  html: string
 }
 export class MailingService {
   public sendMail(options: SendMailOptions) {
@@ -15,7 +15,7 @@ export class MailingService {
           from: options.from,
           to: options.to,
           subject: options.subject,
-          text: options.text,
+          html: options.html,
         },
         function (error) {
           if (error) {

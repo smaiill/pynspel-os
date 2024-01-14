@@ -22,17 +22,16 @@ export const useFetchModule = <M extends ModulesTypes>(
     queryKey: [`module_${module}`, guildId],
     queryFn: async () =>
       await fetchApi<InferModuleConfigType<(typeof Modules)[M]>>(
-        `/api/dashboard/${databaseResource ?? module}/${guildId}`
+        `/api/v1/dashboard/${databaseResource ?? module}/${guildId}`
       ),
   })
 }
 
 export const useGuildModulesState = (guildId: string) => {
-  // TODO: This makes to many requests when the id is undefined
   return useQuery<{ name: string; is_active: boolean }[]>({
     queryKey: ['modules', guildId],
     queryFn: async () => {
-      return fetchApi(`/api/dashboard/guilds/${guildId}/modules`)
+      return fetchApi(`/api/v1/dashboard/guilds/${guildId}/modules`)
     },
     enabled: !!guildId,
   })
@@ -47,7 +46,7 @@ export const useMutateModuleState = <M extends ModulesTypes>(module: M) => {
   return useMutation({
     mutationFn: async (newValue: boolean) => {
       return fetchApi(
-        `/api/dashboard/guilds/${currentGuild?.guild_id}/modules/${module}`,
+        `/api/v1/dashboard/guilds/${currentGuild?.guild_id}/modules/${module}`,
         {
           method: 'PUT',
           body: JSON.stringify({ is_active: newValue }),
@@ -109,7 +108,7 @@ export const useMutateModule = <M extends ModulesTypes>(
   return useMutation({
     mutationFn: (moduleData: InferModuleConfigType<M>) =>
       fetchApi<InferModuleConfigType<M>>(
-        `/api/dashboard/${moduleApiResource ?? module}/${
+        `/api/v1/dashboard/${moduleApiResource ?? module}/${
           currentGuild?.guild_id
         }`,
         {
@@ -135,7 +134,7 @@ export const useGlobalModules = () => {
 
   return useQuery<ModuleStateApi[]>({
     queryKey: ['modules'],
-    queryFn: () => fetchApi('/api/modules'),
+    queryFn: () => fetchApi('/api/v1/modules'),
 
     onSuccess(data) {
       setModules(data)

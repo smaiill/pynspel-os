@@ -6,559 +6,559 @@
     "path": ""
   },
   {
-    "routeName": "getAuthCallback",
+    "routeName": "getV1AuthCallback",
     "_args": [],
     "method": "GET",
-    "path": "api/auth/callback"
+    "path": "api/v1/auth/callback"
   },
   {
-    "routeName": "getAuthStatus",
+    "routeName": "getV1AuthStatus",
     "_args": [],
     "method": "GET",
-    "path": "api/auth/status"
+    "path": "api/v1/auth/status"
   },
   {
-    "routeName": "getAuthRevoke",
+    "routeName": "getV1AuthRevoke",
     "_args": [],
     "method": "GET",
-    "path": "api/auth/revoke"
+    "path": "api/v1/auth/revoke"
   },
   {
-    "routeName": "getUsersMe",
+    "routeName": "getV1UsersMe",
     "_args": [],
     "method": "GET",
-    "path": "api/users/me"
+    "path": "api/v1/users/me"
   },
   {
-    "routeName": "getGuilds",
+    "routeName": "getV1Guilds",
     "_args": [],
     "method": "GET",
-    "path": "api/dashboard/guilds"
+    "path": "api/v1/dashboard/guilds"
   },
   {
-    "routeName": "getGuildsId",
+    "routeName": "getV1GuildsId",
     "_args": [
       "id"
     ],
     "method": "GET",
-    "path": "api/dashboard/guilds/:id"
+    "path": "api/v1/dashboard/guilds/:id"
   },
   {
-    "routeName": "getGuildsIdModules",
+    "routeName": "getV1GuildsIdModules",
     "_args": [
       "id"
     ],
     "method": "GET",
-    "path": "api/dashboard/guilds/:id/modules"
+    "path": "api/v1/dashboard/guilds/:id/modules"
   },
   {
-    "routeName": "putGuildsIdModulesModuleName",
+    "routeName": "putV1GuildsIdModulesModuleName",
     "_args": [
       "id",
       "moduleName"
     ],
     "method": "PUT",
-    "path": "api/dashboard/guilds/:id/modules/:moduleName"
+    "path": "api/v1/dashboard/guilds/:id/modules/:moduleName"
   },
   {
-    "routeName": "getBotGuildId",
+    "routeName": "getV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "getBotGuildId",
+    "routeName": "getV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "getBotGuildId",
+    "routeName": "getV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "putBotGuildId",
+    "routeName": "putV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "putBotGuildId",
+    "routeName": "putV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "putBotGuildId",
+    "routeName": "putV1BotGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/bot/:guildId"
+    "path": "api/v1/dashboard/bot/:guildId"
   },
   {
-    "routeName": "getCaptchaGuildId",
+    "routeName": "getV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "getCaptchaGuildId",
+    "routeName": "getV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "getCaptchaGuildId",
+    "routeName": "getV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "putCaptchaGuildId",
+    "routeName": "putV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "putCaptchaGuildId",
+    "routeName": "putV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "putCaptchaGuildId",
+    "routeName": "putV1CaptchaGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/captcha/:guildId"
+    "path": "api/v1/dashboard/captcha/:guildId"
   },
   {
-    "routeName": "getLoggingGuildId",
+    "routeName": "getV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "getLoggingGuildId",
+    "routeName": "getV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "getLoggingGuildId",
+    "routeName": "getV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "putLoggingGuildId",
+    "routeName": "putV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "putLoggingGuildId",
+    "routeName": "putV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "putLoggingGuildId",
+    "routeName": "putV1LoggingGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/logging/:guildId"
+    "path": "api/v1/dashboard/logging/:guildId"
   },
   {
-    "routeName": "getTicketGuildId",
+    "routeName": "getV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "getTicketGuildId",
+    "routeName": "getV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "getTicketGuildId",
+    "routeName": "getV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "putTicketGuildId",
+    "routeName": "putV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "putTicketGuildId",
+    "routeName": "putV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "putTicketGuildId",
+    "routeName": "putV1TicketGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/ticket/:guildId"
+    "path": "api/v1/dashboard/ticket/:guildId"
   },
   {
-    "routeName": "getCommandGuildId",
+    "routeName": "getV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "getCommandGuildId",
+    "routeName": "getV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "getCommandGuildId",
+    "routeName": "getV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "putCommandGuildId",
+    "routeName": "putV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "putCommandGuildId",
+    "routeName": "putV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "putCommandGuildId",
+    "routeName": "putV1CommandGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/command/:guildId"
+    "path": "api/v1/dashboard/command/:guildId"
   },
   {
-    "routeName": "getCounterRaidGuildId",
+    "routeName": "getV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "getCounterRaidGuildId",
+    "routeName": "getV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "getCounterRaidGuildId",
+    "routeName": "getV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "putCounterRaidGuildId",
+    "routeName": "putV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "putCounterRaidGuildId",
+    "routeName": "putV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "putCounterRaidGuildId",
+    "routeName": "putV1CounterRaidGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/counter-raid/:guildId"
+    "path": "api/v1/dashboard/counter-raid/:guildId"
   },
   {
-    "routeName": "getScannerGuildId",
+    "routeName": "getV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "getScannerGuildId",
+    "routeName": "getV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "getScannerGuildId",
+    "routeName": "getV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "putScannerGuildId",
+    "routeName": "putV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "putScannerGuildId",
+    "routeName": "putV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "putScannerGuildId",
+    "routeName": "putV1ScannerGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/scanner/:guildId"
+    "path": "api/v1/dashboard/scanner/:guildId"
   },
   {
-    "routeName": "postPanels",
+    "routeName": "postV1Panels",
     "_args": [],
     "method": "POST",
-    "path": "api/dashboard/panels"
+    "path": "api/v1/dashboard/panels"
   },
   {
-    "routeName": "postPanels",
+    "routeName": "postV1Panels",
     "_args": [],
     "method": "POST",
-    "path": "api/dashboard/panels"
+    "path": "api/v1/dashboard/panels"
   },
   {
-    "routeName": "getPanelsPanelId",
+    "routeName": "getV1PanelsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "GET",
-    "path": "api/dashboard/panels/:panelId"
+    "path": "api/v1/dashboard/panels/:panelId"
   },
   {
-    "routeName": "postPanelsPanelIdSend",
+    "routeName": "postV1PanelsPanelIdSend",
     "_args": [
       "panelId"
     ],
     "method": "POST",
-    "path": "api/dashboard/panels/:panelId/send"
+    "path": "api/v1/dashboard/panels/:panelId/send"
   },
   {
-    "routeName": "putPanelsPanelId",
+    "routeName": "putV1PanelsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/panels/:panelId"
+    "path": "api/v1/dashboard/panels/:panelId"
   },
   {
-    "routeName": "putPanelsPanelId",
+    "routeName": "putV1PanelsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/panels/:panelId"
+    "path": "api/v1/dashboard/panels/:panelId"
   },
   {
-    "routeName": "deletePanelsPanelId",
+    "routeName": "deleteV1PanelsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "DELETE",
-    "path": "api/dashboard/panels/:panelId"
+    "path": "api/v1/dashboard/panels/:panelId"
   },
   {
-    "routeName": "getPanelsGuildGuildId",
+    "routeName": "getV1PanelsGuildGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/dashboard/panels/guild/:guildId"
+    "path": "api/v1/dashboard/panels/guild/:guildId"
   },
   {
-    "routeName": "getPanelsPanelIdInteractions",
+    "routeName": "getV1PanelsPanelIdInteractions",
     "_args": [
       "panelId"
     ],
     "method": "GET",
-    "path": "api/dashboard/panels/:panelId/interactions"
+    "path": "api/v1/dashboard/panels/:panelId/interactions"
   },
   {
-    "routeName": "postPanelsPanelIdInteractions",
+    "routeName": "postV1PanelsPanelIdInteractions",
     "_args": [
       "panelId"
     ],
     "method": "POST",
-    "path": "api/dashboard/panels/:panelId/interactions"
+    "path": "api/v1/dashboard/panels/:panelId/interactions"
   },
   {
-    "routeName": "postPanelsPanelIdInteractions",
+    "routeName": "postV1PanelsPanelIdInteractions",
     "_args": [
       "panelId"
     ],
     "method": "POST",
-    "path": "api/dashboard/panels/:panelId/interactions"
+    "path": "api/v1/dashboard/panels/:panelId/interactions"
   },
   {
-    "routeName": "putPanelsPanelIdInteractionsInteractionId",
+    "routeName": "putV1PanelsPanelIdInteractionsInteractionId",
     "_args": [
       "panelId",
       "interactionId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+    "path": "api/v1/dashboard/panels/:panelId/interactions/:interactionId"
   },
   {
-    "routeName": "putPanelsPanelIdInteractionsInteractionId",
+    "routeName": "putV1PanelsPanelIdInteractionsInteractionId",
     "_args": [
       "panelId",
       "interactionId"
     ],
     "method": "PUT",
-    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+    "path": "api/v1/dashboard/panels/:panelId/interactions/:interactionId"
   },
   {
-    "routeName": "deletePanelsPanelIdInteractionsInteractionId",
+    "routeName": "deleteV1PanelsPanelIdInteractionsInteractionId",
     "_args": [
       "panelId",
       "interactionId"
     ],
     "method": "DELETE",
-    "path": "api/dashboard/panels/:panelId/interactions/:interactionId"
+    "path": "api/v1/dashboard/panels/:panelId/interactions/:interactionId"
   },
   {
-    "routeName": "getClientServingGuilds",
+    "routeName": "getV1ClientServingGuilds",
     "_args": [],
     "method": "GET",
-    "path": "api/client/serving-guilds"
+    "path": "api/v1/client/serving-guilds"
   },
   {
-    "routeName": "getSubscriptionsSuccess",
+    "routeName": "getV1SubscriptionsSuccess",
     "_args": [],
     "method": "GET",
-    "path": "api/subscriptions/success"
+    "path": "api/v1/subscriptions/success"
   },
   {
-    "routeName": "getSubscriptionsCancel",
+    "routeName": "getV1SubscriptionsCancel",
     "_args": [],
     "method": "GET",
-    "path": "api/subscriptions/cancel"
+    "path": "api/v1/subscriptions/cancel"
   },
   {
-    "routeName": "getSubscriptionsGuildId",
+    "routeName": "getV1SubscriptionsGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/subscriptions/:guildId"
+    "path": "api/v1/subscriptions/:guildId"
   },
   {
-    "routeName": "postSubscriptionsWebhook",
+    "routeName": "postV1SubscriptionsWebhook",
     "_args": [],
     "method": "POST",
-    "path": "api/subscriptions/webhook"
+    "path": "api/v1/subscriptions/webhook"
   },
   {
-    "routeName": "getSubscriptionsPortalGuildId",
+    "routeName": "getV1SubscriptionsPortalGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/subscriptions/portal/:guildId"
+    "path": "api/v1/subscriptions/portal/:guildId"
   },
   {
-    "routeName": "postSubscriptionsGuildId",
+    "routeName": "postV1SubscriptionsGuildId",
     "_args": [
       "guildId"
     ],
     "method": "POST",
-    "path": "api/subscriptions/:guildId"
+    "path": "api/v1/subscriptions/:guildId"
   },
   {
-    "routeName": "getModules",
+    "routeName": "getV1Modules",
     "_args": [],
     "method": "GET",
-    "path": "api/modules"
+    "path": "api/v1/modules"
   }
 ]
