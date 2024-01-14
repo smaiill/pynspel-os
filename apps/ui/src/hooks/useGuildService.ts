@@ -7,7 +7,9 @@ export const useGuildService = () => {
   }
 
   const getGuild = async ({ guildId }: { guildId: string }) => {
-    return fetchApi<ApiGuild>(`/api/v1/dashboard/guilds/${guildId}`)
+    return fetchApi<ApiGuild & { isOwner: boolean }>(
+      `/api/v1/dashboard/guilds/${guildId}`
+    )
   }
 
   const getServingGuilds = async () => {

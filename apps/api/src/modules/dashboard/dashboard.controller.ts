@@ -47,7 +47,6 @@ class _DashboardController {
     res.json({
       ...guild,
       isOwner: guild.owner === req.user?.discordId,
-      owner: '',
     })
   }
 }
