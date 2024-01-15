@@ -86,13 +86,16 @@ export const usePanelMutations = () => {
 
   const createPanel = useMutation({
     mutationFn: async (data: { name: string }) => {
-      return fetchApi<Omit<PanelApi, 'interactions'>>('/api/dashboard/panels', {
-        method: 'POST',
-        body: JSON.stringify({
-          ...data,
-          guild_id: currentGuild?.guild_id,
-        }),
-      })
+      return fetchApi<Omit<PanelApi, 'interactions'>>(
+        '/api/v1/dashboard/panels',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            ...data,
+            guild_id: currentGuild?.guild_id,
+          }),
+        }
+      )
     },
     onSuccess(data) {
       queryClient.setQueryData(

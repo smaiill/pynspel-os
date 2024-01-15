@@ -12,7 +12,7 @@ import { deserializeSession } from 'utils/session'
 const router = Router()
 
 router.use('/v1/auth', authRoutes)
-router.use('/v1//users', rateLimiter, deserializeSession, userRoutes.router)
+router.use('/v1/users', rateLimiter, deserializeSession, userRoutes.router)
 router.use(
   '/v1/dashboard',
   rateLimiter,

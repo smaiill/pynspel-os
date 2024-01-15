@@ -14,6 +14,7 @@
 
 - Logs and error handling, example websockets when someone try to connect to it
 - improve websocket re connect
+- Added a info package contains all the links etc...
 
 # API
 
@@ -25,6 +26,8 @@
 -- only keep the 9.99 product
 -- tickets not loading js and css files.
 -- Debug routes
+
+- Pass all DB ids to UUID
 
 # Front
 

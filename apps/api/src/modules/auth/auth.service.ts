@@ -26,7 +26,6 @@ class _AuthService {
       code: code.toString(),
     }).toString()
 
-
     const response = await discordApi({
       uri: Routes.oauth2TokenExchange(),
       headers: {
@@ -90,7 +89,6 @@ class _AuthService {
       refreshToken: _encrypt(refresh_token),
       email: user.email as string,
     })
-
 
     await serializeSession(req, newUser)
   }
