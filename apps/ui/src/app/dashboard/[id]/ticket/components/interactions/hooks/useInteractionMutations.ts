@@ -86,7 +86,7 @@ export const useInteractionMutations = () => {
         return {
           ...(previous as PanelApi),
           interactions: [
-            ...[previous?.interactions ?? []],
+            ...(previous?.interactions ?? []),
             data,
           ] as Interaction[],
         }

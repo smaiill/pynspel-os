@@ -61,4 +61,6 @@ export const startWs = () => {
     HEARTBEAT_INTERVAL
   )
   interval = createdInterval
+
+  return ws
 }

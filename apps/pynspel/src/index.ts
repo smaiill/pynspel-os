@@ -17,6 +17,7 @@ import { _CommandService } from 'modules/command/command.service'
 import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
+import { redis } from 'utils/redis'
 import './managers/websocket'
 import { startWs } from './managers/websocket'
 import { KickCommand } from './modules/command/handlers/kick'
@@ -58,10 +59,22 @@ const client = new Px({
   onEventError(error) {
     logger.error(error.stack)
   },
-
-  shards: 'auto',
 })
 
-client.exe().then(() => {
+const start = async () => {
+  await redis._client.connect()
+
+  await redis._client
+    .ping()
+    .then(() => logger.info('[REDIS-PYNSPEL] Started.'))
+    .catch((err) => {
+      logger.error('[REDIS-PYNSPEL] Error starting the redis client', err)
+      process.exit(1)
+    })
+
   startWs()
-})
+
+  await client.exe()
+}
+
+start()
