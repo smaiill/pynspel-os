@@ -1,11 +1,10 @@
 import { Errors, HttpStatus } from '@pynspel/types'
 import { NextFunction, Request, Response } from 'express'
-import { getUserRateLimit } from 'managers/rate.limiter'
 import { HttpException } from 'utils/error'
 import { redis } from 'utils/redis'
 
 const RATE_LIMITER_OPTIONS = {
-  REQUESTS: 300,
+  REQUESTS: 50,
   TIME: 5,
   KEY_PREFIX: '__rateLimiter',
 } as const
@@ -16,6 +15,7 @@ export const rateLimiter = async (
   next: NextFunction
 ) => {
   const userKey = req.user?.discordId ?? req.ip
+  const parsedKey = `${RATE_LIMITER_OPTIONS.KEY_PREFIX}::${userKey}`
 
   if (!redis._client.isReady) {
     throw new HttpException(
@@ -24,30 +24,18 @@ export const rateLimiter = async (
     )
   }
 
-  const parsedKey = `${RATE_LIMITER_OPTIONS.KEY_PREFIX}::${userKey}`
-
-  const { exists, value } = await getUserRateLimit(parsedKey)
-  const newValue = value + 1
+  const newValue = await redis._client.incr(parsedKey)
 
   if (newValue > RATE_LIMITER_OPTIONS.REQUESTS) {
-    await redis._client.set(parsedKey, String(newValue), {
-      EX: 300,
-    })
-
     throw new HttpException(
       HttpStatus.SERVICE_UNAVAILABLE,
       Errors.E_RATE_LIMITED
     )
   }
 
-  if (exists) {
-    await redis._client.set(parsedKey, String(newValue), { KEEPTTL: true })
-  } else {
-    await redis._client.setEx(
-      parsedKey,
-      RATE_LIMITER_OPTIONS.TIME,
-      String(newValue)
-    )
+  if (newValue === 1) {
+    // Set the expiration time for the key
+    await redis._client.expire(parsedKey, RATE_LIMITER_OPTIONS.TIME)
   }
 
   next()

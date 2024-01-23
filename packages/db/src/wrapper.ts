@@ -154,7 +154,7 @@ export class _DbWrapper {
   public async createModuleConfigForGuild<
     M extends ModulesTypes,
     Return extends InferModuleConfigType<M>
-  >(guildId: string, moduleName: M): Promise<Return> {
+  >(guildId: string, moduleName: M, isActive = true): Promise<Return> {
     const query = `
       INSERT INTO guild_modules (guild_id, module_id, is_active, config)
       SELECT $1, module_id, $3, $4
@@ -164,7 +164,12 @@ export class _DbWrapper {
 
     const defaultConfig = getModuleDefaultConfig(moduleName)
 
-    const values = [guildId, moduleName, true, JSON.stringify(defaultConfig)]
+    const values = [
+      guildId,
+      moduleName,
+      isActive,
+      JSON.stringify(defaultConfig),
+    ]
 
     await this.exec(query, values)
 
@@ -173,12 +178,13 @@ export class _DbWrapper {
 
   public async getOrCreateModuleConfigForGuild<M extends ModulesTypes>(
     guildId: string,
-    moduleName: M
+    moduleName: M,
+    isActive: boolean
   ) {
     const res = await this.getModuleConfigForGuild(guildId, moduleName)
 
     if (!res) {
-      return this.createModuleConfigForGuild(guildId, moduleName)
+      return this.createModuleConfigForGuild(guildId, moduleName, isActive)
     }
 
     return res

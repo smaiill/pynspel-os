@@ -39,7 +39,7 @@ class _DashboardService {
       return { cache: false, guilds: userGuilds }
     }
 
-    return { cache: true, guilds: userCachedGuilds }
+    return { cache: true, guilds: userCachedGuilds ?? [] }
   }
 
   private isAdmin(permissions: string) {

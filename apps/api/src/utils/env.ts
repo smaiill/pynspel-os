@@ -18,7 +18,9 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().default('*'),
   CLIENT_TOKEN: z.string(),
   DB_URI: z.string(),
-  NODE_ENV: z.string().default('developement'),
+  NODE_ENV: z
+    .union([z.literal('production'), z.literal('developement')])
+    .default('developement'),
   REDIS_URL: z.string(),
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_SECRET_WEBHOOK: z.string(),

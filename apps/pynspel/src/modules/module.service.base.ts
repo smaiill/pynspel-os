@@ -23,7 +23,8 @@ export class ModuleServiceBase<M extends ModulesTypes> {
 
     const res = await this._db.getOrCreateModuleConfigForGuild(
       guildId,
-      this.name
+      this.name,
+      false
     )
 
     await this._cache.guild.setModule(guildId, this.name, res)

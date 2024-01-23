@@ -32,8 +32,8 @@ const checkMuteCtx = (unit: 'day' | 'minute', value: number) => {
 
 const words = z.object({
   scan: z.boolean().default(false),
-  banned: z.array(z.string().trim().toLowerCase()).default(['fdp', 'salope']),
-  banned_exact: z.array(z.string().trim().toLowerCase()).default(['merde']),
+  banned: z.array(z.string().trim().toLowerCase()).default([]),
+  banned_exact: z.array(z.string().trim().toLowerCase()).default([]),
   action: z
     .union([
       z.literal('kick'),

@@ -27,7 +27,7 @@
 -- tickets not loading js and css files.
 -- Debug routes
 
-- Pass all DB ids to UUID
+-- Pass all DB ids to UUID
 
 # Front
 
