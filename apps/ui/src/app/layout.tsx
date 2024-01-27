@@ -1,6 +1,7 @@
 'use client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import Head from 'next/head'
 import { Toaster } from 'react-hot-toast'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { RecoilRoot } from 'recoil'
@@ -24,7 +25,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr">
+    <html>
+      <Head>
+        <title>Pynspel</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <body>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>

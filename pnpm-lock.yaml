@@ -209,6 +209,9 @@ importers:
       '@pynspel/common':
         specifier: workspace:*
         version: link:../../packages/common
+      '@pynspel/info':
+        specifier: workspace:*
+        version: link:../../packages/info
       '@smaiill/trin':
         specifier: ^0.0.6
         version: 0.0.6

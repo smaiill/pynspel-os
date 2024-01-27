@@ -1,6 +1,6 @@
+import { DISCORD_INVITATION_LINK } from '@pynspel/info'
 import { MoveUpRight } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { DISCORD_LINK } from '~/constants'
 import { Flex } from '~/layouts/Flex'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../../styled-system/css'
@@ -31,7 +31,7 @@ const SocialLinks = [
         </svg>
       )
     },
-    href: DISCORD_LINK,
+    href: DISCORD_INVITATION_LINK,
   },
 ]
 

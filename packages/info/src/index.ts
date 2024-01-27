@@ -1,1 +1,1 @@
-export const info = 'info'
+export const DISCORD_INVITATION_LINK = 'https://discord.gg/W5bcRf7tgt'

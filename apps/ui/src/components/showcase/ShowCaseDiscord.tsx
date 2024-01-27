@@ -13,10 +13,7 @@ export const ShowCaseDiscord = () => {
         bg: 'news.backgrounds.primary',
       })}
     >
-      <img
-        className={css({ w: '75px', h: '75px', rounded: '10px' })}
-        src="/pubg.png"
-      />
+      <img className={css({ w: '75px', h: '75px', rounded: '10px' })} src="" />
       <FlexColumn>
         <Typography as="h4">Watha</Typography>
         <Typography as="span">170,000 Members</Typography>

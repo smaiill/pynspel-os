@@ -1,11 +1,17 @@
+import { DISCORD_INVITATION_LINK } from '@pynspel/info'
 import Link from 'next/link'
-import { DISCORD_LINK } from '~/constants'
 import { Typography } from '~/ui/typography/Typography'
 import { css } from '../../styled-system/css'
 
 export const Attach = () => {
   return (
-    <div className={css({ textAlign: 'center', bg: 'whiteChock', p: '8px 0' })}>
+    <div
+      className={css({
+        textAlign: 'center',
+        bg: 'whiteChock',
+        p: '8px 0',
+      })}
+    >
       <Typography className={css({ color: 'black !important' })} as="span">
         <strong>v1.0</strong>
         <svg
@@ -26,7 +32,7 @@ export const Attach = () => {
           className={css({
             textDecoration: 'underline',
           })}
-          href={DISCORD_LINK}
+          href={DISCORD_INVITATION_LINK}
           target="_blank"
         >
           contacter
