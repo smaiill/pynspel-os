@@ -45,8 +45,7 @@ export const fr: Translation<TranslationBase> = {
     },
     home: {
       add_pynspel: 'Ajouter Pynspel',
-      description:
-        'Pynspel est un bot Discord polyvalent conçu pour aider les utilisateurs à sécuriser et protéger leurs serveurs.',
+      description: 'Pynspel est un bot Discord polyvalent.',
       go_to_dashboard: 'Aller au tableau de bord',
       nav: {
         dashboard: 'Tableau de bord',
