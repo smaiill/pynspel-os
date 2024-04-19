@@ -464,10 +464,10 @@ class _PanelController {
           WHEN COUNT(pi.id) = 0 THEN ARRAY[]::JSON[]
           ELSE ARRAY_AGG(
             JSON_BUILD_OBJECT(
-              'id', CAST(pi.id AS STRING),
+              'id', pi.id,
               'name', pi.name,
               'parent_id', pi.parent_id,
-              'panel_id', CAST(pi.panel_id AS STRING),
+              'panel_id', pi.panel_id,
               'emoji', pi.emoji,
               'style', pi.style
             )
