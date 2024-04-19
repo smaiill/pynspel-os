@@ -25,7 +25,6 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_SECRET_WEBHOOK: z.string(),
   FRONT_URL: z.string().url(),
-  WS_PORT: z.string().transform(Number),
   SMTP_HOST: z.string(),
   SMTP_USER: z.string(),
   SMTP_PASS: z.string(),

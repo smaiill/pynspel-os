@@ -20,14 +20,14 @@
 
 -- Send mails.
 -- View twitter favs and make sure that everything is correct
-
 -- Created At and Updated At
 -- Refresh token when expire.
 -- only keep the 9.99 product
 -- tickets not loading js and css files.
 -- Debug routes
-
 -- Pass all DB ids to UUID
+
+- [] Use unique iv for each encryption.
 
 # Front
 
