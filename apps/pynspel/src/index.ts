@@ -1,4 +1,5 @@
 import { Px } from '@pynspel/px'
+import { TextChannel } from 'discord.js'
 import { ChannelCreate } from 'events/channelCreate'
 import { ChannelDelete } from 'events/channelDelete'
 import { ChannelUpdate } from 'events/channelUpdate'
@@ -13,6 +14,8 @@ import { MessageCreate } from 'events/messageCreate'
 import { RoleCreate } from 'events/roleCreate'
 import { RoleDelete } from 'events/roleDelete'
 import { RoleUpdate } from 'events/roleUpdate'
+import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
+import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
 import { _CommandService } from 'modules/command/command.service'
 import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
@@ -75,6 +78,39 @@ const start = async () => {
   startWs()
 
   await client.exe()
+
+  const captcha = new CaptchaManager({
+    case_sensitive: true,
+    has_numbers: true,
+    max_retries: 2,
+    timeout: 60,
+    verification_channel: '1230900542612570164',
+    role_id: null,
+    length: 8,
+  })
+  const { image } = captcha.create()
+
+  const { embed } = captchaEmbeds.embedJoin({
+    avatarUrl:
+      'https://media.discordapp.net/attachments/1140624907714183229/1141084210875080734/image.png?ex=663dc63c&is=663c74bc&hm=67b0040bbe1329985bb4d3af5c883fa1875d855bd2766410322d5d8c1871fb32&=&format=webp&quality=lossless&width=421&height=549',
+    guildName: 'name',
+    username: 'username',
+    caseSensitive: true,
+  })
+
+  const channel = (await client.channels.fetch(
+    '1230900542612570164'
+  )) as TextChannel
+
+  await channel.send({
+    embeds: [embed],
+    files: [
+      {
+        attachment: image,
+        name: 'captcha.png',
+      },
+    ],
+  })
 }
 
 start()

@@ -138,23 +138,23 @@ export class _DbWrapper {
 
   public async getModuleConfigForGuild<
     M extends ModulesTypes,
-    Return extends InferModuleConfigType<M>
-  >(guildId: string, moduleName: M): Promise<Return> {
+    _Return extends InferModuleConfigType<M>
+  >(guildId: string, moduleName: M): Promise<_Return> {
     const query = `
       SELECT config FROM guild_modules JOIN modules ON guild_modules.module_id = modules.module_id WHERE guild_id = $1 AND modules.name = $2;
     `
-    const [res] = await this.exec<{ config: Return }>(query, [
+    const [res] = await this.exec<{ config: _Return }>(query, [
       guildId,
       moduleName,
     ])
 
     return res?.config
   }
-
-  public async createModuleConfigForGuild<
-    M extends ModulesTypes,
-    Return extends InferModuleConfigType<M>
-  >(guildId: string, moduleName: M, isActive = true): Promise<Return> {
+  public async createModuleConfigForGuild<M extends ModulesTypes>(
+    guildId: string,
+    moduleName: M,
+    isActive = true
+  ) {
     const query = `
       INSERT INTO guild_modules (guild_id, module_id, is_active, config)
       SELECT $1, module_id, $3, $4

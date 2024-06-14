@@ -171,8 +171,7 @@ export type InferModuleConfigType<T extends keyof typeof modulesSchemas> =
 
 export const getModuleDefaultConfig = <M extends ModulesTypes>(module: M) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return modulesSchemas[module].safeParse({}).data
+  return modulesSchemas[module].safeParse({}).data!
 }
 
 export const validateModuleConfig = <M extends ModulesTypes>(

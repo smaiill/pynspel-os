@@ -1,5 +1,5 @@
+import { createCanvas } from '@napi-rs/canvas'
 import { InferModuleConfigType, Modules } from '@pynspel/common'
-import { createCanvas } from 'canvas'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { logger } from 'utils/logger'
 import { captchaEmbeds } from '../captcha.embeds'
@@ -128,7 +128,7 @@ export class CaptchaManager {
 
     this._code = code
 
-    for (let i = 0; i < 125; i++) {
+    for (let i = 0; i < 200; i++) {
       const { color } = this.randomColor()
 
       const x = Math.random() * this._options.width
@@ -141,7 +141,7 @@ export class CaptchaManager {
       ctx.fill()
     }
 
-    return { image: canvas.toBuffer(), code }
+    return { image: canvas.toBuffer('image/png'), code }
   }
 
   public compareCode(input: string) {
