@@ -37,9 +37,5 @@ export const discordApi = async ({
     ...rest,
   })
 
-  try {
-    return await response.json()
-  } catch (error) {
-    return await response.text()
-  }
+  return await response.json()
 }

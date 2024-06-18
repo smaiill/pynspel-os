@@ -35,7 +35,7 @@ export class GuildMemberAdd extends BaseEvent<Events.GuildMemberAdd> {
       { id: guildId, owner: false, permissions },
     ])
   }
-  public async on(client: Client, member: GuildMember) {
+  public async on(client: Client<true>, member: GuildMember) {
     this.addUserGuildCache({
       guildId: member.guild.id,
       permissions: member.permissions.bitfield.toString(),
