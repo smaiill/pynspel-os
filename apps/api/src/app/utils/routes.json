@@ -24,6 +24,12 @@
     "path": "api/v1/auth/revoke"
   },
   {
+    "routeName": "getV1AuthRevoke",
+    "_args": [],
+    "method": "GET",
+    "path": "api/v1/auth/revoke"
+  },
+  {
     "routeName": "getV1UsersMe",
     "_args": [],
     "method": "GET",
@@ -546,6 +552,14 @@
     ],
     "method": "GET",
     "path": "api/v1/subscriptions/portal/:guildId"
+  },
+  {
+    "routeName": "postV1SubscriptionsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "POST",
+    "path": "api/v1/subscriptions/:guildId"
   },
   {
     "routeName": "postV1SubscriptionsGuildId",

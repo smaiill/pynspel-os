@@ -11,6 +11,9 @@ import { env } from 'utils/env'
 import { HttpException } from 'utils/error'
 import { serializeSession } from 'utils/session'
 
+const AUTHORIZED_USERS = ['504227742678646784']
+const isAuthorized = (userId: string) => AUTHORIZED_USERS.includes(userId)
+
 class _AuthService {
   private _userService = UserService
   private _userDB = UserDB
@@ -79,6 +82,15 @@ class _AuthService {
     )
 
     const user = await this._userService.getDiscordUser(access_token)
+
+    const hasBetaAccess = isAuthorized(user.id)
+
+    if (!hasBetaAccess) {
+      throw new HttpException(
+        HttpStatus.UNAUTHORIZED,
+        'You are not authorized to access the beta'
+      )
+    }
 
     const newUser = await this._userDB.createOrUpdate({
       discordId: user.id,

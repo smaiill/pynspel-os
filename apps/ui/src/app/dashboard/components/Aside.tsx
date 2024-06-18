@@ -129,6 +129,8 @@ const Aside = () => {
           type="normal"
           href={`/premium`}
           icon={<BadgeDollarSign strokeWidth={1.5} size={20} />}
+          disabled
+          reason="Soon..."
         >
           Premium
         </AsideItem>

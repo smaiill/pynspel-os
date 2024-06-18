@@ -1,5 +1,6 @@
 import { Errors, HttpStatus, SavedGuild } from '@pynspel/types'
 import { Request, Response, Router } from 'express'
+import { disabled } from 'middlewares/disabled'
 import { DashboardService } from 'modules/dashboard/dashboard.service'
 import { db } from 'modules/db'
 import { MailingService } from 'modules/mailing/mailing.service'
@@ -305,71 +306,78 @@ subscriptionRoutes.get(
   }
 )
 
-subscriptionRoutes.post('/:guildId', async (req: Request, res: Response) => {
-  const { guildId } = req.params
-  const { priceId } = req.body
-  if (!req.user) {
-    throw new HttpException(HttpStatus.UNAUTHORIZED, Errors.E_UNAUTHORIZED)
-  }
+subscriptionRoutes.post(
+  '/:guildId',
+  disabled,
+  async (req: Request, res: Response) => {
+    const { guildId } = req.params
+    const { priceId } = req.body
+    if (!req.user) {
+      throw new HttpException(HttpStatus.UNAUTHORIZED, Errors.E_UNAUTHORIZED)
+    }
 
-  const parsedData = createSubscriptionSchema.safeParse({
-    guildId,
-    priceId,
-  })
-
-  if (!parsedData.success) {
-    throw new HttpZodValidationError(parsedData.error.errors)
-  }
-
-  const guildDb = await DashboardService.getGuildFromDatabaseIfBotIn(
-    parsedData.data.guildId
-  )
-
-  if (!guildDb) {
-    throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
-  }
-
-  if (guildDb.owner !== req.user?.discordId) {
-    throw new HttpCantAccesGuildException()
-  }
-
-  if (guildDb.plan !== 'free') {
-    throw new HttpException(
-      HttpStatus.BAD_REQUEST,
-      Errors.E_ALREADY_AN_ACTIVE_PLAN
-    )
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [userDb] = await db.exec<any>(
-    'SELECT * FROM users WHERE discord_id = $1',
-    [req.user?.discordId]
-  )
-
-  const { id } = await customerService.createOrGetCustomer(userDb.customer_id, {
-    email: userDb.email,
-    username: userDb.username,
-    discordId: userDb.discord_id,
-  })
-
-  const session = await stripeInstance.checkout.sessions.create({
-    mode: 'subscription',
-    payment_method_types: ['card'],
-    success_url: `${env.API_URL}/subscription/success?guildId=${guildId}`,
-    cancel_url: `${env.API_URL}/subscription/cancel?guildId=${guildId}`,
-    customer: id,
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      },
-    ],
-    metadata: {
+    const parsedData = createSubscriptionSchema.safeParse({
       guildId,
-    },
-  })
+      priceId,
+    })
 
-  res.json({ ok: true, session: session.url })
-})
+    if (!parsedData.success) {
+      throw new HttpZodValidationError(parsedData.error.errors)
+    }
+
+    const guildDb = await DashboardService.getGuildFromDatabaseIfBotIn(
+      parsedData.data.guildId
+    )
+
+    if (!guildDb) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_INVALID_GUILD_ID)
+    }
+
+    if (guildDb.owner !== req.user?.discordId) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    if (guildDb.plan !== 'free') {
+      throw new HttpException(
+        HttpStatus.BAD_REQUEST,
+        Errors.E_ALREADY_AN_ACTIVE_PLAN
+      )
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [userDb] = await db.exec<any>(
+      'SELECT * FROM users WHERE discord_id = $1',
+      [req.user?.discordId]
+    )
+
+    const { id } = await customerService.createOrGetCustomer(
+      userDb.customer_id,
+      {
+        email: userDb.email,
+        username: userDb.username,
+        discordId: userDb.discord_id,
+      }
+    )
+
+    const session = await stripeInstance.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      success_url: `${env.API_URL}/subscription/success?guildId=${guildId}`,
+      cancel_url: `${env.API_URL}/subscription/cancel?guildId=${guildId}`,
+      customer: id,
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        guildId,
+      },
+    })
+
+    res.json({ ok: true, session: session.url })
+  }
+)
 
 export { subscriptionRoutes }
