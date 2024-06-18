@@ -139,6 +139,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
           html: generatePaymentFailureTemplate(userDb.username),
         })
       }
+      res.sendStatus(HttpStatus.ACCEPTED)
+
       break
     case StripeWebhooks.CheckoutSessionCompleted:
       {
@@ -181,6 +183,7 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
           sessionData.metadata.guildId,
         ])
       }
+      res.sendStatus(HttpStatus.ACCEPTED)
 
       break
 
@@ -210,6 +213,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
         res.json({ ok: true })
       }
 
+      res.sendStatus(HttpStatus.ACCEPTED)
+
       break
 
     case StripeWebhooks.SubscriptionUpdated:
@@ -235,6 +240,8 @@ subscriptionRoutes.post('/webhook', async (req: Request, res: Response) => {
           ]
         )
       }
+
+      res.sendStatus(HttpStatus.ACCEPTED)
 
       break
     default:
