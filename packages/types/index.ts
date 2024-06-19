@@ -4,6 +4,7 @@ export * from './dashboard'
 export * from './errors'
 export * from './modules/index'
 export * from './redis'
+export * from './routes'
 export * from './stripe'
 export * from './websocket'
 

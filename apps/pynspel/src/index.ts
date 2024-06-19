@@ -14,6 +14,7 @@ import { MessageCreate } from 'events/messageCreate'
 import { RoleCreate } from 'events/roleCreate'
 import { RoleDelete } from 'events/roleDelete'
 import { RoleUpdate } from 'events/roleUpdate'
+import { startHeartbeat } from 'managers/heartbeat'
 import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
 import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
 import { _CommandService } from 'modules/command/command.service'
@@ -21,8 +22,6 @@ import { BanCommand } from 'modules/command/handlers/ban'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
-import './managers/websocket'
-import { startWs } from './managers/websocket'
 import { KickCommand } from './modules/command/handlers/kick'
 
 if (env.NODE_ENV === 'production') {
@@ -75,8 +74,8 @@ const start = async () => {
       process.exit(1)
     })
 
-  startWs()
-
+  // startWs() // TODO: Re enble if need
+  startHeartbeat()
   await client.exe()
 
   const captcha = new CaptchaManager({

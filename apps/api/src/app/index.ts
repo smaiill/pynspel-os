@@ -9,8 +9,7 @@ import morgan from 'morgan'
 import path from 'path'
 import { redis } from 'utils/redis'
 import { IS_DEV } from '../constants'
-import '../managers/websocket'
-import { websockets } from '../managers/websocket'
+import '../managers/heartbeat'
 import routes from '../routes'
 import { API_ENDPOINT } from '../utils/constants'
 import { customHeaders } from '../utils/custom.headers'
@@ -107,7 +106,7 @@ export const createApp = () => {
     }
   })
 
-  websockets(server)
+  // websockets(server) // TODO: Re enable if need
 
   return server
 }

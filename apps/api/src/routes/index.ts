@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express'
+import { handleHeartbeat } from 'managers/heartbeat'
 import { rateLimiter } from 'middlewares/rate.limiter'
 import authRoutes from 'modules/auth/auth.routes'
 import { clientRoutes } from 'modules/client/client.routes'
@@ -41,4 +42,5 @@ router.get('/v1/modules', async (_: Request, res: Response) => {
   return res.json(JSON.parse(cachedModules))
 })
 
+router.get('/v1/heartbeat', handleHeartbeat)
 export default router

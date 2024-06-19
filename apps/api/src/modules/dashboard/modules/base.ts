@@ -5,7 +5,7 @@ import {
   validateModuleConfig,
 } from '@pynspel/common'
 import { Errors, HttpStatus } from '@pynspel/types'
-import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
+import { IS_CLIENT_AVAILABLE } from 'managers/heartbeat'
 import { db } from 'modules/db'
 import { ObjectKeysPath } from 'types/utils'
 import { HttpException, HttpZodValidationError } from 'utils/error'

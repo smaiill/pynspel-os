@@ -25,7 +25,7 @@ export class BanCommand extends BaseCommand {
   }
 
   public async on(interaction: CommandInteraction) {
-    const user = interaction.options.getUser('user')
+    const user = interaction.options.get('user')
     const reason =
       (interaction.options.get('reason')?.value as string) ??
       'No reason specified'
@@ -51,7 +51,7 @@ export class BanCommand extends BaseCommand {
       return
     }
 
-    if (!user) {
+    if (!user || !user.user) {
       await interaction.reply({
         ephemeral: true,
         content: 'Invalid user',
@@ -59,7 +59,7 @@ export class BanCommand extends BaseCommand {
       return
     }
 
-    const member = await interaction.guild.members.fetch(user.id)
+    const member = await interaction.guild.members.fetch(user.user.id)
 
     if (!member.bannable) {
       await interaction.reply({

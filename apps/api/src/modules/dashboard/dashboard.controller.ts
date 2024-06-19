@@ -1,6 +1,6 @@
 import { Errors, HttpStatus, SavedUser } from '@pynspel/types'
 import { Request, Response } from 'express'
-import { IS_CLIENT_AVAILABLE } from 'managers/websocket'
+import { IS_CLIENT_AVAILABLE } from 'managers/heartbeat'
 import { _decrypt } from 'utils/crypto'
 import { HttpException } from 'utils/error'
 import { DashboardService } from './dashboard.service'

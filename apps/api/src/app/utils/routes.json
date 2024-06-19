@@ -574,5 +574,11 @@
     "_args": [],
     "method": "GET",
     "path": "api/v1/modules"
+  },
+  {
+    "routeName": "getV1Heartbeat",
+    "_args": [],
+    "method": "GET",
+    "path": "api/v1/heartbeat"
   }
 ]
