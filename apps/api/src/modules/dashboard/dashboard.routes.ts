@@ -12,6 +12,8 @@ import { captchaModuleRouter } from './modules/captcha/captcha.router'
 import { commandModuleRouter } from './modules/command/command.router'
 import { counterRaidModuleRouter } from './modules/counterRaid/counterRaid.router'
 import { loggingModuleRouter } from './modules/logging/logging.router'
+import { poolModuleRouter } from './modules/pool/pool.router'
+import { poolsRouter } from './modules/pool/pools/pools.router'
 import { scannerModuleRouter } from './modules/scanner/scanner.router'
 import { panelRouter } from './modules/ticket/panel/panel.router'
 import { ticketModuleRouter } from './modules/ticket/ticket.router'
@@ -129,5 +131,7 @@ dashboardRoutes.use('/command', commandModuleRouter)
 dashboardRoutes.use('/counter-raid', counterRaidModuleRouter)
 dashboardRoutes.use('/scanner', scannerModuleRouter)
 dashboardRoutes.use('/panels', panelRouter)
+dashboardRoutes.use('/pool', poolModuleRouter)
+dashboardRoutes.use('/pools', poolsRouter)
 
 export { dashboardRoutes }

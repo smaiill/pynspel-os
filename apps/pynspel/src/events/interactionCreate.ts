@@ -15,6 +15,7 @@ import {
   InteractionReplyOptions,
   PermissionFlagsBits,
 } from 'discord.js'
+import { PoolsService } from 'modules/pool/pools/pools.service'
 import { TicketService } from 'modules/ticket/ticket.service'
 import { mentionChannel, mentionUser } from 'utils/mentions'
 
@@ -22,11 +23,15 @@ enum ButtonAction {
   CreateTicket = 1,
   CloseTicket,
   TranspileTicket,
+
+  // Pool
+  PoolAdd,
+  PoolUserClear,
 }
 
 export class InteractionCreate extends BaseEvent<'interactionCreate'> {
   _db = db
-  constructor() {
+  constructor(private poolsService: PoolsService) {
     super('interactionCreate')
   }
 
@@ -36,6 +41,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     | { action: ButtonAction.CreateTicket; third: string }
     | { action: ButtonAction.CloseTicket; third: string }
     | { action: ButtonAction.TranspileTicket; third: string }
+    | { action: ButtonAction.PoolAdd; third: string }
+    | { action: ButtonAction.PoolUserClear; third: string }
     | undefined {
     const parts = id.split('.')
 
@@ -56,6 +63,20 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     if (parts.at(0) === 'ticket' && parts.at(1) === 'transpile') {
       return {
         action: ButtonAction.TranspileTicket,
+        third: parts.at(2) as unknown as string,
+      }
+    }
+
+    if (parts.at(0) === 'pool' && parts.at(1) === 'add') {
+      return {
+        action: ButtonAction.PoolAdd,
+        third: parts.at(2) as unknown as string,
+      }
+    }
+
+    if (parts.at(0) === 'pool' && parts.at(1) === 'clear') {
+      return {
+        action: ButtonAction.PoolUserClear,
         third: parts.at(2) as unknown as string,
       }
     }
@@ -201,6 +222,12 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
           default:
             break
         }
+        break
+      case ButtonAction.PoolAdd:
+        await this.poolsService.add(interaction, parsedButton.third)
+        break
+      case ButtonAction.PoolUserClear:
+        await this.poolsService.deleteUserVotes(interaction)
         break
       default:
         break

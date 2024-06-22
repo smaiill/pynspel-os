@@ -9,6 +9,7 @@ export const Modules = {
   command: 'command',
   counterRaid: 'counterRaid',
   scanner: 'scanner',
+  pool: 'pool',
 } as const
 
 export const isAValidModule = (name: string): name is ModulesTypes =>
@@ -81,7 +82,7 @@ function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const modulesSchemas = {
-  bot: z.object({
+  [Modules.bot]: z.object({
     name: z.string().trim().min(3).max(20).default('pynspel'),
     status: z
       .union([z.literal('dnd'), z.literal('online'), z.literal('idle')])
@@ -89,7 +90,7 @@ const modulesSchemas = {
     language: z.union([z.literal('en'), z.literal('fr')]).default('en'),
   }),
 
-  captcha: z.object({
+  [Modules.captcha]: z.object({
     length: z.union([z.literal(4), z.literal(6), z.literal(8)]).default(4),
     verification_channel: z.string().trim().nullable().default(null),
     case_sensitive: z.boolean().default(false),
@@ -104,20 +105,20 @@ const modulesSchemas = {
     role_id: z.string().nullable().default(null),
     max_retries: z.number().min(1).max(10).default(3),
   }),
-  logging: z.object({
+  [Modules.logging]: z.object({
     channel: z.string().nullable().default(null),
     user_left: z.boolean().default(false),
     user_join: z.boolean().default(false),
     // captcha_fail: z.boolean().default(false),
   }),
-  ticket: z.object({
+  [Modules.ticket]: z.object({
     max_each_user: z.number().min(1).max(TICKET_MAX_PER_USER).default(3),
   }),
-  command: z.object({
+  [Modules.command]: z.object({
     kick: z.boolean().default(false),
     ban: z.boolean().default(false),
   }),
-  counterRaid: z
+  [Modules.counterRaid]: z
     .object({
       member_threshold: z.number().min(1).default(5),
       interval: z.number().min(1).max(600).default(10),
@@ -144,7 +145,7 @@ const modulesSchemas = {
       message: 'This needs to be less then 5 days.',
       path: ['mute_timeout'],
     }),
-  scanner: z.object({
+  [Modules.scanner]: z.object({
     words: words
       .optional()
       .default(() => getDefaults(words))
@@ -159,6 +160,9 @@ const modulesSchemas = {
         message: 'This needs to be less then 5 days.',
         path: ['mute_timeout'],
       }),
+  }),
+  [Modules.pool]: z.object({
+    _: z.union([z.literal(0), z.literal(1)]).default(1),
   }),
 } as const
 

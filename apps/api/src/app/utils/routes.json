@@ -514,6 +514,118 @@
     "path": "api/v1/dashboard/panels/:panelId/interactions/:interactionId"
   },
   {
+    "routeName": "getV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "getV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "getV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "putV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "putV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "putV1PoolGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "PUT",
+    "path": "api/v1/dashboard/pool/:guildId"
+  },
+  {
+    "routeName": "getV1PoolsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "GET",
+    "path": "api/v1/dashboard/pools/:guildId"
+  },
+  {
+    "routeName": "postV1PoolsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "POST",
+    "path": "api/v1/dashboard/pools/:guildId"
+  },
+  {
+    "routeName": "postV1PoolsGuildId",
+    "_args": [
+      "guildId"
+    ],
+    "method": "POST",
+    "path": "api/v1/dashboard/pools/:guildId"
+  },
+  {
+    "routeName": "putV1PoolsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "PUT",
+    "path": "api/v1/dashboard/pools/:panelId"
+  },
+  {
+    "routeName": "putV1PoolsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "PUT",
+    "path": "api/v1/dashboard/pools/:panelId"
+  },
+  {
+    "routeName": "deleteV1PoolsPanelId",
+    "_args": [
+      "panelId"
+    ],
+    "method": "DELETE",
+    "path": "api/v1/dashboard/pools/:panelId"
+  },
+  {
+    "routeName": "postV1PoolsPanelIdSend",
+    "_args": [
+      "panelId"
+    ],
+    "method": "POST",
+    "path": "api/v1/dashboard/pools/:panelId/send"
+  },
+  {
+    "routeName": "postV1PoolsPanelIdSend",
+    "_args": [
+      "panelId"
+    ],
+    "method": "POST",
+    "path": "api/v1/dashboard/pools/:panelId/send"
+  },
+  {
     "routeName": "getV1ClientServingGuilds",
     "_args": [],
     "method": "GET",

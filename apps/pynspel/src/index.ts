@@ -19,6 +19,8 @@ import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
 import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
 import { _CommandService } from 'modules/command/command.service'
 import { BanCommand } from 'modules/command/handlers/ban'
+import { PoolsDB } from 'modules/pool/pools/pools.db'
+import { PoolsService } from 'modules/pool/pools/pools.service'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
@@ -48,7 +50,7 @@ const client = new Px({
     new GuildMemberAdd(),
     new GuildMemberRemove(),
     new GuildMemberUpdate(),
-    new InteractionCreate(),
+    new InteractionCreate(new PoolsService(new PoolsDB())),
     new MessageCreate(),
     new RoleCreate(),
     new RoleDelete(),
