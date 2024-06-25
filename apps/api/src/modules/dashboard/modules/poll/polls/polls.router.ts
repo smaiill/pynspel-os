@@ -12,10 +12,10 @@ import {
 } from 'utils/error'
 import { z } from 'zod'
 import { isChannelIdInArray } from '../../utils'
-import { PoolsService } from './pools.service'
+import { PoolsService } from './polls.service'
 
 const router = Router()
-const poolsService = new PoolsService()
+const pollsService = new PoolsService()
 
 export const validate = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -30,14 +30,16 @@ export const validate = (schema: z.ZodSchema) => {
   }
 }
 
-router.get('/:guildId', async (req: Request, res: Response) => {
-  const { guildId } = req.params
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params
 
-  if (!guildId) {
-    throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid guild id')
+  if (!id) {
+    throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid poll id')
   }
 
-  const isBotInGuild = await db.isClientInGuild(guildId)
+  const poll = await pollsService.getById(id)
+
+  const isBotInGuild = await db.isClientInGuild(poll.guild_id)
 
   if (!isBotInGuild) {
     throw new HttpException(HttpStatus.FORBIDDEN, 'Invalid guild.')
@@ -46,7 +48,7 @@ router.get('/:guildId', async (req: Request, res: Response) => {
   const userHasPermissions =
     await DashboardService.userHasPermissionsCachedOrFresh({
       userId: req.user?.discordId as string,
-      guildId: guildId as string,
+      guildId: poll.guild_id as string,
       accessToken: _decrypt(req.user?.accessToken as string),
     })
 
@@ -54,9 +56,7 @@ router.get('/:guildId', async (req: Request, res: Response) => {
     throw new HttpCantAccesGuildException()
   }
 
-  const pools = await poolsService.fetchByGuild(guildId)
-
-  return res.json(pools)
+  return res.json(poll)
 })
 
 router.post(
@@ -87,7 +87,7 @@ router.post(
       throw new HttpCantAccesGuildException()
     }
 
-    const createdPool = await poolsService.createPool(payload, guildId)
+    const createdPool = await pollsService.createPool(payload, guildId)
 
     return res.json(createdPool)
   }
@@ -104,7 +104,7 @@ router.put(
     }
 
     const [panel] = await db.exec<{ guild_id: string }>(
-      'SELECT guild_id FROM pools WHERE id = $1',
+      'SELECT guild_id FROM polls WHERE id = $1',
       [panelId]
     )
 
@@ -129,7 +129,7 @@ router.put(
       throw new HttpCantAccesGuildException()
     }
 
-    await poolsService.updatePool(panelId, req.body)
+    await pollsService.updatePool(panelId, req.body)
 
     return res.json(req.body)
   }
@@ -143,7 +143,7 @@ router.delete('/:panelId', async (req: Request, res: Response) => {
   }
 
   const [panel] = await db.exec<{ guild_id: string }>(
-    'SELECT guild_id FROM pools WHERE id = $1',
+    'SELECT guild_id FROM polls WHERE id = $1',
     [panelId]
   )
 
@@ -168,7 +168,7 @@ router.delete('/:panelId', async (req: Request, res: Response) => {
     throw new HttpCantAccesGuildException()
   }
 
-  await poolsService.delete(panelId)
+  await pollsService.delete(panelId)
 
   return res.json({})
 })
@@ -184,7 +184,7 @@ router.post(
     }
 
     const [panel] = await db.exec<{ guild_id: string }>(
-      'SELECT guild_id FROM pools WHERE id = $1',
+      'SELECT guild_id FROM polls WHERE id = $1',
       [panelId]
     )
 
@@ -223,10 +223,10 @@ router.post(
       throw new HttpException(HttpStatus.BAD_REQUEST, Errors.E_UNKNOWN_CHANNEL)
     }
 
-    await poolsService.send(panelId, channel_id)
+    await pollsService.send(panelId, channel_id)
 
     return res.json({})
   }
 )
 
-export { router as poolsRouter }
+export { router as pollsRouter }

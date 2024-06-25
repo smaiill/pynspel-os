@@ -9,7 +9,7 @@ export const Modules = {
   command: 'command',
   counterRaid: 'counterRaid',
   scanner: 'scanner',
-  pool: 'pool',
+  poll: 'poll',
 } as const
 
 export const isAValidModule = (name: string): name is ModulesTypes =>
@@ -161,7 +161,7 @@ const modulesSchemas = {
         path: ['mute_timeout'],
       }),
   }),
-  [Modules.pool]: z.object({
+  [Modules.poll]: z.object({
     _: z.union([z.literal(0), z.literal(1)]).default(1),
   }),
 } as const

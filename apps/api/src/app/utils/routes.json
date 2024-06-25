@@ -58,6 +58,14 @@
     "path": "api/v1/dashboard/guilds/:id/modules"
   },
   {
+    "routeName": "getV1GuildsIdPolls",
+    "_args": [
+      "id"
+    ],
+    "method": "GET",
+    "path": "api/v1/dashboard/guilds/:id/polls"
+  },
+  {
     "routeName": "putV1GuildsIdModulesModuleName",
     "_args": [
       "id",
@@ -514,116 +522,116 @@
     "path": "api/v1/dashboard/panels/:panelId/interactions/:interactionId"
   },
   {
-    "routeName": "getV1PoolGuildId",
+    "routeName": "getV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "getV1PoolGuildId",
+    "routeName": "getV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "getV1PoolGuildId",
+    "routeName": "getV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "GET",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "putV1PoolGuildId",
+    "routeName": "putV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "putV1PoolGuildId",
+    "routeName": "putV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "putV1PoolGuildId",
+    "routeName": "putV1PollGuildId",
     "_args": [
       "guildId"
     ],
     "method": "PUT",
-    "path": "api/v1/dashboard/pool/:guildId"
+    "path": "api/v1/dashboard/poll/:guildId"
   },
   {
-    "routeName": "getV1PoolsGuildId",
+    "routeName": "getV1PollsId",
     "_args": [
-      "guildId"
+      "id"
     ],
     "method": "GET",
-    "path": "api/v1/dashboard/pools/:guildId"
+    "path": "api/v1/dashboard/polls/:id"
   },
   {
-    "routeName": "postV1PoolsGuildId",
+    "routeName": "postV1PollsGuildId",
     "_args": [
       "guildId"
     ],
     "method": "POST",
-    "path": "api/v1/dashboard/pools/:guildId"
+    "path": "api/v1/dashboard/polls/:guildId"
   },
   {
-    "routeName": "postV1PoolsGuildId",
+    "routeName": "postV1PollsGuildId",
     "_args": [
       "guildId"
     ],
     "method": "POST",
-    "path": "api/v1/dashboard/pools/:guildId"
+    "path": "api/v1/dashboard/polls/:guildId"
   },
   {
-    "routeName": "putV1PoolsPanelId",
+    "routeName": "putV1PollsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "PUT",
-    "path": "api/v1/dashboard/pools/:panelId"
+    "path": "api/v1/dashboard/polls/:panelId"
   },
   {
-    "routeName": "putV1PoolsPanelId",
+    "routeName": "putV1PollsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "PUT",
-    "path": "api/v1/dashboard/pools/:panelId"
+    "path": "api/v1/dashboard/polls/:panelId"
   },
   {
-    "routeName": "deleteV1PoolsPanelId",
+    "routeName": "deleteV1PollsPanelId",
     "_args": [
       "panelId"
     ],
     "method": "DELETE",
-    "path": "api/v1/dashboard/pools/:panelId"
+    "path": "api/v1/dashboard/polls/:panelId"
   },
   {
-    "routeName": "postV1PoolsPanelIdSend",
+    "routeName": "postV1PollsPanelIdSend",
     "_args": [
       "panelId"
     ],
     "method": "POST",
-    "path": "api/v1/dashboard/pools/:panelId/send"
+    "path": "api/v1/dashboard/polls/:panelId/send"
   },
   {
-    "routeName": "postV1PoolsPanelIdSend",
+    "routeName": "postV1PollsPanelIdSend",
     "_args": [
       "panelId"
     ],
     "method": "POST",
-    "path": "api/v1/dashboard/pools/:panelId/send"
+    "path": "api/v1/dashboard/polls/:panelId/send"
   },
   {
     "routeName": "getV1ClientServingGuilds",

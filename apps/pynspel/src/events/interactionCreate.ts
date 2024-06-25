@@ -15,7 +15,7 @@ import {
   InteractionReplyOptions,
   PermissionFlagsBits,
 } from 'discord.js'
-import { PoolsService } from 'modules/pool/pools/pools.service'
+import { PollsService } from 'modules/poll/polls/polls.service'
 import { TicketService } from 'modules/ticket/ticket.service'
 import { mentionChannel, mentionUser } from 'utils/mentions'
 
@@ -24,14 +24,14 @@ enum ButtonAction {
   CloseTicket,
   TranspileTicket,
 
-  // Pool
-  PoolAdd,
-  PoolUserClear,
+  // Poll
+  PollAdd,
+  PollUserClear,
 }
 
 export class InteractionCreate extends BaseEvent<'interactionCreate'> {
   _db = db
-  constructor(private poolsService: PoolsService) {
+  constructor(private pollsService: PollsService) {
     super('interactionCreate')
   }
 
@@ -41,8 +41,8 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
     | { action: ButtonAction.CreateTicket; third: string }
     | { action: ButtonAction.CloseTicket; third: string }
     | { action: ButtonAction.TranspileTicket; third: string }
-    | { action: ButtonAction.PoolAdd; third: string }
-    | { action: ButtonAction.PoolUserClear; third: string }
+    | { action: ButtonAction.PollAdd; third: string }
+    | { action: ButtonAction.PollUserClear; third: string }
     | undefined {
     const parts = id.split('.')
 
@@ -67,16 +67,16 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
       }
     }
 
-    if (parts.at(0) === 'pool' && parts.at(1) === 'add') {
+    if (parts.at(0) === 'poll' && parts.at(1) === 'add') {
       return {
-        action: ButtonAction.PoolAdd,
+        action: ButtonAction.PollAdd,
         third: parts.at(2) as unknown as string,
       }
     }
 
-    if (parts.at(0) === 'pool' && parts.at(1) === 'clear') {
+    if (parts.at(0) === 'poll' && parts.at(1) === 'clear') {
       return {
-        action: ButtonAction.PoolUserClear,
+        action: ButtonAction.PollUserClear,
         third: parts.at(2) as unknown as string,
       }
     }
@@ -223,11 +223,11 @@ export class InteractionCreate extends BaseEvent<'interactionCreate'> {
             break
         }
         break
-      case ButtonAction.PoolAdd:
-        await this.poolsService.add(interaction, parsedButton.third)
+      case ButtonAction.PollAdd:
+        await this.pollsService.add(interaction, parsedButton.third)
         break
-      case ButtonAction.PoolUserClear:
-        await this.poolsService.deleteUserVotes(interaction)
+      case ButtonAction.PollUserClear:
+        await this.pollsService.deleteUserVotes(interaction)
         break
       default:
         break

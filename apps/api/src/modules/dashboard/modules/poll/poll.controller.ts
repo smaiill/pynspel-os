@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { poolModuleService } from './pool.service'
+import { pollModuleService } from './poll.service'
 
 class _PoolModuleController {
-  private _moduleService = poolModuleService
+  private _moduleService = pollModuleService
   public async get(req: Request, res: Response) {
     const _res = await this._moduleService.get(req.params.guildId)
 
@@ -19,4 +19,4 @@ class _PoolModuleController {
   }
 }
 
-export const poolModuleController = new _PoolModuleController()
+export const pollModuleController = new _PoolModuleController()

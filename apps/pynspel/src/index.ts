@@ -1,5 +1,4 @@
 import { Px } from '@pynspel/px'
-import { TextChannel } from 'discord.js'
 import { ChannelCreate } from 'events/channelCreate'
 import { ChannelDelete } from 'events/channelDelete'
 import { ChannelUpdate } from 'events/channelUpdate'
@@ -15,16 +14,17 @@ import { RoleCreate } from 'events/roleCreate'
 import { RoleDelete } from 'events/roleDelete'
 import { RoleUpdate } from 'events/roleUpdate'
 import { startHeartbeat } from 'managers/heartbeat'
-import { captchaEmbeds } from 'modules/captcha/captcha.embeds'
-import { CaptchaManager } from 'modules/captcha/managers/CaptchaManager'
 import { _CommandService } from 'modules/command/command.service'
 import { BanCommand } from 'modules/command/handlers/ban'
-import { PoolsDB } from 'modules/pool/pools/pools.db'
-import { PoolsService } from 'modules/pool/pools/pools.service'
+import { PollsDB } from 'modules/poll/polls/poll.db'
+import { PollsService } from 'modules/poll/polls/poll.service'
+import { schedule } from 'node-cron'
 import { env } from 'utils/env'
 import { logger } from 'utils/logger'
 import { redis } from 'utils/redis'
 import { KickCommand } from './modules/command/handlers/kick'
+
+const pollsService = new PollsService(new PollsDB())
 
 if (env.NODE_ENV === 'production') {
   process.on('uncaughtException', (error, origin) => {
@@ -50,7 +50,7 @@ const client = new Px({
     new GuildMemberAdd(),
     new GuildMemberRemove(),
     new GuildMemberUpdate(),
-    new InteractionCreate(new PoolsService(new PoolsDB())),
+    new InteractionCreate(new PollsService(new PollsDB())),
     new MessageCreate(),
     new RoleCreate(),
     new RoleDelete(),
@@ -80,38 +80,7 @@ const start = async () => {
   startHeartbeat()
   await client.exe()
 
-  const captcha = new CaptchaManager({
-    case_sensitive: true,
-    has_numbers: true,
-    max_retries: 2,
-    timeout: 60,
-    verification_channel: '1230900542612570164',
-    role_id: null,
-    length: 8,
-  })
-  const { image } = captcha.create()
-
-  const { embed } = captchaEmbeds.embedJoin({
-    avatarUrl:
-      'https://media.discordapp.net/attachments/1140624907714183229/1141084210875080734/image.png?ex=663dc63c&is=663c74bc&hm=67b0040bbe1329985bb4d3af5c883fa1875d855bd2766410322d5d8c1871fb32&=&format=webp&quality=lossless&width=421&height=549',
-    guildName: 'name',
-    username: 'username',
-    caseSensitive: true,
-  })
-
-  const channel = (await client.channels.fetch(
-    '1230900542612570164'
-  )) as TextChannel
-
-  await channel.send({
-    embeds: [embed],
-    files: [
-      {
-        attachment: image,
-        name: 'captcha.png',
-      },
-    ],
-  })
+  schedule('*/60 * * * * *', () => pollsService.updateAll(client))
 }
 
 start()

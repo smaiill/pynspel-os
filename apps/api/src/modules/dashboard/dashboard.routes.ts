@@ -12,13 +12,15 @@ import { captchaModuleRouter } from './modules/captcha/captcha.router'
 import { commandModuleRouter } from './modules/command/command.router'
 import { counterRaidModuleRouter } from './modules/counterRaid/counterRaid.router'
 import { loggingModuleRouter } from './modules/logging/logging.router'
-import { poolModuleRouter } from './modules/pool/pool.router'
-import { poolsRouter } from './modules/pool/pools/pools.router'
+import { pollModuleRouter } from './modules/poll/poll.router'
+import { pollsRouter } from './modules/poll/polls/polls.router'
+import { PoolsService } from './modules/poll/polls/polls.service'
 import { scannerModuleRouter } from './modules/scanner/scanner.router'
 import { panelRouter } from './modules/ticket/panel/panel.router'
 import { ticketModuleRouter } from './modules/ticket/ticket.router'
 
 const dashboardRoutes = new ProtectedRouter()
+const pollsService = new PoolsService()
 
 dashboardRoutes.get(
   '/guilds',
@@ -66,6 +68,38 @@ dashboardRoutes.get(
     }
 
     res.json(modules)
+  }
+)
+
+dashboardRoutes.get(
+  '/guilds/:id/polls',
+  async (req: Request, res: Response) => {
+    const { id } = req.params
+
+    if (!id) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, 'Invalid guild id')
+    }
+
+    const isBotInGuild = await db.isClientInGuild(id)
+
+    if (!isBotInGuild) {
+      throw new HttpException(HttpStatus.FORBIDDEN, 'Invalid guild.')
+    }
+
+    const userHasPermissions =
+      await DashboardService.userHasPermissionsCachedOrFresh({
+        userId: req.user?.discordId as string,
+        guildId: id as string,
+        accessToken: _decrypt(req.user?.accessToken as string),
+      })
+
+    if (!userHasPermissions) {
+      throw new HttpCantAccesGuildException()
+    }
+
+    const polls = await pollsService.fetchByGuild(id)
+
+    return res.json(polls)
   }
 )
 
@@ -131,7 +165,7 @@ dashboardRoutes.use('/command', commandModuleRouter)
 dashboardRoutes.use('/counter-raid', counterRaidModuleRouter)
 dashboardRoutes.use('/scanner', scannerModuleRouter)
 dashboardRoutes.use('/panels', panelRouter)
-dashboardRoutes.use('/pool', poolModuleRouter)
-dashboardRoutes.use('/pools', poolsRouter)
+dashboardRoutes.use('/poll', pollModuleRouter)
+dashboardRoutes.use('/polls', pollsRouter)
 
 export { dashboardRoutes }

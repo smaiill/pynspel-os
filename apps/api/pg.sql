@@ -141,16 +141,18 @@ CREATE TRIGGER update_timestamp BEFORE
 UPDATE ON sessions FOR EACH ROW EXECUTE PROCEDURE moddatetime (updated_at);
 
 CREATE TABLE
-  public.pools (
+  public.polls (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     title VARCHAR(255) NOT NULL,
-    description TEXT DEFAULT NULL,
+    content TEXT DEFAULT NULL,
     allow_multiple BOOLEAN NOT NULL DEFAULT false,
     end_at timestamp DEFAULT NULL,
-    guild_id VARCHAR(255),
+    guild_id VARCHAR(255) NOT NULL,
     choices VARCHAR(100)[] NOT NULL DEFAULT ARRAY[]::VARCHAR[],
     message_id VARCHAR(100) DEFAULT NULL,
     channel_id VARCHAR(100) DEFAULT NULL,
+    embed jsonb DEFAULT NULL,
+    show_graph BOOLEAN NOT NULL DEFAULT false,
     FOREIGN KEY (guild_id) REFERENCES public.guilds (guild_id),
     created_at timestamp
     with
@@ -161,15 +163,15 @@ CREATE TABLE
   );
 
 CREATE TRIGGER update_timestamp BEFORE
-UPDATE ON pools FOR EACH ROW EXECUTE PROCEDURE moddatetime (updated_at);
+UPDATE ON polls FOR EACH ROW EXECUTE PROCEDURE moddatetime (updated_at);
 
 
-CREATE TABLE public.pools_voters (
+CREATE TABLE public.polls_voters (
   user_id VARCHAR(100) NOT NULL,
-  pool_id UUID NOT NULL,
+  poll_id UUID NOT NULL,
   choice VARCHAR(255)[] NOT NULL,
 
-  FOREIGN KEY (pool_id) REFERENCES public.pools (id) ON DELETE CASCADE
+  FOREIGN KEY (poll_id) REFERENCES public.polls (id) ON DELETE CASCADE
 );
 
 
